@@ -1,54 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794549828;
-	b=sWsCmyTyGI0tSWmW7rQV7GsUKaNooCcYzaZMT2PHPvtqKx3EQWmhc+ObX1I0ErVuyD9x
-	 pTsTPRW+m7NgJU2EyKjGeJv6Lu8EwwhWQM2gKTCBXrVOdbO2xamK/vRb+HF9AeJIUgURX
-	 epFIviGc1ZXZxLknzqxX0swO7Lve2a495JHWH+Em6HDK6nWtrTV/ffRsRD1EbA54kLXHA
-	 W8FAF++XsN8kmpYQkReTKj/ZsLIklT5FqU8yTNN4ObaB1JvO/swvoO7H0LLvOZ303mW5D
-	 nVg34DcvVezilrSdp2/wOTt1kRurxPG710KMjtB7VNrOr8M4C5GgJHgVyNnzXJbDr6A==
+	t=1794549829;
+	b=dt0duBu/9ZsgBBk9VpRonXT1ImUqSz8Xj6acj7DMrRBjzMYf83ukeP/8v6MYOYAW9P0y
+	 fH16m4yv05OK6dNxHRyEMLeS54nTRFXiBhnOd4Ak1nrRM082+hSnV54OWqIgKYZqQCtli
+	 f9tKYvQhBzDwwzln5bFX/1ngdrRdPQGJ4QV3B55E8CNuE1rs1m6BR01D+v6CIwDNJi9F3
+	 bkY/ZQOfdRanJL6s+MDzca6XJDUgc2tZapCmynObcPrQbW8UTL0Kf2pqToxW7c+ne64JS
+	 +WCsPaELSbW0fOo+ydYfwiJSHxgYWfe+Q8rzL/FYtEHb/nVvz9aDb5Gb2uRjCmDnxpA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794549828;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794549829;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=YV4norfrC55/VIeb/FA3aYa/JvEx3U0FXg7dVNyqt1Q=;
-	b=QECutIfakoMrh0ppN0pN/ZUnAwCPYz/vd41axucQyyoSDpctdEPi5CGRCM5+hZmxzVWV
-	 onVVE39vW5rKsWslu9Ir/ffgBdonkjsBrOGXhhAHj2pNrFlUykHJCcjK449CqBc02ATIU
-	 hExx/OrLRqlJ4f1k4g1w0GiiZepcGKNcW9h5ORgWQEAWI5wQU8O/WUO1qVOLfvukFi450
-	 RMXz/SeF5PBY6vpwWe93IX1TEFyDO57irvflQl8lmpgWTFWxn4CRHzDK/f3wXqJJMvdjL
-	 3N+YHvCr8myXl9RUtQO1iUl9ug3HM/jzQVFXq9flZH0cpIAKOxBtmczVSJjjkn1ztrw==
+	bh=cb7V+m5HZYXGrLmOKXSoBWJ5O8CQ0qcwIGBFPuyjdDY=;
+	b=qVBaioq4t36Wksi+P+z1ujdbONvRVcrsz6Qu3DgUL3WNIoiITl9QMMlzw1cXXMYUgK0G
+	 ngmbjOJqogs4LUscCyPiGu8YWpblp3ozPYIvctXr6H1h2jJnTI6l56KXm1MYG+x5kVR9V
+	 W3Ck9rNNmY1HWuMrQCAohIeWccjZN194MsqCocA/ZGdA5w16PP02Yz8RjdWqCPyAbJYtE
+	 TMI1BsE/06ctoHzc5J39TpuWeaCUTOklO5KRZpvx2/O0lpg+T0nFXfxXoGn4Cu1sgGPOR
+	 Az4LtDzdu0XRgP2lOEEeOA/fXjB0fxcD/jKzDHGlE8xtV5+X3aiQuRZtnUXPGOh+iGQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D5jqzUVT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LaCaCAAq;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A488606A33A
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 06:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8B5606A31C
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 06:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D5jqzUVT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B221F000C4;
-	Fri, 13 Nov 2026 06:03:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LaCaCAAq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8101F000C6;
+	Fri, 13 Nov 2026 06:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794549828;
-	bh=YV4norfrC55/VIeb/FA3aYa/JvEx3U0FXg7dVNyqt1Q=;
+	s=k20260515; t=1794549829;
+	bh=cb7V+m5HZYXGrLmOKXSoBWJ5O8CQ0qcwIGBFPuyjdDY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D5jqzUVT4pL90kQWaPzYvrXgFTo5E9AFVcGpZjX7PM+57IZlr7ZM2LQLf9I1ASjVN
-	 xdMcQK2reZ4vNGavicaJIGBsh7xnyDMKvKy6mCgg5l5vtKMEVRjqwLx6NvCtxaOi9t
-	 V743OHMnxBKVlYgPI8Pc7LfNd/e9NC+5eVH50aNX/0ptYql+gBE249ZX2JWjmwHYhu
-	 vYV23aPx287frWHAzkMCRom2ijJ//F8hrAGVkkO8PJE+ubmsYjIdetyGe1PxJqAo+S
-	 56GLat+Wf0dsfg6xgBizJxC/Uei3r1c0H1MsS9ocn417A6Sig8DDSikVNBC0KV2Nnc
-	 qc5BMppTSqvRQ==
-Subject: Re: [PATCH net-next v4 3/4] selftests: drv-net: add a kperf runner
+	b=LaCaCAAqW06fTr7edcZLSE+jkTewVXnAavv/5P8vb3o+x9biK/iAhj64ynaUt0q6n
+	 aEpo7dWYw0apHPsth84ENyTaCT7iVIe6xauEhjYPiL7w1b72v6nK1CfE94XMLQvjEk
+	 ocFMcRlDZLq9jmpSeGTAJfP+JHJrWC+QLm6B7rX2yzGK08Bqpb+m/9IrzF/hcb6vTb
+	 u36KiMoMDaw2uyAp4ffZfDwTDI72PzreUGLEUxeWkW56VY3WyDHo9GWnq2giIvhR0c
+	 ZXRuWW2T0Y0TDpIhF2jMIlQnMLuy/b33eHS/qo0fyyjjuddwcaf4F/8XOY8X1UGQOV
+	 vz2frokQW34tw==
+Subject: Re: [PATCH net-next v4 4/4] selftests: drv-net: measure devmem
+ performance with kperf
 From: netdev-bot+sashiko@kernel.org
 To: sdf.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, bjorn@kernel.org
-Date: Fri, 13 Nov 2026 06:03:47 +0000
-Message-ID: <179454982769.2199510.3173599793961584974@kernel.org>
-In-Reply-To: <20261111000246.962871-4-sdf@fomichev.me>
-References: <20261111000246.962871-4-sdf@fomichev.me>
+Date: Fri, 13 Nov 2026 06:03:48 +0000
+Message-ID: <179454982864.2199510.563106109106531403@kernel.org>
+In-Reply-To: <20261111000246.962871-5-sdf@fomichev.me>
+References: <20261111000246.962871-5-sdf@fomichev.me>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -62,10 +63,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Critical: 0 · High: 0 · Medium: 4 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -73,160 +74,195 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] KperfRunner.close() in
-  tools/testing/selftests/drivers/net/lib/py/kperf.py is meant to keep…
-- [Low] In KperfRunner.__enter__
-  (tools/testing/selftests/drivers/net/lib/py/kperf.py), a server is…
-- [Low] selftests: drv-net: KperfRunner.__enter__() misses BaseException
-  cleanup
+- [Medium] kperf() in tools/testing/selftests/drivers/net/perf/devmem.py
+  never checks whether the device supports devmem before it changes the…
+- [Medium] _enable_hw_gro() in
+  tools/testing/selftests/drivers/net/perf/devmem.py (lines 24-31) makes…
+- [Medium] In kperf()
+  (tools/testing/selftests/drivers/net/perf/devmem.py), `defer(ethtool,…
+- [Medium] kperf() saves `rings.get("tcp-data-split", "unknown")` (line
+  53) and writes that value back explicitly in the deferred restore…
 
 --
 
-selftests: drv-net: add a kperf runner
+selftests: drv-net: measure devmem performance with kperf
 
-This adds a KperfRunner helper to the drv-net python library. It starts
-kperf servers on the local and remote hosts, runs kperf-client, and
-returns the aggregate throughput of both ends. Each server gets its own
-PID and log file, and close() stops the servers with kperf-server --kill
-and reports any cleanup failures.
+This commit adds a udmabuf-backed devmem TCP throughput test to
+drivers/net/perf. The test uses KperfRunner and reports the result as a
+ktap metric. Before running kperf with devmem RX/TX, it raises the
+udmabuf size limit and enables HW GRO and tcp-data-split.
 
-> diff --git a/tools/testing/selftests/drivers/net/lib/py/kperf.py b/tools/testing/selftests/drivers/net/lib/py/kperf.py
-> new file mode 100644
-> index 0000000000000..8ee8c5ba2ff7b
+> diff --git a/tools/testing/selftests/drivers/net/perf/devmem.py b/tools/testing/selftests/drivers/net/perf/devmem.py
+> new file mode 100755
+> index 0000000000000..4c1fb9b51fff9
 > --- /dev/null
-> +++ b/tools/testing/selftests/drivers/net/lib/py/kperf.py
+> +++ b/tools/testing/selftests/drivers/net/perf/devmem.py
+> @@ -0,0 +1,96 @@
 
 [ ... ]
 
-> +    def _server(self, remote, kill=False):
-> +        host = self.env.remote if remote else None
-> +        address = self.env.remote_addr if remote else self.env.addr
-> +        args = ["kperf-server", "--pid-file", self._pid_file(remote)]
-> +        if kill:
-> +            args.append("--kill")
-> +        else:
-> +            args += ["--addr", address, "--port", str(self._port)]
-> +            # The output of a daemon is lost, unless it can log
-> +            usage = cmd("kperf-server --help", host=host, fail=False)
-> +            if "--log-file" in usage.stdout + usage.stderr:
-> +                args += ["--log-file", self._log_file(remote)]
-> +        return cmd(shlex.join(args) if remote else args, host=host,
-> +                   fail=not kill)
-
-[ ... ]
-
-> +    def __enter__(self):
-> +        try:
-> +            for remote in (False, True):
-> +                self._server(remote)
-> +                self._started.append(remote)
-
-[Severity: Low]
-A server is added to self._started only after self._server(remote)
-returns successfully. What happens if kperf-server has already
-daemonized and written its PID file, and the start command then raises?
-
-For example, the remote ssh session could drop and exit with 255, or it
-could stall past the default 20 second cmd() timeout after the daemon
-has detached. CmdExitFailure or TimeoutExpired would be raised before
-the append.
-
-The except block below calls self.close(), which only walks
-self._started, so --kill is never issued for that PID file. Could this
-leave the daemon running, along with its PID and log files, and holding
-devmem or RX steering into later tests?
-
-Since --kill already runs with fail=False, one option is to record the
-server before starting it. Another is to always issue --kill for both
-PID files during cleanup.
-
-> +            wait_port_listen(self._port)
-> +            wait_port_listen(self._port, host=self.env.remote)
-> +        except Exception:
-> +            self.close()
-> +            raise
-> +        return self
-> +
-> +    def close(self):
-> +        """Stop the started kperf servers, which waits for their sessions."""
-> +        failures = []
-> +        while self._started:
-> +            remote = self._started.pop()
-> +            command = self._server(remote, kill=True)
-> +            if command.ret:
-> +                failures.append(command)
-
-[Severity: Low]
-Does this rollback still run if the test is interrupted while the
-servers are starting?
-
-The kselftest SIGTERM handler, _ksft_intr() in
-tools/testing/selftests/net/lib/py/ksft.py, raises KsftTerminate,
-which subclasses KeyboardInterrupt. Neither of them derives from
-Exception. A SIGTERM timeout from the runner, or a Ctrl-C, can arrive
-while the second kperf-server is being started or while __enter__()
-is polling in wait_port_listen(). In that case this handler is
-skipped.
-
-The with statement also does not call __exit__() when __enter__()
-raises. So the servers already recorded in self._started never get a
-kperf-server --kill. They would keep running in the background and
-listening on the control port. Their PID and log files under
-/tmp/ksft-kperf-* would also be left behind.
-
-The handler re-raises anyway, so would it make sense to catch
-BaseException here? That way the started servers are also stopped on
-SIGTERM and KeyboardInterrupt.
+> +def _enable_hw_gro(cfg) -> None:
+> +    features = ethtool(f"-k {cfg.ifname}", json=True)[0]
+> +    hw_gro = features["rx-gro-hw"]
+> +    if not hw_gro["active"]:
+> +        if hw_gro["fixed"]:
+> +            raise KsftSkipEx("Test requires rx-gro-hw support")
+> +        ethtool(f"-K {cfg.ifname} rx-gro-hw on")
+> +        defer(ethtool, f"-K {cfg.ifname} rx-gro-hw off")
 
 [Severity: Medium]
-Can the kill command raise here instead of returning a non-zero ret?
 
-_server(remote, kill=True) calls cmd() with fail=False but keeps the
-default timeout from tools/testing/selftests/net/lib/py/utils.py:
+Is HW GRO actually required for devmem here? The commit message says the
+test skips "when kperf or /dev/udmabuf is missing". _enable_hw_gro() adds
+a third skip condition: rx-gro-hw being fixed off.
 
-    def __init__(self, comm, shell=None, fail=True, expect_fail=False, ns=None,
-                 background=False, host=None, timeout=20, ksft_ready=None,
+Devmem does not depend on NETIF_F_GRO_HW in general. As far as I can tell,
+only mlx5 ties tcp-data-split to GRO_HW, in
+mlx5e_ethtool_set_tcp_data_split().
 
-That leads to cmd.process()->_process_terminate(), which does:
+fbnic registers fbnic_queue_mgmt_ops and advertises
+ETHTOOL_RING_USE_TCP_DATA_SPLIT, but it never sets NETIF_F_GRO_HW. Its
+rx-gro-hw is reported as "off [fixed]", so this test would always skip
+on fbnic.
 
-    stdout, stderr = self.proc.communicate(timeout=timeout)
+On NICs where rx-gro-hw is off but not fixed, turning it on also changes
+what the reported throughput metric measures compared with the device's
+default configuration.
 
-fail=False only affects the return code check after communicate()
-returns. If the kill takes longer than 20 seconds, subprocess.
-TimeoutExpired is raised anyway. The commit message says this can
-happen, since --kill waits for sessions that may still be releasing
-devmem and RX steering. A stalled ssh link would trigger it too.
+Could the HW GRO requirement be dropped? If it is needed, could the
+commit message mention it and explain why?
 
-When that happens, the exception leaves the while self._started loop.
-pop() handles the remote server first, so if the remote kill times
-out:
-
-  - the local kperf-server is never killed
-  - neither log file is removed by the rm -f
-  - the RuntimeError that collects the failures is skipped
-  - the timed out kill subprocess keeps running, because communicate()
-    does not kill the child on timeout
-
-__exit__ calls close() only once, so would a stale server be left
-holding the devmem or RX steering resources that the next test needs?
-
-On the __enter__ error path, the TimeoutExpired from close() also
-becomes the exception that is raised, and the original setup error is
-only chained as context.
-
-Would it make sense to pass a larger timeout to the kill command? The
-loop could also catch exceptions per server, so the remaining servers
-and log files still get cleaned up.
-
-> +            host = self.env.remote if remote else None
-> +            args = ["rm", "-f", self._log_file(remote)]
-> +            cmd(shlex.join(args) if remote else args, host=host, fail=False)
-> +        if failures:
-> +            details = "\n".join(str(command) for command in failures)
-> +            raise RuntimeError(f"failed to stop kperf server(s)\n{details}")
 > +
-> +    def __exit__(self, _exc_type, _exc_value, _exc_tb):
-> +        self.close()
+> +
+> +@ksft_disruptive
+> +def kperf(cfg) -> None:
+
+[ ... ]
+
+> +    # kperf reprograms the RSS indirection table for its queues.
+> +    defer(ethtool, f"-X {cfg.ifname} default")
+> +
+> +    _enable_hw_gro(cfg)
+
+[Severity: Medium]
+
+Should this defer be registered later? It is armed before
+_enable_hw_gro() can raise KsftSkipEx, and before anything has touched
+RSS.
+
+If rx-gro-hw is fixed off, the test skips, but ksft_flush_defer() still
+runs "ethtool -X <ifname> default". On a device without set_rxfh support
+that command exits non-zero, and ksft_flush_defer() sets
+KSFT_RESULT = False. The output then becomes:
+
+  not ok 1 ... # SKIP Test requires rx-gro-hw support
+
+ktap_result() also clears KSFT_RESULT_ALL, so ksft_exit() returns 1, and
+a plain skip turns into an overall failure.
+
+On devices that do support set_rxfh (fbnic, for example, which always
+takes the skip path above), any custom RSS indirection table gets reset
+even though kperf never ran.
+
+On the success path, too, the cleanup resets RSS to the default instead
+of restoring the previous table.
+
+> +
+> +    ethnl = EthtoolFamily()
+> +    rings = ethnl.rings_get({"header": {"dev-index": cfg.ifindex}})
+> +    restore = {
+> +        "header": {"dev-index": cfg.ifindex},
+> +        "tcp-data-split": rings.get("tcp-data-split", "unknown"),
+> +    }
+
+[Severity: Medium]
+
+Will this restore return the device to its original HDS configuration?
+The other in-tree tests that enable tcp-data-split restore "unknown"
+instead of writing back the reported value. These include configure_nic()
+in hw/devmem_lib.py, hw/iou-zcrx.py, hw/nk_qlease.py and hds.py.
+
+The snapshot is also taken after _enable_hw_gro() has already changed
+the device. On bnxt, bnxt_get_ringparam() reports the live state rather
+than hds_config:
+
+drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c:bnxt_get_ringparam() {
+    ...
+	if (bp->flags & BNXT_FLAG_AGG_RINGS) {
+		...
+		kernel_ering->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
+	} else {
+		...
+		kernel_ering->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_DISABLED;
+	}
+    ...
+}
+
+With HW GRO enabled, the snapshot therefore reads "enabled". The deferred
+rings_set() then sends ENABLED explicitly, and ethnl_set_rings() saves it
+as the user configuration:
+
+	dev->cfg_pending->hds_config = kernel_ringparam.tcp_data_split;
+
+bnxt_set_ringparam() clears BNXT_FLAG_HDS only for UNKNOWN. Header split
+stays forced on, and hds_config stays ENABLED instead of going back to
+auto.
+
+If the snapshot read "disabled" instead, bnxt_set_ringparam() rejects it
+with -EINVAL because it differs from hds_config. The whole restore,
+including hds-thresh, is dropped, and the failing defer marks the test
+as failed.
+
+In both cases header split is left on, and later non-frags XDP attaches
+are refused in dev_xdp_attach():
+
+	if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
+	    prog && !prog->aux->xdp_has_frags) {
+		NL_SET_ERR_MSG(extack, "unable to install XDP to device using tcp-data-split");
+		return -EBUSY;
+
+That can break later tests on the same machine.
+
+Would it be more robust to restore "unknown", as hw/devmem_lib.py does?
+
+> +    config = {
+> +        "header": {"dev-index": cfg.ifindex},
+> +        "tcp-data-split": "enabled",
+> +    }
+> +    # Memory providers require a zero threshold where the driver has one.
+> +    if "hds-thresh" in rings:
+> +        restore["hds-thresh"] = rings["hds-thresh"]
+> +        config["hds-thresh"] = 0
+> +    defer(ethnl.rings_set, restore)
+> +    ethnl.rings_set(config)
+
+[Severity: Medium]
+
+What happens here on a NIC that has HW GRO but no header-split or devmem
+support? drivers/net/perf is a generic suite. The only skip conditions
+are a missing kperf, a missing /dev/udmabuf, or rx-gro-hw being fixed
+off.
+
+Take virtio_net with guest TSO as an example. rx-gro-hw is active by
+default, so _enable_hw_gro() passes. virtio_net does not advertise
+ETHTOOL_RING_USE_TCP_DATA_SPLIT, so this rings_set() gets -EOPNOTSUPP
+from ethnl_set_rings_validate(), and ksft_run() counts the NlError as a
+failure.
+
+The restore defer registered just above also sends tcp-data-split, so it
+fails the same way. qede, hns3 and bnx2x appear to behave the same.
+
+idpf and ice support tcp-data-split but have no queue_mgmt_ops. There
+this rings_set() succeeds, but devmem binding fails, kperf-client exits
+non-zero, and KperfRunner.run() raises RuntimeError. That is also
+reported as a failure rather than a skip.
+
+The hw tests handle this case with require_devmem() in hw/devmem_lib.py:
+
+    if not cfg.devmem_supported[RX_PAGE_SIZE_DEFAULT]:
+        raise KsftSkipEx("Test requires devmem support")
+
+Should this test do an equivalent probe before it modifies the device?
 
 [ ... ]
 
