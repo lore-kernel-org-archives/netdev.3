@@ -1,91 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794553289;
-	b=GZaYgUNSFnrXooCmWuNIYerwUctBDyqPAQhJuuuyp4RLTXDEXfZqZpna/8vqDg0DPzXs
-	 HslKHjWhRBHP4w/MSDherAb/3Kt+5+9ZTFaZX3JN4LY6b9pRFyiLDpZSIl2vs3dAY5Rfe
-	 vAeb7SF+4w3jB+Sl5TGUQPZPAPrFFN4CWNbWAQymewy307FX7YmZfHYB7xyCqfd2GmjSM
-	 qKoFe6HFco5tZUMH6/+bfZdv6ruHtngxxeA+3Z54zi1hvMPqkC6QCCDWFw5MFvL1mutTH
-	 dymmDPS/NuOjWMzWfb8WR+eb2nRdm6uom9haVGTze/cb0iXND/zdfnOWRjaeUq/9S3A==
+	t=1794553419;
+	b=e0CKiU4IQ6pz6HDDj3PhFw9xxti7LzSCZymvExsl1LJYh3sPs1xoMlwSO6ozHB3d/Z0Y
+	 oFKkeboAMhptiv66ZicHrIhYO0RUbP6oaHWHQxTaYAQMv5OvY1zRZdj+jJs/jufmTSlKI
+	 Ud6chMDyw02SyY4UDGaoMuj7ClUAICc0hlJGLnjoipjrU0Uel7y0QWCavcKL2+fxLKE4X
+	 TuJoW8MkgHv6Q0bsVYB51mltKi6Lv5ErwphP9jnvXVnQGMiCeZJ0PlBvJ0C5wKadNASde
+	 v01fGRXP5VixjAgB2SwElDi0n7WXjdScHUSvYLzhtWEUGyPEKrM9A6d8yFiY897PTYw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794553289;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:X-ME-Sender:
-	 X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=FX15yL1d6k2xYFvbHMD/Yim2NO+Keql5IqWi6DbNGJM=;
-	b=Ndyz9QUYWZnjKLx547aZqjH8urCHp0fI5wGy+nY093L0lz0p+SBGGV6nfcIQd9Ns+z9h
-	 b0teWgun/05pjtem33UrpYEPGqTSrASb2B6IE1a3c35CByxGBeq2GvzrGHB4vTo5fWwrD
-	 nx7yN3QT5Houwj1L1mTXjkYdlmX89xgRBZSEHR04rRcN3cdBeXXKE1jqy4OfknpeDU9dt
-	 zO720hzq0ChIVfbBAMSGs7eZk8COQeTQWGKgZ1jK9XlDPMhTV2wRXo7LOf6T2lpyBk8Cv
-	 Qe9QfTGSmhd44uNseAovf/S7kZY+Fhq/rx9sdUzYR0CM/TpFA/l0LceuBxlaAaqKZ5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794553419;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=VPOK7kX1ObHoz/VqLCSAnjInW4wUgoK0aAhR/RviB0k=;
+	b=043DbFw1Vi+izpFJ9QM+mXGAUxd0AcQFuSdE6vmuWEKKNbULM+rj+pKED5iJ9NYB+DYR
+	 qHczMhnIlGcfwNLm3htWmv8gUU3amch7OQHfE+6I0g5D3kVjW8Omhn3qJWnNIP7QUHcwo
+	 8nOpWLcg7XVjm0GGBYsgSf2ImlgGMHCwSlTjQ1JkK4jnw460bWOX7tufp6WpnPsHYZRkT
+	 Cunh/DpSEm6DdtwrU4Ob849lUMNwqVMjXmIMXlVmj5jvorGK7xttPSAFwYI3P8DKtpcmv
+	 mw+ERqpAbH4QnC0QaB2pwmGTJuZPzHLYvdZJHOIAG5Zs62FXVohBysWpoCUnCESPL1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=idosch.org;
-	spf=none smtp.mailfrom=idosch.org;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=AaZLRAW0;
-	arc=none smtp.remote-ip=202.12.124.150
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtvJOwGA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E2A606A31C
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:01:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43E2A606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55220606A31C;
+	Fri, 13 Nov 2026 07:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=AaZLRAW0
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 2DAAE1D0029D;
-	Fri, 13 Nov 2026 02:01:27 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 13 Nov 2026 02:01:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794553287; x=
-	1794639687; bh=FX15yL1d6k2xYFvbHMD/Yim2NO+Keql5IqWi6DbNGJM=; b=A
-	aZLRAW0vjXahAMvhpuZrDzMBGRTLQ/HsP0R+pkLlX9f2e1WhedV1WZPcZz0c9Fe4
-	yhnN1bspW696TEQj+ugmvKCTsY2wTJ8AizjKvbgdXmwhfKwfvunD5IZi9x1dGyrD
-	YXXiB9tWtm9xvy5AaKhOltn7DDKVnfjuQfJF9hKZJ6yyXDzJrc5QNpx0X9PQiRqS
-	1/M90I14BL/2K3tTbHL4AG2mOXgzN+ZgCRGCJrYMe4F+k5EoVpOihRKge15e7obZ
-	1wP7VFabY32z0GMldqM7r33Jmk4kp6AmdO5xsghMOjPDZfWy5rJ/ashLchlBWS30
-	+E68nC2WrJ2FX4Pe44W6Q==
-X-ME-Sender: <xms:xrX2alJmMpF6CDw4Tk9p2Mo8Ferf87J5JTH9RnqUkjdlbCRCoqAPmQ>
-    <xme:xrX2apVNbUzmmvkCYcsAPHQu1imylYZlpnUxE3Zh04_0Np2iK5rhckr5RkLWHpRmW
-    8zH04REL0svikOGUOxTlPPvkOTh0guPYvpZZV94WW7oFwVgrGg>
-X-ME-Received: <xmr:xrX2apSoFANdU8QvJiOhGap2TkMXJsehDsZV_iDwFLoFebLJfeq-B5S_Kynp_aly48T1FWXAumb4CF8i6bGGbbXpOaMnxQ>
-X-ME-Proxy-Cause: dmFkZTGgp+uMAD7ngN/Mela/jA/D+MsD19o0z4gFWrUY3BjHOYKtXVonlrpoFzLv4BHRjq
-    RB9GVr1lwJuywzgn10cEXRNbACaEWfflZ0CuCyvwpIUkCVLze+vuEWg65c9kZI/Gbh15dq
-    rh2K4tS8+9YTUZs8cAN7f/XQE3ijnX96943b6QBqJK7GWPJ4CZ91PyF5bHb8JcjyaoBWR3
-    yOKDhM5VZ2CSVOAlIhIVpmOblEK7lcprU7OOM2lJ0F8BaDgkIwL1ZxKueaeiMgfaIDPILk
-    NECUQ+OFHfpY0UzXjTpTCMJdKn8SaJo3hJgEq3asbjUT7u8nT90gcu4vo5Xw82K4BZz6Uw
-    D6qXI4AvFl9wY3lbGIZqma16vhGDGWfs+wBOaL2E4uAqTjHqkxzdYg20ylTrzvXw1nfzkz
-    HhDCFioq2u4puf9RLBkWHdJ98sob6zpE7AHL/HcTX0hdOkgneoKdGJAfRnAnjU6AVboUGo
-    IjHxVmHov+3eaD6j+1JAZ/erekLyXQdTDBBlnU/2IE3lvhkRScfOcipz3F0Moy6M27RMZ4
-    7OdAPgXFm3VSH54YHVJEr9LD8N8GHld37TW0a4BlYrDnL1PtkcKZ8FbxwDhqaxQ13qum85
-    i2TUyBmTzh3PEyv7bRu/+qd+iTyuJLXnH4Igc411ESYGreb02Kn84bJWUtDQ
-X-ME-Proxy: <xmx:xrX2ahBFKQLbv4Qshx1siIyip99q0SxwTrKbL2AvAgTMFIN4MVjNBA>
-    <xmx:xrX2aoILrYHFBOx4TMtUePlgu3Vr00T0hbTUDw1hY4-BmmhhmDI6wA>
-    <xmx:xrX2akCFwf2dXwxBr2qwEHlvqubaI9RqFncyzV-1y06U_a0wYbukHg>
-    <xmx:xrX2altX6A8rMXI7YkcMHnw7nqJNseHsVFshec8bx-sKEmwiMISsmQ>
-    <xmx:x7X2amwjimTVclgkp2-uL20dPPAhHsg2wffU0H0PYrlFqve6XPfG8rlm>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Nov 2026 02:01:26 -0500 (EST)
-Date: Fri, 13 Nov 2026 09:01:24 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: idosch@nvidia.com, netdev@vger.kernel.org, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
-	jv@jvosburgh.net, andrew+netdev@lunn.ch, razor@blackwall.org,
-	aahila@google.com
-Subject: Re: [PATCH net-next 2/2] selftests: bonding: Add a test for 802.3ad
- with coupled control disabled
-Message-ID: <20261113070124.GB3517282@shredder>
-References: <20261111171947.2816258-2-idosch@nvidia.com>
- <179451491828.2199510.10600083511159752831@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtvJOwGA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74081F000C4;
+	Fri, 13 Nov 2026 07:03:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794553418;
+	bh=VPOK7kX1ObHoz/VqLCSAnjInW4wUgoK0aAhR/RviB0k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=WtvJOwGAtzAklSRELG54o32eP8je5vQlr46jXkX8K/GFaTXC+BanjPFO6yH7aKfGb
+	 zZJOLcwJkvF9uvW/AvvEO62MGVmYOwaIc+kcQB/MhislEmKV2NnvNb8qljwsem8YFl
+	 XnKxofXc5lOYIvuqCG6IYlSE410u3Vr7LdIPKuwIuIGQjVugh97xoruTIu8PPh0FWs
+	 yeiKMpUk4MGaA6V1mLBa/KI0ylWPbGzTWMGeLAFhZf6wZUO6D3YSDErkZGA2+rJCFP
+	 PrtWkq7gNwr74yDMl5EvI4fHioVl1+wW0M7qOa8QydwM60JrcBQLagn/SNAxyEuGM/
+	 FqBiIeemfLtww==
+Message-ID: <2cd4da54-1dd2-424d-a9ba-e3e4fdad502e@kernel.org>
+Date: Fri, 13 Nov 2026 08:03:30 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -95,163 +51,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179451491828.2199510.10600083511159752831@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/10] dt-bindings: ptp: Document the TSCSS on Qualcomm
+ SA8775P and QCS8300 SoCs
+To: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Eric Dumazet <edumazet@kernel.org>,
+ Abel Vesa <abelvesa@kernel.org>, Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
+ Taniya Das <taniya.das@oss.qualcomm.com>,
+ Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20261108-tscss-v2-0-d5f575010427@oss.qualcomm.com>
+ <20261108-tscss-v2-1-d5f575010427@oss.qualcomm.com>
+ <20261109-qualified-pristine-newt-ba1c0c@quoll>
+ <f2b119c7-ba01-46fd-96c4-10b918f98d53@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGPBBMBCgA5AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJp2mE8AAoJEBuTQ307QWKbeaIP
+ /ihHTkTW4KsN/DQ945JJbyu5tI0J80Wue7QyyLPglyKfhgb5cLLNPpOC8cCIJsc7+W3i2P38
+ s2c1cOH6CYGE7E9ur3Vfme8NW2S2I/Z8VC7bZnzyS23wT17LrsdS/qCpx4o8U+pt/xdXDKph
+ EGRYrIEmMpUWvyYzyYKGIe25FtaayIIKpq8eZYyFcp2f/sG5IkOW5uZzHPMPdcm87jU7fyuQ
+ rAU2vx9r+ulUfQ/q9Z2roC/ode3l7t2pN7BCBCsUDp6JCrUyZrtT1e7EbA0ZRP3aOBNk2P2E
+ DQOgJGjGdO5Yx2Y9LFtltu6JbsBJHi1syGRX3AtQYOMc4Y1WGoeZJmMlvKj2ZqqXNkcWi2DS
+ IQEWB0uW6CqFsBBIMGDa+6OzdaVO/uAVXWDWml02Men3CILdI1MbVjoh8ECqYUY7OQ+JJvNN
+ vnliuq5WM3Ghd3jg/LZZrxXjdIginRHFQCjIJYLKpLZWm1/iDFedcfzqRNYmTtqscdCNHW41
+ oT3Z7BmO9xwdjuwBS6nmS6JJwkbf5Ot2QR4pB/DRU7ZwjT1qHe+9r9gF32wXVQatHNGK/VVu
+ sfwOnkdxCWkp/qb2gdQRmZh+SedStWshigH6sNfuHBloF/q+hjMRc8b2m326OZdrbSHwY1Sz
+ vti8Hn7n8NjdHO9LKB7BIdjkA9DA5WsqOuVCzsFNBFVDXDQBEADNkrQYSREUL4D3Gws46JEo
+ Z9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLueMNsWLJBv
+ BaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6eiOMheesVS
+ 5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wAGldWsRxb
+ f3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA6z6lBZn0
+ WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9YegxWKvX
+ XHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt91pFzBSO
+ IpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gUBLHFTg2h
+ YnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/JoFzZ4B0
+ p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu4vXVFBYI
+ GmpyNPYzRm0QPwARAQABwsF2BBgBCgAgAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmna
+ YUkACgkQG5NDfTtBYptX+BAApg32CkxwNucNEi8WfWA8oKkW0y8YDuY6ORMo9FWNGiT/OTy0
+ vyJrLocrpn86zwfjVp+eCrssPYh8eqJfnWqmYv6ACQtHPYzPZQ3mSo8H97Z01oUxITzCxpXm
+ ZkLgPIqtDPcC2E3dPM/fVxcyowM8XsaMA9wcsaUYrta8toOq2b9tKcjleKMfMrm0gQ9u7wUc
+ QbLkwj6TCLOwucb07GXzLTNF9PZmaDUpKAZjMjmrW+le+SFvQbhamx0rxLWPR0NWntXpbCn+
+ +ACch03p/JyTBVktxFsFyCt7pTPE1kEaeuXBTe/a2D9iQvRxRW19LvuO2e59/u1wYUiH/orz
+ wbIC2S4dBsPAPihL3ztOU1yE86GPyQtSE0kU+/7snnLt4QGi6PChf3t5gnNjAzjUUovO8rgI
+ c+5yN5heq5loYHgK6OQ9OlHzsPHO9e9MOQcKlFycs1pyijFGzDwdNUm/SchK8iWT2QApTx4A
+ K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
+ n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
+ qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
+In-Reply-To: <f2b119c7-ba01-46fd-96c4-10b918f98d53@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-tl;dr - I believe the patch is fine as-is.
+On 12/11/2026 10:31, Imran Shaik wrote:
+>>> +allOf:
+>>> +  - if:
+>>> +      properties:
+>>> +        reg-names:
+>>> +          contains:
+>>> +            const: etu
+>>
+>> Reason for same devices with different address space details should be
+>> provided somewhere, preferrably in description. Assuming in the first
+>> place, that this stays because how two devices can be basically
+>> identical (same compatible) if they have different programming
+>> interface?
+>>
+> 
+> TSCSS is a single hardware device, split into two sub-blocks - TSC and
+> ETU, each with its own register address. Every SoC with this compatible
+> has both blocks in hardware.
 
-On Thu, Nov 12, 2026 at 08:21:58PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
-> 
-> Low priority / nit picks for your consideration:
-> 
-> - [Low] The bonding selftest config fragment
->   (tools/testing/selftests/drivers/net/bonding/config) now asks for…
-> - [Low] In bond_lacp_independent_control.sh, collecting() reads the total
->   packet count of the bond1 ingress ICMP echo-request filter (handle…
-> 
-> --
-> 
-> selftests: bonding: Add a test for 802.3ad with coupled control disabled
-> 
-> This adds a VRF based selftest which checks that a bond port with
-> coupled_control off receives packets in COLLECTING state. It keeps the
-> port in COLLECTING state by clearing the Collecting bit in received
-> LACPDUs, and then checks that ping works in DISTRIBUTING state. The
-> bonding selftest config fragment gains the VRF, pedit and policy routing
-> options the test needs.
-> 
-> > diff --git a/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
-> > new file mode 100755
-> > index 0000000000000..c29712e01e49e
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
-> 
-> [ ... ]
-> 
-> > +h1_create()
-> > +{
-> > +	adf_ip_link_add bond1 type bond mode 802.3ad lacp_rate fast \
-> > +		coupled_control off
-> > +	adf_ip_link_set_master "$h1" bond1
-> > +	adf_simple_if_init bond1 192.0.2.1/28
-> > +
-> > +	tc qdisc add dev "$h1" clsact
-> > +	defer tc qdisc del dev "$h1" clsact
-> > +
-> > +	tc qdisc add dev bond1 clsact
-> > +	defer tc qdisc del dev bond1 clsact
-> > +
-> > +	tc filter add dev bond1 ingress pref 1 handle 101 proto ip \
-> > +		flower skip_hw src_ip 192.0.2.2 dst_ip 192.0.2.1 \
-> > +		ip_proto icmp type 8 action pass
-> > +	defer tc filter del dev bond1 ingress pref 1 handle 101 flower
-> > +}
-> 
-> [ ... ]
-> 
-> > +collecting()
-> > +{
-> 
-> [ ... ]
-> 
-> > +	ping_do bond2 192.0.2.1
-> > +	pkts=$(tc_rule_handle_stats_get "dev bond1 ingress" 101)
-> > +	((pkts >= PING_COUNT))
-> > +	check_err $? "Packets not received in COLLECTING state"
-> 
-> [Severity: Low]
-> Can this check pass when no packets were received in COLLECTING state?
-> 
-> The bond1 ingress filter with handle 101 is installed once by
-> h1_create() from setup_prepare(), outside the per-test defer scopes, so
-> its counter keeps growing across tests. collecting() compares the
-> absolute counter with PING_COUNT and does not take a baseline before
-> ping_do.
-> 
-> tests_run() in net/lib.sh iterates over ${TESTS:-$ALL_TESTS}. Take
-> TESTS="distributing collecting" as an example:
-> 
-> distributing()
->     ping_do bond2 192.0.2.1    <- PING_COUNT echo requests hit filter 101
-> collecting()
->     port moved to COLLECTING state
->     ping_do bond2 192.0.2.1    <- nothing received without the fix
->     pkts >= PING_COUNT         <- still true from the earlier test
-> 
-> The same thing happens if collecting is listed twice. The default
-> ALL_TESTS order runs collecting first, so the default run is not
-> affected.
-> 
-> Since the ping_do return value is ignored here, this counter is the only
-> check of the fix. Would it make sense to read the counter before ping_do
-> and check the delta, or to create the filter inside collecting() with a
-> matching defer?
-
-Noise. This is not a problem with the default test order and I don't
-think it's worth handling other orders.
+This is not what the binding said.
 
 > 
-> > +
-> > +	log_test "Receive in COLLECTING state"
-> > +}
-> 
-> [ ... ]
-> 
-> > diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
-> > index b62c707152930..71c6d69d98a18 100644
-> > --- a/tools/testing/selftests/drivers/net/bonding/config
-> > +++ b/tools/testing/selftests/drivers/net/bonding/config
-> 
-> [ ... ]
-> 
-> > @@ -15,7 +19,9 @@ CONFIG_NETCONSOLE_DYNAMIC=y
-> >  CONFIG_NETCONSOLE_EXTENDED_LOG=y
-> >  CONFIG_NETDEVSIM=m
-> >  CONFIG_NET_IPGRE=y
-> > +CONFIG_NET_L3_MASTER_DEV=y
-> >  CONFIG_NET_SCH_INGRESS=y
-> > +CONFIG_NET_VRF=y
-> 
-> [Severity: Low]
-> Should this fragment also enable CONFIG_IP_ADVANCED_ROUTER=y and
-> CONFIG_IP_MULTIPLE_TABLES=y?
-> 
-> NET_VRF depends on IP_MULTIPLE_TABLES in drivers/net/Kconfig:
-> 
-> config NET_VRF
-> 	tristate "Virtual Routing and Forwarding (Lite)"
-> 	depends on IP_MULTIPLE_TABLES
-> 	depends on NET_L3_MASTER_DEV
-> 	depends on IPV6_MULTIPLE_TABLES || IPV6=n
-> 
-> and in net/ipv4/Kconfig, IP_MULTIPLE_TABLES depends on IP_ADVANCED_ROUTER
-> and has no default:
-> 
-> config IP_MULTIPLE_TABLES
-> 	bool "IP: policy routing"
-> 	depends on IP_ADVANCED_ROUTER
-> 
-> The patch adds the NET_L3_MASTER_DEV and IPV6_MULTIPLE_TABLES
-> dependencies but not the IPv4 ones. If the fragment is merged onto a base
-> config that lacks them, Kconfig silently drops NET_VRF. arm64 defconfig
-> is one example: it sets neither symbol, while x86_64_defconfig sets both.
-> 
-> In that case setup_prepare()->adf_vrf_prepare()->vrf_prepare() runs:
-> 
-> 	ip -4 rule add pref 32765 table local
-> 
-> which needs IPv4 policy routing, and adf_simple_if_init() cannot create
-> the VRF devices. The test then fails during setup and never exercises the
-> bonding change.
-> 
-> Several other net selftest fragments have the same gap, while
-> net/mptcp/config lists IP_MULTIPLE_TABLES explicitly.
+> What changes is whether the vendor/board actually wires up the ETU's
+> external event. The ETU block captures a timestamp from the TSC block
+> when an external event fires one of the ETU slices, which are driven
+> through board-level GPIO/IRQs. If a board doesn't wire any slice,
+> there's nothing in the ETU region for Linux to use.
 
-Both options are enabled by x86_64_defconfig and other config files that
-enable CONFIG_NET_VRF do not list them either (e.g.,
-net/forwarding/config). The test is running fine in the netdev CI.
+This is not what the binding said. The binding said there are different
+types of devices, one with etu and one without. Look, easy to spot:
+
++  reg:
++    minItems: 1
++    maxItems: 2
+
+
+Best regards,
+Krzysztof
