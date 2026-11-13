@@ -1,116 +1,81 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.229.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794530523;
-	b=tzbStxH2GVQP67r8wBaAVnUJcvd/VGzpKwPOD2dAi20ul17oYIh6hPcDp1dT/mc1d3GP
-	 Fkk/3QqSMyEr4D+vUyyntri/xW3jnz4/N0/ovv2CQJWmMRfZY+lLSz12RO8TX9PUtaREt
-	 ry/kWHADkafsOLr2OCjOPPhlc1Ou2oR8vVQEFRMT/ae8tVVgtRT3Gqey9+WNqdTuVdzvy
-	 8yDXcejEdCYWpcQCcOZWDTbqz55jhITK2SxeqHzMKUKMKURSrqiiRVndueyahCmo+08/H
-	 kf+tGmvEayj1eLF//o0g6wDjQZ0U+5sPhYz7Yh+ZwYt5rwClzFEhbvsgnqLwjaoWnKQ==
+	t=1794530772;
+	b=07wsZpznswvFhIbVOfqFgOAnkU7d09MCScxRlgfawcAxmlRtwPLiE11JathQks/vClHB
+	 Dv/3pCmF2zR1sH428ZjrnG8HFkiz49IdcNOm2gM0jwd3L/zzNA4QP7EkqV/KjuCQvRQ+a
+	 ZwyTATx3L14iMddCXCDud/viFKpqeHpZl1wjMfJf6Kf1qUVPWNKNHh5gh8Yp6iH/b6Ob5
+	 92Uqb3WsBE6/SfGmGljMnnYx+j7qB79nYSNjjR3MMnCa1+lJLAywYmk6RqVPWk7dy9CTv
+	 1DcrkWEVVa3nNJ4NZaBCjgfAHASwP1ogQOBn5RoOBglNRKT/VkdEWb+o7GCiekTo+Gg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794530523;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:Content-Transfer-Encoding:
-	 In-Reply-To;
-	bh=rN0Ie5yME6hsx7pm+x3UNEKpXeb1k8nlYJCB408a9fM=;
-	b=zk1QqVJNypDCZRzyHk+RKYR9kWU2Uw696CffEKkilvXfn+iTnMdnft+kLfXp96cdlwAh
-	 7fD0zuDht4NkvdENtusEoAZHuG0opmZ9t6fYgPJvfmT8uQtA2U39wu5Lui4Sn0oFeiguv
-	 2GUj3yC1x+vmVLKfN2+G9NdFrT/NTkP4puIQJvgj/yeYKQu78ODq3oQa+l7lPiUFwdKru
-	 B4zd+vs69O1ytOSmvtqxXVUFxzLQcgq2bhgR+Rllzoie1So18b3ZWRP/9RXs46klkR//a
-	 r86JahhV2hFwSW+gOHH3RH17EsErsqbqNstaPQI5o71f1I8/q1bocDKKShMABNAApxg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794530772;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=RfLMmGdVsOoCEEymC2BFb4soYOw6JKnK8GHYnVNsQEs=;
+	b=elzeh1BmKmLi811nxrWzhIO6IwLOxqpCU1gOTuX+9B+/vSvHLfxw7DBo4gcWYEToj1L2
+	 a7i/1c/ctu4gzsTCU1KHgjF3sSDZ7E78t9g3kCFFG19sKvQY+6EBGfXwevdpsL2FRYm0W
+	 YgsSYrWrGn59+rAFCOHHdLQU9Qn/LgoCtHmT8CGDwOfXNssaZvkst05cvQtxIxOuUJDxG
+	 vXngHWpIMvfSG2/AwlhteM+FV5HHVdiRbp9dIa898LeslVeVUWCjSX33FyzOVDBPha61c
+	 slcj81wwKJuZwJ0wbS2ADU3lxjxEqL/T+3xuTowWLOxuv89UgR+ap3VbfiaFAu5aItg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wS4wsUX6;
-	arc=none smtp.remote-ip=74.125.229.4
-Received: from mail-dy2-f4.google.com (mail-dy2-f4.google.com [74.125.229.4])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aooTEH6w;
+	arc=none smtp.remote-ip=198.175.65.20
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1A1606A32A
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 00:42:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4F1A1606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF84606A31C
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 00:46:11 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1BF84606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wS4wsUX6
-Received: by mail-dy2-f4.google.com with SMTP id 5a478bee46e88-36f758312e0so137186eec.0
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:42:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794530522; x=1795135322; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rN0Ie5yME6hsx7pm+x3UNEKpXeb1k8nlYJCB408a9fM=;
-        b=wS4wsUX6ixKaKqiYjQsFCJYaIJKn2BaV3f3zkmlFUG5frnXleY4I+yDFt5BO59cWXS
-         E5JETtLS9PRnKnT4J1LIE09WxVAAseI/wWSe9ZZeOV6x8kziPaEXsCY6VA4BF3ndFAYK
-         RWSIBklti8rhZx7Uw73mxUbumVjoZyDIRHpcBnNQhm2oyRlOtVBUnzHH7YKMa/VKxtK6
-         XRHkKorE0Qv/+WieykgVMwoTnmMHuUtoJt685pJPRiQLmu8VwLBvHw1reor7fxpobajo
-         9lGqkOBDxWRjtpOvgGDO8xvWJO5ml5wtEjHhs/tWxIBi40DGSxddqrSQp+uaaq/lq/0t
-         sryw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794530522; x=1795135322;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=rN0Ie5yME6hsx7pm+x3UNEKpXeb1k8nlYJCB408a9fM=;
-        b=TsOOfQSxrb8BJqTnX0EDrXFeQSSV03Wjs0sDL9nw4mp6MYKuuIMfq8QQ20/8MtyU+q
-         3B0Ug5N6uaZ5wLaKLRh2SFh0sAfxgaynSV5YUvOoRimLyE2voZ8iMtoWEwy6E9vBU3T3
-         HYx7q/AKH2ZLwHj0wZ6ricUyqNMblVQ0NSPzZ82maWkgrgCGK2xCdUIeVHYRyKWEAKa4
-         LE6zB6w4jGJy+ifpMuAEI3BMyGiSsBTA1Z7o8Mkkf0D1XwwbJLkmhqE9cHnQnfEwZGRA
-         qhOvcqhuDd4LCLxagDjxGz040qj4XjyaNyuQfsVbliXV2M8T6/bilZNWxPqD/03juRrH
-         G9Uw==
-X-Forwarded-Encrypted: i=1; AL+hErGDN6FK2kUFvs2B/E79DzmEN12KgK7ZxNKvolmIFmBZwiFx8CJI0M3ULMv/ZPopzDW9RKCX8nY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/Gq1TM9zWWaLGh9a1cunjvez+DYGSHn/FgcdQmqqjclOXZfjHG
-	PgT6XfxFoxxJZELbeHSG2sQBUP9n5pcix9RyX2yocXjX7KffBDhlBA0XRWpj1BLJPsk=
-X-Gm-Gg: AYBFou00YeR251NkKXmZYals6/W0TBN/vRwgXI7P4KX2pyrQ7QFDkCwEi2CyAifY0II
-	RnjV2AQ7k0jBRYH08Mgspf9O6LXqEtYw3chBvOzvWDOj4HOaCs1A+GXMKEh7HKWB7Cv+z0/CIbG
-	j3PurWHXQG0h6p1HUfw1s0MxC7d09WbCWFbo7flpyZkn0+v/d380PU7HWEDe6dHnw/3gdRd0kpZ
-	cmfWrM20Xb5RqSrCUYMG7gY/PWNB4hqdYZ6QGmVSQzphL6P7HdNlX2GvS+d6hDGpmpEcvTmGmq1
-	GFEei7Yhm+7SYEuenpI74aoTBV52wUCIk2BDyi5fexn3YjO/xjPC4lwDjYuB4544bTRH4dbXLPv
-	h48pvEkmHM3hfJqU53QtpE91S8NIK0lyLw/gTqHcOVA42k29dZXMBjIENWtCSNOD/9cnkQbJeNs
-	v02woAmPtPLyKrDWKshgTg1wZxtHdF7r3J1yGhNPU+xqvM/H/uyWLT9weXtwcW1m5juhfR4S3lt
-	7IZBuupICWK32FZk0rbxcG8oOlV8xQBKp1By3ZUalxZlLp0xtPIY2wIlSk5b5wDgD2BrZDIuGal
-	NRyyt/G9V0mi1xgCeoYbfkG5
-X-Received: by 2002:a05:693c:8852:b0:36a:1452:8dad with SMTP id 5a478bee46e88-37966f32039mr734196eec.20.1794530522135;
-        Thu, 12 Nov 2026 16:42:02 -0800 (PST)
-Received: from localhost ([2a03:2880:9ff:71::])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-379553316f2sm1934134eec.9.2026.11.12.16.42.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 16:42:01 -0800 (PST)
-Date: Thu, 12 Nov 2026 16:21:27 -0800
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
-	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	io-uring@vger.kernel.org, Mina Almasry <almasrymina@google.com>, 
-	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi <bestswngs@gmail.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stuart Clark <stuclar@meta.com>
-Subject: Re: [PATCH net-next v1 02/11] net: Add memory provider capabilities
-Message-ID: <avZXuHWBUTJvJnEu@devvm16445.scu0.facebook.com>
-References: <20261110102039.1002605-1-bjorn@kernel.org>
- <20261110102039.1002605-3-bjorn@kernel.org>
- <avOYe27x-AlxmyK9@devvm16445.scu0.facebook.com>
- <87mrrfa6c4.fsf@all.your.base.are.belong.to.us>
- <avTy21_cSnyMdbb5@devvm16445.scu0.facebook.com>
- <87cxsarvwd.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aooTEH6w
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794530772; x=1826066772;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=yU42ALbxn12nNI7FlKu41LKo8sMNWyXERmyvThVYxy4=;
+  b=aooTEH6wBHC8/P8ykFAZQpvlGP93ZCy7JSdqfp9FKDhETt8d46oi2yox
+   RtueBvwa/p2HsYUKoSmjHPpEtdANJXilQMfMvEf3EnuU5vveor2qRqXO9
+   S1q0T7qd/31gfVkpY/ZbwyoCYkdQQAO/gQiOaKga6lFONfHZBH2pWZLh4
+   z3lAP9BcXyDOIrMwwT+MLFLdDVCt0kYGSr1OSvPVWVyIIQj0YCSQwm88Y
+   cMCIX78myafQwePoUbIAnQvgvEDKITvjV3TOugu5XGbVOMvnhfb52UykP
+   kxTz8nyS9YKf8ZZ0kwUUAZXm0gyYhe7bXkY9P96sWHVWDEQsyHNHW6mZA
+   g==;
+X-CSE-ConnectionGUID: fZOsQDWSSrWBoHhPfnwp7A==
+X-CSE-MsgGUID: eBlDbmH6Qr6ZrIAjqyY40Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3361655"
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="3361655"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 16:46:11 -0800
+X-CSE-ConnectionGUID: IaJIFBvDQf2TnN+FDP5PUQ==
+X-CSE-MsgGUID: 8NQtFVqASD2F+RH2H3Z2XQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
+   d="scan'208";a="8724608"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa004.fm.intel.com with ESMTP; 12 Nov 2026 16:46:12 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	mheib@redhat.com,
+	fballuch@redhat.com,
+	aleksandr.loktionov@intel.com,
+	luoxuanqiang@kylinos.cn
+Subject: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates 2026-11-12 (i40e, iavf)
+Date: Thu, 12 Nov 2026 16:45:54 -0800
+Message-ID: <20261113004602.129864-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -120,54 +85,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87cxsarvwd.fsf@all.your.base.are.belong.to.us>
 
-On 11/12, Björn Töpel wrote:
-> Stanislav Fomichev <sdf.kernel@gmail.com> writes:
-> 
-> > On 11/11, Björn Töpel wrote:
-> >> Stanislav Fomichev <sdf.kernel@gmail.com> writes:
-> >> > On 11/10, Björn Töpel wrote:
-> 
-> >> >> +	if (static_branch_unlikely(&page_pool_mem_providers) &&
-> >> >> +	    WARN_ON_ONCE(!page_pool_supports_frag(pool)))
-> >> >> +		return 0;
-> >> >>  	if (WARN_ON(size > max_size))
-> >> >>  		return 0;
-> >> >>  
-> >> >
-> >> > What's the deal with that? How do we get here?
-> >> 
-> >> Hey! Thanks for taking a look at the series!
-> >> 
-> >> An explicit frag call on a whole-buffer provider is a driver bug: UMEM
-> >> chunks can be smaller than a page, and RX gives the whole chunk to
-> >> userspace.
-> >> 
-> >> But page_pool_alloc_netmem() also picks frags for small requests, so a
-> >> valid call can warn.
-> >> 
-> >> I think it would be better to make it return a whole buffer and its
-> >> actual size. The WARN stays in the frag API, before taking a new buffer?
-> >> Wdyt?
-> >
-> > I see.. Idk, I'd still return 0 here, but without a warn. Not sure
-> > we want a warn for any api misuse? Returning no netmem is gonna be enough
-> > to debug things? As for the calls from page_pool_alloc_netmem, I'd also
-> > handle it explicitly? if (size > max_size || !page_pool_supports_frag) ?
-> > But no strong preference, up to you, was mostly trying to understand
-> > what we are warning against here :-)
-> 
-> Yes, page_pool_alloc_netmem() gets the explicit check. Thanks!
-> 
-> For the frag API I'd keep a WARN_ON_ONCE, like the size check right
-> below it. A silent 0 looks like an empty provider: the queue just
-> stalls, and nothing points at the driver. With the helper fixed, only an
-> explicit frag call on such a pool gets there... Wdyt? I'll probably take
-> that route for v2.
+For i40e:
+Mohammad Heib adds missing set of VSI down bit prior to calling
+i40e_down() as is expected by the call.
 
-I guess, yeah, makes sense, let's return full size and warn. Maybe also
-a short comment will help to explain why?
+Filip Balluch fixes incorrectly provided Tx rings in error path of
+i40e_set_ringparam().
+
+Alex further fixes the error path clearing the netdev from temporary
+Tx ring's before it's freed.
+
+For iavf:
+Xuanqiang Luo fixes a couple of memory leaks and prevents NULL
+pointer dereferences by implementing missing PTP callbacks.
+
+The following are changes since commit bbcd02741c4cfbf9e1c59b1906f21ef772bd15eb:
+  net: mana: report RX checksum offload for IPv6
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 40GbE
+
+Aleksandr Loktionov (1):
+  i40e: avoid resetting BQL state when freeing temporary Tx rings in
+    set_ringparam
+
+Filip Balluch (1):
+  i40e: fix freeing of TX rings on RX allocation failure
+
+Mohammad Heib (1):
+  i40e: fix napi_disable hang in i40e_down() during firmware update
+
+Xuanqiang Luo (3):
+  iavf: fix QoS capabilities memory leak
+  iavf: fix ASQ command buffer leak on init failure
+  iavf: add missing PTP adjustment callbacks
+
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c |  9 +++++++--
+ drivers/net/ethernet/intel/i40e/i40e_main.c    |  2 ++
+ drivers/net/ethernet/intel/iavf/iavf_adminq.c  |  1 +
+ drivers/net/ethernet/intel/iavf/iavf_main.c    |  1 +
+ drivers/net/ethernet/intel/iavf/iavf_ptp.c     | 12 ++++++++++++
+ 5 files changed, 23 insertions(+), 2 deletions(-)
+
+-- 
+2.47.1
+
