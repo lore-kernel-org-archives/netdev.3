@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794549088;
-	b=s5plYs/kmZ204ZUcVV5ggnmbodXt3HiFJn6UxvaCXVf3+bQ9qSLOlcmTtUHca7vgkN+z
-	 KuWVvQeGhZ5Oa7v0Fv/r9T49CuHcEMKir+19l22+O1M8vgrL3LamNQyIqc2VspOJgcCgA
-	 z3crZijD5w5WBwTk/oHrymaWCcnirn07JfyWuBSV3bYLtAysV8lVdddUhl+mXmOcWNCwC
-	 S4crQU67988SJWjaygCVRwfqsHXT0tahkh4UO556SJWOkCCLK72lVJr7Kl/XOqcyX3e9U
-	 Nk6UP+SbGw0MgrHJNEzHLe7UmEuOcrQ/8pRAUbbitIVMb0neg/bgESuE2SZX+7/ivKw==
+	t=1794549091;
+	b=eud7X3qTwcCAIQpU3VUQ/r5qrBwFpTWcstfYmWg/0ZXJy7SOBeRl9V4WeIeUuWsIbfmC
+	 jKUf4/u1Ck0hq+q++6TlCkEoqBpmo1VWWjurE1vi4RR3YeWrScSEpV9+b1jyFXK/7XBSH
+	 sY6WZYnLHmsTG2OcPu5EcVK05gdQFteruDP5h2qpOxCOcF2EsX9Z6Rx7vYRmxhQPlK85F
+	 3OyAgvbOjxn6MhydWvqw54TH1Rg2sj2sr3ACHPjDSo+iEQQZQnBi1mY/kFnIFcvWTdooN
+	 vBljDTk4nR/3ZZGhJSWxWvrFrS4BpvszG0kGAEwbRJktoT6qBk81ArTHbzDf7eXxjTw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794549088;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794549091;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=Kbug0i2azHhZSrQxD3FTjyQMkcwVwvLBJeQgIdTmpKw=;
-	b=oXKxCQNh26jDO1Noy8ez1L/U7lO6fGpMOSmsuLJnR56W9h6hpU+RVpUzQuKCkr15G8hs
-	 0NZ1ESzzC61ku99mTGHYqpUEqN8244zTkGDGrhqe2dsiIeE/QR+ZZdn/WvR4mTzimFpbe
-	 iY6ttB/6VLpsY1DGT+wvVENy+1vBIs6dDlC5O3eTz6KZLUL4O/v+qF8z3Qgzv9qfiRmu4
-	 UFvtF7yJm5dm03Gqeo7fhNWZyUZx3Dk2ZqUX4n8zF3ndFkM+57MejiUSzz7qWWXReBm5X
-	 41Kgxo56ER9g/ZA05nqavRtyp62nqrRtpdglcQCs6lzC8VjWhNz8VbEXWdLocsN1urQ==
+	bh=LANplOGl/IujYksPR/YOrSZcasHgqJlzVsMCgKPcbSc=;
+	b=yM4ahsez4LAWauE6wfTeN70t1dveJgA1FsS8XtiCcCVHcDBd8/3FcERqkuYTVIA1Qw7/
+	 jhKxDKiQClp/LoXP2v5hCV6QeegBh8WdWLh+ZrfRdfTGbV9BL606oawbGgGwv6GDRwIpf
+	 xH0OIKo2DOO5Yn5P0/nLqXtLD6ATFccwDCtX09K7dJGvB4NhbsvnGm66NN5PbSVV5Rte8
+	 uZnZAx7HmJxgIYRaLa4FSzZiRR9fzQAbcFSIWwVGqcc6z2/IXcEYh6I6+bQ3tZLMO1Sch
+	 ge38d7SNPTNAiIBGdeJW7YZV7O1qUnKUvSkYz/5auJdwUUTCAvYHoqLKtoC6S2LUjrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fozEA5AF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aA1FJUQW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9B360A2607;
-	Fri, 13 Nov 2026 05:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D0606A883;
+	Fri, 13 Nov 2026 05:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fozEA5AF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EE91F000C8;
-	Fri, 13 Nov 2026 05:51:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aA1FJUQW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BD41F00925;
+	Fri, 13 Nov 2026 05:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794549088;
-	bh=Kbug0i2azHhZSrQxD3FTjyQMkcwVwvLBJeQgIdTmpKw=;
+	s=k20260515; t=1794549091;
+	bh=LANplOGl/IujYksPR/YOrSZcasHgqJlzVsMCgKPcbSc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fozEA5AFMJwnW4bzEl7G8aFE83bWmL1l9ouF7n83SfLJXUr3Sla0V0KDPASsKeypu
-	 mWaXBOaQFDm+7NDnoFOtp1k6VEXP51IUm62/jS1efCKtka5cdKA7mT2O0ekzk0qNTV
-	 EOIrTgZwJTTjb3OFM8VyHFrb5Z0ZCCr1ST5wmtvn6WHFSTpZu6gE+NSF9FLq6Cd1yi
-	 r9KLIVO7qrNoLnge/NUk3kU3Wnk+LluO1FsMjhv+Gm6oMGwrQocHFsrGnTEeml2q24
-	 L8wBH24y8PKZoPlT98mHDkdyEi4Mx49tD8sNyN90Nmm9vvN11dl12/OOPjcwqFKIVm
-	 ZAfUVGHUL11sQ==
-Subject: Re: [PATCH net v5 2/4] net: phy: keep the line of a postponed PHY
- interrupt balanced
+	b=aA1FJUQWvmVyKCMaGNbnhQ/CSPlv+LzHzApYMzxMhm3zkyQb3k4PVjqJjprnP5yhL
+	 MPaOl4dvJh04hFrFS7m+9tMYXnn3RktAnoy1dg87CCjB5E6Lt6Myc/slDGxih3KiV8
+	 OVBLZQlz5P/YXiKTJFbNbxri4tJN/IWUjIxlHnHDzrAg3TPnCR34iAWBsaWtiY3I5W
+	 TuIK6AYitM9SSD1djcQj65gyICIua5A89ZdTxgYW75TwDd9xxvsiytCvLrRkkJBZm8
+	 3ufPL4LPvMoFKOeW+ow4l/0+6TSt/Yf/5TqXnaAtbUaWWQXXSM6DzFccAcbe2Vi/7w
+	 PDF9CDEughw5A==
+Subject: Re: [PATCH net v5 4/4] net: phy: postpone PHY interrupts during sleep
+ with MAC-managed PM
 From: netdev-bot+sashiko@kernel.org
 To: iav@iav.lv
 Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
@@ -52,10 +52,10 @@ Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  shenwei.wang@nxp.com, Haoning.CHENG@cn.bosch.com, netdev@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
  linux-kernel@vger.kernel.org
-Date: Fri, 13 Nov 2026 05:51:26 +0000
-Message-ID: <179454908644.2199510.9163619774771791131@kernel.org>
-In-Reply-To: <20261111-b4-phylib-mac-pm-irq-v3-v5-2-bbfdb5afb7d3@iav.lv>
-References: <20261111-b4-phylib-mac-pm-irq-v3-v5-2-bbfdb5afb7d3@iav.lv>
+Date: Fri, 13 Nov 2026 05:51:29 +0000
+Message-ID: <179454908985.2199510.13649467977536691436@kernel.org>
+In-Reply-To: <20261111-b4-phylib-mac-pm-irq-v3-v5-4-bbfdb5afb7d3@iav.lv>
+References: <20261111-b4-phylib-mac-pm-irq-v3-v5-4-bbfdb5afb7d3@iav.lv>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -69,10 +69,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -80,159 +80,123 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] phy_free_interrupt() (drivers/net/phy/phy.c) can re-enable a
-  shared line that the PHY may still be asserting.
-- [Medium] phy_free_interrupt() gives back the depth that the postponed
-  disable_irq_nosync() took.
-- [Low] In phy_free_interrupt() (drivers/net/phy/phy.c), the check
-  irq_has_action(phydev->irq) and the following enable_irq(phydev->irq)…
+- [Medium] The new wakeup policy treats every postponed PHY interrupt as
+  a system wakeup whenever phy_may_wakeup() is true, including link-…
 
 --
 
-net: phy: keep the line of a postponed PHY interrupt balanced
+net: phy: postpone PHY interrupts during sleep with MAC-managed PM
 
-This patch makes only the phy_interrupt() run that sets irq_rerun disable
-the line. phy_free_interrupt() now consumes irq_rerun after free_irq() and
-calls enable_irq() when other actions remain on the line. It also adds
-irq_pm_lock to serialize phy_free_interrupt() against the rerun in
-mdio_bus_phy_resume_irq().
+This commit sets irq_suspended for PHYs whose MAC manages PHY PM. With it
+set, phy_interrupt() postpones the PHY driver's handler for the whole
+sleep transition instead of accessing an MDIO bus that may be powered
+down. The wakeup event a postponed interrupt reports is now decided in
+mdio_bus_phy_suspend() and stored in the new irq_wake field.
 
-> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-> index 9af303d60bd6b..ea22ebb14a832 100644
-> --- a/drivers/net/phy/phy.c
-> +++ b/drivers/net/phy/phy.c
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 110c9dfcbd916..2dc13dd1afb66 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -332,6 +332,44 @@ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+>  	return !phydev->suspended;
+>  }
+>  
+> +static __maybe_unused enum phy_irq_wake
+> +phy_irq_wake_source(struct phy_device *phydev)
+> +{
+> +	struct net_device *netdev = phydev->attached_dev;
+> +	bool phy_wol;
+> +
+> +	if (!netdev)
+> +		return PHY_IRQ_WAKE_NONE;
+> +
+> +	/* phy_suspend() cached the answer of a suspended PHY, which may
+> +	 * not be reachable over MDIO.
+> +	 */
+> +	if (phydev->suspended && !phy_can_wakeup(phydev))
+> +		phy_wol = phydev->wol_phy;
+> +	else
+> +		phy_wol = phy_may_wakeup(phydev);
+> +
+> +	if (phy_wol)
+> +		return PHY_IRQ_WAKE_SYSTEM;
+> +
+> +	/* With MAC-managed PM, only Wake-on-LAN in the PHY makes its
+> +	 * interrupt a wakeup: the MAC stops the PHY itself.
+> +	 */
+> +	if (phydev->mac_managed_pm)
+> +		return PHY_IRQ_WAKE_NONE;
+
+[Severity: Medium]
+Can a link-change interrupt caused by the MAC's own suspend path abort
+system suspend here?
+
+Take a MAC-managed PHY where phy_may_wakeup() is true. The phy_may_wakeup()
+check comes before the mac_managed_pm check, so irq_wake is set to
+PHY_IRQ_WAKE_SYSTEM. This happens in mdio_bus_phy_suspend(), which runs
+before the MAC's suspend callback.
+
+With stmmac, which sets config->wol_phy_speed_ctrl = true, the MAC
+suspend then does:
+
+stmmac_suspend()
+  phylink_suspend()
+    phylink_stop()
+    phylink_speed_down(pl, false)    /* gated on phy_may_wakeup() */
+      phy_speed_down(phydev, false)
+        phy_config_aneg()            /* restarts autoneg, link drops */
+
+phy_stop() does not mask the PHY interrupt. On PHYs whose INT pin carries
+both link and WoL events, the link-fail interrupt then fires while
+irq_suspended is set, and phy_interrupt() does:
+
+		case PHY_IRQ_WAKE_SYSTEM:
+			pm_system_wakeup();
+			break;
+
+This runs without reading the interrupt status, so a link change cannot be
+told apart from a PME/WoL event. The phy_speed_down() kernel-doc already
+warns about this:
+
+  WARNING: Setting sync to false may cause the system being unable to suspend
+  in case the PHY generates an interrupt when finishing the autonegotiation.
+
+Resume speeds the link back up and the next suspend speeds it down again.
+Wouldn't every retry abort in the same way?
+
+Two configurations where this looks reachable:
+
+AR8031/AR8035 (at803x) with WoL enabled. AT803X_INTR_ENABLE_WOL shares
+AT803X_INTR_ENABLE and the INT pin with the link fail/success bits. These
+PHYs lack PHY_ALWAYS_CALL_SUSPEND, so phy_suspend() returns -EBUSY and the
+link interrupts are never masked.
+
+BCM54xx with a DT interrupt and no WoL configured. bcm54xx_phy_probe()
+calls device_init_wakeup(&phydev->mdio.dev, true) whenever
+bcm54xx_phy_can_wakeup() is true, which is whenever
+phy_interrupt_is_valid(). So phy_may_wakeup() is true by default, and the
+speed-down and PHY_IRQ_WAKE_SYSTEM apply on every suspend.
+
+Before this patch, MAC-managed PHYs never reported a wakeup from
+phy_interrupt(). The driver handler read the status, and handlers such as
+rtl8211f_handle_interrupt() report a wakeup only on the PME bit.
+
+This also seems to contradict the commit message:
+
+  ... and the MAC device may
+  wake the system on its own, so a link interrupt the MAC causes must not
+  abort suspend.
+
+The Helios64 result ("no suspend aborted") seems to depend on
+rtl8211f_suspend() writing RTL8211F_INER_PME to RTL821x_INER before the
+speed-down. That masks the link interrupt, and other PHY drivers do not do
+the same.
+
+The postponed path also never reads or clears the status. Doesn't that
+leave a level-triggered INT asserted, with the line disabled by
+disable_irq_nosync() until resume?
 
 [ ... ]
-
-> @@ -1507,7 +1510,18 @@ EXPORT_SYMBOL(phy_request_interrupt);
->  void phy_free_interrupt(struct phy_device *phydev)
->  {
->  	phy_disable_interrupts(phydev);
-> +
-> +	mutex_lock(&phydev->irq_pm_lock);
->  	free_irq(phydev->irq, phydev);
-> +	/* Give the depth a postponed interrupt took back to the other users of
-> +	 * a shared line; requesting a line we were alone on resets its depth.
-> +	 */
-> +	if (phydev->irq_rerun) {
-> +		phydev->irq_rerun = false;
-> +		if (irq_has_action(phydev->irq))
-> +			enable_irq(phydev->irq);
-
-[Severity: Medium]
-Can this unmask a shared line while the PHY is still asserting it?
-
-phy_free_interrupt() ignores the return value of phy_disable_interrupts().
-Also, a postponed interrupt never acknowledged the PHY status: the
-postponed path in phy_interrupt() returns IRQ_HANDLED without calling the
-driver's handle_interrupt().
-
-If the MDIO write in phy_disable_interrupts() fails, the PHY interrupt
-mask and latched status stay set. On a level-triggered shared line,
-enable_irq() then unmasks the line with no PHY handler installed.
-
-If none of the remaining handlers claims the interrupt, would
-note_interrupt() eventually disable the line with IRQS_SPURIOUS_DISABLED
-for every remaining user?
-
-That failure looks reachable with cpsw_new once the later patch "net: phy:
-postpone PHY interrupts during sleep with MAC-managed PM" is applied. The
-davinci_mdio controller is a child created by devm_of_platform_populate(),
-so it suspends first, and davinci_mdio_suspend() calls
-pm_runtime_force_suspend(). Then:
-
-cpsw_suspend()
-  cpsw_ndo_stop()
-    phy_disconnect()
-      phy_free_interrupt()
-        phy_disable_interrupts()
-          davinci_mdio_write()
-            pm_runtime_resume_and_get()  <- fails, runtime PM disabled
-
-Before this patch, the line stayed disabled until mdio_bus_phy_resume(),
-which runs after the MAC reopens and installs the PHY handler again. With
-this patch, the line is unmasked from the close until
-suspend_device_irqs(). It is unmasked again from resume_device_irqs()
-until the MAC reopens. Nothing clears the source in either window.
-
-The commit message says:
-
-    Re-enabling after free_irq(), not
-    before, leaves no PHY handler to run again on a source that
-    phy_disable_interrupts() did not clear.
-
-That covers the PHY handler, but what about the other sharers on the
-line? Should the enable_irq() be skipped when phy_disable_interrupts()
-fails?
-
-[Severity: Medium]
-Is this enable_irq() still balanced if phy_free_interrupt() runs inside
-the noirq window on a wake-armed line?
-
-The commit message names stmmac_reset_subtask(), whose workqueue does not
-freeze, as a path into phy_free_interrupt() during the sleep transition.
-stmmac_suspend() does not set STMMAC_DOWN, so the subtask can run.
-
-bcm_phy_set_wol() calls enable_irq_wake(phydev->irq). Several irqchips set
-IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND: gpio-mxc, gpio-vf610, pinctrl-msm,
-qcom-pdc, pinctrl-amd and pinctrl-starfive-jhb100.
-
-Consider this sequence, with another action still on the line:
-
-phy_interrupt()
-  disable_irq_nosync()           depth 0 -> 1
-
-suspend_device_irq()
-  __enable_irq()                 depth 1 -> 0
-  irqd_set(irqd, IRQD_IRQ_ENABLED_ON_SUSPEND)
-
-phy_free_interrupt()
-  irq_has_action() is true
-  enable_irq()
-    __enable_irq() case 0        WARN "Unbalanced enable for IRQ"
-
-resume_irq()
-  __disable_irq()                depth 0 -> 1
-
-The line is not IRQS_SUSPENDED, so nothing enables it again on resume.
-irq_rerun has already been consumed, so mdio_bus_phy_resume_irq() does
-nothing either. A shared re-request from dev_open() does not touch the
-depth.
-
-Would the line then stay disabled after resume for every user, including
-the reopened PHY? Before this patch, irq_rerun stayed set until
-mdio_bus_phy_resume(), which ran after resume_irq() had restored depth 1.
-
-[Severity: Low]
-Can the irq_has_action() check race with another driver requesting the
-same line?
-
-By this point free_irq() has already dropped desc->request_mutex.
-irq_has_action() only returns a snapshot. irq_pm_lock is per-phydev, so
-other drivers don't take it.
-
-Suppose the PHY was the last user and a postponed interrupt left depth
-at 1:
-
-free_irq()
-  irq_shutdown()                 depth 1 -> 2
-
-                                 other driver: request_irq()
-                                   __setup_irq()
-                                     irq_startup()   depth = 0
-
-irq_has_action() returns true
-enable_irq()
-  __enable_irq() case 0          WARN "Unbalanced enable for IRQ"
-
-If the new requester used IRQ_NOAUTOEN, irq_startup() resets the depth to
-1 instead. This enable_irq() would then start a line that driver asked to
-keep disabled.
-
-> +	}
-> +	mutex_unlock(&phydev->irq_pm_lock);
->  }
->  EXPORT_SYMBOL(phy_free_interrupt);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111-b4-phylib-mac-pm-irq-v3-v5-0-bbfdb5afb7d3%40iav.lv
