@@ -1,78 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1794587931;
-	b=ynBX/0Gr/VkzXuRDrzhlF1/TgqaswMoPxrhIrgqIhHyq60blIwu9gJA4piGpKHoieAYk
-	 xYoLz3SZTnMc1kS+YkwYUnanZ8j4B9RKiDaQnPT4a0AnjT6jNrGpVZAoZFXBKznGlJpU1
-	 mlcUWDYmY/TVWyosy/SlYenCXeH7lKUaX3mdah/fDpiHEEJ1Is5m5ty5KChDGjCw9CKDm
-	 OKnRs+RCpFhC6KQ+CsdcIzPALS0U9sXXdyr2n5fV6rJPGFzlDYlVFLVjueSb6RxjaWfQk
-	 nBV66JjXc98+aN+iY7ehIQZ2OuTVuv6TxGre+MO41J63TZkvohURruEkq2cAy2uCz0w==
+	b=0Q3RXN+WvE36OvWN2Qt1hXUUjZMa4hx5A+cjVOIw/3kDqmztXaai4XghboBa70unXBZ/
+	 B7gyCfRPO8+rpPZdpMz29fVWVHDpNlw6gXX1UgpMxnL/w8xglW76HYViNodEEAPk/5aRV
+	 eSy4A/wgfecalZM8Qty9LYciUHt/w5BVv8k8fPfBphYCfwM6aYUPaF9B7Gxqyen99ugrJ
+	 BYBPB1PY0VzWBZSo4JOvgBnJtuRlfGmCqmRNd94yNPqQ4m5yEDbFVJupz6oL0abm6gtkC
+	 QGJ8VRerkzp35Vhne2i7T54I3aTWAnPQHTb6m2iVhmM7CIZihAVNwOb1WZUDMU8yZDA==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794587931;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=qZp0DD2KBXte+j7jcpltjfJG89AIh2m/LcHGQ9zJReg=;
-	b=iPpOQnnudQNL48eQUJTmmo7ybeKt/EgLJ1mthsYE+2ckam7aIapnVpvg/6LJxqvLNAXZ
-	 UQsjKYIb08/pln4RLhjBfG2ON7Y5SyQtIpY3pfCOY9DS3/LFkTPpCWhj//uKS40hpDGxP
-	 sLmA4mXA0jgR60Us87mV8PpeWhZEqdEsO9K4HF08PVsTBC1A7UlIzVacwlqb1tlzXoETU
-	 RCdgL2hFHPElslWgPlPztymGEBtA6WcnGZkyDvnWehGVKqWpeFEopRbGi/VWRoYvjDjR4
-	 OdzKDALsOd1lrzehUcITplH9Zw6sAhCQ6gNi9zsFZkNfssW1yto7BDwvDu2JZ1qkxaw==
+	bh=ovNdFvN4j5VHctDx3kFirGTCyVStcoGTaw81WNU+GIg=;
+	b=BsLQ1McpZlGqlo1fsP0Rt7rNkvY5bW7oIaeBr/enHL14j0OpWNLWVgLdmyLbVKI95HDF
+	 2+sRi6yZGBpY5VHu6Q9JJrvx6AvQEIHxzkfUmqPwegqI6oRgWOJYsU5ylL7S9K/OTF7LR
+	 ByLTHDZo8SrlleVW9CakT0nIgwBus8jGf3fqMxeqXwmMK18Z7HV8JWGIVuxohpO6MLsLk
+	 +UgWGq46dhlcyByBS56bBJJIGDJ8TyiTp7Q9WcHZl480OhGDmc7FpCOjBrsaiiG15fFDW
+	 NYjGTSROCOLycqhx96K89BbyNQFwglQWysbkSAMp/yDSNoY2bJKoFZCiTdVahsPfBQQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vixxz0Jn;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AebHUpoo;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C085606A8BE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BB560A2636;
 	Fri, 13 Nov 2026 16:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Vixxz0Jn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AebHUpoo
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794587930;
-	b=tJ0pH8DQ5EMPK7096sISRqCoqQ4uT44CpXXi9W35Xi9QvYrs3Uf8Ct89a/wkQf77UQp+
-	 5JM4K+ApfyRohOhGVBmIh0D+KD/XglxmlkLf7rdOjTpG9rw5MrdDMtRNNgQrOHQHBnGdk
-	 EEFzXwxYBJz13Hgs+Dk08fJ4iNeBRai/SMgECQPucnkxWy6gmhPmwgtJLP0g3LihiJp0u
-	 /3FDP/73Q429i6MoL0x0h47aMXN7F1VYYUm7dKbxDT+RcIImABnA6PlH9fuFcTeMjYuRt
-	 ZhePgo7/qWKizyYqA2UcHfTT1He07GjgftQ0iqapWvtnyz0FFtnyk4CcFHrzPUa/SmA==
+	t=1794587931;
+	b=0RqqBh9FdbZHQbwk5q3Ko02PBehpVj4erQw+z9su5R41j+FMYWiPPDBWK+w+JtPPLl5q
+	 CgITaI0TIzLl3xhoY3+sMsLnB6HABXrxnS735k3VC8j/uhoZEPfXdXe0ZIjFPocqF9XP5
+	 dHsT1RAduosqkZdAq2M8qLktQZOV8Iqlp0JMQqOByRaQZ7T20JV5EiJf4GrkBE2xCRB/Y
+	 KvTXtMpl90U1Um5q+S4lR/jTJhbJofHXKsQs/8nP2M01yYiaZfPasImIyEGkFY7g3zG7/
+	 SqlCeUfxEAnOQwrvnAs3gaYDOJaJBAzTeVTqd9pVziDvhOofn5jDlq1gLfa9xygB5nw==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794587930;
+	c=relaxed/relaxed; t=1794587931;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=qZp0DD2KBXte+j7jcpltjfJG89AIh2m/LcHGQ9zJReg=;
-	b=aYzDKL4wGSg2zk9y2iRMfy/QgTur9KEC6rZonrFYnKw8sOWPvtX+MXZVVb9VI4av6Ld9
-	 la700QXQVASiNIN2eD1NZVf7fQekLE1f4jz+cTEW1AoqJXUocJTmYK6Hvjms2UhZ7hZk4
-	 Di7zXItLO6lNo2BjaGpmH/ij5QtlN6lIzPbp2moP6Ut27t632GU9y2mRywu2hB+0syyXa
-	 zaGCdqgzP5rw0kWc81/izvd7TbGa2+nDDdhOhUkreWHOhHcMzUAnZ+bs2ZhVxNKtrU8Em
-	 GAHfoNTIAVVSCtIw9+JaBgq1bTQ5p002ZQuPE9EafTFs68daZIthH8TFbAin3m7MYbA==
+	bh=ovNdFvN4j5VHctDx3kFirGTCyVStcoGTaw81WNU+GIg=;
+	b=pIMZ450Q8G3PA2z1NcI4tVLXUgasoODFRlIb1Us493aFdfH80A2i9azg1mcxOU9K7e8o
+	 CAGJs1pdiSi0Mv9bXUlGmufiCJD/G/frVEX4T513AVz+2vBLPCYmloaJJNU32H/LqLtxZ
+	 2Ct4+FjnvS/nU3oZR9N1lq+1t1PEAFhJZVYnm/83jE/BM3SpolQ7JAhhYCCtYpNwpH1Fu
+	 k14R6LrZiOU2Y7OYA1J/H1dUlE+TKW9QY2RqiajJDBBBMif4VXfvATIGhAFjFngZYHbfb
+	 3x5Hses3u1xs15ObB1ePAI3U8IRqbmLdkqfSj5VYNsPi2KSpYRBU+bfWL+UZGYRRr7w==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 052141F000C5;
+	by smtp.kernel.org (Postfix) with ESMTPS id 5E8031F000CE;
 	Fri, 13 Nov 2026 16:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794587930;
-	bh=qZp0DD2KBXte+j7jcpltjfJG89AIh2m/LcHGQ9zJReg=;
+	s=k20260515; t=1794587931;
+	bh=ovNdFvN4j5VHctDx3kFirGTCyVStcoGTaw81WNU+GIg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=Vixxz0Jn+vo6Eh95k42RiilxmrcEq6xusz2YQjDtA7bvtnw6lmnQmCyrx4O4VK3sU
-	 t43nE2FM0wjIUQSHV05KP79EmynCkDbgCK60pv27JLvfXc/eeTenLfXcrU/X3FqeEz
-	 Ilk+NidMvoBf9PXzwpvHabLPtRmWndlTFmBQD4DEOnhRuRjD1GPSIETIa1DUdrqaUo
-	 4iduwe3lySX3yDAeH1pb1xCwcmn76GMLjjHQdh3ZFnj5Azcb0XRDV0zdDfard4MITp
-	 KkHfLPdUknMD0zoKo0E2z0swfdUulLbnKBv+3fBbDDQJxOm0JWlWi8YA7HrJYpfS+0
-	 5FcXafczfoLbA==
+	b=AebHUpoooTPyzyHgqOlj0RVrQyeurOXkECAd4cT0KthQPRs/F7OR+bUZJJdugAI58
+	 NflURMv+7gnWf7pU9BfjijmEy/TySlFEoThxZeK9SUB2I+T+DN0vPt0GNzRaF9WpLM
+	 2UOYGrreQsYsrstGDY3pOipoCTmt16qneA7TY9GewfUq59c+YidtgOEZ22M0r2DSgF
+	 gXKOmyJQkpdidaJn8yhGzIRMFRubJ80HHpUU6L+rkoCj1HiZgCiR9jO4VgnMuw3HaI
+	 S8cUl0YURvZDtJMUGGKXAWyziVSyMXmSvFugSCVT70a1iZgUxANxzGywr0I9peb57u
+	 nlpZCH7qe1EbA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id BE731499A2;
+	by lkml.kernel.org (Postfix) with ESMTP id EACE2499AA;
 	Fri, 13 Nov 2026 16:38:48 +0000 (UTC)
 From: Arun Iyengar via B4 Relay <devnull+aiyengar1990.gmail.com@kernel.org>
-Date: Fri, 13 Nov 2026 16:38:51 +0000
-Subject: [PATCH 5/9] arm64: dts: rockchip: Add the PHP GRF clock on RK3588
+Date: Fri, 13 Nov 2026 16:38:53 +0000
+Subject: [PATCH 7/9] arm64: dts: rockchip: Add the clock and reset of the
+ RK3588 PHP SMMU
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-mmu600-php-v1-5-231196049a3b@gmail.com>
+Message-Id: <20261113-mmu600-php-v1-7-231196049a3b@gmail.com>
 References: <20261113-mmu600-php-v1-0-231196049a3b@gmail.com>
 In-Reply-To: <20261113-mmu600-php-v1-0-231196049a3b@gmail.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -102,11 +103,11 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
  Sebastian Reichel <sebastian.reichel@collabora.com>, 
  Arun Iyengar <aiyengar1990@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794587927; l=874;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794587927; l=879;
  i=aiyengar1990@gmail.com; s=20261110; h=from:subject:message-id;
- bh=kP/SM+y2vUxtKYfqhUjNYHPB7Pw9gQeqdsuzeyx9mdI=;
- b=+IIxzB+4idJmJ+rG+mFd0cbUWQf03L8gHnWxfJK04I1uiUPqNXUDcCLSOZvJmSZzyLeYJ6//t
- mrPxUsyexlEAi6WZD+LL42kYToUu+Enigmf7VBBOD8YlnxJZong8Ky7
+ bh=xABvrdkxSQnkm1+qfE0iALRBlyW42bCwAyaR90qxPhg=;
+ b=xE5R4KcJTdTxZjvybb4lSfLzdvrVQIfHptR+aNxsE46yMNImwKhfOcGx3b+mmYtyw2cwWdFjG
+ zQ5Cmhor3HVAPuiOA1+su84pTXGffMRbobChWmNaS3cbBZ6ZE0rcxbx
 X-Developer-Key: i=aiyengar1990@gmail.com; a=ed25519;
  pk=zXpRgUTrhaFe6jLyPqbBy3ccfkj04w0g2690Wv3mg+0=
 X-Endpoint-Received: by B4 Relay for aiyengar1990@gmail.com/20261110 with
@@ -117,27 +118,27 @@ Content-Transfer-Encoding: 7bit
 
 From: Arun Iyengar <aiyengar1990@gmail.com>
 
-Once the PHP peripherals suspend, pclk_php_root is gated and a PHP GRF
-access hangs; the syscore resume op of the next patch hung deep suspend
-this way. Add the clock, so the syscon regmap enables it.
+Describe ACLK_MMU_PHP, so the SMMU keeps its clock while its masters
+are idle, and SRST_A_MMU_PHP, as for the PCIe SMMU.
 
 Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-index d0f364547ae5..8807ce6193bf 100644
+index 8807ce6193bf..3bf8d0e4ff33 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-@@ -619,6 +619,7 @@ usb_grf: syscon@fd5ac000 {
- 	php_grf: syscon@fd5b0000 {
- 		compatible = "rockchip,rk3588-php-grf", "syscon";
- 		reg = <0x0 0xfd5b0000 0x0 0x1000>;
-+		clocks = <&cru PCLK_PHP_ROOT>;
+@@ -570,6 +570,8 @@ mmu600_php: iommu@fcb00000 {
+ 			     <GIC_SPI 386 IRQ_TYPE_EDGE_RISING 0>,
+ 			     <GIC_SPI 379 IRQ_TYPE_EDGE_RISING 0>;
+ 		interrupt-names = "eventq", "gerror", "priq", "cmdq-sync";
++		clocks = <&cru ACLK_MMU_PHP>;
++		resets = <&cru SRST_A_MMU_PHP>;
+ 		#iommu-cells = <1>;
+ 		status = "disabled";
  	};
- 
- 	csidphy0_grf: syscon@fd5b4000 {
 
 -- 
 2.55.0
