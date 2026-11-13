@@ -1,99 +1,98 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794585079;
-	b=qB/SnbQLBXznbegJes5PSkVk8fJz+305l4VsKm7HZ1tJs/5/nCYoDpO4URBu93OWmDzi
-	 qDIuF6q7xwfi8sxGJz8B7DVgPyfamYhk5rtJh0f4Ne/1zmZBE6+F1sJ6z70vlufjZkVZb
-	 gcE0x3Csl/qeRi1Fo1HqHGLoqG7p23yas5KqkVTs1It35Hcx72WOb6FuhRx3HQsPbN/dM
-	 tbGxo1OINscgTo1Dc+pZFoN80KN5oAhPlRWJ3UtllGN/EldyFzQTGLixvz+1lGzSTio6d
-	 XU2hsN/KVPryRxeTVnxCdaarqKRJSXgAECmNqFOGxPcQ9o/8snfebWobY2SysQJu9Lw==
+	t=1794585101;
+	b=xeKeMRM5CHExe6ceWbZyPXvigBa9U7iNzFzeNznAqkqfc7S/lg+3Nuh/B4luk5wf36Oz
+	 Cgo0BarMYOkVThhv7n0c+Huq8dPAs6AHDtJgnRoWdayi9wbpEdQDH9gEfFBXTc/8JyJ1w
+	 tCQxBAQ7cQ3rKK6rFgCs0aj2AVWPI7gmR3f64Q84J97dkTYY0m0SAGQpNUvnwejUjkw5Z
+	 rZ25rXHUk8QnlAH2J6GP34uvYQW9MahhRcNfoxNweii/d3QJN7PQ7xwqb+5S3BwAnFU6V
+	 CMoo3WZh6HbtJ9ZwwjfM4eEXoeRLITqgdu0CbHI+5w8AVNe0tgtpyyHfdYAayBOt2vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794585079;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794585101;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=zUg4UZuNacMSahgcqJYGeF1Pp25v0I954U0ol41ajBY=;
-	b=kBHCJD4f+dkjXCNWerxGXIZ1gqLkIzRIJTBZlJpBJzz7Uru8EdijJ+5Y28Jk473sWOE7
-	 Lx50OsRvMxqZQMOU7nQ5JziYj7QMjaA4dlQzQeS+2g+wkBrBnobDkChCqtH0MxBZN+HXW
-	 nufFC1FA18KNlABqoZJhuLSdPlBmmZhv9Mj1QYlZZ3DPNv6ZERNi4aenZyfbmPwm+DYPw
-	 SwXXqUjOUyznPdPPehUT30K72d0pNIjEKTeevwhZQYLCQIzjKT2ScaGKfSMEfRa6Wo8rt
-	 FoTjfY24bhdwIgZLd9P4v9URAFA8abrjK67Lh661a6kqlQaoig1XGlujxzxcKhrXSAw==
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=TMge1KZhkzflUPq37SUzuANAcbZI1Ky20Kr/K+1+RuY=;
+	b=esfQ+kqSjwEKA3CNvRu7g3AdfxAgqSkozpY5CauZZ+QD4lN1fnf1eQoulKcequI5bqzA
+	 hCPAEtNxt/QwcoQY87+ws07sBIK4CvGi38pisiCpzCmGaDHmoAFgJYA076M481rLsDwk/
+	 jpRqXiLzp3wz2Ih6++oATgIW5QlfWoGIAickD8DpX4SXuQvsi1lHDoUZrIvTHVyId268M
+	 n7S06FJCZlWdz/dIAjeLDjB40QpsC1dqOIclPIVUPbVOxsHimtls0vynyk99cGYe7wnBG
+	 Uii6v9ry3HSVj9aztpHqA42YtnNMU7E+YQH3VhTcnayipgYLpOzbeL2G7/sBs20KNrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xUoi2DIU;
-	arc=none smtp.remote-ip=209.85.210.176
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IsIrkHVw;
+	arc=none smtp.remote-ip=209.85.210.174
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C109C606A330
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 15:51:18 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C109C606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F328E606A32D
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 15:51:40 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F328E606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xUoi2DIU
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8b67f25e6e1so635673b3a.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:51:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IsIrkHVw
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8b5a6f2f27fso443872b3a.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:51:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794585078; x=1795189878; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zUg4UZuNacMSahgcqJYGeF1Pp25v0I954U0ol41ajBY=;
-        b=xUoi2DIUlyrX5tqc1LVQ0zI9DuIZszlMX97dGdZvJaSW/KRiZ+PNkP8FCqRQM6/+ke
-         eHQmhRuJDU8hx0keeID9qfB3kdKuRKQrEx41IJbGAzU6dXy6Nry0KkOYaL6oCiVxwurB
-         xwyesTkDO6jfj99G00r6wy5D6AKH1NYd1WU8TDHeJaZZ+Y0+yVj0/qGqGK/yrNU4BUvP
-         M3r5lZF3jhkixQqLU1PoKeuJCQHWxXfcvd1r96kpZNxaYE6dDHiTkKyvkr/O+7gKHXWN
-         KLNgFO0zY/Plv53bJcmWQI8Eo+D/DVFypeHTDIbb5hiQlRzHAOj1ZzdXWGFiu1glIXNK
-         +Rbg==
+        d=gmail.com; s=20260707; t=1794585100; x=1795189900; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TMge1KZhkzflUPq37SUzuANAcbZI1Ky20Kr/K+1+RuY=;
+        b=IsIrkHVwk3sOwDFWukhADIcG7eZjy1O8dfHE+ZtEZWOAM1nYz7eqLAKD9V9C6YlKje
+         L66+oJugaR95Srt4UDM95zSXuIC2gdrMNhNA52F5dV5t+s0u+U2j3VkBlgqp+5IRr8ZV
+         1EEJ/9LglROgH7diGBiKmum/bOL2KB+Fvdlyz4A9KXYxyes981lnE/V7kcCCBI8M/XZj
+         0r1LPLqTmW1u372Io0hSoePgn7mbNpQVyCHq/54DUE4zziOLWvdyHXUvAllIWw54+75b
+         GvCHDAmpP/2IJzE4UCrX8QxkIoyArQWTcRSxEiLFPNOgFhpcRFp5ecOEeSorL1AdYpBp
+         J6uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794585078; x=1795189878;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zUg4UZuNacMSahgcqJYGeF1Pp25v0I954U0ol41ajBY=;
-        b=w3rvFDULVrbq6JRUcOUHjireRSrWOJeNuruMGuNRCvpz2cEizho6O2AleWjsua53N9
-         glWEjwIJdVbKQpmSQw7c1SB3zcTVSvZ9EzrxgxNz9p8ks2OKhE0GL+bkJiayZdnGnTDE
-         Nb8wic75VzkbUysmNtJd5KWXJNZAegK0KioXJkzpzo+TffCkaj9WhXoRevqG+YiZST33
-         qYEZUFsisn7mP5oygQ6M6jP7f0Jf997/c4sn9cz9Z5kfN4Xv3d53yG7kIyUBIQ87GKH8
-         5j1M71ccePMaOrVa/tKVQCiD2QIn6VTx4cbdE4RxB+lT5R7zvtR1voVw3ndjZ8AnzDlY
-         1MJw==
-X-Gm-Message-State: APuU4Z89BF1dnHPc9IIyvWzJ6xuWJ5V8z1vZMl8g4VJVmLz7JOqBbiTu
-	nGK1uHn17bzsl2E2Y05BobNZYue3ii8gf7I1IlLIoi/Z43sAyuKnBxNB
-X-Gm-Gg: AYBFou3LBWQpgiDGd3b7ZPnqjTBky/alUSKV+21GLZJvtj3ErniM1SMZltahgpmrNER
-	geXgIza+Z/ceN2o//9Bi45JFwyx8Lu6RqYDLnMErcVRei4xcGNqQrHnaGL+lVPUA9vR56GpA+XK
-	qK/Ynm4+fwi2eLVsOd05vBgXRNltQG5CV7iubkEJAYBs08lPh9clxHMKWXa+Yuc3QoSdH8+jJVr
-	6hVk5suypQL16MFgDBjSKAoNk2NniLHcRgifR0m55Z7KDflZ0b1whz7RP+RWiALLAFgwqGVkT49
-	lULM0ZSqMHwmn1RYk4PgIei6lwpf+KKbL7g6ZGzjE7uMZMZXH8EWSHdIpEyNAdlXMT/PazARvNg
-	aPBpZZ7oNa5oL09k6nfawO2T1VVQrL3pdDbwgVxlKu7H7a0q/8izqQyv+usrw9IJ8voJlIP6SCV
-	5CX8epY5vD2GEUgXoiB6AK6Nal2VwZ/PEroSwP66J9heGEWlr+PPoNJT78SHh/CrOvJj3CGitOI
-	eW5/EjLTcnJZj/X6X2qlBNocBfDDAM6rqgAG8wf+ekzgXY43jjjZ+G6em+liZkvCP8D6tCFZIIX
-	4SXDSlsfkO69zTPdmmTHfPRnjn6leJbexKChYW66UkdAhNYkD+VsHET7O3fJnGtZYBDoumIKU84
-	yqbo=
-X-Received: by 2002:a05:6a20:734d:b0:3e2:b400:2b04 with SMTP id adf61e73a8af0-3f7a92edb38mr2747257637.45.1794585077819;
-        Fri, 13 Nov 2026 07:51:17 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794585100; x=1795189900;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TMge1KZhkzflUPq37SUzuANAcbZI1Ky20Kr/K+1+RuY=;
+        b=zds+QMEWoCdwcScXqnpgONEGKbhHUK1nmX8DgkpDdvL4HySXpDzNp2OlUpwoxhhOBm
+         wsJmAPWhlqkcGCaK4YjHfo9DhiLjIESm/B25YWZPCXXj9VyBVsGplO6h7QjShmG3C3rx
+         vMmX4DdHKFk+udAi5CuGuNkP8jlnWq4VEmZMEoMkKU8xSj7MHreHw+EJeGCuwG8DlHDw
+         DuCAFtDXpW//FWOpDSHoBWUWXoG8WFeQGPjNjMW4IiKn3pYeDAF/EnZcS68b86rTKN9n
+         sLkBig7FGBvh//xWd3l/+j0Fx+Dh2Rm5zawFw1LBTP0imUKylogw7JBRG5wVlV8eOvB6
+         nDDQ==
+X-Gm-Message-State: APuU4Z8mdn26HvwwM+3HLIt1HAD1D+N68pVHlQy5Mw8egzRGxrX6CCuf
+	20iOCkFYpDnkmEzrn+08CE5K8CGkjoGsFefcydj9EjvJ5MKcFTXnSoLTq8wgEnEDh0I=
+X-Gm-Gg: AYBFou0d1HvRrgH6zF465b5KG4vZHv0SDYdwGgJhM8VCj2lRcuLUA/mWmyVeylgSw6o
+	BF/yottUZErlDYAqZgMvua+iRXsCc2Zdgox3WIwx6d0lQkT6Nw1Mj/qTSxuyxQzGfxBYYsyd2Tc
+	UnSmgfRo/Dmja+9EIwBXYs3d8jyxAIEsy6X6lKYZkZWQu0gSEfxFJsHkr/ouCGXUxH9SsZetWhu
+	LahVGPTOJfR6m39j0rd5BAvivJOf+tOrhEyZ8qgTnHp/4TcKWtnsVciXXn2hOHjpHe132Vk8Jq7
+	bMoq+zykiPQ5Eb4yjFws3tzXzbhKM/lr6s5gN35BiEFPNolojs6lT16S9OX8tHQsG0wRMSReM6I
+	hL33UnHcVuSmKmVCpyXUDc9Mcmwv+zzOQeBmWENiZARktB9EQJ0TMUxVbg1lPeoEiEqk/9BTcVT
+	AorF/HVfyVVZbVoErSYj2d+v+egazUgHQfsXA08cOGbRc6ACEllkI6W9gR27CEbYp1iZrmh2V3p
+	Uzj14YVOB5wewsSqlaSsJ/MbEfrqq7z4jgdGdUovGkt+VeFdhBY8h+M6ddsG70bC0vyXYCESYJy
+	MjRgWUHS9lK2xFIm9nZN66T2MP7ggnmdOdzVkIDLvzE/Ix+wI8gzKQLYCFxD5kCKy/pX2o+OVDc
+	yw9s=
+X-Received: by 2002:a05:6a20:4324:b0:3e0:c955:cd5a with SMTP id adf61e73a8af0-3f7a9ef620cmr2898908637.68.1794585100018;
+        Fri, 13 Nov 2026 07:51:40 -0800 (PST)
 Received: from localhost.localdomain ([219.95.157.251])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc160a190sm1486575a12.2.2026.11.13.07.51.14
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc160a17esm1634075a12.3.2026.11.13.07.51.36
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 13 Nov 2026 07:51:17 -0800 (PST)
+        Fri, 13 Nov 2026 07:51:39 -0800 (PST)
 From: Zhefu Peng <ilskdw@gmail.com>
-To: nicolas.dichtel@6wind.com
-Cc: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
+	horms@kernel.org,
 	kuniyu@google.com,
-	mschiffer@universe-factory.net
-Subject: Re: [PATCH net v3] vxlan: reset the remote's dst cache when snooping moves a MAC
-Date: Fri, 13 Nov 2026 23:51:10 +0800
-Message-ID: <20261113155110.75061-1-ilskdw@gmail.com>
+	mschiffer@universe-factory.net,
+	nicolas.dichtel@6wind.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v4 0/2] vxlan: reset the remote's dst cache when snooping moves a MAC
+Date: Fri, 13 Nov 2026 23:51:31 +0800
+Message-ID: <20261113155133.75090-1-ilskdw@gmail.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <72d0afdb-c2c6-458f-9363-d16c32220a6a@6wind.com>
-References: <20261111180001.2475-1-ilskdw@gmail.com> <72d0afdb-c2c6-458f-9363-d16c32220a6a@6wind.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,10 +104,38 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On 13/11/2026 16:05, Nicolas Dichtel wrote:
-> Maybe a selftest could be added to check this scenario?
+When a learning VXLAN device snoops a known MAC from another VTEP, it
+rewrites the remote's IP address in place but keeps the remote's
+dst_cache and remote_ifindex. Traffic to the moved MAC can then use the
+route cached for the previous remote and be blackholed. Patch 1 updates
+the remote the way vxlan_fdb_replace() does. Patch 2 adds a selftest
+for both cases.
 
-Sure. v4 will add one under tools/testing/selftests/net that covers
-both cases: the IPv4 move behind a router and the IPv6 link-local move.
+The selftest fails both cases on net without patch 1 (8 of 8 runs with
+1, 2 and 4 CPUs) and passes them with it (16 of 16 runs).
 
-pw-bot: cr
+v4:
+- add the selftest (Nicolas Dichtel)
+
+v3: https://lore.kernel.org/netdev/20261111180001.2475-1-ilskdw@gmail.com/
+- use my real name in From: and Signed-off-by:
+
+v2: https://lore.kernel.org/netdev/20261110153020.9635-1-ilskdw@gmail.com/
+- also update remote_ifindex and clear offloaded, as vxlan_fdb_replace() does
+- add the IPv6 link-local case to the changelog and a second Fixes tag
+
+v1: https://lore.kernel.org/netdev/20261106144406.66035-1-ilskdw@gmail.com/
+
+Zhefu Peng (2):
+  vxlan: reset the remote's dst cache when snooping moves a MAC
+  selftests: net: add a test for vxlan snooping moving a MAC
+
+ drivers/net/vxlan/vxlan_core.c                |   3 +
+ tools/testing/selftests/net/Makefile          |   1 +
+ .../selftests/net/test_vxlan_snoop_move.sh    | 161 ++++++++++++++++++
+ 3 files changed, 165 insertions(+)
+ create mode 100755 tools/testing/selftests/net/test_vxlan_snoop_move.sh
+
+-- 
+2.54.0
+
