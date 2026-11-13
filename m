@@ -1,64 +1,69 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.35
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794549091;
-	b=eud7X3qTwcCAIQpU3VUQ/r5qrBwFpTWcstfYmWg/0ZXJy7SOBeRl9V4WeIeUuWsIbfmC
-	 jKUf4/u1Ck0hq+q++6TlCkEoqBpmo1VWWjurE1vi4RR3YeWrScSEpV9+b1jyFXK/7XBSH
-	 sY6WZYnLHmsTG2OcPu5EcVK05gdQFteruDP5h2qpOxCOcF2EsX9Z6Rx7vYRmxhQPlK85F
-	 3OyAgvbOjxn6MhydWvqw54TH1Rg2sj2sr3ACHPjDSo+iEQQZQnBi1mY/kFnIFcvWTdooN
-	 vBljDTk4nR/3ZZGhJSWxWvrFrS4BpvszG0kGAEwbRJktoT6qBk81ArTHbzDf7eXxjTw==
+	t=1794549152;
+	b=YYdYEZVyHGDLuOaGd5LTCkbwHw8LbrKU9GyVc/4pKPuynmuMKguX08uHJvG0X4O4Sva5
+	 nSVkFz+AzXXwPibeL0xy7bQ/bH37nK7QLAhYSwFbWmWfh81IyP0q6lwX5m2M/0MLmbRv5
+	 QweD9g2YoJM0AZotiTenrDNIw1Q6s1H1QZVX2bRnv2HcfyPSjxFXiQkS7zqjdKtDNkljt
+	 QlvfLU0K/6sHPUYt8451rOmjhEvgQyidvIv3uPN6Oh7NFt1/EXLyVoWSNzO5u2xr6rK1d
+	 FuBoQnSvo03GySxhNrdcrbXbu4jg7gtHbx/0J1L+fS+BXylvAMt2KxXcvHpDyu1jZlg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794549091;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=LANplOGl/IujYksPR/YOrSZcasHgqJlzVsMCgKPcbSc=;
-	b=yM4ahsez4LAWauE6wfTeN70t1dveJgA1FsS8XtiCcCVHcDBd8/3FcERqkuYTVIA1Qw7/
-	 jhKxDKiQClp/LoXP2v5hCV6QeegBh8WdWLh+ZrfRdfTGbV9BL606oawbGgGwv6GDRwIpf
-	 xH0OIKo2DOO5Yn5P0/nLqXtLD6ATFccwDCtX09K7dJGvB4NhbsvnGm66NN5PbSVV5Rte8
-	 uZnZAx7HmJxgIYRaLa4FSzZiRR9fzQAbcFSIWwVGqcc6z2/IXcEYh6I6+bQ3tZLMO1Sch
-	 ge38d7SNPTNAiIBGdeJW7YZV7O1qUnKUvSkYz/5auJdwUUTCAvYHoqLKtoC6S2LUjrA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794549152;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 X-Zmail-TransId:X-Mailer:Message-ID:In-Reply-To:References:Date:
+	 Mime-Version:From:To:Cc:Subject:Content-Type:X-MAIL:X-TLS:
+	 X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:X-Fangmail-Anti-Spam-Filtered:
+	 X-Fangmail-MID-QID;
+	bh=kd7vUyZhtwzef66vbWwbN38QDSUoYzPck+DuOQ77Uhk=;
+	b=0AgjpQA0LjiPt+7MR70idCn2FcR83FFufGOX6ug/wvcOao7+N2t1zP9wTh9rU94QGX0U
+	 DtnjhbeCl3EhH63tSYpMTMsh1ptWokCtvw1hmfEqr6wLy+AubmEsZdGu94v3115mIlD7O
+	 goM3iP+GuhulWepJB2bBszhMNunhtQuopFXFoUejc0qL/Ux0eF2Vy8Eu8BSeLx/OnEoS0
+	 FTI7cB/oDv8Fy1HnrxH4vyKSikrDAFBvVZ4yFKFMS9r7SWI9yvBm1x8lnzXMdJGsWf3Cc
+	 4SZG/dudGa4u4rhd4fCPo7WruIk2b5pVBTtKXwjwpxUhhWqFsY20rgbA1cDEXzU1zyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aA1FJUQW;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=zte.com.cn;
+	spf=pass smtp.mailfrom=zte.com.cn;
+	dkim=pass header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=eSaf1U0i;
+	arc=none smtp.remote-ip=160.30.148.35
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2D0606A883;
-	Fri, 13 Nov 2026 05:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647FD606A321;
+	Fri, 13 Nov 2026 05:52:31 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 647FD606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aA1FJUQW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BD41F00925;
-	Fri, 13 Nov 2026 05:51:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794549091;
-	bh=LANplOGl/IujYksPR/YOrSZcasHgqJlzVsMCgKPcbSc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aA1FJUQWvmVyKCMaGNbnhQ/CSPlv+LzHzApYMzxMhm3zkyQb3k4PVjqJjprnP5yhL
-	 MPaOl4dvJh04hFrFS7m+9tMYXnn3RktAnoy1dg87CCjB5E6Lt6Myc/slDGxih3KiV8
-	 OVBLZQlz5P/YXiKTJFbNbxri4tJN/IWUjIxlHnHDzrAg3TPnCR34iAWBsaWtiY3I5W
-	 TuIK6AYitM9SSD1djcQj65gyICIua5A89ZdTxgYW75TwDd9xxvsiytCvLrRkkJBZm8
-	 3ufPL4LPvMoFKOeW+ow4l/0+6TSt/Yf/5TqXnaAtbUaWWQXXSM6DzFccAcbe2Vi/7w
-	 PDF9CDEughw5A==
-Subject: Re: [PATCH net v5 4/4] net: phy: postpone PHY interrupts during sleep
- with MAC-managed PM
-From: netdev-bot+sashiko@kernel.org
-To: iav@iav.lv
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- maxime.chevallier@bootlin.com, lukas@wunner.de, rafael.j.wysocki@intel.com,
- wei.fang@nxp.com, niklas.soderlund@ragnatech.se, paul@pbarker.dev,
- florian.fainelli@broadcom.com, opendmb@gmail.com, Thangaraj.S@microchip.com,
- shenwei.wang@nxp.com, Haoning.CHENG@cn.bosch.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Date: Fri, 13 Nov 2026 05:51:29 +0000
-Message-ID: <179454908985.2199510.13649467977536691436@kernel.org>
-In-Reply-To: <20261111-b4-phylib-mac-pm-irq-v3-v5-4-bbfdb5afb7d3@iav.lv>
-References: <20261111-b4-phylib-mac-pm-irq-v3-v5-4-bbfdb5afb7d3@iav.lv>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=eSaf1U0i
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jQmcY4kCpz8XrrX;
+	Fri, 13 Nov 2026 13:52:29 +0800 (CST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
+	s=z202610; t=1794549149;
+	bh=CCsLOlHWlsOCS2z716E29F7ST7ksn0xdSjmvEq6UdSs=;
+	h=In-Reply-To:References:Date:From:To:Cc:Subject;
+	b=eSaf1U0i9Jxtzrh8T+AM8sQ/y/KVbLfVFREIbTsXXIm45LwGLxTxKoPnNZR+aaOYA
+	 0f6K0+f3v0AAQXMXB2cVUBzlMsy2Mq9MVn++lHfOuswxIbKMbOnfTrmElaBqYfQMyI
+	 Y4P+tAxwdTba+Vkyzayz+ebz35u0sbpkVrCldWOhzvzFFgxMNF2sVyP3nNJYDw7/hM
+	 M055OLySY3iofh8jOpInNgtk2mK50rtWcN3pYvUBI1pSS2cJLCGJV9w7ObppJVqdht
+	 ymrdZhRfOvxJ738nQwBi9meGhJ6MDFA1g1IKyyHCDc4Or1OjnA5UpUr01VQ3NvxlJW
+	 LdasjJvXKqBVg==
+Received: from njy2app01.zte.com.cn ([10.40.12.136])
+	by mse-fl1.zte.com.cn with SMTP id 6AD5qIlX036898;
+	Fri, 13 Nov 2026 13:52:19 +0800 (+08)
+	(envelope-from han.junyang@zte.com.cn)
+Received: from mapi (njy2app03[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Fri, 13 Nov 2026 13:52:20 +0800 (CST)
+X-Zmail-TransId: 2afb6af6a59456d-225a5
+X-Mailer: Zmail v1.0
+Message-ID: <20261113135220713uvE1CCvGgC9U59hVZGJsZ@zte.com.cn>
+In-Reply-To: <20261113134743145KUhKvpwU6uqR0QzymEP96@zte.com.cn>
+References: 20261113134743145KUhKvpwU6uqR0QzymEP96@zte.com.cn
+Date: Fri, 13 Nov 2026 13:52:20 +0800 (CST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,136 +72,710 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0
+From: <han.junyang@zte.com.cn>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
+        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY2IDIvM10gZGluZ2hhaTogYWRkIE1TSS1YIGludGVycnVwdCBwb29scw==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 6AD5qIlX036898
+X-TLS: YES
+X-ENVELOPE-SENDER: han.junyang@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Fri, 13 Nov 2026 13:52:29 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AF6A59D.000/4jQmcY4kCpz8XrrX
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+From: Junyang Han <han.junyang@zte.com.cn>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Allocate the fixed MSI-X vector layout of the device and manage the
+vectors in per-purpose pools: the async event queues first, a range
+reserved for RDMA in between and the vq queue pairs last. This series
+wires up the async pool; the vq pool comes with the netdev series.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+IRQs are reference counted so that several event queues can share one
+vector. The pool hands out the least loaded matching IRQ once it passes
+the pool minimum threshold, and binds newly created IRQs to the least
+loaded CPU of the requested affinity mask. Interrupt delivery fans out
+through an atomic notifier chain attached to each IRQ, which the async
+event queue setup posted later in this series hooks into.
 
-- [Medium] The new wakeup policy treats every postponed PHY interrupt as
-  a system wakeup whenever phy_may_wakeup() is true, including link-…
+Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
+---
+ drivers/net/ethernet/zte/dinghai/Makefile   |   2 +-
+ drivers/net/ethernet/zte/dinghai/en_pf.c    |  87 +++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h    |   8 +
+ drivers/net/ethernet/zte/dinghai/zxdh_irq.c | 406 ++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_irq.h |  73 ++++
+ 5 files changed, 575 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.h
 
---
+diff --git a/drivers/net/ethernet/zte/dinghai/Makefile b/drivers/net/ethernet/zte/dinghai/Makefile
+index e2f4da33df59..f4a8f9480291 100644
+--- a/drivers/net/ethernet/zte/dinghai/Makefile
++++ b/drivers/net/ethernet/zte/dinghai/Makefile
+@@ -4,4 +4,4 @@
+ #
 
-net: phy: postpone PHY interrupts during sleep with MAC-managed PM
+ obj-$(CONFIG_DINGHAI_PF) += dinghai10e.o
+-dinghai10e-y := en_pf.o
++dinghai10e-y := en_pf.o zxdh_irq.o
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
+index ddff9b0438fb..5927f1f39b02 100644
+--- a/drivers/net/ethernet/zte/dinghai/en_pf.c
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
+@@ -8,6 +8,8 @@
+ #include <linux/pci.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
++#include <linux/mm.h>
++#include <linux/slab.h>
+ #include <net/devlink.h>
+ #include <linux/dma-mapping.h>
+ #include "en_pf.h"
+@@ -27,6 +29,14 @@ static const struct pci_device_id zxdh_pf_pci_table[] = {
 
-This commit sets irq_suspended for PHYs whose MAC manages PHY PM. With it
-set, phy_interrupt() postpones the PHY driver's handler for the whole
-sleep transition instead of accessing an MDIO bus that may be powered
-down. The wakeup event a postponed interrupt reports is now decided in
-mdio_bus_phy_suspend() and stored in the new irq_wake field.
+ MODULE_DEVICE_TABLE(pci, zxdh_pf_pci_table);
 
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 110c9dfcbd916..2dc13dd1afb66 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -332,6 +332,44 @@ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
->  	return !phydev->suspended;
->  }
->  
-> +static __maybe_unused enum phy_irq_wake
-> +phy_irq_wake_source(struct phy_device *phydev)
-> +{
-> +	struct net_device *netdev = phydev->attached_dev;
-> +	bool phy_wol;
-> +
-> +	if (!netdev)
-> +		return PHY_IRQ_WAKE_NONE;
-> +
-> +	/* phy_suspend() cached the answer of a suspended PHY, which may
-> +	 * not be reachable over MDIO.
-> +	 */
-> +	if (phydev->suspended && !phy_can_wakeup(phydev))
-> +		phy_wol = phydev->wol_phy;
-> +	else
-> +		phy_wol = phy_may_wakeup(phydev);
-> +
-> +	if (phy_wol)
-> +		return PHY_IRQ_WAKE_SYSTEM;
-> +
-> +	/* With MAC-managed PM, only Wake-on-LAN in the PHY makes its
-> +	 * interrupt a wakeup: the MAC stops the PHY itself.
-> +	 */
-> +	if (phydev->mac_managed_pm)
-> +		return PHY_IRQ_WAKE_NONE;
++struct zxdh_pf_irq_table {
++	struct zxdh_irq_pool *async_pool;
++};
++
++/* IRQ compaction thresholds of the async pool, in number of queues. */
++#define ZXDH_PF_ASYNC_IRQ_MIN_COMP	0
++#define ZXDH_PF_ASYNC_IRQ_MAX_COMP	7
++
+ void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size)
+ {
+ 	void *priv = kzalloc(size, GFP_KERNEL);
+@@ -485,6 +495,74 @@ static int zxdh_pf_wait_riscv_ready(struct zxdh_core_dev *zxdh_dev)
+ 	return 0;
+ }
 
-[Severity: Medium]
-Can a link-change interrupt caused by the MAC's own suspend path abort
-system suspend here?
++static int zxdh_pf_irq_pools_init(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_pf_irq_table *pf_irq_table = zxdh_dev->irq_table.priv;
++	struct zxdh_irq_pool *pool;
++
++	pool = zxdh_irq_pool_alloc(zxdh_dev, 0, ZXDH_ASYNC_CHANNELS_NUM,
++				   "zxdh_pf_async", ZXDH_PF_ASYNC_IRQ_MIN_COMP,
++				   ZXDH_PF_ASYNC_IRQ_MAX_COMP);
++	if (IS_ERR(pool))
++		return PTR_ERR(pool);
++
++	pf_irq_table->async_pool = pool;
++
++	return 0;
++}
++
++static void zxdh_pf_irq_pools_destroy(struct zxdh_pf_irq_table *pf_irq_table)
++{
++	if (pf_irq_table->async_pool)
++		zxdh_irq_pool_free(pf_irq_table->async_pool);
++}
++
++int zxdh_pf_irq_table_init(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
++	struct zxdh_pf_irq_table *priv;
++	int total_vec;
++
++	priv = kvzalloc_obj(*priv, GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++	table->priv = priv;
++
++	total_vec = ZXDH_VQS_CHANNELS_NUM + ZXDH_ASYNC_CHANNELS_NUM +
++		    ZXDH_RDMA_CHANNELS_NUM;
++	total_vec = pci_alloc_irq_vectors(zxdh_dev->pdev, total_vec, total_vec,
++					  PCI_IRQ_MSIX);
++	if (total_vec < 0) {
++		dev_err(zxdh_dev->device, "pci_alloc_irq_vectors failed: %d\n",
++			total_vec);
++		return total_vec;
++	}
++
++	return zxdh_pf_irq_pools_init(zxdh_dev);
++}
++
++void zxdh_pf_irq_table_destroy(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
++
++	if (table->priv)
++		zxdh_pf_irq_pools_destroy(table->priv);
++	kvfree(table->priv);
++	table->priv = NULL;
++	pci_free_irq_vectors(zxdh_dev->pdev);
++}
++
++struct zxdh_irq *zxdh_pf_async_irq_request(struct zxdh_core_dev *zxdh_dev)
++{
++	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
++	struct zxdh_pf_irq_table *pf_irq_table = table->priv;
++
++	if (!pf_irq_table->async_pool)
++		return NULL;
++
++	return zxdh_get_irq_of_pool(pf_irq_table->async_pool);
++}
++
+ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+ 	struct zxdh_core_dev *zxdh_dev;
+@@ -533,10 +611,18 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_modern_cfg;
+ 	}
 
-Take a MAC-managed PHY where phy_may_wakeup() is true. The phy_may_wakeup()
-check comes before the mac_managed_pm check, so irq_wake is set to
-PHY_IRQ_WAKE_SYSTEM. This happens in mdio_bus_phy_suspend(), which runs
-before the MAC's suspend callback.
++	ret = zxdh_pf_irq_table_init(zxdh_dev);
++	if (ret) {
++		dev_err(&pdev->dev, "zxdh_pf_irq_table_init failed: %d\n", ret);
++		goto err_irq_table;
++	}
++
+ 	devlink_register(devlink);
 
-With stmmac, which sets config->wol_phy_speed_ctrl = true, the MAC
-suspend then does:
+ 	return 0;
 
-stmmac_suspend()
-  phylink_suspend()
-    phylink_stop()
-    phylink_speed_down(pl, false)    /* gated on phy_may_wakeup() */
-      phy_speed_down(phydev, false)
-        phy_config_aneg()            /* restarts autoneg, link drops */
++err_irq_table:
++	zxdh_pf_irq_table_destroy(zxdh_dev);
+ err_modern_cfg:
+ 	zxdh_pf_modern_cfg_uninit(zxdh_dev);
+ err_cfg_init:
+@@ -554,6 +640,7 @@ static void zxdh_pf_remove(struct pci_dev *pdev)
+ 	struct devlink *devlink = priv_to_devlink(zxdh_dev);
 
-phy_stop() does not mask the PHY interrupt. On PHYs whose INT pin carries
-both link and WoL events, the link-fail interrupt then fires while
-irq_suspended is set, and phy_interrupt() does:
+ 	devlink_unregister(devlink);
++	zxdh_pf_irq_table_destroy(zxdh_dev);
+ 	zxdh_pf_modern_cfg_uninit(zxdh_dev);
+ 	zxdh_pf_pci_close(zxdh_dev);
+ 	zxdh_core_free_priv(zxdh_dev);
+diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
+index 730cb084a8ae..3de96488a810 100644
+--- a/drivers/net/ethernet/zte/dinghai/en_pf.h
++++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
+@@ -9,6 +9,8 @@
 
-		case PHY_IRQ_WAKE_SYSTEM:
-			pm_system_wakeup();
-			break;
+ #include <linux/types.h>
 
-This runs without reading the interrupt status, so a link change cannot be
-told apart from a PME/WoL event. The phy_speed_down() kernel-doc already
-warns about this:
++#include "zxdh_irq.h"
++
+ #define ZXDH_PF_VENDOR_ID	0x1cf2
+ #define ZXDH_PF_DEVICE_ID	0x8040
+ #define ZXDH_VF_DEVICE_ID	0x8041
+@@ -78,6 +80,7 @@ struct zxdh_core_dev {
+ 	struct device *device;
+ 	struct pci_dev *pdev;
+ 	struct devlink *devlink;
++	struct zxdh_irq_table irq_table;
+ 	void *priv;
+ };
 
-  WARNING: Setting sync to false may cause the system being unable to suspend
-  in case the PHY generates an interrupt when finishing the autonegotiation.
+@@ -118,4 +121,9 @@ int zxdh_pf_device_cfg_init(struct zxdh_core_dev *zxdh_dev);
+ void zxdh_pf_modern_cfg_uninit(struct zxdh_core_dev *zxdh_dev);
+ int zxdh_pf_modern_cfg_init(struct zxdh_core_dev *zxdh_dev);
 
-Resume speeds the link back up and the next suspend speeds it down again.
-Wouldn't every retry abort in the same way?
-
-Two configurations where this looks reachable:
-
-AR8031/AR8035 (at803x) with WoL enabled. AT803X_INTR_ENABLE_WOL shares
-AT803X_INTR_ENABLE and the INT pin with the link fail/success bits. These
-PHYs lack PHY_ALWAYS_CALL_SUSPEND, so phy_suspend() returns -EBUSY and the
-link interrupts are never masked.
-
-BCM54xx with a DT interrupt and no WoL configured. bcm54xx_phy_probe()
-calls device_init_wakeup(&phydev->mdio.dev, true) whenever
-bcm54xx_phy_can_wakeup() is true, which is whenever
-phy_interrupt_is_valid(). So phy_may_wakeup() is true by default, and the
-speed-down and PHY_IRQ_WAKE_SYSTEM apply on every suspend.
-
-Before this patch, MAC-managed PHYs never reported a wakeup from
-phy_interrupt(). The driver handler read the status, and handlers such as
-rtl8211f_handle_interrupt() report a wakeup only on the PME bit.
-
-This also seems to contradict the commit message:
-
-  ... and the MAC device may
-  wake the system on its own, so a link interrupt the MAC causes must not
-  abort suspend.
-
-The Helios64 result ("no suspend aborted") seems to depend on
-rtl8211f_suspend() writing RTL8211F_INER_PME to RTL821x_INER before the
-speed-down. That masks the link interrupt, and other PHY drivers do not do
-the same.
-
-The postponed path also never reads or clears the status. Doesn't that
-leave a level-triggered INT asserted, with the line disabled by
-disable_irq_nosync() until resume?
-
-[ ... ]
-
++/* PF IRQ table (en_pf.c) */
++int zxdh_pf_irq_table_init(struct zxdh_core_dev *zxdh_dev);
++void zxdh_pf_irq_table_destroy(struct zxdh_core_dev *zxdh_dev);
++struct zxdh_irq *zxdh_pf_async_irq_request(struct zxdh_core_dev *zxdh_dev);
++
+ #endif /* __ZXDH_EN_PF_H__ */
+diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_irq.c b/drivers/net/ethernet/zte/dinghai/zxdh_irq.c
+new file mode 100644
+index 000000000000..bc5348dfa5ba
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/zxdh_irq.c
+@@ -0,0 +1,406 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * ZTE DingHai Ethernet driver - IRQ pool management
++ * Copyright (c) 2022-2026, ZTE Corporation.
++ *
++ * Device vectors are managed in per-purpose pools. An IRQ carries a
++ * refcount so that several event queues can share one vector; on
++ * raise, the interrupt is fanned out through an atomic notifier chain
++ * attached to the IRQ.
++ */
++
++#include <linux/cpumask.h>
++#include <linux/device.h>
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
++#include <linux/pci.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++#include <linux/xarray.h>
++
++#include "en_pf.h"
++#include "zxdh_irq.h"
++
++static void zxdh_cpu_put(struct zxdh_irq_pool *pool, int cpu)
++{
++	pool->irqs_per_cpu[cpu]--;
++}
++
++/* Release callback of the IRQ kref, called with pool->lock held. */
++static void zxdh_irq_release(struct kref *kref)
++{
++	struct zxdh_irq *irq = container_of(kref, struct zxdh_irq, refcount);
++	struct zxdh_irq_pool *pool = irq->pool;
++
++	lockdep_assert_held(&pool->lock);
++	xa_erase(&pool->irqs, irq->index);
++	zxdh_cpu_put(pool, cpumask_first(irq->mask));
++	/* free_irq() requires the affinity hint to be cleared before it is
++	 * called; the asymmetry with the set path in zxdh_irq_alloc() is
++	 * intentional.
++	 */
++	irq_update_affinity_hint(irq->irqn, NULL);
++	free_cpumask_var(irq->mask);
++	free_irq(irq->irqn, irq);
++	kfree(irq);
++}
++
++/* Drop one reference; returns 1 if the IRQ was released. */
++static int zxdh_irq_put(struct zxdh_irq *irq)
++{
++	struct zxdh_irq_pool *pool = irq->pool;
++	int released;
++
++	mutex_lock(&pool->lock);
++	released = kref_put(&irq->refcount, zxdh_irq_release);
++	mutex_unlock(&pool->lock);
++
++	return released;
++}
++
++static int zxdh_irq_get(struct zxdh_irq *irq)
++{
++	return kref_get_unless_zero(&irq->refcount);
++}
++
++static irqreturn_t zxdh_irq_int_handler(int irq, void *data)
++{
++	struct zxdh_irq *zxdh_irq = data;
++
++	atomic_notifier_call_chain(&zxdh_irq->nh, 0, NULL);
++
++	return IRQ_HANDLED;
++}
++
++static struct zxdh_irq *zxdh_irq_alloc(struct zxdh_irq_pool *pool, int vecidx,
++				       const struct cpumask *affinity)
++{
++	struct zxdh_core_dev *zxdh_dev = pool->dev;
++	struct zxdh_irq *irq;
++	int err;
++	int cpu;
++
++	irq = kzalloc_obj(*irq, GFP_KERNEL);
++	if (!irq)
++		return ERR_PTR(-ENOMEM);
++
++	irq->pool = pool;
++	irq->irqn = pci_irq_vector(zxdh_dev->pdev, vecidx);
++	if (irq->irqn < 0) {
++		err = irq->irqn;
++		goto err_irqn;
++	}
++
++	ATOMIC_INIT_NOTIFIER_HEAD(&irq->nh);
++	snprintf(irq->name, ZXDH_MAX_IRQ_NAME, "%s_%d@pci:%s", pool->name,
++		 vecidx, pci_name(zxdh_dev->pdev));
++
++	err = request_irq(irq->irqn, zxdh_irq_int_handler, 0, irq->name, irq);
++	if (err) {
++		dev_err(zxdh_dev->device, "request_irq failed: %d\n", err);
++		goto err_irqn;
++	}
++
++	if (!zalloc_cpumask_var(&irq->mask, GFP_KERNEL)) {
++		dev_err(zxdh_dev->device, "zalloc_cpumask_var failed\n");
++		err = -ENOMEM;
++		goto err_cpumask;
++	}
++
++	if (affinity) {
++		cpumask_copy(irq->mask, affinity);
++	} else {
++		/* No preference requested; spread over all online CPUs. */
++		for_each_online_cpu(cpu)
++			cpumask_set_cpu(cpu, irq->mask);
++	}
++	irq_set_affinity_and_hint(irq->irqn, irq->mask);
++
++	kref_init(&irq->refcount);
++	irq->index = vecidx;
++	err = xa_err(xa_store(&pool->irqs, irq->index, irq, GFP_KERNEL));
++	if (err) {
++		dev_err(zxdh_dev->device, "xa_store failed for irq %u: %d\n",
++			irq->index, err);
++		goto err_xa;
++	}
++
++	return irq;
++
++err_xa:
++	irq_update_affinity_hint(irq->irqn, NULL);
++	free_cpumask_var(irq->mask);
++err_cpumask:
++	free_irq(irq->irqn, irq);
++err_irqn:
++	kfree(irq);
++	return ERR_PTR(err);
++}
++
++int zxdh_irq_attach_nb(struct zxdh_irq *irq, struct notifier_block *nb)
++{
++	int err;
++
++	if (!zxdh_irq_get(irq))
++		return -ENOENT;
++
++	err = atomic_notifier_chain_register(&irq->nh, nb);
++	if (err)
++		zxdh_irq_put(irq);
++
++	return err;
++}
++
++int zxdh_irq_detach_nb(struct zxdh_irq *irq, struct notifier_block *nb)
++{
++	int err;
++
++	err = atomic_notifier_chain_unregister(&irq->nh, nb);
++	zxdh_irq_put(irq);
++
++	return err;
++}
++
++/* Release one or more IRQs back to their pool. */
++void zxdh_irqs_release_vectors(struct zxdh_irq **irqs, int nirqs)
++{
++	int i;
++
++	for (i = 0; i < nirqs; i++) {
++		synchronize_irq(irqs[i]->irqn);
++		zxdh_irq_put(irqs[i]);
++	}
++}
++
++static void zxdh_cpu_get(struct zxdh_irq_pool *pool, int cpu)
++{
++	pool->irqs_per_cpu[cpu]++;
++}
++
++/* Find the least loaded CPU, i.e. the CPU with the fewest IRQs bound
++ * to it, within the requested mask.
++ */
++static int zxdh_cpu_get_least_loaded(struct zxdh_irq_pool *pool,
++				     const struct cpumask *req_mask)
++{
++	int best_cpu = -1;
++	int cpu;
++
++	for_each_cpu_and(cpu, req_mask, cpu_online_mask) {
++		/* This CPU has no IRQs yet, no need to look further. */
++		if (!pool->irqs_per_cpu[cpu]) {
++			best_cpu = cpu;
++			break;
++		}
++		if (best_cpu < 0)
++			best_cpu = cpu;
++		if (pool->irqs_per_cpu[cpu] < pool->irqs_per_cpu[best_cpu])
++			best_cpu = cpu;
++	}
++
++	if (best_cpu < 0) {
++		dev_err(pool->dev->device,
++			"no online CPU in affinity mask (%*pbl)\n",
++			cpumask_pr_args(req_mask));
++		best_cpu = cpumask_first(cpu_online_mask);
++	}
++	pool->irqs_per_cpu[best_cpu]++;
++
++	return best_cpu;
++}
++
++/* Create a new IRQ from the pool and bind it to the requested mask. */
++static struct zxdh_irq *zxdh_irq_pool_request_irq(struct zxdh_irq_pool *pool,
++						  const struct cpumask *req_mask)
++{
++	const struct cpumask *affinity = req_mask;
++	cpumask_var_t auto_mask;
++	struct zxdh_irq *irq;
++	u32 irq_index;
++	int err;
++
++	if (!zalloc_cpumask_var(&auto_mask, GFP_KERNEL))
++		return ERR_PTR(-ENOMEM);
++
++	err = xa_alloc(&pool->irqs, &irq_index, NULL, pool->xa_num_irqs,
++		       GFP_KERNEL);
++	if (err) {
++		if (err == -EBUSY)
++			err = -EUSERS;
++		goto err_xa;
++	}
++
++	if (cpumask_weight(req_mask) > 1) {
++		/* Bind to the least loaded CPU of the request. */
++		cpumask_set_cpu(zxdh_cpu_get_least_loaded(pool, req_mask),
++				auto_mask);
++		affinity = auto_mask;
++	} else {
++		zxdh_cpu_get(pool, cpumask_first(req_mask));
++	}
++
++	irq = zxdh_irq_alloc(pool, irq_index, affinity);
++	if (IS_ERR(irq))
++		goto err_alloc;
++
++	free_cpumask_var(auto_mask);
++
++	return irq;
++
++err_alloc:
++	/* Undo the per-CPU accounting done above. */
++	zxdh_cpu_put(pool, cpumask_first(affinity));
++	xa_erase(&pool->irqs, irq_index);
++err_xa:
++	free_cpumask_var(auto_mask);
++	return err ? ERR_PTR(err) : irq;
++}
++
++/* Look for the IRQ with the smallest refcount whose affinity mask is a
++ * subset of the requested mask.
++ */
++static struct zxdh_irq *zxdh_irq_pool_find_least_loaded(struct zxdh_irq_pool *pool,
++							const struct cpumask *req_mask)
++{
++	struct zxdh_irq *irq = NULL;
++	struct zxdh_irq *iter;
++	unsigned long index;
++	int iter_refcount;
++
++	lockdep_assert_held(&pool->lock);
++	xa_for_each_range(&pool->irqs, index, iter,
++			  pool->xa_num_irqs.min, pool->xa_num_irqs.max) {
++		iter_refcount = refcount_read(&iter->refcount.refcount);
++
++		/* Skip IRQs whose mask is not a subset of the request. */
++		if (!cpumask_subset(iter->mask, req_mask))
++			continue;
++		/* IRQ below the minimum threshold found, take it. */
++		if (iter_refcount < pool->min_threshold)
++			return iter;
++		if (!irq ||
++		    iter_refcount < refcount_read(&irq->refcount.refcount))
++			irq = iter;
++	}
++
++	return irq;
++}
++
++/* Request an IRQ for the given mask: share the least loaded existing
++ * matching IRQ once it passes the pool minimum threshold, otherwise
++ * create a new one.
++ */
++static struct zxdh_irq *zxdh_irq_affinity_request(struct zxdh_irq_pool *pool,
++						  const struct cpumask *req_mask)
++{
++	struct zxdh_irq *least_loaded_irq;
++	struct zxdh_irq *new_irq;
++
++	mutex_lock(&pool->lock);
++
++	least_loaded_irq = zxdh_irq_pool_find_least_loaded(pool, req_mask);
++	if (least_loaded_irq &&
++	    refcount_read(&least_loaded_irq->refcount.refcount) < pool->min_threshold)
++		goto out;
++
++	/* No IRQ below the minimum threshold, try to create a new one. */
++	new_irq = zxdh_irq_pool_request_irq(pool, req_mask);
++	if (IS_ERR(new_irq)) {
++		if (!least_loaded_irq) {
++			mutex_unlock(&pool->lock);
++			return new_irq;
++		}
++		/* Could not create a new IRQ for the requested affinity,
++		 * share the existing one.
++		 */
++		dev_warn(pool->dev->device,
++			 "irq pool %s exhausted, sharing irqs\n",
++			 pool->name);
++		goto out;
++	}
++
++	least_loaded_irq = new_irq;
++	goto unlock;
++
++out:
++	/* Holding pool->lock keeps the IRQ alive, so this cannot fail. */
++	zxdh_irq_get(least_loaded_irq);
++	if (refcount_read(&least_loaded_irq->refcount.refcount) > pool->max_threshold)
++		dev_warn(pool->dev->device,
++			 "irq %u overloaded, pool %s, %u refs on this irq\n",
++			 pci_irq_vector(pool->dev->pdev,
++					least_loaded_irq->index),
++			 pool->name,
++			 refcount_read(&least_loaded_irq->refcount.refcount) /
++			 ZXDH_EQ_REFS_PER_IRQ);
++unlock:
++	mutex_unlock(&pool->lock);
++
++	return least_loaded_irq;
++}
++
++/* Request an IRQ from the pool, spread over the online CPUs. */
++struct zxdh_irq *zxdh_get_irq_of_pool(struct zxdh_irq_pool *pool)
++{
++	cpumask_var_t req_mask;
++	struct zxdh_irq *irq;
++
++	if (!zalloc_cpumask_var(&req_mask, GFP_KERNEL))
++		return ERR_PTR(-ENOMEM);
++	cpumask_copy(req_mask, cpu_online_mask);
++
++	irq = zxdh_irq_affinity_request(pool, req_mask);
++
++	free_cpumask_var(req_mask);
++
++	return irq;
++}
++
++struct zxdh_irq_pool *zxdh_irq_pool_alloc(struct zxdh_core_dev *zxdh_dev,
++					  int start, int size, const char *name,
++					  u32 min_threshold, u32 max_threshold)
++{
++	struct zxdh_irq_pool *pool;
++	u16 *irqs_per_cpu;
++
++	irqs_per_cpu = kcalloc(nr_cpu_ids, sizeof(*irqs_per_cpu), GFP_KERNEL);
++	if (!irqs_per_cpu)
++		return ERR_PTR(-ENOMEM);
++
++	pool = kvzalloc_obj(*pool, GFP_KERNEL);
++	if (!pool) {
++		kfree(irqs_per_cpu);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	pool->dev = zxdh_dev;
++	pool->irqs_per_cpu = irqs_per_cpu;
++	mutex_init(&pool->lock);
++	xa_init_flags(&pool->irqs, XA_FLAGS_ALLOC);
++	pool->xa_num_irqs.min = start;
++	pool->xa_num_irqs.max = start + size - 1;
++	strscpy(pool->name, name, sizeof(pool->name));
++
++	/* Thresholds are expressed in queue references, two per IRQ. */
++	pool->min_threshold = min_threshold * ZXDH_EQ_REFS_PER_IRQ;
++	pool->max_threshold = max_threshold * ZXDH_EQ_REFS_PER_IRQ;
++
++	return pool;
++}
++
++void zxdh_irq_pool_free(struct zxdh_irq_pool *pool)
++{
++	u32 cpu;
++
++	WARN_ON_ONCE(!xa_empty(&pool->irqs));
++	xa_destroy(&pool->irqs);
++	mutex_destroy(&pool->lock);
++
++	if (pool->irqs_per_cpu) {
++		for_each_online_cpu(cpu)
++			WARN_ON(pool->irqs_per_cpu[cpu]);
++		kfree(pool->irqs_per_cpu);
++	}
++
++	kvfree(pool);
++}
+diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_irq.h b/drivers/net/ethernet/zte/dinghai/zxdh_irq.h
+new file mode 100644
+index 000000000000..a969e04f3ce4
+--- /dev/null
++++ b/drivers/net/ethernet/zte/dinghai/zxdh_irq.h
+@@ -0,0 +1,73 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * ZTE DingHai Ethernet driver - IRQ pool management
++ * Copyright (c) 2022-2026, ZTE Corporation.
++ */
++
++#ifndef __ZXDH_IRQ_H__
++#define __ZXDH_IRQ_H__
++
++#include <linux/cpumask.h>
++#include <linux/kref.h>
++#include <linux/mutex.h>
++#include <linux/notifier.h>
++#include <linux/types.h>
++#include <linux/xarray.h>
++
++struct zxdh_core_dev;
++
++/* Number of MSI-X vectors per purpose. The layout of the vector space
++ * is a hardware interface:
++ *   [0, 8)    async event queues
++ *   [8, 14)   reserved for RDMA (unused for now)
++ *   [14, 78)  vq rx/tx queue pairs
++ */
++#define ZXDH_ASYNC_CHANNELS_NUM		8
++#define ZXDH_RDMA_CHANNELS_NUM		6
++#define ZXDH_VQS_CHANNELS_NUM		64
++
++#define ZXDH_MAX_IRQ_NAME	100
++#define ZXDH_MAX_POOL_NAME	16
++#define ZXDH_EQ_REFS_PER_IRQ	2
++
++/* Reference counted interrupt. Event queues share an IRQ through the
++ * notifier chain, which is fired from hard IRQ context.
++ */
++struct zxdh_irq {
++	struct atomic_notifier_head nh;
++	cpumask_var_t mask;		/* interrupt affinity */
++	char name[ZXDH_MAX_IRQ_NAME];
++	struct zxdh_irq_pool *pool;
++	u32 index;			/* vector index */
++	int irqn;			/* Linux IRQ number */
++	struct kref refcount;
++};
++
++/* Pool of vectors dedicated to one purpose, identified by the
++ * [xa_num_irqs.min, xa_num_irqs.max] vector range.
++ */
++struct zxdh_irq_pool {
++	char name[ZXDH_MAX_POOL_NAME];
++	struct xa_limit xa_num_irqs;
++	struct mutex lock;		/* serializes IRQ creation */
++	struct xarray irqs;
++	u32 min_threshold;		/* in queue references */
++	u32 max_threshold;		/* in queue references */
++	u16 *irqs_per_cpu;		/* number of IRQs bound per CPU */
++	struct zxdh_core_dev *dev;
++};
++
++struct zxdh_irq_table {
++	void *priv;
++};
++
++struct zxdh_irq *zxdh_get_irq_of_pool(struct zxdh_irq_pool *pool);
++int zxdh_irq_attach_nb(struct zxdh_irq *irq, struct notifier_block *nb);
++int zxdh_irq_detach_nb(struct zxdh_irq *irq, struct notifier_block *nb);
++void zxdh_irqs_release_vectors(struct zxdh_irq **irqs, int nirqs);
++struct zxdh_irq_pool *zxdh_irq_pool_alloc(struct zxdh_core_dev *zxdh_dev,
++					  int start, int size, const char *name,
++					  u32 min_threshold, u32 max_threshold);
++void zxdh_irq_pool_free(struct zxdh_irq_pool *pool);
++
++#endif /* __ZXDH_IRQ_H__ */
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111-b4-phylib-mac-pm-irq-v3-v5-0-bbfdb5afb7d3%40iav.lv
+2.27.0
