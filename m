@@ -1,70 +1,82 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=35.162.73.231
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794610688;
-	b=oHmq+otPFMTyLLeh/fFHRgzZQ3o9wVYooSYsLvTi9nwNXPYf0KC5TSDV0qSWQlP7xV6F
-	 NzQX/fUjpMPydvS0id5kxL/U3bte/Q1C/pO9o6mN64UBHl6WT3yYz+7rvoINHtyj2Ye3U
-	 3yI7kmB0yviFzf0G5Ju3On978eaIMSYyZA5oeSi5b2PkWoBxTxLyDSpETOAWL1NlJ3Nhb
-	 c34gX2A5LAkGDnzLjAxArEWXzdDcApmgTClTYgx7JAg7E3UoHiznDTbTrLdUNMkR5VPnd
-	 uHinyr5yil9Q4TYmYXjZvAEUpp3hpfBO0DHbWAQoYtVeIOKxcIqjCx9ijOD9870LhiA==
+	t=1794611555;
+	b=Tz37QAz3Nm+HQ9XOaUL3yeDg3PocTEYc/k61Ulu2em/1AJpsqhkARuqsLPD3jrOesPUy
+	 MvhHKnA2IjvZA67owfwl6XWUpyr8t/D6pdbG7J/XwpndaJDCI+MEFrrmMH87mw7ge+I07
+	 vHv6/A0sfl+0WvFsoQjUBmqwKYuGoCmyby0zcqTWfU7QoQ6+N8HPqc0xBy0Co7RL2iq5x
+	 +L5c666Shf3dWfnN+OQPynFKAyDrjAu+r5gymDTafJLRyDzva5MgE/c70ljTd/osHoJbi
+	 a8ujLogwOy+1OBASaxMAeXCS3uJjB5b8qaRM3dNUa7NX5A+a6JnECYeSQjIJ5z62pTA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794610688;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794611555;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
-	 CC:In-Reply-To:References:Date:Message-ID:X-Mailer:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=3aCBQKEtp9jqdbxK61a0BgBPXP3SZR1YDzpZ4g2BdjM=;
-	b=zWKRyidcPnE9ehhbLWUURVlwBMmzHyrj9MppwvlpP2HMtGdw+R+QOysKdkM39zVhCAan
-	 +SFo31FhiqyF3TZe7wk+ANvqE42T6hwtWWnPoFLRwyNZXiRChVIOZR0RCb6Mr1jDHrfZ4
-	 kDmnqcxtv3u3x68x4s/gfQ/jRqWd07YFVWp43f4zpwvoz/cr5ssE0WyPoFmOz7h6Ams9v
-	 zU8AdEQTnEn3GT2dD8Ux+p/AC37CH8SHfiBWdyEbXG7s8RIuvUe+Lx9WP+0DbmaiPcMm/
-	 A7AndEhyunpm1nLdMoeLqv3LnZxXXcDOjGEVus04gAwtr1O22UXNtzmYIcLffNzVT3A==
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=V9PZhjrTCrDhVXEdwzdQFoO4FessefQ72vw+Q16/f6c=;
+	b=HiX9Rf2B4RJu4yoiPuWr/tloPDVIw/D5e55AJe9sQcEkz8WKH5/xlS/Fy7xWS1BiDxw2
+	 G3phRf6pIQLPR1iH+CAmEJorxZ7Siu8Jixf7LXaB8H6VatCSWjXTNIz3KSkf8FoXg1h3B
+	 JQr8elnm92/O5NyEFJ645dGw7WoQnnYBrMUhD4SNdsIqAk1bb8TgzQPhMZ6vBd+zIpCcH
+	 kJXV6MkRcarcgWJk5sHe1z0Gh+hCQNezKzC8hYYlc+sPTSI7Bx8MnB2tRIoFdYXrYuzKX
+	 Z6u9nLQo24dzPU7HA2rXrZNURaLbT+p0CAbx7ldjeWSFSWgzwbpfCMu0zu2KJ1iJ05g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amazon.com;
-	spf=pass smtp.mailfrom=amazon.com;
-	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=rKHwIMBU;
-	arc=none smtp.remote-ip=35.162.73.231
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
+	dmarc=pass header.from=intel.com;
+	spf=pass smtp.mailfrom=intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a20QVWno;
+	arc=none smtp.remote-ip=198.175.65.18
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52FD606A890;
-	Fri, 13 Nov 2026 22:58:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A52FD606A890
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BA5606A33A
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:12:32 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25BA5606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=rKHwIMBU
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794610687; x=1826146687;
-  h=mime-version:content-transfer-encoding:subject:from:to:
-   cc:in-reply-to:references:date:message-id;
-  bh=3aCBQKEtp9jqdbxK61a0BgBPXP3SZR1YDzpZ4g2BdjM=;
-  b=rKHwIMBUK4ITFeGdT2sWY4nP9lp+eHwmiKuZFOuh7UyA//5/rLFdMdOL
-   34cYH20FcsQqImXHNktAuRJsLIhUxd+ImJfJQ4sCMm+vleYJI1TGQIhSX
-   NlO0mzXDg7cuQ+ipU2HDCjgxG1l0Q6RqlK2CqcFpg2zve71vM+2Wd+sOO
-   a0Edc9g0LSzKB3kYQ98OInlNofoOq2p+pbV7EvFo1naVIsbbX3IYfTkaw
-   Pdnp4SW/nNDifVKwipXoybuGhWbETBnCfKVAZ1fPnWe1qcAnA4qells6q
-   ynhrqPiRrOrG3ajmtZELkwP8SKFj2gMqgeDcyoSrOzKTDglTdsWzdqv+t
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a20QVWno
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794611553; x=1826147553;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LRd827PbuYs6eVFfFjo/e84HgaB8FbYO8LuSq/zd5GA=;
+  b=a20QVWnosvDLfxEgSqI+RP+JfrSJW06uNFy7HGLPDAVWq+zWCqz6U4lb
+   9iF5z1wezNhwpD5IjqZduOOliqsDTFG8fZPHkNsSaL7p9tzAFWxd9YUUz
+   uPP1naWzyUVPQwFzEWcB47dDFGjjrAjL9ri8VWNfYuCQtsKxQlTIyn0xJ
+   zgTMF7ylr9JZvb2J36UGfUPFqorIwk2/53g0uWklEa7g4Kf8IoNzgDcnb
+   +I3DKaGpYnlhkgE/wIUgl6rESrZGGd/9TTjzciXgO0kjOvsXv5clCvYy0
+   4AQOBpZPMPR5+1gac+DAYZm/OFZWkxaqRwkXkjvC/2vSrdDpKVaEZgaXd
    Q==;
-X-CSE-ConnectionGUID: ZJlxpheZRk6753jmsXhBMA==
-X-CSE-MsgGUID: aY6+idksREeIIKFYF4WBHw==
-X-IronPort-AV: E=Sophos;i="6.27,212,1787011200"; 
-   d="scan'208";a="33776194"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 22:58:04 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:14208]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.50.212:2525] with esmtp (Farcaster)
- id daf1645f-5663-48ce-b2fe-8f975118cd6e; Fri, 13 Nov 2026 22:58:04 +0000 (UTC)
-X-Farcaster-Flow-ID: daf1645f-5663-48ce-b2fe-8f975118cd6e
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Fri, 13 Nov 2026 21:48:43 +0000
-Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Fri, 13 Nov 2026 21:48:41 +0000
+X-CSE-ConnectionGUID: qGlZmrL7RaiqxPg2xZc4jg==
+X-CSE-MsgGUID: XT/voBpSQguXhmedu2t1IA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3443130"
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="3443130"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 15:12:33 -0800
+X-CSE-ConnectionGUID: 3NxxxmOzSA680osU6177cw==
+X-CSE-MsgGUID: WjD5+rQhTBGd788wpqJ10A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,212,1787036400"; 
+   d="scan'208";a="9360975"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa006.fm.intel.com with ESMTP; 13 Nov 2026 15:12:32 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	michal.swiatkowski@linux.intel.com,
+	poros@redhat.com,
+	david.m.ertman@intel.com,
+	pengpeng@iscas.ac.cn,
+	przemyslaw.kitszel@intel.com
+Subject: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates 2026-11-13 (ice)
+Date: Fri, 13 Nov 2026 15:12:17 -0800
+Message-ID: <20261113231225.1864810-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,134 +86,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next] net: ena: reuse the whole RX page on 64kB
- page kernels
-From: Arthur Kiyanovski <akiyano@amazon.com>
-To: "Harry Yoo (Meta)" <harry@kernel.org>
-CC: Arthur Kiyanovski <akiyano@amazon.com>, David Arinzon
-	<darinzon@amazon.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Breno Leitao
-	<leitao@debian.org>, <kernel-team@meta.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-In-Reply-To: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
-References: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
-Date: Fri, 13 Nov 2026 21:48:11 +0000
-Message-ID: <179460649196.30115.7530141186108364440.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Transfer-Encoding: 8bit
 
-On Fri, 06 Nov 2026 03:17:11 +0000, Harry Yoo (Meta) <harry@kernel.org> wrote:
-> [...]
-> ENA_PAGE_SIZE. With this fixed, a comparable workload pins only 497MB.
-> 
-> When PAGE_SIZE equals ENA_PAGE_SIZE, the room left in the page equals
-> ena_buf->len, so nothing changes.
-> 
-> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+Michal Swiatkowski fixes TC to-queue offload for non-PF0 by switching to
+use of global queue indexes.
 
-Hi Harry,
-Thank you for the patch. The issue you are fixing is real, and the patch
-is very welcome.
+Petr Oros resolves a couple of promiscuous uplink default VSI Rx rule
+issues; avoiding redundant per-VLAN rules and preserving the uplink's
+default Rx rule. He also fixes an off-by-one read issue for devlink NVM
+read.
 
-I want to suggest a few changes to make sure that the performance of the
-datapath of 4KB pages is changed as little as possible, as this will be
-the common case.
+Dave Ertman corrects LLDP filter handling by preferring the newer command
+when supported and falling back to the legacy command otherwise.
 
-First:
-DRB (Dynamic RX Buffers) - is what we call the reuse of the pages as
-long as the remaining part is "large enough" instead of allocating a
-new page for every new packet.
+Pengpeng Hou fixes ETH56G deskew checks by propagating register read
+failures and poll timeouts which were previously treated as success.
 
-The ENA driver supports DRB only in the non XDP case.
+The following are changes since commit ead6fa9a0ab194f02a2f36d634b193e9c5f9a1c6:
+  Merge branch 'bnxt_en-fix-pm-resume-on-vfs'
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue 100GbE
 
-Therefore some of the calculations you are doing per call to
-ena_try_rx_buf_page_reuse() can be saved as compile time constants.
+Dave Ertman (1):
+  ice: Fix incorrect LLDP filter assumptions
 
-For that I suggest defining the following in ena_netdev.h:
+Michal Swiatkowski (1):
+  ice: use global queue index in TC to-queue offload
 
-+ #define ENA_RX_PAGE_ROOM    (PAGE_SIZE - NET_SKB_PAD -          \
-+                   SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-+ #define ENA_RX_MAX_BUF_LEN  (ENA_PAGE_SIZE - NET_SKB_PAD -          \
-+                   SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+Pengpeng Hou (1):
+  ice: propagate ETH56G deskew poll failures
 
-Next I would like to use the old calculations for the simpler 4KB pages
-case. See these suggestions inline.
+Petr Oros (3):
+  ice: skip per-VLAN promisc rules when default VSI Rx rule is set
+  ice: preserve uplink DFLT Rx rule on switchdev release
+  ice: allow reading the last byte of the NVM and Shadow RAM regions
 
-Could you fold these into the respin?
-
-Thanks,
-Arthur
-
->
->
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> index 7eb6456ed0d5..4a35cb6a7785 100644
-> --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> @@ -926,19 +926,27 @@ static struct sk_buff *ena_alloc_skb(struct ena_ring *rx_ring, void *first_frag,
->  	return skb;
->  }
->  
-> -static bool ena_try_rx_buf_page_reuse(struct ena_rx_buffer *rx_info, u16 buf_len,
-> +static bool ena_try_rx_buf_page_reuse(struct ena_ring *rx_ring,
-
-Becomes unused: struct ena_ring *rx_ring parameter and in call sites.
-
-> +				      struct ena_rx_buffer *rx_info, u16 buf_len,
->  				      u16 len, int pkt_offset)
->  {
-> +	int tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-
-Becomes unused:
--       int tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-
->  	struct ena_com_buf *ena_buf = &rx_info->ena_buf;
-> +	unsigned long room;
-
--       unsigned long room;
-+       u32 room;
-
-> +
-> +	/* Room left up to the end of the page. On 64kB page kernels this
-> +	 * can be more than ena_buf->len, which is capped at ENA_PAGE_SIZE.
-> +	 */
-> +	room = PAGE_SIZE - rx_info->page_offset - rx_ring->rx_headroom - tailroom;
->  
-
--       room = PAGE_SIZE - rx_info->page_offset - rx_ring->rx_headroom - tailroom;
-
-In runtime there is no branch here because the result is known at
-compile time (same with the next suggestion below):
-
-+       if (PAGE_SIZE > ENA_PAGE_SIZE)
-+               room = ENA_RX_PAGE_ROOM - rx_info->page_offset;
-+       else
-+               room = ena_buf->len;
-
->  	/* More than ENA_MIN_RX_BUF_SIZE left in the reused buffer
->  	 * for data + headroom + tailroom.
->  	 */
-> -	if (SKB_DATA_ALIGN(len + pkt_offset) + ENA_MIN_RX_BUF_SIZE <= ena_buf->len) {
-> +	if (SKB_DATA_ALIGN(len + pkt_offset) + ENA_MIN_RX_BUF_SIZE <= room) {
->  		page_ref_inc(rx_info->page);
->  		rx_info->page_offset += buf_len;
->  		ena_buf->paddr += buf_len;
-> -		ena_buf->len -= buf_len;
-> +		ena_buf->len = min(room - buf_len, ENA_PAGE_SIZE);
-
--               ena_buf->len = min(room - buf_len, ENA_PAGE_SIZE);
-+               if (PAGE_SIZE > ENA_PAGE_SIZE)
-+                       ena_buf->len = min_t(u32, room - buf_len,
-+                                            ENA_RX_MAX_BUF_LEN);
-+               else
-+                       ena_buf->len -= buf_len;
-
-Use ENA_RX_MAX_BUF_LEN here too, so that headroom + len + tailroom
-stays within ENA_PAGE_SIZE as it does elsewhere in the driver.
+ .../net/ethernet/intel/ice/devlink/devlink.c  |   2 +-
+ drivers/net/ethernet/intel/ice/ice.h          |   1 -
+ drivers/net/ethernet/intel/ice/ice_eswitch.c  |  18 ++-
+ drivers/net/ethernet/intel/ice/ice_lib.c      |  18 +--
+ drivers/net/ethernet/intel/ice/ice_main.c     | 109 ++++++++++++++----
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c   |  42 ++++---
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c   |   3 +-
+ 7 files changed, 138 insertions(+), 55 deletions(-)
 
 -- 
-Arthur Kiyanovski <akiyano@amazon.com>
+2.47.1
+
