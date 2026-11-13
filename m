@@ -1,79 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.74.67.75
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794559513;
-	b=lwKG3f7YDgCe1ly7Pbs1DYdOGre73sI3pNkznVxqufZVaFDQAoAe5Az0/r/Rwumspcbe
-	 LfFtro+axkYNtshv/YknVelw7Ag1xI1IvhtPBJxTrAZAizG9MrFRpugMK+cgddFoayfDv
-	 LYoa0BS1u/9O4ZntA0LBC7xxxSVwgDxSr5pt/IdaGDkQmv7jOoEJkoflQNWNxYXvltHdq
-	 WiUq+c7XM9kVWthtGs5WzToOOj0epAJ4HswKE9oXnnSbYCz5Rni/qzi8nVZQK+EILo5pV
-	 dRZ6IoL18AlUPSipJdEJ0CcP1PLUqunOv0vmkWGbCi5MWpGPHy7PE93CFb2NWjorv6A==
+	t=1794559686;
+	b=sJ0BRrNDOW9+gkAKiL7mOD1zVssrODIwbzj+fw/DOfaDiNS+fjcXFGSeW1djbe5ah8DU
+	 xqz3BiZMAKxl3RZhURESWdKUQ2/AdaK1ylmYGVZCq78mGAI+YBQVWfQZBj/2BsbGiatmd
+	 vq8+mC8yBoyWXQniWLqbaTluku2jI42deaUdv7vQ0Q3dmIxsgWSBh6SC7algaISuhdspz
+	 94tT+YtOwFSaetJEO6f3fw0lcXJR2DCVbbO7kyzVYcS12OVJgHS0fFDVaCq5Ayj3eTEM5
+	 eaTBkTCrOspAFjKemx6aYh3FuXIuS/D89cYX7mRjJTfEGB3odz/rYdpCVRdPsN4DlUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794559513;
-	h=DMARC-Filter:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:DKIM-Signature;
-	bh=5B4YlwMMqdlMz8j2fd4NhB7kceWbrnYxW8cbEQS8dDI=;
-	b=I9yOE0weLsXvbe1mZRo/D7tC1xfAVp/w12Dkhth4UKtfORyYRzS97eruJMLTYrsXy0Xr
-	 +UF7Eysk/EkuueypcbP5HhXyW+pnM/AobAGE9GD3IZXv1xKkR1dMeXO6mzS6k3qRKj7di
-	 7jRVuaOfVoO6/DjFOQ9g+5TyT4ehqwbzSitsfBGCK/LFVWCJ4DCZDW7KVMRNxJcm0Krbm
-	 /z4KfLk4SLngfHYm8t8y7rBroPsKFO0fVI4tjvQmCFqPlMgdhtFcHuZv1ySAdbk2WT3V+
-	 Bv8dZyvZ8VoCKgsIi8AQfh1sJbUeKzy2fHMdhuUOm62en7pKZYbQsG1MbfrrR2zMTBw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794559686;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Date:From:
+	 To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Authority-Analysis:
+	 X-Proofpoint-GUID:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Info:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
+	bh=P6PGMZFxc6UhpNPssneEJ0B1sY5J1KKjecVwvvRM188=;
+	b=XCR5VtnTc2hVG+Acz0f+hT3EpL1LwHHlO2wVAHDYDA/+MoyL+DbwZnpIDKf4qbl31vnT
+	 iQmbhVOnKNmakWf0LItLsqYzw8LJ3GRYQ8A27RBLsoBwjxApnxZoWx56WZvXtTxfP971J
+	 uO6GtQmWSksAgMhJs+BETcSnE6FKnJOfTQFHBrKtUL1z5uvWqdMDHEnjh74jxVfiVmX5/
+	 pU5DG0P5694YR3j5ogMRscNI4eNTLuF1rQ4+5WKlZghlfAmouW91Iu9nLIcduD62ayl1u
+	 sykrAU1hDKCDoPdMTgYs5m0/he5471WatyRW0NZPF2Qi6g9ABJOw9riGN9WbxHxwyRQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=poczta.fm;
-	spf=pass smtp.mailfrom=poczta.fm;
-	dkim=pass header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b="mPnXGe/j";
-	arc=none smtp.remote-ip=217.74.67.75
-Received: from smtpo75.interia.pl (smtpo75.interia.pl [217.74.67.75])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9285606B349
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:45:11 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E9285606B349
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=poczta.fm
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=poczta.fm header.i=@poczta.fm header.a=rsa-sha256 header.s=dk header.b=mPnXGe/j
-Received: from nr200 (unknown [80.68.231.31])
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=pLruQmzb;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=UtTxCXHF;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-	Fri, 13 Nov 2026 09:44:59 +0100 (CET)
-Date: Fri, 13 Nov 2026 09:44:57 +0100
-From: Slawomir Stepien <sst@poczta.fm>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Tianyi Gao <tianyi@cloudflare.com>,
-	Liang Chen <liangchen.linux@gmail.com>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	"huangjie . albert" <huangjie.albert@bytedance.com>
-Subject: Re: [PATCH RFC net-next v2 0/4] xdp: reuse generic skb XDP handling
- for veth
-Message-ID: <avbOCfunJ252ZlJB@nr200>
-References: <20261110101941.1059662-1-sst@poczta.fm>
- <avMSs9oopzc1SAnw@boxer>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53781606B353
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:48:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53781606B353
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=pLruQmzb;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=UtTxCXHF
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AD8VKdH2515663
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:48:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=P6PGMZFxc6UhpNPssneEJ0B1
+	sY5J1KKjecVwvvRM188=; b=pLruQmzbk64QqOwvEb8+G4xkq5jhWCxdWZPr0xhI
+	WIQPs0PLzldrHLuiBnylPRHumzBXeSdxxAzx2p9PmUCK3kiDSZCkbwCfzQW2W53R
+	0YCPCGHhc9JuUlguBcuc3K0UduB0b9uy+7cTcc7Q8KgXDMwFnkUSKQZlVyKogDB5
+	xLqUeWjAzpDzjqeCOA/DuX97Cb+jgpOy0FVHrPUm6HP8J+bapHiWSJ2Lk3ssi4+m
+	UouEmDn0Ol3UnT+55MQX9DGVzp7EhRWck/3FzJirTYo9hY27E1JnuPgf/aGgSlpd
+	XIl4RHm3JzOI9PYuImUhdD4SLntCCItuiPSek9DlJGF96g==
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hwg1bb9vy-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:48:05 +0000 (GMT)
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-91f12cc95a0so16343396d6.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 00:48:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1794559684; x=1795164484; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=P6PGMZFxc6UhpNPssneEJ0B1sY5J1KKjecVwvvRM188=;
+        b=UtTxCXHF8tj7PeYTluOqC7aY929DFbBn9B3PIckRn1adix/cZb5UfxaFW8UguprRum
+         YvLcFRNB2CpBBtCdNfYHv8M+o89JmnqHTCJokVDtccPZ9hbS6NwUCToaTa1DrqvSdqGc
+         scAeybwy7YkIrveLWyD6/bnB/QGx18xuPuNi7+B9x6mF5NADVrXhQOEVHmcFu7DrIT7o
+         guLCQoGygP4vOksYKjEaoxpJ1/aXtBCTslUGMeJzobXk4vT9VYzIdLAOCBbwC0dKqzXN
+         v/Pm2+O2RVrrNOEc1WFbzgDieWgXGR02V5pD1Nb5Qd8FG2ix71teouyuluW4+jPE6Lu9
+         Q+XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794559684; x=1795164484;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=P6PGMZFxc6UhpNPssneEJ0B1sY5J1KKjecVwvvRM188=;
+        b=Njz5RyNdVxHAz24vUtzuxyjCcmXza2uboRP+YEDJ8qZm6tV8DZh69sYomwgDQ3UTaa
+         ToUkgkmQxohTiiGBp70KA88F4bpYutHs9Qz48xRO3CDqryJTFpT2ONGtHBnKh4fo7xhi
+         znAuUQ0FrxGVWSUkWeI/G8LldoJAUvan5Vn9A/8qnB2zcRC8CC65XE1KdNruw6P1EEDz
+         UiJzICGgbLlz1GfW+v6bwGjb7aZ7B73U7CBRMnlmaZnZWQDlBrnG0tui2QOO1TLDrZQR
+         nb/VlggLdvpqkhpWQ6k4iqxOWa5dQYFEa43CPCzdJrrwV+sdf7O2gSPDzpp7Ggb3isqN
+         Do5g==
+X-Forwarded-Encrypted: i=1; AL+hErHHvhHSPEMGXMRJ1Z5yMATny0r7cocnOcwNDfFZqm8keqhiArj8cx8QgixOLJbet6Lt4FEx8aA=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Co1Jqq0OCKQfpJKa/DovPwS23yEQvMxWmdrjznio0Ep2PlP2b
+	yyS4yxfs1X89Cj5clIQyIyMHiW6B3mr0mzbGiGwMB0z7ecvm4CyEgMI0VRABsCLf4YcpFXId0Am
+	f4PYrr/fGn0mBbUHq/tJbiQC3kkDMm+Ki6kzHL13PwNK+jdm4WpOQch0/rhg=
+X-Gm-Gg: AYBFou06fRyP9aDWv8I6AfoOsqKI/kF2/BIHyAjOudamj/wNPgsbRWm2gIDXa+lr8g+
+	dR0jev5vwEFuyHwkx4yKSq6PXsS5nQpvfaw7mLXpxK+1XaQlJGkb15An40O4eOVdiZ8+sHney/o
+	da0dr0P8JCJBZjzzg7xnVk5xPWjJl6Z7t17kz/3YtUG7cRAxWGZ1mJCxmZpl9VlRwEB2x3sNFLj
+	xTflCPhIqJ6Ev6hjEJ2DKl9WYza2W+WSzC8sanFeSnSL7d6d5LEWzWvq7Ka7Fbb8j2t3Q8KGp8w
+	F0r5048ACO08J+rDXh65H5ElvC/ympW6shhmwEyI06HD9Pe90l5X9RywjN9l7/apu5nDLsCb/jX
+	mlabNYqfFd7oh55JmtDLCNvWll8oeLe1eKYCpEJp5X49JPAmqIuoJAoPd95C+8g==
+X-Received: by 2002:a05:6214:5906:b0:91c:77ef:21f3 with SMTP id 6a1803df08f44-91f241e0909mr25559676d6.35.1794559684248;
+        Fri, 13 Nov 2026 00:48:04 -0800 (PST)
+X-Received: by 2002:a05:6214:5906:b0:91c:77ef:21f3 with SMTP id 6a1803df08f44-91f241e0909mr25559336d6.35.1794559683623;
+        Fri, 13 Nov 2026 00:48:03 -0800 (PST)
+Received: from localhost ([93.66.91.126])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c60ca70a7sm3689140f8f.51.2026.11.13.00.48.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 00:48:02 -0800 (PST)
+Date: Fri, 13 Nov 2026 09:48:01 +0100
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Jose Abreu <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net] net: stmmac: re-base EST after PTP settime64
+Message-ID: <avbOwepxkFf1F717@lore-desk>
+References: <20261111-stmmac_set_time-est_lock-v1-1-da1554f233e6@oss.qualcomm.com>
+ <ea9ae0f9-d373-4e97-b96b-3855c01100ee@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,188 +126,137 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8vOlyl6HxoyVuXhq"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <avMSs9oopzc1SAnw@boxer>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poczta.fm; s=dk;
-	t=1794559503; bh=5B4YlwMMqdlMz8j2fd4NhB7kceWbrnYxW8cbEQS8dDI=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	b=mPnXGe/jT93c2XFqUqO8VnwCirp9DDzNl3GliRhTonov31fhcRD4WiO9gg7KdMenX
-	 1vGYF9gIzNxApm3514+vEFa4hgkp9Fl+6taXQ6Y/j14WIPdeJ+zGkyuBaFQPrQ0Wrn
-	 2Jy6bu1fZ1rqdt1XDuz43NrVJpJA3dWKJ5McGIrM=
+In-Reply-To: <ea9ae0f9-d373-4e97-b96b-3855c01100ee@bootlin.com>
+X-Authority-Analysis: v=2.4 cv=c6Q+0h9l c=1 sm=1 tr=0 ts=6af6cec5 cx=c_pps
+ a=wEM5vcRIz55oU/E2lInRtA==:117 a=vJIuTH4p0ATK6gluz4evpA==:17
+ a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=EUspDBNiAAAA:8
+ a=2dOafQFslBOt0hFCmmYA:9 a=CjuIK1q_8ugA:10 a=-1ZYPXEuWJ9im3w4qA0A:9
+ a=OIgjcC2v60KrkQgK7BGD:22
+X-Proofpoint-GUID: JH9j-3uwd7tkalXsO4JzgYO4NoXQ1ryd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDAzNCBTYWx0ZWRfX4zadBrCOv/i3
+ FCB2IR8oR4P/j6z19tPb/YYVs/CWX99l095Kpzw1037ffHOQ68cqrxB1gGkCcZgZaflyRP/obpe
+ Hg16fWaO53WuPsWcawambaDlfO7phPFlN7G/pBXqnzALE86EPB+I5wQZTgiVzPTTqYb1Bj3Pvud
+ MYN9i9Zn3KraNbZHUPzXGtLgGmtFoAQvyMVEHawLZwd/FFrrftJT/w7ger9qzeBlf01qzhCvyH9
+ Iw5saw27J4RS3/oKW9p2kAPP/xmTBc4UdGoJReE5L63AaTu3F+hhxdxsDNAbfcTa9H3poUw9BCs
+ xpCXz74WftdkEaaQI6mIU7UX41z0HIpAnmOYmwNYQCovg88BU6DftGZ8Ym6xYERzuqB7EUZ4uZX
+ 40pxITlr7bh2Y0fCsvLrl/M6wCXRYgy3//TqM1RzhClne21Zy/ZqYC0uqNEJKyotITx0Zn/nXGz
+ tAdfkne7MUlWzlzc+dA==
+X-Proofpoint-ORIG-GUID: JH9j-3uwd7tkalXsO4JzgYO4NoXQ1ryd
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDAzNCBTYWx0ZWRfX60GHbQIMFsxH
+ ExGq72U6lP1TuVWStLnFbGtBaiTgPMMj5vP3ZT04OTx0SLp+K2qbd1lNPl7cA0GXQ2p5nwojlT+
+ SGlKAL5nc/K+dVMLgYetIGBxmb+KMuA=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-13_03,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0 suspectscore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 malwarescore=0 clxscore=1015 spamscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130034
 
-On lis 10, 2026 13:48, Maciej Fijalkowski wrote:
-> On Tue, Nov 10, 2026 at 11:19:37AM +0100, Slawomir Stepien wrote:
-> > Hi,
-> > 
-> > this is v2 of Maciej's RFC [1], which makes veth run XDP on skb-backed
-> > packets through the generic skb XDP path instead of converting them
-> > into xdp_frames for XDP_TX and XDP_REDIRECT. The patches are Maciej's;
-> > I addressed the review of v1 and measured the performance, which was
-> > the main open question there. Changes I made are noted in [sst: ...]
-> > lines in each commit message.
-> > 
-> > The motivation is unchanged: veth pins the skb data with plain page
-> > references (veth_xdp_get()) to build an xdp_frame from an skb, and the
-> > rxq memory type it reports does not match memory that was copied into
-> > a page_pool, which makes the AF_XDP selftests splat when a program
-> > shrinks a multi-buffer packet. With this series, pages copied into
-> > veth's page_pool are recycled (0 rx_pp_recycle_released_ref, was
-> > ~4.8M/s in the benchmark below).
-> > 
-> > Dependencies
-> > ============
-> > 
-> > The series applies to net-next with these two net series applied
-> > first (prerequisite-patch-id below):
-> > 
-> >  - Tianyi Gao, "net: fix mac_len of skbs copied by generic XDP" (1/2)
-> >    [2]. Without it, cpumap redirect of skbs that veth copied drops
-> >    every packet once veth uses the generic path.
-> >  - Vladimir Oltean, "net: pass the XDP action to generic_xdp_tx() for
-> >    tracing" and "net: validate xmit skbs in generic_xdp_tx()" [3].
-> >    Patch 2/4 changes the same function.
-> > 
-> > Changes in v2
-> > =============
-> > 
-> > 1/4: MEM_TYPE_PAGE_POOL_OR_SHARED renamed to MEM_TYPE_MIXED (Björn);
-> >      comment on what the type means.
-> > 2/4: Rebased on Vladimir's series. The redirect callers in devmap and
-> >      filter still return success: generic_xdp_tx() frees and counts a
-> >      failed skb itself, so propagating the error would free it twice
-> >      (Björn asked why the error is not propagated).
-> > 3/4: One skb_needs_xdp_cow() predicate for generic XDP and veth
-> >      (shared, cloned, nonlinear or headroom too small) instead of a
-> >      per-caller callback and INDIRECT_CALL_2 (Jakub). The
-> >      skb_head_is_locked() check is gone, it would copy every locally
-> >      generated skb. Copies go to the caller's page_pool with
-> >      skb_pp_cow_data() also for programs without frags support (found
-> >      by the xdp_metadata selftest).
-> > 4/4: Commit message describes how XDP_TX/XDP_REDIRECT change for
-> >      skb-backed packets (Björn's table). A failed skb XDP_TX is counted
-> >      once, in the device's tx_dropped (Sashiko). veth sets
-> >      skb->mac_len before running generic XDP, as
-> >      __netif_receive_skb_core() does; without it cpumap redirect of
-> >      veth skbs is dropped.
-> 
-> That looks sane.
-> > 
-> > Performance
-> > ===========
-> > 
-> > QEMU/KVM, 8 vCPUs, minimal config without debug options. pktgen sends
-> > skbs into veth v0, the XDP program runs on the peer v1 (skb path).
-> > Packets/s delivered to the destination, median of 12 runs of 8 s over
-> > 4 alternating boots per kernel, 95% bootstrap confidence intervals
-> > within about +-2%. Base: v7.4-rc1+ (f66469d9905b) with the
-> > dependencies above.
-> > 
-> >                               64 B                      8000 B (3 frags)
-> >   XDP_TX                      4.49 -> 4.04 Mpps (-10%)  2.25 -> 1.87 (-17%)
-> >   REDIRECT devmap -> veth     4.30 -> 3.95 (-8%)        2.18 -> 1.81 (-17%)
-> >   REDIRECT cpumap             4.49 -> 4.47 (0%)         2.02 -> 2.27 (+12%)
-> >   XDP_DROP (native veth)      5.65 -> 5.42 (-4%)        2.82 -> 2.71 (-4%)
-> >   XDP_DROP (xdpgeneric)       5.63 -> 5.83 (+4%)        2.94 -> 3.00 (+2%)
-> > 
-> > (cpumap 8000 B base: base without Vladimir's series, which does not
-> > touch that path; 3 of the 12 runs of the other base kernel stalled.)
-> > 
-> > cpumap avoids the skb -> xdp_frame -> skb round trip. XDP_TX and
-> > devmap redirect to veth are slower for two reasons:
-> > 
-> >  - no bulking: one ndo_start_xmit() per skb instead of ndo_xdp_xmit()
-> >    with up to 16 frames;
-> >  - at 8000 B the receiving veth copies the packet a second time.
-> >    Before, it got an xdp_frame; now it gets an skb with frags, and
-> >    nonlinear skbs are always copied (kprobe on skb_pp_cow_data(): 1
-> >    copy per packet before, 2 after).
-> > 
-> > Vladimir's validation itself costs about 3% at 64 B on these two
-> > paths and nothing measurable elsewhere.
-> > 
-> > Questions
-> > =========
-> > 
-> >  - Is the XDP_TX/devmap regression acceptable for the simpler and
-> >    correct memory handling, or should it be fixed first? Options we
-> >    see: skb-list bulking in the generic TX path (Jesper measured +30%
-> >    with xmit_more), and not copying nonlinear skbs whose frags are
-> >    already page_pool pages. Raising veth's needed_headroom (Jesper)
-> >    only helps linear skbs from senders that honour it; pktgen skbs are
-> >    shared and always copied, so the benchmark above cannot show it.
-> >    We left all three for follow-ups.
-> 
-> Thanks for these tests, for some reason my local benchmarks were not
-> showing such differences and also xmit_more was not giving me much of a
-> bump.
+--8vOlyl6HxoyVuXhq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Do you still have the method you used for your tests? Can we compare our approaches?
+On Nov 12, Maxime Chevallier wrote:
+> Hi Lorenzo,
+>=20
+> On 11/11/26 10:54, Lorenzo Bianconi wrote:
+> > stmmac_set_time() initializes the PTP clock through
+> > stmmac_init_systime() (TSINIT) while holding only ptp_lock.  It neither
+> > takes est_lock nor disables and re-bases EST around the step, unlike
+> > stmmac_adjust_time(), which performs TSUPDT through
+> > stmmac_adjust_systime() under est_lock.
+> >=20
+> > Both operations change the PHC system time, so both invalidate the
+> > absolute EST base time.  With settime64, a concurrent
+> > tc_taprio_configure() can read the pre-step clock through gettimex64()
+> > and program EST with a base time that is already stale once TSINIT
+> > lands.  Separately, a taprio offload installed before the clock_settime=
+()
+> > is never re-based and keeps running with its old base time until taprio
+> > is reconfigured.
+> >=20
+> > Take est_lock for the whole disable/step/reprogram sequence, as
+> > stmmac_adjust_time() does: disable EST before initializing the clock and
+> > call __stmmac_setup_est() afterwards so the base time is recomputed from
+> > the reserved taprio base time and the new clock.
+> >=20
+> > This keeps the established est_lock -> ptp_lock ordering:
+> > stmmac_init_systime() only uses readl_poll_timeout_atomic() under
+> > ptp_lock, and __stmmac_setup_est() takes ptp_lock through gettimex64().
+> >=20
+> > Fixes: b60189e0392f ("net: stmmac: Integrate EST with TAPRIO scheduler =
+API")
+> > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+>=20
+> This LGTM, the return values from stmmac_est_configure/__stmmac_setup_est=
+ are=20
+> ignored though, the [cl|s]ashiko gang may not like that.
+>=20
+> Besides one of the EST commands timing out, it seems unlikely though.
 
-> The impact is noticeable I'd say. Could you see how xmit_more change would
-> affect the benchmarks?
+I used the same approach used in stmmac_adjust_time(). I guess we can update
+both of them if required.
 
-It will not (tested). The "problem" is that I was running tests that run on just one cpu with
-softirq NAPI. That would cause one skb handling at a time, so there is nothing to batch - poll will
-always see one skb. 
+Regards,
+Lorenzo
 
-On threaded NAPI (with batching in place) the results are better, but I guess this is not an excuse
-to allow regression in the other case.
+>=20
+> Maxime
+>=20
+> > ---
+> >  drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers=
+/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> > index 31a66e855d6b..6370bdc6c58b 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> > @@ -129,10 +129,19 @@ static int stmmac_set_time(struct ptp_clock_info =
+*ptp,
+> >  	    container_of(ptp, struct stmmac_priv, ptp_clock_ops);
+> >  	unsigned long flags;
+> > =20
+> > +	mutex_lock(&priv->est_lock);
+> > +	if (priv->est && priv->est->enable)
+> > +		stmmac_est_configure(priv, priv, priv->est,
+> > +				     priv->plat->clk_ptp_rate, false);
+> > +
+> >  	write_lock_irqsave(&priv->ptp_lock, flags);
+> >  	stmmac_init_systime(priv, priv->ptpaddr, ts->tv_sec, ts->tv_nsec);
+> >  	write_unlock_irqrestore(&priv->ptp_lock, flags);
+> > =20
+> > +	if (priv->est && priv->est->enable)
+> > +		__stmmac_setup_est(priv);
+> > +	mutex_unlock(&priv->est_lock);
+> > +
+> >  	return 0;
+> >  }
+> > =20
+> >=20
+> > ---
+> > base-commit: 22b7cb932c6a0f7566d41072be6956cb6c8af4e1
+> > change-id: 20261111-stmmac_set_time-est_lock-f74f4ce678b7
+> >=20
+> > Best regards,
+>=20
 
-I'm looking now into making sure that my tests are correct and checking how I could reduce these
-regressions somehow.
+--8vOlyl6HxoyVuXhq
+Content-Type: application/pgp-signature; name=signature.asc
 
-> >  - MEM_TYPE_MIXED vs. separate memory types per source (Jesper).
-> >  - The redirect semantics change in 4/4 (Björn).
-> > 
-> > Testing
-> > =======
-> > 
-> > Each commit builds with W=1 without new warnings, checkpatch --strict is
-> > clean. test_progs -t ns_xsk,xdp passes; test_xsk.sh shows the same DRV
-> > XDP_ADJUST_TAIL_GROW failures (also with busy poll) as without the
-> > series. Reproducers for shrinking frags in generic and veth XDP, XDP_TX
-> > of multi-buffer packets, devmap egress programs and bpf_prog_test_run
-> > after generic XDP on lo pass without kernel warnings.
-> > 
-> > The scripts, kernel configs and raw logs behind the numbers and tests
-> > above are in [4], with instructions to rerun them.
-> > 
-> > AI disclosure: the review changes, the tests and the benchmark were
-> > prepared with help from an AI coding assistant (Claude); I reviewed
-> > and tested all changes.
-> > 
-> > [1] https://lore.kernel.org/all/20260509084858.773921-1-maciej.fijalkowski@intel.com/
-> > [2] https://lore.kernel.org/all/20261103200036.65764-3-tianyi@cloudflare.com/
-> > [3] https://lore.kernel.org/all/20261030114753.185281-1-vladimir.oltean@nxp.com/
-> > [4] https://github.com/s-stepien/xdp-rfc
-> > 
-> > Thanks,
-> > Slawomir
-> > 
-> > Maciej Fijalkowski (4):
-> >   xdp: add mixed page_pool/page_shared memory type
-> >   xdp: return status from generic_xdp_tx()
-> >   xdp: split generic XDP skb handling
-> >   veth: use generic skb XDP handling
-> > 
-> >  drivers/net/veth.c        | 191 +++++++++-----------------------------
-> >  include/linux/netdevice.h |  33 ++++++-
-> >  include/net/xdp.h         |   1 +
-> >  net/core/dev.c            | 122 ++++++++++++++++++------
-> >  net/core/filter.c         |   7 ++
-> >  net/core/xdp.c            |  54 ++++++++++-
-> >  6 files changed, 222 insertions(+), 186 deletions(-)
-> > 
-> > 
-> > base-commit: fa5196392691051963726787944db872420dfa75
-> > prerequisite-patch-id: 7db3107f14b28c509845871045e6af93b7e267bc
-> > prerequisite-patch-id: 40350101232837c5a38ba1662825228d01734b39
-> > prerequisite-patch-id: 0b57f8c2a409470b1ddf8df747d906d5d3dbd9f3
-> > -- 
-> > 2.56.0
-> > 
+-----BEGIN PGP SIGNATURE-----
 
--- 
-Slawomir Stepien
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCavbOwQAKCRA6cBh0uS2t
+rP9pAP0We69d9Ja/MXjMeW89Cr8mxmls0sCUfHoNch9W4wFTyQD+PQGPg/6xOrPm
+7DwhYebqBdZ1m1ZFNeW4g5iWhoPSsgs=
+=OVPM
+-----END PGP SIGNATURE-----
+
+--8vOlyl6HxoyVuXhq--
