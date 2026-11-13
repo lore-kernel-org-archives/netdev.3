@@ -1,49 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794597748;
-	b=xFqdifvfszQQWuiNtr4RhKMN5dDnyQPryKIs8cYxEOp28PmhmBwvNE8A6OLiFf86t2KB
-	 xZ00R/d71czIkqypKKrbVwrqK0lj29GKWk+rYRP0raicoZd8bUd1cvvtfWQ4zh4TtwsI6
-	 rB+fGSt20wQbPC92rJkDVHZ4T9ZdaNQVUs/IqN37DVFjNEdr+wRafhNk0g4GeKBgTchc8
-	 /KVs2asjMhHI4BGT7sOarSKYauUSfZbZ7aWOHtaZDjy0EKq5Ts+c4G5Lk+f2tvA6wzQty
-	 ZGG8sAkIrY6Y920nKjPLhhhu7KksKLzzHxb5x5p3NtGCdGSPGDwE+0gVQVJytv+dlNQ==
+	t=1794597755;
+	b=ycstcleWNIA3vT+HqKGHaTvK5adSPv+aKUMUibLPsIrxJO6341Gb3tLNHWbs/KrDarEf
+	 a0U9DbBf9eGo9xTS5doafTiHxWhSOGTItytO8eTwLlD1Gnc1egNhOgid+TAoXlCtnk3nY
+	 O5dsOXsEHskdBgKmVkgSsnzPXavu1katXHOWi+H8ZBqaHwpF8B3jcfgZD7aK1P97ylfi8
+	 bShXZPI26lWPqRAjsxXxsAjc3mVvP9HZduFTs+xsXGcEj9O0YurEwodN4T4WoS/wAZP+W
+	 Bify7OLgJSOzQh0KXSHzs0qdKzGxNSRvLlaJ2UNoySCsmMl0B1bvLkZnLQ9qIgum5SQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794597748;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794597755;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=I+hL5QQE6GyRoMtW1B5hMOK4wLRT/tC2hYnS7Jh1VQs=;
-	b=fN82QztuDJWaxM6iswP7kJgd2i0NmJGFZZrN0F/rjRWE1RA4SeaVOpUYW1qzOononm5T
-	 kQmeJv/KOCX2vXrGp2nY7Q0AKEIRARjdAhQhQlBPHT9FvIuC9JjXz9zCiE03wMOvjsLNO
-	 sXfCEFnPPUTCCCKqqHFWPiIABqYuset5fvI0WI6zqmPT4LT8fqMLbt6hlDKIA+iBwwaM8
-	 wvRWMMxEBja4JBIOF35IsEWyGqdG5Dqqkr5eO17ZjpxzZASzC7UHyY/ZskvwJC91loJ21
-	 HUw6vjX/AtVlOYvy9dhDNHmbMpAP2PfUXA6JSHAW4oNOm3b4s+ifOxzL1/UvCVSrcOg==
+	bh=MsD+/evnBupQnQ/r23zWXhvXOnuy9swhlSCTp08Hvmk=;
+	b=UEinqyuVXsyvYKcaq3YoIM2cwgGCxjAcdoboGiPmOjlbwNkSCgAPSDJmu9eoA2fA9Scc
+	 /zOgk9cWrM8J54xVPNZNR8tjItmGyXgUHd20m8N1NRYUiPUbMTPFPXLi7Uys5jkKNha0p
+	 VFyFmQ+WUdBdRheKwtyFU4lxOAJzcUiJLxvCdac/qWtawEWgThqIbcmo3VesZa8AkNFBy
+	 GxMe+xk3PcZhPpp3Af8sr1m6IkrYlllof1F5Fyb35DNOVxDaBrsDgU3ZDvJSM+3Sotx5T
+	 RKjJLqriWTUXWvuumkONSHjyGagkfWcWmAuEq7F9qL+uc87FDPjfyErk1148h4bsszw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KOZCeWLF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a8xyC+nq;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD69606A897;
-	Fri, 13 Nov 2026 19:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A083606A895;
+	Fri, 13 Nov 2026 19:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KOZCeWLF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256BD1F000C8;
-	Fri, 13 Nov 2026 19:22:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a8xyC+nq
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FFC1F000C5;
+	Fri, 13 Nov 2026 19:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794597747;
-	bh=I+hL5QQE6GyRoMtW1B5hMOK4wLRT/tC2hYnS7Jh1VQs=;
+	s=k20260515; t=1794597754;
+	bh=MsD+/evnBupQnQ/r23zWXhvXOnuy9swhlSCTp08Hvmk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=KOZCeWLFVoni4EdGGydXzRafreR8BwXNM6418PclNrmwcSAbm/pLh77kzDqAZP965
-	 1+LLl09FbHKKZERQ1kmlvb+YzZB71U7fbbp5zsLOGV59IpJyJj9yLa3zb1r+qmVlxf
-	 ObA+/LuZ7os08E1WXh4pCG7znZtbcEB7aJkzfXD8EtlHtAWn2SpLRZjUhpJqbOwlIv
-	 NwhSO+Yto2d+KFMySBSuATs20W3/nQ10yDhshtcIkq5wXpbGfM0qgqqbtbyqHZTTLf
-	 HDoA3G8G1aXnegu9ZmeuMqKR7dWFuGtuG4+zeST5CATtoJCE7v+YFr3cgw3mzk3kbN
-	 yRn+Aca4MH9Yg==
+	b=a8xyC+nquetdqzEnUDFlS4+ylTpzUH8oOQJYJ96CrG9Q3sQFbxqz/Rzc23IRXBcM7
+	 1qy3YZDu5tw1zAgfV5I7vDCzVTp72m/inWJjRHAxcejcNIjLLUgj/vqshHVe3lxXgh
+	 MWPvnxWTbk9R73kZIPQPAppDzbGE1KWMdhwmwK6ReYfWiWBi9YyEP3l8oDSUU9CPDw
+	 Lh06HdbOf3MfTuzOzXWnyVYuGSqSsP0+dXnUsrQYwJqVVIB1MH4xGm7/c/dHnZj0Wd
+	 bbskFgMU75oTFr35azQHo37z6fRhE541pHBoE3fkY3WZSZu36D1+N3+kKhVSMnCyzm
+	 UK+IgRK4zWffA==
 From: Chuck Lever <cel@kernel.org>
-Date: Fri, 13 Nov 2026 14:22:04 -0500
-Subject: [PATCH net-next v3 06/10] handshake: Add a kunit test for the
- completion gate
+Date: Fri, 13 Nov 2026 14:22:07 -0500
+Subject: [PATCH net-next v3 09/10] NFSD: Implement export tagging
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -55,7 +54,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-tls-session-tags-v3-6-91271964cdb0@kernel.org>
+Message-Id: <20261113-tls-session-tags-v3-9-91271964cdb0@kernel.org>
 References: <20261113-tls-session-tags-v3-0-91271964cdb0@kernel.org>
 In-Reply-To: <20261113-tls-session-tags-v3-0-91271964cdb0@kernel.org>
 To: Donald Hunter <donald.hunter@gmail.com>, 
@@ -72,160 +71,391 @@ To: Donald Hunter <donald.hunter@gmail.com>,
 Cc: kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org, 
  linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org
 X-Mailer: b4 0.17-dev-9c833
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4697; i=cel@kernel.org;
- h=from:subject:message-id; bh=H81ze1RI93ATjQVrkoT7StPaKToyrSCrsGr9t8uhCsM=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq92Nf8q+lJcP+aIgtXhVJMR4NtY6WkVgWiRzzr
- jqagK/ZgrqJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCavdjXwAKCRAzarMzb2Z/
- l92FD/4rMROLWBW7BVy9zgQ3+OPJA1H8goVDLXqdNuev5Z33HfACNIY0hBmipKFzQ7jvig3Acar
- WlM4DkL54i+O4LeagJ9YVitKXlXaj9XMkO5rInA84IzuGlwtjZFZ1JfTGK4gn7PVSYcvMSBy6NT
- 8QUM2kL8MrpMi9hW/l3ubSavCEoMb7rFaMfk7WlQfXijV5zB9gfqhykDvz/F7WOOF33xU4w7u+M
- CpT12SO8qLB/KWC818k/53cu6BXUTJe/GEKUH0jpvmEBwfYBdEXmVBZl464wufbEhfRH1NpbXRi
- G5b1ZCb3oWu8f4dBTAGSMZOiLF0+MwXH3zlPUDC0vA83e8G2886WaITsTzUYsam1sN7ZIef82cb
- u4IZVdpLzeHrgs7NklkolArt8x6dO7/RT9Ts9JcAWsfD7+jzqWeXEp0tNcpwXVcoGmBGXj88OhH
- WCd4KuU+bsx0rukYpoHIOOqp4Yc5tO8hny7t2tBKuk0HGxt+vY3Gb3IXAhh1lBvnRsxjgwCX2M+
- Y49eaguQcqgUSAJLJ4xTZiDxIFlPeZghVPQe9oW+YxEs+u0MzPP5u/DglwzB7EoiToQeqWTh5jt
- TW3v2fJ1S7IJe8Skv7zuZAva1LHPSWI2oX7auuxQBjhE/2mzwzp00i4f0e0MrbAZcudx7jDnTiD
- 8XzzIlgqtGIRlXQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12030; i=cel@kernel.org;
+ h=from:subject:message-id; bh=UPhc3VPbWpC5pVYg8/DYrMZot8o2tUSTrtEa82bshaM=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq92NfiWAAl2eX0061bMUeEmBcdadIdTRsXPwPK
+ GL1LzlffiOJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCavdjXwAKCRAzarMzb2Z/
+ l7IHD/9dqflFl4apLJR22wIJUK1Ht551PYu0O/PCf2H0kFJXLrAX8+oADpDv2diC3T6J2d9P/xW
+ YJzplMNaqa47mcPhAxuIgJoYIXYxdwb2ab3Pm61prT6fWRig0rIjRDf1r03WWXF8odAWhhKIC76
+ H74GeZND8g0DhYi3EE6ijnj3XyOL6SaR2UdHa7ytImrxDhVJJQD9Oyv6BrK9hlJX8QlwUMhQY3f
+ /DGDCPH2qmQV+x2qJDvh9vd2Wo8R/UixAU9q+6DqGUND92ya/KTNrqwCM8goB6v9xJnXp22L9RT
+ eHV6Wlv3u6tPe3tSfJxeS2iemOg7fohWFzLFO2kufvjSfVFrqXFujnjbGwPnPMtW/qCrJVRT8ks
+ EMccgtTYKFlla7uANHNcRFp3v7TRMUDvsSpPHe2d4/jXbDHGumjGQ7baTA9JDRk6TnmXzrR6Qfk
+ xGdkf+SlaJGb7oLsjC8hmtESJh2ZFFL7Rv5dcTojR9J+Z0gYXA5NDMlWE8bGc2zDqQU7hrDRPop
+ YyDN1n0eXtfBnUujz9szGgwsB+EzMI4reiv+cjoq8pKtGWLn4n7+B/A1lpYWLrVDoxIWAPCyuTY
+ dg4yLtrcYqGGFwuKFxIHRIAsgywrCcDAqsPJMLc3IJVMytoR0LZMPhHnHBPdg5rSzT0hgLFAxVd
+ ooCHVxwVI+Hjxlw==
 X-Developer-Key: i=cel@kernel.org; a=openpgp;
  fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-The genl family runs DONE with parallel_ops, so duplicate or
-concurrent DONE downcalls for the same socket can both reach the
-same handshake_req. The split try/finish pair guarantees that
-exactly one caller drives completion to the consumer's hp_done
-callback. Ownership of the collected session tags can then pass to
-the request.
+NFSD treats TLS peer identity as a boolean: a peer is authenticated
+or it is not. Some deployments need finer authorization. A single
+certificate may authenticate several distinct actors, and an
+administrator may wish to grant each a different level of access.
 
-Exercise the gate's exclusivity with a kunit case: only the first
-handshake_try_complete() wins, and a later handshake_complete() on
-the same request leaves hp_done fired exactly once.
+Once a TLS handshake completes, tlshd hands the kernel a list of
+tags for the session. When an export configures an allow_tags list,
+grant access only when the session carries at least one matching
+tag. An export with no allow_tags list continues to admit any
+authenticated peer. Report each denial through the
+nfsd_export_tags_denied tracepoint, with the client's address and
+the request's XID.
+
+tlshd issues session tags only for an mTLS handshake. Reject an
+allow_tags list paired with any xprtsec mode other than mtls. The
+administrator then states the combination explicitly, where a
+default xprtsec setting would expose the export to plaintext or
+anonymous-TLS peers.
+
+__fh_verify() does not call check_xprtsec_policy() for an NLM or
+LOCALIO request. lockd does not support xprtsec, and a LOCALIO
+request does not have an svc_rqst. The tag check is part of
+check_xprtsec_policy(), so with this patch an allow_tags list does
+not restrict NLM or LOCALIO requests. NLM and LOCALIO requests
+already bypass an xprtsec=mtls restriction in the same way.
+
+A kernel that predates this patch ignores allow_tags and exports
+the filesystem without the restriction. List an export's tags in
+/proc/fs/nfsd/exports so user space can confirm the restriction
+took effect.
 
 Signed-off-by: Chuck Lever <cel@kernel.org>
 ---
- net/handshake/handshake-test.c | 82 ++++++++++++++++++++++++++++++++++++++++++
- net/handshake/request.c        |  2 ++
- 2 files changed, 84 insertions(+)
+ fs/nfsd/Kconfig         |   1 +
+ fs/nfsd/export.c        | 114 +++++++++++++++++++++++++++++++++++++++++++++---
+ fs/nfsd/export.h        |   9 ++++
+ fs/nfsd/trace.h         |  27 ++++++++++++
+ include/net/handshake.h |   5 +++
+ 5 files changed, 151 insertions(+), 5 deletions(-)
 
-diff --git a/net/handshake/handshake-test.c b/net/handshake/handshake-test.c
-index b4a56c4350bd..b6992d1fa4ce 100644
---- a/net/handshake/handshake-test.c
-+++ b/net/handshake/handshake-test.c
-@@ -465,6 +465,84 @@ static void handshake_req_cancel_test3(struct kunit *test)
- 	fput(filp);
+diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
+index ffb76761d6a8..14f694323dcb 100644
+--- a/fs/nfsd/Kconfig
++++ b/fs/nfsd/Kconfig
+@@ -12,6 +12,7 @@ config NFSD
+ 	select SUNRPC
+ 	select EXPORTFS
+ 	select NFS_COMMON
++	select STRINGSET
+ 	select NFS_ACL_SUPPORT if NFSD_V2_ACL
+ 	select NFS_ACL_SUPPORT if NFSD_V3_ACL
+ 	depends on MULTIUSER
+diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
+index 80824d7f45e4..b171cc625c9a 100644
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -18,6 +18,7 @@
+ #include <linux/exportfs.h>
+ #include <linux/sunrpc/svc_xprt.h>
+ #include <net/genetlink.h>
++#include <net/handshake.h>
+ #include <uapi/linux/nfsd_netlink.h>
+ 
+ #include "nfsd.h"
+@@ -629,6 +630,7 @@ static void svc_export_release(struct rcu_head *rcu_head)
+ 	struct svc_export *exp = container_of(rcu_head, struct svc_export,
+ 			ex_rcu);
+ 
++	stringset_destroy(&exp->ex_allow_tags);
+ 	nfsd4_fslocs_free(&exp->ex_fslocs);
+ 	export_stats_destroy(exp->ex_stats);
+ 	kfree(exp->ex_stats);
+@@ -1287,6 +1289,52 @@ static int xprtsec_parse(char **mesg, char *buf, struct svc_export *exp)
+ 	return 0;
  }
  
-+static int handshake_try_complete_done_count;
-+
-+static void test_done_count_func(struct handshake_req *req, int status,
-+				 struct genl_info *info)
++static int tags_parse(char **mesg, char *buf, struct stringset *tags)
 +{
-+	handshake_try_complete_done_count++;
-+}
-+
-+static struct handshake_proto handshake_req_alloc_proto_count = {
-+	.hp_handler_class	= HANDSHAKE_HANDLER_CLASS_TLSHD,
-+	.hp_accept		= test_accept_func,
-+	.hp_done		= test_done_count_func,
-+};
-+
-+static void handshake_try_complete_test1(struct kunit *test)
-+{
-+	unsigned long fcount_before;
-+	struct handshake_req *req, *next;
-+	struct handshake_net *hn;
-+	struct socket *sock;
-+	struct file *filp;
-+	struct net *net;
-+	bool first, second;
++	unsigned int i, listsize;
 +	int err;
 +
-+	/* Arrange */
-+	handshake_try_complete_done_count = 0;
++	/* more than one allow_tags */
++	if (tags->ss_finalized)
++		return -EINVAL;
 +
-+	req = handshake_req_alloc(&handshake_req_alloc_proto_count, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, req);
++	err = get_uint(mesg, &listsize);
++	if (err)
++		return -EINVAL;
++	if (listsize == 0 || listsize > NFSD_MAX_ALLOW_TAGS)
++		return -EINVAL;
++	if (!stringset_alloc(tags, listsize, GFP_KERNEL))
++		return -ENOMEM;
 +
-+	err = __sock_create(&init_net, PF_INET, SOCK_STREAM, IPPROTO_TCP,
-+			    &sock, 1);
-+	KUNIT_ASSERT_EQ(test, err, 0);
++	for (i = 0; i < listsize; i++) {
++		int len;
 +
-+	filp = sock_alloc_file(sock, O_NONBLOCK, NULL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, filp);
-+	KUNIT_ASSERT_NOT_NULL(test, sock->sk);
-+	sock->file = filp;
++		len = qword_get(mesg, buf, PAGE_SIZE);
++		if (len <= 0 || len > HANDSHAKE_SESSION_TAG_MAX_LEN)
++			return -EINVAL;
++		if (strlen(buf) != len)
++			return -EINVAL;
++		if (!stringset_add_dup(tags, buf, GFP_KERNEL))
++			return -ENOMEM;
++	}
++	stringset_finalize(tags);
 +
-+	fcount_before = file_count(filp);
-+	err = handshake_req_submit(sock, req, GFP_KERNEL);
-+	KUNIT_ASSERT_EQ(test, err, 0);
-+	KUNIT_EXPECT_EQ(test, file_count(filp), fcount_before + 1);
-+
-+	net = sock_net(sock->sk);
-+	hn = handshake_pernet(net);
-+	KUNIT_ASSERT_NOT_NULL(test, hn);
-+
-+	/* Pretend to accept this request */
-+	next = handshake_req_next(hn, HANDSHAKE_HANDLER_CLASS_TLSHD);
-+	KUNIT_ASSERT_PTR_EQ(test, req, next);
-+	/* Simulate FD_PREPARE() consuming the file reference handed
-+	 * off by handshake_req_next(); see handshake_nl_accept_doit().
-+	 */
-+	fput(filp);
-+
-+	/* Act */
-+	first = handshake_try_complete(req);
-+	second = handshake_try_complete(req);
-+	handshake_finish_complete(req, 0, NULL, NULL);
-+	/* handshake_finish_complete() drops the request's pin on the file. */
-+	KUNIT_EXPECT_EQ(test, file_count(filp), fcount_before);
-+	/* handshake_complete() re-enters the gate via
-+	 * handshake_try_complete(). With the gate already taken,
-+	 * hp_done must not fire a second time.
-+	 */
-+	handshake_complete(req, 0, NULL);
-+
-+	/* Assert */
-+	KUNIT_EXPECT_TRUE(test, first);
-+	KUNIT_EXPECT_FALSE(test, second);
-+	KUNIT_EXPECT_EQ(test, handshake_try_complete_done_count, 1);
-+	KUNIT_EXPECT_EQ(test, file_count(filp), fcount_before);
-+
-+	fput(filp);
++	return 0;
 +}
 +
- static struct handshake_req *handshake_req_destroy_test;
- 
- static void test_destroy_func(struct handshake_req *req)
-@@ -751,6 +829,10 @@ static struct kunit_case handshake_api_test_cases[] = {
- 		.name			= "req_cancel after done",
- 		.run_case		= handshake_req_cancel_test3,
- 	},
-+	{
-+		.name			= "try_complete gate is exclusive",
-+		.run_case		= handshake_try_complete_test1,
-+	},
- 	{
- 		.name			= "req_destroy works",
- 		.run_case		= handshake_req_destroy_test1,
-diff --git a/net/handshake/request.c b/net/handshake/request.c
-index 72515e5e8cc2..31a81b7cb7e9 100644
---- a/net/handshake/request.c
-+++ b/net/handshake/request.c
-@@ -340,6 +340,7 @@ bool handshake_try_complete(struct handshake_req *req)
++/*
++ * tlshd issues session tags only for an mTLS handshake, so an
++ * allow_tags list is valid only with xprtsec=mtls alone.
++ * check_xprtsec_policy() enforces the same invariant at access time.
++ */
++static int check_allow_tags(const struct svc_export *exp)
++{
++	if (!stringset_is_empty(&exp->ex_allow_tags) &&
++	    exp->ex_xprtsec_modes != NFSEXP_XPRTSEC_MTLS)
++		return -EINVAL;
++	return 0;
++}
++
+ static inline int
+ nfsd_uuid_parse(char **mesg, char *buf, unsigned char **puuid)
  {
- 	return !test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags);
+@@ -1348,6 +1396,7 @@ static int svc_export_parse(struct cache_detail *cd, char *mesg, int mlen)
+ 	exp.cd = cd;
+ 	exp.ex_devid_map = NULL;
+ 	exp.ex_xprtsec_modes = NFSEXP_XPRTSEC_ALL;
++	stringset_init(&exp.ex_allow_tags);
+ 
+ 	/* expiry */
+ 	err = get_expiry(&mesg, &exp.h.expiry_time);
+@@ -1382,6 +1431,11 @@ static int svc_export_parse(struct cache_detail *cd, char *mesg, int mlen)
+ 			goto out3;
+ 		exp.ex_fsid = an_int;
+ 
++		/*
++		 * A kernel that does not recognize "allow_tags" breaks
++		 * out of this loop when it reaches that word, exporting
++		 * the filesystem without the tag restriction.
++		 */
+ 		while (qword_get(&mesg, buf, PAGE_SIZE) > 0) {
+ 			if (strcmp(buf, "fsloc") == 0)
+ 				err = fsloc_parse(&mesg, buf, &exp.ex_fslocs);
+@@ -1391,6 +1445,8 @@ static int svc_export_parse(struct cache_detail *cd, char *mesg, int mlen)
+ 				err = secinfo_parse(&mesg, buf, &exp);
+ 			else if (strcmp(buf, "xprtsec") == 0)
+ 				err = xprtsec_parse(&mesg, buf, &exp);
++			else if (strcmp(buf, "allow_tags") == 0)
++				err = tags_parse(&mesg, buf, &exp.ex_allow_tags);
+ 			else
+ 				/* quietly ignore unknown words and anything
+ 				 * following. Newer user-space can try to set
+@@ -1401,6 +1457,10 @@ static int svc_export_parse(struct cache_detail *cd, char *mesg, int mlen)
+ 				goto out4;
+ 		}
+ 
++		err = check_allow_tags(&exp);
++		if (err)
++			goto out4;
++
+ 		err = check_export(&exp.ex_path, &exp.ex_flags, exp.ex_uuid);
+ 		if (err)
+ 			goto out4;
+@@ -1443,6 +1503,7 @@ static int svc_export_parse(struct cache_detail *cd, char *mesg, int mlen)
+ 	} else
+ 		err = -ENOMEM;
+ out4:
++	stringset_destroy(&exp.ex_allow_tags);
+ 	nfsd4_fslocs_free(&exp.ex_fslocs);
+ 	kfree(exp.ex_uuid);
+ out3:
+@@ -1468,6 +1529,22 @@ static int is_export_stats_file(struct seq_file *m)
+ 	return !strcmp(m->file->f_path.dentry->d_name.name, "export_stats");
  }
-+EXPORT_SYMBOL_IF_KUNIT(handshake_try_complete);
  
- /**
-  * handshake_finish_complete - Deliver completion to the consumer
-@@ -372,6 +373,7 @@ void handshake_finish_complete(struct handshake_req *req, int status,
- 
- 	fput(file);
++static void show_allow_tags(struct seq_file *m,
++			    const struct stringset *tags)
++{
++	unsigned int i;
++	char *tag;
++
++	if (stringset_is_empty(tags))
++		return;
++	seq_puts(m, ",allow_tags=");
++	stringset_for_each(tags, i, tag) {
++		if (i)
++			seq_putc(m, ':');
++		seq_escape(m, tag, ",:() \t\n\\");
++	}
++}
++
+ static int svc_export_show(struct seq_file *m,
+ 			   struct cache_detail *cd,
+ 			   struct cache_head *h)
+@@ -1514,6 +1591,7 @@ static int svc_export_show(struct seq_file *m,
+ 			}
+ 		}
+ 		show_secinfo(m, exp);
++		show_allow_tags(m, &exp->ex_allow_tags);
+ 	}
+ 	seq_puts(m, ")\n");
+ 	return 0;
+@@ -1570,6 +1648,9 @@ static void export_update(struct cache_head *cnew, struct cache_head *citem)
+ 		new->ex_flavors[i] = item->ex_flavors[i];
+ 	}
+ 	new->ex_xprtsec_modes = item->ex_xprtsec_modes;
++	new->ex_allow_tags = item->ex_allow_tags;
++	/* Shallow move: @item is released once the update completes. */
++	stringset_init(&item->ex_allow_tags);
  }
-+EXPORT_SYMBOL_IF_KUNIT(handshake_finish_complete);
  
- void handshake_complete(struct handshake_req *req, int status,
- 			struct genl_info *info)
+ static struct cache_head *svc_export_alloc(void)
+@@ -1590,6 +1671,8 @@ static struct cache_head *svc_export_alloc(void)
+ 		return NULL;
+ 	}
+ 
++	stringset_init(&i->ex_allow_tags);
++
+ 	return &i->h;
+ }
+ 
+@@ -1798,6 +1881,9 @@ static struct svc_export *exp_find(struct cache_detail *cd,
+  * one exception is __fh_verify() since it has logic that may result in one
+  * or both of the helpers being skipped.
+  *
++ * When @exp carries an allow_tags list, the session's tags must
++ * intersect it.
++ *
+  * Return values:
+  *   %nfs_ok if access is granted, or
+  *   %nfserr_wrongsec if access is denied
+@@ -1806,19 +1892,37 @@ __be32 check_xprtsec_policy(struct svc_export *exp, struct svc_rqst *rqstp)
+ {
+ 	struct svc_xprt *xprt = rqstp->rq_xprt;
+ 
++	/*
++	 * A tagged export is satisfiable only by a matching mTLS
++	 * session, so the plaintext and anonymous-TLS arms grant
++	 * access only when the allow_tags list is empty.
++	 */
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_NONE) {
+-		if (!test_bit(XPT_TLS_SESSION, &xprt->xpt_flags))
++		if (!test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
++		    stringset_is_empty(&exp->ex_allow_tags))
+ 			return nfs_ok;
+ 	}
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_TLS) {
+ 		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
+-		    !test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
++		    !test_bit(XPT_PEER_AUTH, &xprt->xpt_flags) &&
++		    stringset_is_empty(&exp->ex_allow_tags))
+ 			return nfs_ok;
+ 	}
+ 	if (exp->ex_xprtsec_modes & NFSEXP_XPRTSEC_MTLS) {
+-		if (test_bit(XPT_TLS_SESSION, &xprt->xpt_flags) &&
+-		    test_bit(XPT_PEER_AUTH, &xprt->xpt_flags))
+-			return nfs_ok;
++		/*
++		 * test_bit_acquire() pairs with the smp_wmb() in
++		 * svc_tcp_handshake_done(): a set XPT_TLS_SESSION
++		 * guarantees the handshake tag stores are visible here.
++		 */
++		if (test_bit_acquire(XPT_TLS_SESSION, &xprt->xpt_flags) &&
++		    test_bit(XPT_PEER_AUTH, &xprt->xpt_flags)) {
++			if (stringset_is_empty(&exp->ex_allow_tags))
++				return nfs_ok;
++			if (stringset_intersection(&xprt->xpt_handshake_tags,
++						&exp->ex_allow_tags))
++				return nfs_ok;
++			trace_nfsd_export_tags_denied(rqstp, exp);
++		}
+ 	}
+ 	return nfserr_wrongsec;
+ }
+diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
+index 117fb28db1e0..e7ebf5abc594 100644
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/sunrpc/cache.h>
+ #include <linux/percpu_counter.h>
++#include <linux/stringset.h>
+ #include <uapi/linux/nfsd/export.h>
+ #include <linux/nfs4.h>
+ 
+@@ -47,6 +48,13 @@ struct exp_flavor_info {
+ 	u32	flags;
+ };
+ 
++/*
++ * Bounds the per-request cost of the stringset_intersection() in
++ * check_xprtsec_policy(). Independent of the per-handshake session
++ * tag cap, HANDSHAKE_MAX_SESSIONTAGS.
++ */
++#define NFSD_MAX_ALLOW_TAGS	64
++
+ /* Per-export stats */
+ enum {
+ 	EXP_STATS_FH_STALE,
+@@ -78,6 +86,7 @@ struct svc_export {
+ 	struct rcu_head		ex_rcu;
+ 	unsigned long		ex_xprtsec_modes;
+ 	struct export_stats	*ex_stats;
++	struct stringset	ex_allow_tags;
+ };
+ 
+ /* an "export key" (expkey) maps a filehandlefragement to an
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index 2ae7f150a72c..e5c179fe28f8 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -467,6 +467,33 @@ TRACE_EVENT(nfsd_export_update,
+ 	)
+ );
+ 
++TRACE_EVENT(nfsd_export_tags_denied,
++	TP_PROTO(
++		const struct svc_rqst *rqstp,
++		const struct svc_export *exp
++	),
++	TP_ARGS(rqstp, exp),
++	TP_STRUCT__entry(
++		__field(u32, xid)
++		__sockaddr(client, rqstp->rq_xprt->xpt_remotelen)
++		__string(path, exp->ex_path.dentry->d_name.name)
++		__string(auth_domain, exp->ex_client->name)
++	),
++	TP_fast_assign(
++		const struct svc_xprt *xprt = rqstp->rq_xprt;
++
++		__entry->xid = be32_to_cpu(rqstp->rq_xid);
++		__assign_sockaddr(client, &xprt->xpt_remote,
++				  xprt->xpt_remotelen);
++		__assign_str(path);
++		__assign_str(auth_domain);
++	),
++	TP_printk("xid=0x%08x client=%pISpc path=%s domain=%s",
++		__entry->xid, __get_sockaddr(client),
++		__get_str(path), __get_str(auth_domain)
++	)
++);
++
+ DECLARE_EVENT_CLASS(nfsd_io_class,
+ 	TP_PROTO(struct svc_rqst *rqstp,
+ 		 struct svc_fh	*fhp,
+diff --git a/include/net/handshake.h b/include/net/handshake.h
+index ad96e92af04d..d04f0c0b9cba 100644
+--- a/include/net/handshake.h
++++ b/include/net/handshake.h
+@@ -12,10 +12,15 @@
+ 
+ #include <linux/errno.h>
+ #include <linux/stringset.h>
++#include <uapi/linux/handshake.h>
+ 
+ /*
+  * Bounds the cost of stringset_intersection() in consumer
+  * authorization checks.
++ *
++ * The per-tag byte limit, HANDSHAKE_SESSION_TAG_MAX_LEN, is
++ * enforced by the netlink policy generated from
++ * Documentation/netlink/specs/handshake.yaml.
+  */
+ #define HANDSHAKE_MAX_SESSIONTAGS	64
+ 
 
 -- 
 2.56.0
