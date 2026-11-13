@@ -1,74 +1,107 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794574022;
-	b=2EF6HBk39VvEDA2mw/lBWy4y/nJm4fxLwxNWEjQBZG8+tWDJUyRlHl1EW5dzOIcgHg6x
-	 3JlqVF9jzydcvbdWxWA+tr/i2W8lsjdqdi3I+cb58HOeiHESPZpUIIi1ocLSivyzWqx+8
-	 QKnJpxUsDglI9LHfRTNbv7thqvHbm1+2zN1b9RDBfPVO/BpdL7Iv8DV4B08fwH4WkpDIA
-	 wsgZEtveSTaB8tSPn+NtWVICRPXp5Y+IkJB4Mpr27b++EtEsauVjMWqJYzNVfzGk31Wgf
-	 HIfk9nbQnRwq4HkmQGLMqt4tkbpMAVa6x4kjao4Ii9aL9gp3nJ9VZ53acMx7j5co4xA==
+	t=1794574186;
+	b=c+aV6zv404L7wf87HADXMUpKjfHDQg76b/zazjeQ61DL9TreSHq/Oolfh5E3CwoqdCnw
+	 WGQpuT6cEGY8HpKKJGlhzzZq2Ff8pgioX2XI8I0HmoRBO4x2vjJerHDjnJn9IC/MfU0W/
+	 VCbRYZsjeTB0Yff5aAR7Ft1i2rimJngyKG1g8T0UWbUl6IiKDojJz62m/UBCwEAC9oJdj
+	 qy9E0/1p8NObwQTu4xzJQmdIbzzmuPD7ssYD7kMRkAtHUm0sDOLBQDq4p0sl5931Nt7vt
+	 FEmkPM0hmzt9H9N6jK1QTJiXPLQb/lBR9ihR8nm3wMKk0ohkpPKO/km0Su0k9Yuggfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794574022;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=2duuSZ8Rvfzqo0bXUMYpGryPT4QuFWSDj85f3yc5O5M=;
-	b=YW1pO8orCepFlSK44e5I56oC8ib7dIBE6H1PNUtXRF+IAKn8OmwFHKfPjkEEoey2S4X2
-	 AgMX8HZ6DemeCrtB7p3B6AbdBUJ6yhI/GRYnsNQyMmM6mP/MOYp+GZRL9dSYFNpcCAHj0
-	 UIpuOK21/evG/Gd37sSkfuWt4xpd8jrBeys3lWPPyxlEhueOYF32mPmKb9ETwxws6w+Lv
-	 sRKl8MJ42YFB3xJR3k9SLwL62JoBuwTeUCO9AkQV9JpKYKOyzSSkRerulkf6w3dYckRIk
-	 mHEJLBmFaoiGMAwKelEK6OMc0IfLDXEmeFrpOtX8PZpwYWqcZLIRGbzJbU3H0nFRozQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794574186;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=xuGzZpBSWxAktfUn8GwyedRb2Dbl/HlSNSopw3gGgAg=;
+	b=nHHdbUa/wJ8D5NY1JqgL6z5L/6UFKGyA+rVItSk1ssWlL5AaFp/Y2Yjd+xr34awXvbr4
+	 0ASd8NkYnkcPglAre+DKd9OviUxAz19EQwsxNsbzny+UBgONNXr79L4yKq76XSGZQtiXP
+	 r8174er/n7FIfz0+w7xEoUHtfyQM/Aim1CVcfg7C4FkjJy+wILm44iSB4znvg0mQMsqHp
+	 dnTd6PWL/Vzm7/rXZK06UVok+EW2O1qB4K7R2taY5HH7iNveDIZXljp1WKlpalW86Q4bc
+	 Ko4xy+ERMUPwosJqcg1o2mdcWTLS/vdPEzmJYw+V70GkvpxgGu5QfzUCAkQuNpDWDFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qt7XSlPj;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c1RuGly2;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=TrD2iIah;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E83C606A338;
-	Fri, 13 Nov 2026 12:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B0F606A327
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:49:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37B0F606A327
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qt7XSlPj
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CC31F000C5;
-	Fri, 13 Nov 2026 12:46:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794574022;
-	bh=2duuSZ8Rvfzqo0bXUMYpGryPT4QuFWSDj85f3yc5O5M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qt7XSlPjZlZkjeKFtCgpnobRkK7iHrP/7adBsUrpoIFS+sxCPAu1SJlz4MKEwLuum
-	 Uird9sjk2TL6Xn8y757tzNrbYjfv/kjgFTYwhyXMFcqrE1Fc/Hclq5mmLFY2Dgn7H6
-	 +i+q1sEJm47TpjBVeMYHu358iN2j80a/UnkLhw0UawssT4r2izVMAcXHheelgZOCth
-	 HdbX4tAta+Y5KIZmNIsC6A+V73pLfmfdU2x1FqkwZO3M/LJ4amTQh4AHRAlIvuppuu
-	 V3/i7Mlo/oeKYVtDJCMuWbVbuROvgspP7zB6e6WnZ0httKBbS5jeruvZB964eGXWPG
-	 I69bHNKfQP54A==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-sctp@vger.kernel.org,
-	dev@openvswitch.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net 5/5] udp: use skb_set_transport_header_careful() in __udp6_lib_err_encap()
-Date: Fri, 13 Nov 2026 13:46:25 +0100
-Message-ID: <20261113124625.4010206-6-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261113124625.4010206-1-edumazet@kernel.org>
-References: <20261113124625.4010206-1-edumazet@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=c1RuGly2;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=TrD2iIah
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794574185;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xuGzZpBSWxAktfUn8GwyedRb2Dbl/HlSNSopw3gGgAg=;
+	b=c1RuGly2r6b3DWolS3M8Yc5S8lYilkRXGyjrGT4hXX0stJaNayTo2bM1G/UDrHWfrgjgGT
+	8oj8O/utLd1zYxYD0dS529ZT2EF/zYreBgoS8E/uT655CgRDeuDVXDck4PnLadoyBdwR9V
+	GzSwm7mSBGijZ/SuL0SC4ThF25RdZBA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-557-PBlvDi8HNbiqhG-5neWYUQ-1; Fri, 13 Nov 2026 07:49:43 -0500
+X-MC-Unique: PBlvDi8HNbiqhG-5neWYUQ-1
+X-Mimecast-MFC-AGG-ID: PBlvDi8HNbiqhG-5neWYUQ_1794574182
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4930269afdcso603168f8f.2
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 04:49:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794574182; x=1795178982; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=xuGzZpBSWxAktfUn8GwyedRb2Dbl/HlSNSopw3gGgAg=;
+        b=TrD2iIahOZz/OmwOoZ5Mayv5YrQcn0q5dyd1ikejK4rZsAvxCe3rjC5OCaXyyz8hF2
+         F4unhc8bbDKo/ZK/J6s0xzjYretxanCKHdbpwYw5rfPA/5amjnzJpQ4LkKZuK+FKYbw6
+         cFMQdTgHPveiXvgMYxa89A/aWnSglaAtBnNS5B98fOdPJKjlmAp0Vr08xch/74VYHf7S
+         mZVD698Pj8no9vnQsw0KoVQAGQ5LYTiXIqTXarveSIqg159FkLci3z4+v1fmAf+CmIip
+         8XjJZMLZYxKBQB8k7aALT+zbPKJNv6bWyKeIBbJFMh2b2eqBS7ksI13aDE45Ewv0YB/p
+         +BKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794574182; x=1795178982;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=xuGzZpBSWxAktfUn8GwyedRb2Dbl/HlSNSopw3gGgAg=;
+        b=1/N+s/cEnQkwpVDb7/htJhwYkgp6BktPS/QOz/1uS6JayqmUHywrHXQsgV0SyFwTqm
+         nQzSRrsZmt4FQYVcsaMH7jX97V0EY/NREu+W3f0+R6IGNp+IiAi3JrJspWEYWAFoOO6S
+         tG4AufLWs4v2LRSoDbKjVEZaSJZiiEYE7py54Ez9wAJK389S2oj/9+hlh/rqFWwihPY6
+         4Zo+KPopnwkaUJipf98uJiQ836bGR7RQgG9sCGdOlnsxra/VZsjjm2XeTWUKwDWpwBe4
+         TGjg7W0CIk4G+qlD9XQt7QQyRBKVCfcvkNBLiatzJ1/ik46MY7clSwXQY7uFvw+f56Du
+         hn7A==
+X-Forwarded-Encrypted: i=1; AL+hErElEPMvKanpKAAybv3L9iFPlykfZPQFSULp/Cg0zMBVVPmNbP6vBOdtTruuwmnBfdJpIxWboxk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/pZrOqUSsv08Zexbbxt9G+UFmg+d9zr/4JN/qmXvAbnh2xJlTy
+	mRBVpeXnXbQv+gmXv54M8dQi4rJYw0PUpbz7+PFAM+g7asb4aAaS2cxyfZkSNokv6ApItUC1R+K
+	D0nSXk+GFTNajyM43/PBH1VkbRRCiJO8i8wnVmAGDSnN5TNNEypk+gOskDQ==
+X-Gm-Gg: AYBFou2Oldfo7B8l/MydlQfzCTKwphh0J+KHTOiQRZG98YQfdcDlGU7aRpxYEdEOc6o
+	9zXcS8fsVCsnj4/DRaMBgfb0Lm227oM+k3TpnvmAvgN/Pu9botVVsorFai0MotkgsoYVrz7iLYl
+	ODu/lxcpsJ9Ccye9xFxPet6DK2ARBIM3wSfVq6ZiGlFE4G744DmApHog73reGCGc3Qvj4lRRWk7
+	9bUiRptDfjg/dgVbb8AIWSMc2utJmLxr/hxcl+Albuf5YWcy4kVnuiYAlOITm5CP0jgIx97aCr5
+	4ImZbuh0Tl14zaGXHxe6uknPzF9G7RrQMIqDf52fxSL/pmcdU87Px6U+7UQXfaR0kLIaStIeRAy
+	aMhUMl2TjJRIIcO+2D+9gNXOsWv5KwuwxE+eAk7nyGDg+7Wv2HHlxHMQVIV+HE7XOkBWjZaKIPo
+	1R7WQniaxBzr4=
+X-Received: by 2002:a05:600c:3b91:b0:4a3:59c9:a744 with SMTP id 5b1f17b1804b1-4bb55a3e29cmr53767465e9.7.1794574182313;
+        Fri, 13 Nov 2026 04:49:42 -0800 (PST)
+X-Received: by 2002:a05:600c:3b91:b0:4a3:59c9:a744 with SMTP id 5b1f17b1804b1-4bb55a3e29cmr53766935e9.7.1794574181890;
+        Fri, 13 Nov 2026 04:49:41 -0800 (PST)
+Received: from [192.168.0.19] (217.red-88-4-146.dynamicip.rima-tde.net. [88.4.146.217])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4e2adf53sm151135805e9.15.2026.11.13.04.49.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 04:49:40 -0800 (PST)
+From: Sergio Lopez <slp@redhat.com>
+Subject: [PATCH RFC v2 0/8] vsock: add datagram support to virtio and vhost
+Date: Fri, 13 Nov 2026 13:47:33 +0100
+Message-Id: <20261113-vsock-dgram-support-v2-0-bacfc85b71ce@redhat.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -78,58 +111,167 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NwQrCMBBEf0X27Eoaa1M8CYIf4FV6iOk2DWJTd
+ mtQSv/dUDx6fDPMmxmEOJDAcTMDUwoS4pBBbzfgejt4wtBmBq10VShtMEl0D2w92yfKaxwjT1j
+ Ve1uSsnQnA3k5MnXhvVpvcL2coclhH2SK/FmfUrFWP2n9V5oKVEjlwbjOOCJTnyQMTN7uIntol
+ mX5AsLE5oG9AAAA
+X-Change-ID: 20261027-vsock-dgram-support-683a4e0aebe7
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ Bobby Eshleman <bobbyeshleman@meta.com>, 
+ Alexei Starovoitov <ast@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Bryan Tan <bryan-bt.tan@broadcom.com>, 
+ Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+ Dexuan Cui <decui@microsoft.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bpf@vger.kernel.org, 
+ linux-hyperv@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
+ linux-doc@vger.kernel.org, Sergio Lopez <slp@redhat.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6171; i=slp@redhat.com;
+ h=from:subject:message-id; bh=ky1aXYvyF1guKqM4c6+Bd9gJT95CCp8BgqXs0H6uWDk=;
+ b=owEBbQKS/ZANAwAKAfRpJ40vDAI1AcsmYgBq9wdYvNEPhbQZpSreuD768+vZB/evKyKThMruj
+ 3GQGZIenCqJAjMEAAEKAB0WIQS+1fz3US2GgJFC6KL0aSeNLwwCNQUCavcHWAAKCRD0aSeNLwwC
+ NQZoEAC0NUajSl5WwiI1RBq2VAObU5vpb2jsW2vCn0sHxLYw5IsOYg71SQmBRpIHD5N/xRD+zrv
+ S3kXHYETZS+/IcfcpF8buUnB3PKsJ0+FMbP8Cwy5L/WmLnjeDfhoyUsPppTPBU6WH88FufbBNgs
+ vvPUGmD30HFAJs1NqOWb0yb0leWLP5NjWHdrIorX+LmhGwjSlFE6Wx05A8sXeHgXGANhqFEHd62
+ 29HxwUaNA+t83v/OOkhbJWpucTmrkx8KNQVEtYUttOG81unRaQh1Ln/JQHTtGP/H2xpVAxDLU5G
+ Gxgi4lAdnP/nxPzQCy43Or7f8T0MKyJIOe/snOsqdngGxLML+rOSMi1ojKk7m6/rFvS1blulGXV
+ dsCNg3vjG6kUKk9u1lFwtU1xPPbJsRAWSgiZpvctfLJCfM+csO7+VrCetvsyEtcdKnz3YQ9D65n
+ NdxXoFS9NoxUgUrmOHtGcpZdTZg3AWeG0zFw1ZMjWOdFMwnmNWKmcG1G4vKTUf12ML3eaiRRwi+
+ EeuiKdlUePfQVqk5cu9F0PLorRr/qgky62Kqq7loPYgFwD5cediDgx51ZYMiiHFJJ/udb0PGZc1
+ g1+bH3NmC57nLLdBzzQVEMCZtHzFd44xnd+yRMX8YVH1Jm6a+1CKyW+j2ExRpKb0McAFwJAsi39
+ 8K9ABE3kpr35RJg==
+X-Developer-Key: i=slp@redhat.com; a=openpgp;
+ fpr=BED5FCF7512D86809142E8A2F469278D2F0C0235
 
-skb->transport_header is a 16-bit offset from skb->head, and U16_MAX is
-reserved as the "not set" value. skb_set_transport_header() silently
-truncates an offset that does not fit.
+This RFC adds SOCK_DGRAM support to virtio-vsock and vhost-vsock through
+the existing AF_VSOCK API. It is intended for guest and host services
+that exchange independent requests, responses, or events and need message
+boundaries and sender addresses without a stream connection or application
+framing.
 
-__udp6_lib_err_encap() stores @offset, computed by icmpv6_notify() from
-the extension headers of the packet embedded in an ICMPv6 error. Should
-the value be truncated, the tunnel encap_err_lookup() and err_handler()
-callbacks would read the UDP header at the wrong place.
+VIRTIO_VSOCK_F_DGRAM gates virtio traffic in both directions. Each virtio
+send carries zero to 64 KiB of payload in one VIRTIO_VSOCK_TYPE_DGRAM
+packet. On the RX virtqueue, the device may split a datagram across
+page-sized guest buffers.
+START and EOM delimit the message; the guest reassembles at most 64
+fragments and 64 KiB before delivering it to a socket. Invalid or
+incomplete messages are discarded. Datagram delivery is best effort:
+there are no peer credits, acknowledgements, or retransmissions. Send
+admission uses the socket send-memory limit, and SIOCOUTQ reports charged
+send memory.
 
-Since commit 3744b0964d52 ("ipv6: Implement limits on extension header
-parsing") a single chain is bounded to IP6_MAX_EXT_HDRS_CNT headers
-(24576 bytes), so this needs a large skb->data - skb->head on top of it,
-for instance after several nested decapsulations, each of them possibly
-pulling its own extension header chain, since @offset is relative to
-the IPv6 header embedded in the ICMPv6 error. No reproducer was written,
-this is hardening.
+Datagram sockets have a separate port space from stream and seqpacket
+sockets. The latter two continue to share their port space. Datagram
+routes are chosen per destination among guest-to-host, host-to-guest, and
+loopback transports, with VMCI as a fallback. VMCI still owns its socket
+handle when it is present; loopback works without a directional transport.
+Hyper-V continues to reject datagram sockets.
 
-Use skb_set_transport_header_careful() and return an error if the
-offset can not be stored, in which case udpv6_err() ignores the
-ICMPv6 error. Do this before changing the network header, so that
-nothing has to be restored on failure.
+Bobby Eshleman and Amery Hung explored this feature in their v6 series
+and v7 work-in-progress branch. This series is a fresh implementation
+against the current vsock code. It follows the separate datagram port
+space, per-destination routing, and VMCI fallback requirements discussed
+there. For guest receive buffers, it uses bounded fragmentation and
+reassembly rather than full-message buffers or the earlier drop/error
+queue approach:
 
-Fixes: a36e185e8c85 ("udp: Handle ICMP errors for tunnels with same destination port on both endpoints")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+https://lore.kernel.org/r/20240710212555.1617795-1-amery.hung@bytedance.com
+https://github.com/ameryhung/linux/tree/vsock-dgram-v7
+
+A corresponding virtio specification update has been drafted separately.
+The wire format and feature negotiation still need specification review
+before this series can be considered for merging.
+
+The first patches expose the core port allocator and add datagram queue
+reporting, then implement the common data path, guest and host feature
+negotiation, routing, and RX fragmentation. The last patch extends
+vsock_test with local and peer tests for message boundaries, routing,
+connected peers, port sharing, queue accounting, and delayed reads.
+
+Testing used QEMU with the F_DGRAM property patch below, an x86-64
+KASAN/lockdep kernel, paired guest tests, and a nested Linux vhost-vsock
+backend. The tested paths include 64 KiB messages, delayed-read bursts,
+feature-disabled ingress, stream and seqpacket controls, and header-only
+guest RX buffers. A temporary userspace backend still fails stream test
+21 on both the series base and tip; that case passes with Linux vhost.
+Real VMCI and Hyper-V hardware were not exercised.
+
+https://lists.gnu.org/archive/html/qemu-devel/2026-10/msg08074.html
+
+Code was written and reviewed both manually and assisted by Codex
+(GPT-6.1-Sol) and Claude (Opus 4.6).
+
+Signed-off-by: Sergio Lopez <slp@redhat.com>
 ---
- net/ipv6/udp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Changes in v2:
+- Keep guest RX buffers page-sized; add START/EOM framing and bounded
+  datagram reassembly (thanks to Alexei Starovoitov and Bobby Eshleman).
+- Preserve stream and seqpacket data when an RX buffer has no payload
+  room.
+- Separate datagram and connection-oriented port spaces, and share
+  receive metadata and queueing (thanks to Alexei Starovoitov).
+- Check negotiated support and destination CID on ingress, and require
+  an exact connected peer CID and port (thanks to Sashiko AI bot).
+- Select a capable route for each destination, retain VMCI as fallback,
+  and support loopback-only sockets (thanks to Alexei Starovoitov).
+- Preserve the connected peer address across temporary parent fallback
+  (thanks to Sashiko AI bot).
+- Use socket write-memory accounting for datagram SIOCOUTQ instead of
+  separate transport counters (thanks to Alexei Starovoitov).
+- Extend selftests for fragmentation, delayed reads, port sharing,
+  connected peers, and capability-based skips; fix the test build and
+  README entries (thanks to Alexei Starovoitov, Bobby Eshleman,
+  and Sashiko AI bot).
+- Link to v1: https://lore.kernel.org/r/20261028-vsock-dgram-support-v1-0-e457cf7cee78@sinrega.org
 
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 9dcefa162522..a6886a0432f9 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -651,12 +651,13 @@ static struct sock *__udp6_lib_err_encap(struct net *net,
- 	network_offset = skb_network_offset(skb);
- 	transport_offset = skb_transport_offset(skb);
- 
-+	/* Transport header needs to point to the UDP header */
-+	if (unlikely(!skb_set_transport_header_careful(skb, offset)))
-+		return ERR_PTR(-EINVAL);
-+
- 	/* Network header needs to point to the outer IPv6 header inside ICMP */
- 	skb_reset_network_header(skb);
- 
--	/* Transport header needs to point to the UDP header */
--	skb_set_transport_header(skb, offset);
--
- 	if (sk) {
- 		up = udp_sk(sk);
- 
+---
+Sergio Lopez (8):
+      vsock: expose the core port allocator to transports
+      vsock: report datagram receive and send queue state
+      vsock/virtio: implement the datagram data path
+      vsock/virtio: negotiate datagram support on the guest
+      vhost/vsock: negotiate datagram support with guests
+      vsock: allow datagrams to use directional transports
+      vsock: fragment datagrams across receive buffers
+      vsock: add datagram tests to vsock_test
+
+ Documentation/admin-guide/sysctl/net.rst |    8 +-
+ drivers/vhost/vsock.c                    |   51 +-
+ include/linux/virtio_vsock.h             |    9 +-
+ include/net/af_vsock.h                   |   30 +-
+ include/uapi/linux/virtio_vsock.h        |   10 +
+ net/vmw_vsock/af_vsock.c                 |  459 +++++++++++---
+ net/vmw_vsock/hyperv_transport.c         |   11 +-
+ net/vmw_vsock/virtio_transport.c         |  167 ++++-
+ net/vmw_vsock/virtio_transport_common.c  |  164 ++++-
+ net/vmw_vsock/vmci_transport.c           |  115 ++--
+ net/vmw_vsock/vsock_bpf.c                |    3 +-
+ net/vmw_vsock/vsock_loopback.c           |    2 +-
+ tools/testing/vsock/Makefile             |    3 +-
+ tools/testing/vsock/README               |   31 +-
+ tools/testing/vsock/util.c               |   62 +-
+ tools/testing/vsock/util.h               |   10 +
+ tools/testing/vsock/vsock_test.c         |  175 +++++-
+ tools/testing/vsock/vsock_test_dgram.c   | 1000 ++++++++++++++++++++++++++++++
+ tools/testing/vsock/vsock_test_dgram.h   |   29 +
+ 19 files changed, 2066 insertions(+), 273 deletions(-)
+---
+base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
+change-id: 20261027-vsock-dgram-support-683a4e0aebe7
+
+Best regards,
 -- 
-2.53.0
+Sergio Lopez <slp@redhat.com>
 
