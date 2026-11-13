@@ -1,96 +1,68 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.195.75.108
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794572342;
-	b=R0vSXUxoZX+U9gQ//oCiUOmSAyjuJXlo9JvHom799wreQu+2bwO9z2ECSbVbEAx8JLpV
-	 gN4stop+IrDR1uWumjBbi+dXWKVYJStR+RODb5zkZDV8SxSQFxyWcZ2XO+nP+HN+r9kyH
-	 aKmLzbZTRhb7QDF6vziEJMbMPLO4J39zB2WjuZ95rEJplY8nDjBvXrUCh/qBHKzRraBz0
-	 zeEoDBZLW6igKIh5Fvvpw1N2f9xXmpp8gp93wOM2S8L7LE3+FO/tdtNlURtvXJPSi1Xga
-	 8LiKf695YVBAg1NEp2/X0vj7zndrYoqzGSkSkLfzKnUuh0eu5x1lpIz8ceP6zVqOYUQ==
+	t=1794572438;
+	b=kakD4lTse4haDD3Nf72OuWMLeVHPqw0bcP6mTkibyKYBpIPjjmwyj2Or/gFyqj9sS4oL
+	 8wXGyrqhlQIqgDOLUW8c1MdACVUOi4pUbtw8j6dQsZLbHEK1MepSg7UPTYOP0NP3zqhv2
+	 GdfWMtrcAnSaFhIHAO+w5I9a0N88BjKfYOuMxUUq/hJSoA4Fz4Z4BLmIysqk6qqbZpZ+W
+	 /nKn0K2SxqOFWlBhdO80q0IKIYSCXLt0iRpi2jga9p8joAMa3KjAGrzx885kJnQRmm5PS
+	 UIxCyLgRCUuFhqFeZb1NAcrhKMWTjuYqAe7oScleJcSNJJ1dz3ExdL92HwBsYHgvqbQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794572342;
-	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=2m5S/wNdPReWyWmhpeHcOzCcQyN3wK0mfC0jmWIgfok=;
-	b=KJDv7boS5dO3Kic7iXDCH5NlKHTGgpnYS45GpwInGYijV1UFHUiBgL0LbxDgNuB6xUkF
-	 eMMpd7BXzx72e6i1DTju9+ZGkIkDBsUF3M+/hpPynJWCC+/+bRDyy0OwZIP+ZDtgF/fsI
-	 IyywdUo5Oluj/25S5vTHifi5KD4qGal5Li7VDkaSR9D8qlWX7jeJf4jDUAcPO83Zyy4lo
-	 PEbn7t7Jr5zIPbM3I/9eqI43ZbA6v4WVO/TZQ+jFogzSVEpnlyVmTJD5bnKtsdiaGIgTW
-	 VfAcc0XP6jR/iIeqZxyYf1MD1sxn5mzH9a/C1ZH/lUgeNo4asgK/Q57q2bfaIsjVEqw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794572438;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To:X-Debian-User;
+	bh=04zbQXN/fHm4yeapTB6+tJQ1+SULWzSbJ0NuXZMwrbc=;
+	b=cvEBxqHqs5eoMJV6qCnRmtPw9dYxhyxM3x0h6xyRxq9vax0XCtbqNvGUu3hfdD3sCbNY
+	 H6YMk8uTlfIRBXG+sKmTCIuk+Gg6++yjeuHPyGYjNohn+1WMjbQY/Sui9sIQD1m9Za5RN
+	 7L2kObkX1pe8gq+tG/QauZdjCGggx+dNOQ5nIdXMLrHYA6yYxEUWLmt51Y2o1xeuJFGlE
+	 Aiu33EqVXCC1oX/7umSDgnp+S58CbmgCeJkp06hdCPfAsi2FQYphpiy7r9uldqk6qvpRG
+	 bT1k5A+KgnEFdvlwoACJB2q9NzFb9ONTsUPzT4+9kTC6hGMHht1j5TaVwqxiQcDQ6lw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=fail header.from=linux.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	arc=none smtp.remote-ip=209.85.221.46
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=debian.org;
+	spf=pass smtp.mailfrom=debian.org;
+	dkim=pass header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=LV76iNPN;
+	arc=none smtp.remote-ip=82.195.75.108
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD98F60A3835
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:19:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD98F60A3835
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-490c3ae81d3so375797f8f.2
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 04:19:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794572340; x=1795177140;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2m5S/wNdPReWyWmhpeHcOzCcQyN3wK0mfC0jmWIgfok=;
-        b=URix9BTLUQGntR1zoV37FfxPC5PLC3IWSRXIO/yLrenFCavsxTTc1BNo2xJ4kK8Ne1
-         ZGel4C7c6nlHMFoxQd3HkiX2OTOq4C7V+t0KKtQn6rIp5x2opNOUKueZS0D5vTB2qvsA
-         w2zjRhitYj2z2DXJbqV7R/i+3bOFS0rF/JoOGQZsIFiCEKzeWwpdPNqnMGQ9IfQ8cZ3j
-         U9JgYCaZUxKRmXLOroY6FHyy8TZZhu+lPMiMF7tLiDu4cpRQCxvCNk75TjAWeEu1ShrF
-         wS9l6K8ntTcEbcTtcciV3vMn9m8SJgl+hfAsnNa+nAge5vdIVYuykedIegaQulEo3CFD
-         YyBg==
-X-Gm-Message-State: APuU4Z/VIDMrimnxqoSLdHAwM/m6GMAQbZb6kFdOohfJT5a4LIPvMDHf
-	4g0gaSXbHwKEmS3NRelAs+vGodEyvzcn08msdkX+mualmMBtwuDE49lk
-X-Gm-Gg: AYBFou25HENHuSvxp2fsbd68mDDnm7DngHJDYuiUfbbP9OUd+RuEbgwzisf0vZbG00a
-	E1+MuUVKrWKlMTsQvveKcvdRAGDKhv4Et/gzLLIWXU8oFTD1ExnitSfX08aHMcWZlwqYttzcCkd
-	uFvTb0SIKtHtLJQSVKpd6EAOaTjA/Btl0B7gGKH+JzmuUBVTC9CM+1beE1/rbNcTlwTFjxpJzI2
-	4sY7loa2iUjy+tREFMUpLtILzu/NGWwJkAcAbzdCIhx7dKxau71YzwgbQYQOQJbbWNV1HR9E3Sf
-	I74xdF44W8iI484QojEeHWpP55tnAHBKiVyT+2UpTRx+Zsk2pacTW3t53MCmtGejOGs+yU5Vpx0
-	U5PSTH5XvFhh25o1eNsZ/Zj1OI3uvJkqa9HEJpCbenPU+k4mRH6jqB9ysuaKA5TZY1xsrNbUZva
-	fsRT+KMbfDoKcwJeLPWJCze23hHiSvvnBRfBSb3SNH+g0Pf9Z7NUriOhk7ymeAYZjE68ITwU/Ht
-	anrqMEkpU7rHN64l/yT0jNsfEQfMcnv/w09z1AG1AkW/kGuOxljKDuQbMowEr9FrD9oifu4jp7N
-	podsWxWu9Aby8pugTKA8f2odVo5QKnGZpIqqjWAD0thWGd5G3VmKvN8WBR/ismnuk7uPMoQkeTq
-	M6w4vVXT6cIZYhyn7TEmdhSyj2g==
-X-Received: by 2002:a5d:584c:0:b0:493:c0a:5087 with SMTP id ffacd0b85a97d-49c72e85557mr6076606f8f.51.1794572340085;
-        Fri, 13 Nov 2026 04:19:00 -0800 (PST)
-Received: from threads.localdomain ([84.70.166.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c605e5b2fsm5167103f8f.40.2026.11.13.04.18.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 04:18:59 -0800 (PST)
-From: Lucas Tanure <tanure@linux.com>
-To: xianwei.zhao@amlogic.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v7 7/7] arm64: dts: amlogic: t7: khadas-vim4: enable the ethernet port
-Date: Fri, 13 Nov 2026 12:18:52 +0000
-Message-ID: <20261113121852.334604-8-tanure@linux.com>
-X-Mailer: git-send-email 2.56.1
-In-Reply-To: <20261113121852.334604-1-tanure@linux.com>
-References: <20261113121852.334604-1-tanure@linux.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494FB606A321;
+	Fri, 13 Nov 2026 12:20:38 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 494FB606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=LV76iNPN
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=04zbQXN/fHm4yeapTB6+tJQ1+SULWzSbJ0NuXZMwrbc=; b=LV76iNPNBMcd0qJJRkYRcfwVCz
+	tIm4KhERPVogG0EAGaPQyOot5Y0RAGojYX/2zOr0KNQVR09wsh3Jw6p8dwzoJkil4BhRMm9bhd0Re
+	AqsjB635Z+H1ebDqM0WSkvL5TTiAhIYEdwxKOhNo+Lu5V9Ia+uL+PpQGYPmHgy0d+SSTZfqIswEdX
+	aZMzMWvAwFk9zUjUj7uaTO6LeQ+W7UKa7pkoA/B3nWhhaMavU/s77VuBM6PUfhlY2uKYsBPoN5ajo
+	Hsdz76wj3syeTF/nTpd8BiOLxHghUAbs1/9mmUM9aGLPkIZ3o5haaWZxjvgUfRYiy4JLImg6UfoWZ
+	ksmLHmxw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xRqGg-00EkJu-1f;
+	Fri, 13 Nov 2026 12:20:34 +0000
+Date: Fri, 13 Nov 2026 04:20:28 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, michael.chan@broadcom.com, 
+	pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, edumazet@kernel.org, horms@kernel.org, 
+	shuah@kernel.org, almasrymina@google.com, sdf@fomichev.me, dtatulea@nvidia.com, 
+	asml.silence@gmail.com, bobbyeshleman@meta.com, daniel@iogearbox.net, 
+	razor@blackwall.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v4 4/5] net: devmem: size TX net_iovs from the
+ dmabuf sg table
+Message-ID: <avcAe3FIG0Jcd6SG@gmail.com>
+References: <20261111224740.2744522-1-sdf@fomichev.me>
+ <20261111224740.2744522-5-sdf@fomichev.me>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,66 +72,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261111224740.2744522-5-sdf@fomichev.me>
+X-Debian-User: leitao
 
-The board carries a Realtek RTL8211F gigabit PHY on the external
-management bus, connected to the MAC over RGMII.
+On Wed, Nov 11, 2026 at 02:47:39PM -0800, Stanislav Fomichev wrote:
+> PAGE_SIZE TX net_iovs cap devmem skbs at MAX_SKB_FRAGS pages (~68KB),
+> which makes BIG TCP ineffective.
+> 
+> TX net_iovs only need to be DMA contiguous. Use the largest power of 2,
+> from PAGE_SIZE up to 2MB, which aligns every DMA segment of the dmabuf:
+> - 2MB hugepage-backed udmabufs get 2MB net_iovs
+> - no UAPI change, TX addresses are dmabuf offsets
+> - skbs keep their size, only the frags get larger
+> 
+> The net_iov size doesn't depend on the device. A frag is never larger
+> than its skb, and the skb is never larger than the device's
+> gso_max_size. TCP sizes skbs to fit, and validate_xmit_skb() segments
+> bigger ones. gso_max_size is 64KB unless BIG TCP is enabled. With BIG
+> TCP, page frags can already be 64KB or larger, for example with
+> MSG_ZEROCOPY from huge pages or with 64KB pages. So drivers that
+> enable BIG TCP already have to handle them. bnxt doesn't handle them
+> yet. It has a 16-bit BD length and needs a separate fix.
+> 
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+> Reviewed-by: Mina Almasry <almasrymina@google.com>
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
 
-Enable the controller and the management bus multiplexer, hand the
-controller the ethernet pins and point it at the PHY on the external
-bus. RGMII needs a delay on each of its two clocks. The board traces
-add none, so the PHY adds both, which is what rgmii-id asks of it.
-
-The PHY interrupt output is wired to GPIOH_6, so link changes are
-reported instead of polled. The PHY reset is an RC network on the
-board, not a SoC pin, so there is no reset line to describe.
-
-Signed-off-by: Lucas Tanure <tanure@linux.com>
----
- .../amlogic/amlogic-t7-a311d2-khadas-vim4.dts | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-index 0fa83362b417..93327b993d39 100644
---- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-+++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-@@ -14,6 +14,7 @@ / {
- 	compatible = "khadas,vim4", "amlogic,a311d2", "amlogic,t7";
- 
- 	aliases {
-+		ethernet0 = &ethmac;
- 		serial0 = &uart_a;
- 		mmc0 = &sd_emmc_c;
- 		mmc1 = &sd_emmc_b;
-@@ -256,6 +257,28 @@ xtal: xtal-clk {
- 	};
- };
- 
-+&ethmac {
-+	status = "okay";
-+	pinctrl-0 = <&eth_pins>, <&eth_rgmii_pins>;
-+	pinctrl-names = "default";
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&external_phy>;
-+};
-+
-+&eth_phy {
-+	status = "okay";
-+};
-+
-+&ext_mdio {
-+	external_phy: ethernet-phy@0 {
-+		/* Realtek RTL8211FD-CG */
-+		reg = <0>;
-+
-+		interrupt-parent = <&gpio_intc>;
-+		interrupts = <GPIOH_6 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+};
-+
- &i2c_m_ao_a {
- 	status = "okay";
- 	pinctrl-0 = <&i2c0_ao_d_pins>;
--- 
-2.56.1
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
