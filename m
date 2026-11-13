@@ -1,11 +1,11 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.20
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794530773;
-	b=etsCoHoSGp/La3iYw8zgkwnHrXyvWDoGS/e7z8dP1AEStoH/9hAmN6HmR7AviPwc5+nP
-	 4y0N1z4PSiZ84JyIwAA8bJQmgT+me6RaJivS84Wxs4AzWjot5vvWbcQ59MbJ5rigYYdV7
-	 m0XrGKa7AEvp+HIxZdmpfYreNONQE9rRQhd9vZkL5wl4LMx3ihau/MkArkyJFCPzIW3/7
-	 rZV84PV5T9bzAJM04b6HmjRqKtbbFX2X5eAyciP8msw/3F1eWanxzns+4R0CRDG52Z/k1
-	 Hil5C8gnwwC7GetAHryT7CyI+mvlPXwQ5D/I6fQpPZFa5F4UvjZGcKvuJIvTk9IXlUw==
+	b=wNHrRsNA6Rd4cRMADVqTZzf6u6WiMkszV+2LSp0C5q/V19uBdNnLZsCx4dFKM1maRw9X
+	 e1176w42Ob7gxnhkPdhTBy2vJK0K6UlYyDGPRvbCUGKCggLWGhEkXpM32qVrh8Q4cXpyb
+	 KmfLTFK7gRB3pb4aRguyMRg1QmvR6YYQeC267OpL80roGlGA1cv0XBa9CUOmFEXoOIccf
+	 bkwMqOCi1l8DgDqhtYuz50QEniKQPI+AE0W9Ds9cjSo+5GqIRubVLHy6iy61514HmXJZt
+	 I0ayHHtsawciqeQNRzprcC7yJPHaifWcSei/J/x7+EFogdEe/eJT3cQ5GzgNu+TZImg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794530773;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
@@ -13,52 +13,52 @@ ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=QSE3XTl88TG1U7AIDSjRmgt7/Wi5/LDqfL0SgWMp0qo=;
-	b=uMcQkfrCq+d9fxrPEbWbbmJFTeKhfwLI65P+JtStlrgfXAVus7ijvKalc3AjobrwtU8N
-	 9B58Rvktgxeen4ZnrXXP5NPNjNL0znWm+46P9DCy0yZTYyYXRKiZxeiAT22DMgm0HuUsx
-	 /zI+mVJJl7fEW+uE6qS+gvRoF8YkLfdHUcNkAinA8u7husdX8Sls4ziKqt27eod3Gj/rT
-	 t3arcyQcVyz1Xk4QM12q5ohgyodIXB6mg0e8LYBEv6POvCp0SxEMYhsLzyjZeC5l1x3WZ
-	 gU18BnQD1N87ur/CmX8jYUeSvZQcwfhPBD2pVAq1bhayj6okc5pyXFL2ZWKSiAHhvrg==
+	bh=AR0Mkn+bQ82IeGpPhvQ/OS+0bEJG0ouCesgAWz0S+q8=;
+	b=IRhnNDW1yERWpHxFPw8flatRkAxk7zPVI5OKmAcyxZm5GyrPSgsiZiyXa31oo2XweQ+1
+	 0Dbgij3lr+39869avtmXKyg/q8hLANNrIgmp1WV3WE/1uzwQh9n9ZMLYHSw63ryQBhHUC
+	 cwQVLJ35Lzm3QYGoUbTF1gbhpQqmYgNsAacF4Iv2ZT58iQlN3kKkyZpV4662UIY2Lylm6
+	 QHqOjVnvh9AMOwpRUTwMTpzzvJWnhWJxDoLaF6v5KwEcSc9oNoSOIogsP6L3u7c+NbEjB
+	 wmkAq0ok+tPKs4mUmJUmi4m3Fld7m3sEobKOXSMYf9gh8Y3WNNpi4pLuy9t2EZX0RVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=intel.com;
 	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WfvZS0M4;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G6qRP3j1;
 	arc=none smtp.remote-ip=198.175.65.20
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4687606A32A
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 00:46:12 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A4687606A32A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09455606A32D
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 00:46:13 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 09455606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WfvZS0M4
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G6qRP3j1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1794530773; x=1826066773;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=tJQE9epBMVc/MXuW3py+m6TKEBuBsezMijmtRzO6ErA=;
-  b=WfvZS0M4hKAgiZvgktxDy21Afj+RBz32ojH7qQfEpHWbolVXg/XZqNmk
-   q2+xhObeFIJtuiIt86ORHii0TcPy8Ui+wcIazNqmkGTE+LhIY2uhZlYOP
-   4xvt4BRimEAZ3ZGj1Q7Uwap+HSc/1TAeXUMwo/xCI/AqdUzgkcQtdjfwi
-   VwuSLS1GW7wNnMIleMDZGzVXwxgU8WD6y1xLKOstdQr60ltM1tXVSOrXi
-   zlW0iDGqDDVvGeW9sLID/M28pQmjbXV4Tt73iIeZTPl6GhCqUUtlVa4pg
-   9o6WndeIcK+Xjd9gLKuyajnKcqjWBKKZDDhM8QQcC6vf1iuEO9Sri7qdS
-   g==;
-X-CSE-ConnectionGUID: ilO+XLZVS9mhK1+omnzMkg==
-X-CSE-MsgGUID: T5TYfvUZRlK09H2abGvS0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3361661"
+  bh=LxGlHMn/pILfSngf7NbTbVLtURc2gGTCL18tBFav+7c=;
+  b=G6qRP3j13v68xEO8MGbjI0Evwogbieyghgtg85e4NBhe5jmNsaaNpJCN
+   S3Rs2ppFSLlDRsIszYO9lUjpC9JyhEkMnZ45w0b2nG2jXbaurUIX9Q83M
+   elboWf5fIkYsCFiMm3YdSwWASZZzu8T3Lis8EsOm3NmGZ0sRl50Iy9Jt2
+   wskNWNX3TsQeSzcUa6LLlzJecNzpA4F3RB0XHtjJBfv39Bm+FlkHtClIh
+   iJBi6ldhR33UgrQi2j5ZwLJr/qEhZqdPlUrmZ1MZFksRbqUfukKmhHhI+
+   Bm2qGb6KC5hqiS5Prq/+DKEUThAU3U9l/ZiaIMOCYzcj73PErMbe9TWJT
+   Q==;
+X-CSE-ConnectionGUID: NYdVBydyTySLOsMFrDsxHA==
+X-CSE-MsgGUID: yGtBcGRNSTSoC5iznAjY4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3361668"
 X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="3361661"
+   d="scan'208";a="3361668"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
   by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 16:46:12 -0800
-X-CSE-ConnectionGUID: /8D80C9dRterk8OTynfT3A==
-X-CSE-MsgGUID: bQAW37ZfQryjjeqorwb7Vw==
+X-CSE-ConnectionGUID: QNf77+ysTNeQQVfArk9+Jw==
+X-CSE-MsgGUID: 21mudO9gTCC354kBAUnLDg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="8724611"
+   d="scan'208";a="8724614"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by fmviesa004.fm.intel.com with ESMTP; 12 Nov 2026 16:46:12 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -68,17 +68,16 @@ To: davem@davemloft.net,
 	edumazet@kernel.org,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Mohammad Heib <mheib@redhat.com>,
+Cc: Filip Balluch <fballuch@redhat.com>,
 	anthony.l.nguyen@intel.com,
-	fballuch@redhat.com,
+	mheib@redhat.com,
 	aleksandr.loktionov@intel.com,
 	luoxuanqiang@kylinos.cn,
-	jbrandeb@kernel.org,
-	Joe Damato <joe@dama.to>,
+	bjorn@kernel.org,
 	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net 1/6] i40e: fix napi_disable hang in i40e_down() during firmware update
-Date: Thu, 12 Nov 2026 16:45:55 -0800
-Message-ID: <20261113004602.129864-2-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 2/6] i40e: fix freeing of TX rings on RX allocation failure
+Date: Thu, 12 Nov 2026 16:45:56 -0800
+Message-ID: <20261113004602.129864-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20261113004602.129864-1-anthony.l.nguyen@intel.com>
 References: <20261113004602.129864-1-anthony.l.nguyen@intel.com>
@@ -93,48 +92,47 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Filip Balluch <fballuch@redhat.com>
 
-i40e_down() expects its caller to set __I40E_VSI_DOWN before calling it,
-as noted in the comment at the top of the function. All callers do this
-except i40e_vsi_reinit_locked(), which calls i40e_down() directly
-without setting the flag.
+When ethtool -G is used to change ring buffer sizes while the interface is
+up, i40e_set_ringparam() allocates temporary TX and RX rings. If the RX
+ring allocation fails, the error path at the free_tx label incorrectly
+calls i40e_free_tx_resources(vsi->tx_rings[i]), freeing the live TX rings
+instead of the temporary tx_rings[i].
 
-Normally this doesn't cause problems because NAPI drains cleanly on its
-own. But when the hardware is in a bad state, like during an NVM
-firmware update, the ring descriptors can contain garbage that
-i40e_napi_poll() sees as real work. Since __I40E_VSI_DOWN isn't set, the
-poll function has no reason to bail out. It keeps returning budget,
-napi_disable() keeps waiting, and the whole thing hangs. The thread
-stuck in napi_disable() is usually NetworkManager, and because it holds
-the RTNL lock, the system can end up completely frozen.
+Since the interface is still up, the next TX completion interrupt causes
+i40e_clean_tx_irq() to dereference the freed ring descriptors, resulting in
+a NULL pointer dereference in IRQ context and a kernel panic.
 
-Set __I40E_VSI_DOWN in i40e_vsi_reinit_locked() before calling
-i40e_down(). i40e_up_complete() already clears the flag when the VSI
-comes back up, so no additional cleanup is needed.
+This can be reproduced on systems with Intel X710 NICs under memory
+pressure, where the second port's DMA allocation fails after the first port
+succeeds.
 
-Fixes: 41c445ff0f48 ("i40e: main driver core")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Joe Damato <joe@dama.to>
+Fix by freeing the temporary tx_rings[i] in the error path instead of
+the live vsi->tx_rings[i].
+
+Fixes: 74608d17fe29 ("i40e: add support for XDP_TX action")
+Signed-off-by: Filip Balluch <fballuch@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index abbc71e815ae..dd729776c64d 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -7461,6 +7461,8 @@ static void i40e_vsi_reinit_locked(struct i40e_vsi *vsi)
- 
- 	while (test_and_set_bit(__I40E_CONFIG_BUSY, pf->state))
- 		usleep_range(1000, 2000);
-+	/* required by i40e_down() */
-+	set_bit(__I40E_VSI_DOWN, vsi->state);
- 	i40e_down(vsi);
- 
- 	i40e_up(vsi);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+index 6a992df06fa1..ef756487d668 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -2249,7 +2249,7 @@ static int i40e_set_ringparam(struct net_device *netdev,
+ 	if (tx_rings) {
+ 		for (i = 0; i < tx_alloc_queue_pairs; i++) {
+ 			if (i40e_active_tx_ring_index(vsi, i))
+-				i40e_free_tx_resources(vsi->tx_rings[i]);
++				i40e_free_tx_resources(&tx_rings[i]);
+ 		}
+ 		kfree(tx_rings);
+ 		tx_rings = NULL;
 -- 
 2.47.1
 
