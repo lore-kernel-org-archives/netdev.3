@@ -1,61 +1,49 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=109.224.244.118
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794558577;
-	b=MkIGvgPQ4GCaFCC6nrTk6wZ9qyEI6tiB5H/6gJoiQq6tgDEjZDEGoNHMbdIMq6tX0afM
-	 spYpK6zAzSDQO831ihfAN1skl0vQXM4nKzZ2u2EGql4HocZeZg80cQ2hlxHxB08IE1MJ0
-	 J6FAUCbKFWMg4edIuF1GrhoMNY/rKI6QeoEm5GDvTaRKBGzTnYPF0BnQkCgfIn0MnIHC8
-	 hjigaZOUqrx9s5m6WV0XZ/7hMrpmZEypFl46xD9+g1xIQSNbU+zELiYZAM3+6oh1TRuvz
-	 SQeC+oWLM1R63W1De00g6Xw0raK668yrchYB0wwqN4+LasQmR1a2N8cz/Px3rW97O1g==
+	t=1794558856;
+	b=RHH4VzGX4fyefTjlX+xQc39WOxvgI68N1ndBVlpgAxa0ZAl3zUSbuzoI7gsW/notAArK
+	 ByXBbapP0HUFdH3E7MmffH4QqC8RW/x9FJ8aRVCwybBalwvqi+xZpc5OGui0AE9JLMoBu
+	 e/SysPrOtbG0fsk7d21JnbgWcdevDpm3rVWd8DhHlJF6I3h/RAqTPOK+2RAupO/83nhRo
+	 6Yxk9dwgU+VsuZ4N/f3hEviquzWFyols4/5WAprAPuPXB7hhzAp4z/oAKGGfm9yqIjvOK
+	 kls8aMM6zBG90pJynmHCTKv4HKibLr4nSzukoyNAa2h0aApQQXOEcgoBfO21mK+p04w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794558577;
-	h=DMARC-Filter:DKIM-Signature:Date:To:From:Cc:Subject:Message-ID:
-	 In-Reply-To:References:Feedback-ID:X-Pm-Message-ID:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=1mYFa7xxgjAJeyPToTySUaczpeeUgBwhkLFQ6YEU7hQ=;
-	b=EIq9jK1t5DltnbNT6wngWpevTXp7vjR6Vrrmhrqc5CFWAwKuNzLgS+AFP2o2BKvXobDY
-	 n3bE29PWP4u5t7JZYuuEfd3zHO3eVDsEJrAT347i0u5Kvcne80NM3aKoZAc6O9v5VnflX
-	 WLDMz0iYq2W6y8VD+eJUiTMeQ4DEt6s4R31rdXnCDtiJcQ6cCosFa68n4A3nBQBJNyxT/
-	 6iHLQLCpezHmGWEV1biXmm4tuh7ziXVQk+2MXLOmodSjwI6Xa/yRpwBs0Zu/zZF6bCbQz
-	 2R0BW6yAd2Z4FreG6OnhdZLkfLtzX0t1wc5rcPuIS9CMFVE+gQurqWbMTqrffG+6eVQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794558856;
+	h=DMARC-Filter:Received:DKIM-Filter:DKIM-Signature:Message-ID:Date:
+	 MIME-Version:User-Agent:Subject:To:Cc:References:Content-Language:
+	 From:In-Reply-To:Content-Type:Content-Transfer-Encoding:X-Spam-Status:
+	 X-Spam-Checker-Version;
+	bh=PqlGlQac1A9N90ytvOpZM4/ZXGtYzdUrvraQxFDjpTI=;
+	b=x0H/ji7syxnAKfLbHCnHcvkSUrGB6xcyuqMsm1d4Abd/ukPSsOaCRuCT2Lr5YB7xZR2I
+	 n2k1kvYMyZhwCYgnAi/P/Lrwla5JSofqER6heZyyiDq1eealbKrD/frTBKuOOYD5EuCGu
+	 lbQnT8aCYX7iWur1kr06IMe5/Grr+cNOTHUJJWAe9nl8P6xxgMKHIsT5i4ku3Ut/FsCl0
+	 byH3ruBh5GD+SVdnY5tmtxKQzonbtXTI1jcEcKGjOqhUkgH79kiGPLghXmE3CCwsYAs5i
+	 WOOdDaIiqqysqcFv82PFHTEZF59KiBlV2Cjz6KePHUTys1OVSu/f3u+AcNMrDNSjjCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=1g4.org;
-	spf=pass smtp.mailfrom=1g4.org;
-	dkim=pass header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=Z4pVlkPr;
-	arc=none smtp.remote-ip=109.224.244.118
-Received: from mail-244118.protonmail.ch (mail-244118.protonmail.ch [109.224.244.118])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34AF60A3839;
-	Fri, 13 Nov 2026 08:29:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F34AF60A3839
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+	dmarc=pass header.from=linux.microsoft.com;
+	spf=pass smtp.mailfrom=linux.microsoft.com;
+	dkim=pass header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b="mr1FJ/U1";
+	arc=none smtp.remote-ip=13.77.154.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE9B606A338;
+	Fri, 13 Nov 2026 08:34:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6BE9B606A338
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=1g4.org header.i=@1g4.org header.a=rsa-sha256 header.s=protonmail header.b=Z4pVlkPr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail; t=1794558573; x=1794817773;
-	bh=1mYFa7xxgjAJeyPToTySUaczpeeUgBwhkLFQ6YEU7hQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Z4pVlkPru5cQylQgYvXMOr49LFb2OHKQRpwgqEsPQ8IYOcp5mY86PTpezXkfEXJIM
-	 TSWPAC6obDhtBNj8zBxGTMp4LunDoLDgHI8CkgfsnlwI90lWB9o6nf88ZWXy5JTsyJ
-	 oyg4WoL4zZxN7i4Q4dYHhxADPMk3sh+uRVhA6rIsjYPzgl+bzhDT/FttGFSsPYvf5B
-	 UZxLMtao3ZKqzEClyme06nK7cG5P1Vh00IoMUU72thYfI/lkBUMkmXeqLlIgi6RL8Y
-	 GlCImxsZ7xBP1myXhpZBT84h2pzXJ9nbLH4rhzSnwNydeyT9lMMQhmNIm9Y6BzKyC6
-	 E8DKtqW7gMFxg==
-Date: Fri, 13 Nov 2026 08:29:24 +0000
-To: Ding Meng <meng.ding@siemens.com>, "gerhard@engleder-embedded.com" <gerhard@engleder-embedded.com>
-From: Paul Moses <p@1g4.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Richard Cochran <richardcochran@gmail.com>, florian.bezdeka@siemens.com, jan.kiszka@siemens.com, wq.wang@siemens.com, Jason Xing <kerneljasonxing@gmail.com>, Simon Horman <horms@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Martin KaFai Lau
-	<martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH] net: mark skb NAPI IDs independently of busy polling
-Message-ID: <Fhn2gT70aJ-2_eak73NBZYuXuKtVb64PoD8VQ9jwm-S-K0RhZilAg9iwSBJ0RlaiSrRvM1vPw1aHvGPjcktu9GmdBuvFk9244-q2IVOrFu0=@1g4.org>
-In-Reply-To: <4pqljild2fp6eotiicvwbwu2wfw66fzd4qamwt6utirdjxlaok@iiu2f3k7azrp>
-References: <20261105071706.7043-1-meng.ding@siemens.com> <20261110134539.12d860ef@kernel.org> <4pqljild2fp6eotiicvwbwu2wfw66fzd4qamwt6utirdjxlaok@iiu2f3k7azrp>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 8667dd8222532892df754a88db7395758801c657
+	dkim=pass (1024-bit key, unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=mr1FJ/U1
+Received: from [10.26.7.43] (unknown [4.213.232.19])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 465FB20B7166;
+	Fri, 13 Nov 2026 00:34:07 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 465FB20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1794558851;
+	bh=PqlGlQac1A9N90ytvOpZM4/ZXGtYzdUrvraQxFDjpTI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mr1FJ/U11L6/0Syh44CR6HPl52bAyo6Kzg9D/BAgOx8zTtJ/Np5/GAG5d3yn2hkHH
+	 vHLqLD0hEm1yc/MPMObiiwtrhFt9xg07aceKwWJ7ap8whlTdQNo6LeWf1uhpO1uoIQ
+	 /i+Og+wxX61FJ5loIU0qmLjvUekpu3h6PNvFjUkQ=
+Message-ID: <fc2ae552-86ee-40af-a997-454c2d3b176d@linux.microsoft.com>
+Date: Fri, 13 Nov 2026 14:04:08 +0530
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,20 +53,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: mana: Add CQE polling as first-level TX
+ timeout recovery
+To: Breno Leitao <leitao@debian.org>
+Cc: haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, weh@microsoft.com,
+ kotaranov@microsoft.com, horms@kernel.org, ernis@linux.microsoft.com,
+ gargaditya@linux.microsoft.com, linux-hyperv@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+References: <20261112105752.978446-1-sahilchandna@linux.microsoft.com>
+ <avWrMQK_DuZ1hAwD@gmail.com>
+Content-Language: en-US
+From: Sahil Chandna <sahilchandna@linux.microsoft.com>
+In-Reply-To: <avWrMQK_DuZ1hAwD@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 12-11-2026 17:37, Breno Leitao wrote:
+> Hello Sahil,
+> 
+> On Thu, Nov 12, 2026 at 04:57:18AM -0600, Sahil Chandna wrote:
+>> Implement a graduated recovery approach: on the first TX timeout (or
+>> when the previous timeout was more than 2 minutes ago), schedule NAPI on
+>> the stalled queue's TX CQ via napi_schedule(). This triggers
+>> mana_poll_tx_cq() through the normal NAPI path, processing any pending
+>> completions without relying on the interrupt and recovering
+>> missed-interrupt scenarios without queue reset.
+> 
+> Which interrupt is being missed here?
+> 
+Hi Breno,
 
->=20
-> Then, drivers that use deferred timestamp conversion (e.g. igc, engleder)=
- must
-> specify a busy poll dependency if they want to obtain the original net
-> device upon consuming the skb. However, this dependency is far from
-> obvious, and annotating it for future features of this kind will be very
-> hard to discover.
-
-The "deferred timestamp conversion" was incomplete is what I'm saying.
-
-This started with 97dc7cd92ac6, 0abb62b68252 and 069b142f5819 were built up=
-on
-it, so maybe Gerhard should decide the path forward?
+It is the TX CQ completion interrupt. After NAPI finishes, it re-arms
+the TX CQ. When a new CQE arrives, the hardware post EQE, which raises
+the MSI-X and schedules NAPI. If that notification for the TX CQ is lost
+, NAPI never runs for the TX CQ and pending_sends never drains and the
+queue stays stopped,  so napi_schedule() polls the CQ, reaps the CQEs
+and re-arms it.
+>> If any subsequent TX timeout fires on any queue, within 2 minutes of
+>> the previous one, escalate to the existing port-level detach/attach
+>> reset, as the CQE poll did not recover the queue.
+> 
+> How was 2 minutes chosen? mana sets watchdog_timeo to 15 * HZ, no?
+The watchdog_timeo is TX stall timeout setting i.e if a queue remains
+stalled for this much time, it trigger watchdog timeout. Here, 2 minute
+is not timeout/wait. The 2 minutes here is for deciding whether a new
+queue stall event is a repeat of the previous incident or a new,
+unrelated one that should get the cheap poll first. For e.g. if a queue
+gets stalled, 15 * HZ sec later, timeout occurs and this patch trigger
+manual NAPI, if another stall occurs (it can be on any queue) within 2
+minutes of last one, the existing recovery mechanism of mana
+detach/attach will be tried.The patch is adding a first level less
+destructive recovery first.
+For selecting 2 minutes, I do not have any hardware basis for it afaik,
+but I can confirm and check with our host team as well.
+Hope this helps !
+Regards,
+Sahil
