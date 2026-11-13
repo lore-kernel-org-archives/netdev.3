@@ -1,55 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794591292;
-	b=NFQfE3IQH8lFuQtqXG6j9kdWyQ7dskuLVoujwMh+71Q+G+lBMug+XMjNqxH+NVxu3d7e
-	 rdP7gjYu/qRqbLOLqdJ56rywTpyjFFgz6ExO+y7OGzhxcQn43g5ZwTJDxw3epG7/MSw4Y
-	 0uAWVT3duoVxI3jqkhpXq3HGOxWoE7XTJGnOYnKa/2KH8WhQjDhaLY6yNU4iz4yeW4C8M
-	 F6MStfyT8m98ZTxjr1uha1eh8fNoRFqehm+KuB5A3ODGFKXkiuvkS3EBvhXbavrKOBV49
-	 FeWzHPy5MBKwK5uOabNfADGwvBN1F4skuiatXfgdatDJKUeAsveXI2MgsPRL+CZpjDg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794591292;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Mime-Version:
-	 Content-Transfer-Encoding:Content-Type:Date:Message-Id:Cc:To:From:
-	 Subject:X-Mailer:References:In-Reply-To:X-Last-TLS-Session-Version;
-	bh=iOxf54GS4Vgo/I7lsrZFBuQGT9n/1E4b8Wp+yPwlGhQ=;
-	b=CiGtbEvK0lhgBP5IjNcKbyVrUV5jwtorKobWPiq5FLm1AiupnEmsaYlOLpXHDMBXycJi
-	 Vr2muersBWQnYLRPHxaagCr+mnA/im46tkquJrx5u1PzTeSmJy+ksYvuAb8cnnMMCBzkd
-	 HPrbWlrmRROlj73F/9dE5GNW0O3BVoU33UsHoWXZ0BAtVSPu3ELB/xNSc2MP+bV35ELFG
-	 +bck9GkHMBUhj2CrPuOD9pbrg2VsUd7mkfq0wRRMW1Q4agETG7P32z8Zvc6U+R8s//Jx3
-	 L/5guuHFODVDDk24Trcxhhk7ObEImBBoI2ZI7R28vKqxNLvReW9Xrh0zs+qTI/POV9A==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=D9oqk1GW;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.52
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794591325;
+	b=SSPASGl6mzVPMDb+JNIXuWTZU9LWwrY9ZF5KfGFvJVg1Bng8aNOnk373i5OY6LwI6jaU
+	 HO22DI9ipzeCTl3z6+kh/3HwrMV1uyxJoNOLHhhxD8hNgRWPFD+hfXy4eX8lUjL2Kh9xm
+	 MaY7BYwA17CSHzJOCQFcxVzjSzv6bd0nt2+UKSr2iHYiu7rI4y9Yl3Ijyf9ID/XVr0wOb
+	 dDhm7Zgf3cjE0/FAkdU5wmoEFMijU5R3ZviA7oMe3razHW47gqyFqtHhaZM7TsSoBg+nC
+	 yAq7Dz7eKLy1Iukqd/MHvkmcMzvsvbOWcExx3ytcoqtqAs5kOzLeqPhAE8OW4rbgJ2w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794591325;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=jbq0EeLMJFolx1OncOUqeneC72MUep198Aa3EF0wRf4=;
+	b=FqQrz1INOxUL//U91hqpL/SE8Dm4I+FvlnkEYdM0iMm3k9hToNoMlEnwh22coTpi5BjM
+	 ngz5IXxuF6Nds1baIYXgNeaY1ewPHmj8mmyRmPPXwxHbEhEaxpfKumgpj9bsDkyqghSHx
+	 3DiD10wjYoT9g7Ljl+8IevXB4apxtqyW3tiZFL2/JLwiYdWivhEyFMV7/1OFUOZ03axJe
+	 iacqo3RV0tZQeaio/G5LyqZZR0MhF14hBXd2MDja/y71VWFDD9QZ5RH4WmvvBfYubWbf3
+	 Oc01h70jQeJBKsV2IvJsS9SIFz2YeFfedr053RSqybi3CMFWJO0AAr5mpZHs3Gx/Pag==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="v/h6eiDo";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.52
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59836077D54
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 17:34:51 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B59836077D54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5795160776F9
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 17:35:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 5795160776F9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=D9oqk1GW
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 470B34E415A9;
-	Fri, 13 Nov 2026 17:34:50 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 12DD560015;
-	Fri, 13 Nov 2026 17:34:50 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3159611BC0467;
-	Fri, 13 Nov 2026 18:34:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794591288; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=iOxf54GS4Vgo/I7lsrZFBuQGT9n/1E4b8Wp+yPwlGhQ=;
-	b=D9oqk1GWjeb2i1rqOg51V0Ai57k7+QJvCPshFYAx6MOM8N9FKC3TJkRlqJfVfj7DDibC1m
-	Bsh1TsFs8HKdabbDLMNtFmq+3mLBMzyGWJh/kWwXZ+cjRm3Fzdi/3ioOl2d+yK9u2oQEth
-	6MgCE3bO06RdRJEg131MVJJ4uxdHukDtAWKMROyoBVW6bly4GVHLmOaAfc6N9tMrnCdoX/
-	EQG4Btk4A08Ron5ReTFSCYiTkU1Ku/qY3q7gefM+Q94hcgEUUCPGjnE1kbD4ywyrEy4N8W
-	ku4FHWbbtuuB5hZcVMkQ/EsR1b82ct2d0aeq2A/mQnu68uET5XdMJ9XA9/lSOA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v/h6eiDo
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso310895966b.2
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:35:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794591324; cv=none;
+        d=google.com; s=arc-20260327;
+        b=S2qk54WDIEVDw64K+2wGU7auEFFiGmyXWmekFklEF7W/xqVQH4eL3EES5BdQS8AGSU
+         VJjGCCav+pltFoBLZiWWfNNKI0GdewROGpuzNqqPIbd7N30ePYR3mMaAy8f54aNdGdbL
+         edbGp0dUqNhp5BSGgfHwpxzyN5zmaB7xjjdFZjMt64rWpr5+b9JMURmJw0oEKRQNaJ2+
+         xBYWRmGMAuQWZ1r9+yo1QfH1twk5zjbpmgOE/iL+Zaoc67zZVPBrHi2BJySgUTosnePj
+         XchSM7zKhZGkrozU1IWWtFup/wJnnHYmuM3mLvpMmc1GfSFvxXsTCS5CSb6kbTsWlYWh
+         YTsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jbq0EeLMJFolx1OncOUqeneC72MUep198Aa3EF0wRf4=;
+        fh=I5H4/Vf5tC4aKpVfCWF0gcxRYrYsZR7c/k3aZKp3pB0=;
+        b=f/Dzx4QJmGICgxJSWpDusE9Kq+8kVkxm0NTPtbcA+0AMCAf19BUY1cYMjj5RHuIRsH
+         f/gbKUonjpuuU6xoSbowGU8X7wBoRn0BWBw8y8bR/FNx/9L9d1qnfQ87SRYIEDSPf1h0
+         PCRFEDUFaHDg5o6BoH8MmMBs3lmlnA2wpnaFx0ZsTuR5APjHqHdRa0hr2HNIfqIHtfpn
+         V6FvEkjFQEcwOkOK4SxOZ59nsWMiZYu7CClhcbxB3u8kXDnlAtT+PEeh/Ph7nEiw1IvL
+         ZhW0+dTAHX/XQLz9yo7fZ8MYJB4z6m4clCAE9EEAy8+WsULGpRz5XIRA79FF7jRTZNM5
+         6vLA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794591324; x=1795196124; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jbq0EeLMJFolx1OncOUqeneC72MUep198Aa3EF0wRf4=;
+        b=v/h6eiDo1Sz/JjC33cCMKG30lIcuZrUyWPl29FhgUGZ7DoySo0nu8cdsAMG3cfQ1Md
+         /W9aGiG7G1Tb7V4682z6GrMqjNsDawDvkc47PYi/YgbdLB2Fa4y9aOyzCvV1eHXkc+2c
+         7jWx3WQnWk77/097lJgBcoX19rlASnCcEv/tcCRC0OqN1p7iimXTCffK+t2mAqqL9s1R
+         EnasF27yqS3o0kOPM3gemggZcUzy5u7VD9UvtzEf+mH6L23n4rhMcAqmSB1/4bLwTp5W
+         BWjt+wijQqLSuFyKNLSsiC1Ns2sML+xYt2piEO1cEFYtJjm4lp+xqM0OwBSNsulC8maO
+         oUfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794591324; x=1795196124;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jbq0EeLMJFolx1OncOUqeneC72MUep198Aa3EF0wRf4=;
+        b=JXRWyv8kc4F07eu7Nn3oqO6h2UoCBbgAcW3HhOOWYaXdH4b9INDnJ5/h1BjxEneftS
+         /8x9ispHN4NjxrNl2y5MvLZv4giO+oFcX+6BLl7nLDUmRKep0zNHuQc/E2dGzuiFVbHv
+         kvKZPXw8FH17yi2Sg/s8x8hAEWyn8A2QacNnMnXLIZYf6rE5s0Z2dcmTNdk2RoVWQjyH
+         l2olKDq3g6AJTe6CoIBXJ56WhTUEGSvbhGn9J7ISM7ZlXU+QAUqWhdtotwlRFrwRggUD
+         TFCfOsJWm7lraZKfQFBY+pk81qkT+w00gnGimPsA+a0Bjv0bkP1a8grTqT2JFy7XKnFT
+         WD9w==
+X-Gm-Message-State: APuU4Z8nRCfeE+rvgbJtrdQSri7jsmdgZUNJGlYUAnW6hQlCzx+FyVDf
+	F7MtPzvUzKKtcDOMHr+ByxM3emw7WuRsVlNXeBrRSOwUoC8pUreo8StSqiGg0IjBCFsQs3rHVXW
+	YERUJc0CRlfHEfxLGIlitCg7Q2B2lPvE=
+X-Gm-Gg: AYBFou0gdhaSG2DLgvBqFMFTJ5X6SstfceKh2Qnn931LwysltJh1yEH5aLfVcAvU3Iw
+	0H5NmC+SGyHGqvBjNV4uYULp5sl1WxN6zdSAYK6+TwjhJuqD/nX8A+PO+HFbVE0XNokPrj+Q0jw
+	7yVdKstWnycUto9EQFSgo6ZWiv6OHaUoH6z7UxtFFwPNI1EISWiw1+LHDOCJDYQu5GqF8tZnMq6
+	QunBQADsKPLwiP9qWpN+EooglYF12yKBcVIGZcvz8nk1kwnt4gF7cOdCiGfj3AearS3NBBGgFXI
+	hOWJ6wPh4xqSqsNdxxsgXTgiuJfCiRQpetyGSxdFIA2bmyTPHYF4RVy8lzsDO/kKgJNTKEqiEii
+	jRV664n4VtYyXvh/vYIqRvv/o5JmaEU3/qA7i0DaRmjH2DogIcWYMNcclxhPck4ZEGzhIl118UV
+	w6wziRexJzm3oWOnrdquZ1fg==
+X-Received: by 2002:a17:907:7296:b0:c40:aa04:18d5 with SMTP id
+ a640c23a62f3a-c50963075ebmr332428566b.15.1794591323523; Fri, 13 Nov 2026
+ 09:35:23 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,112 +103,66 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20261113132435.434615-1-alitariq45892@gmail.com>
+In-Reply-To: <20261113132435.434615-1-alitariq45892@gmail.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
+Date: Fri, 13 Nov 2026 22:35:12 +0500
+X-Gm-Features: AclHuK_ygvNFFgMQPh62rnosaTlcWUXJwDufLBrg6ePU0sUvfJ5AaEhA0kGAL9M
+Message-ID: <CADqcGB=SFQu1F9zasFC8L3Nm8B+dnPG8UUewL8QitFY7bFuriA@mail.gmail.com>
+Subject: Re: [PATCH net v2 0/2] net: spacemit: Fix TX timeout work deadlock
+ and RTNL in PM callbacks
+To: Ali Tariq <alitariq45892@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Yixun Lan <dlan@kernel.org>, 
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>, Vivian Wang <wangruikang@iscas.ac.cn>, 
+	Chukun Pan <amadeus@jmu.edu.cn>, Tomas Hlavacek <tmshlvck@gmail.com>, 
+	Siddharth Vadapalli <s-vadapalli@ti.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-riscv@lists.infradead.org, 
+	spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, leitao@debian.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Nov 2026 18:34:45 +0100
-Message-Id: <DMU9INFX5Q65.33IQ7N5UY93YK@bootlin.com>
-Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Paolo Valerio" <pvalerio@redhat.com>,
- "Vladimir Kondratiev" <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-To: "Nicolai Buchwitz" <nb@tipi-net.de>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v5 1/3] net: macb: add QUEUE_DISABLE capability
- to 3 compatibles
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261016-macb-set-channels-v5-0-90ce0c0b8e75@bootlin.com>
- <20261016-macb-set-channels-v5-1-90ce0c0b8e75@bootlin.com>
- <d4c8dd5afbb3fa6c74a14fc8a877e49e@tipi-net.de>
-In-Reply-To: <d4c8dd5afbb3fa6c74a14fc8a877e49e@tipi-net.de>
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Nicolai,
+Reviewed-by: Muhammad Bilal <meatuni001@gmail.com>
 
-On Mon Oct 19, 2026 at 1:32 PM CEST, Nicolai Buchwitz wrote:
-> On 16.10.2026 18:58, Th=C3=A9o Lebrun wrote:
->> From datasheets, we know those 3 IP versions support Tx and Rx queue
->> disabling, ie bit 0 in RBQP and TBQP registers.
+
+On Fri, Nov 13, 2026 at 6:28=E2=80=AFPM Ali Tariq <alitariq45892@gmail.com>=
+ wrote:
 >
-> nit: Just learned that git am will turn this into >From. Maybe reword=20
-> the first sentence.
-
-Fixed! Plain text is nice but sometimes causes trouble.
-By the way, this patch is in a separate series now.
-
-https://lore.kernel.org/netdev/20261113-macb-caps-v1-0-42e0984b2f09@bootlin=
-.com/
-
->> All revisions I've seen either support it on both Tx & Rx or don't
->> support it at all.
->>=20
->> Sources:
->>=20
->>    Compatible            | Match data         | Datasheet
->>   =20
->> ----------------------|--------------------|-------------------------
->>    atmel,sama5d29-gem    | sama5d29_config    | DS60001764 [0]
->>    microchip,mpfs-macb   | mpfs_config        | header files [1]
->>    microchip,sama7g5-gem | sama7g5_gem_config | DS60001765 [2]
->>=20
->> To contrast, check out the SAM9X60 DS60001579C datasheet [3] that does
->> not document bit 0 as anything special on page 1041 and page 1042.
->>=20
->> [0]:
->> https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/Product=
-Documents/DataSheets/SAMA5D29-Data-Sheet-ds60001764.pdf
->>=20
->> [1]:
->> https://github.com/polarfire-soc/polarfire-soc-bare-metal-library/blob/6=
-14a67ab/src/platform/drivers/mss/mss_ethernet_mac/mss_ethernet_mac_regs.h#L=
-200-L207
->>=20
->> [2]:
->> https://ww1.microchip.com/downloads/aemDocuments/documents/MPU32/Product=
-Documents/DataSheets/SAMA7G5-Series-Data-Sheet-DS60001765.pdf
->>=20
->> [3]:
->> https://ww1.microchip.com/downloads/en/DeviceDoc/SAM9X60-Data-Sheet-DS60=
-001579C.pdf
->>=20
->> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
->> ---
->>  drivers/net/ethernet/cadence/macb_main.c | 7 ++++---
->>  1 file changed, 4 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/drivers/net/ethernet/cadence/macb_main.c=20
->> b/drivers/net/ethernet/cadence/macb_main.c
->> index 020a47353d01..625171fd3f9b 100644
->> --- a/drivers/net/ethernet/cadence/macb_main.c
->> +++ b/drivers/net/ethernet/cadence/macb_main.c
->> @@ -5743,7 +5743,7 @@ static const struct macb_config sama5d2_config =3D=
-=20
->> {
->>=20
->>  static const struct macb_config sama5d29_config =3D {
->>  	.caps =3D MACB_CAPS_USRIO_DEFAULT_IS_MII_GMII | MACB_CAPS_GEM_HAS_PTP =
-|
->> -		MACB_CAPS_USRIO_HAS_MII,
->> +		MACB_CAPS_USRIO_HAS_MII | MACB_CAPS_QUEUE_DISABLE,
+> This series fixes two locking problems in the SpacemiT K1 Ethernet
+> driver.
 >
-> AFAIU this also switches WoL suspend on these SoCs from the tieoff ring=
-=20
-> to
-> QUEUE_DISABLE. Was WoL tested on any of them? Worth a line in the commit
-> message too.
-
-Not tested, I don't have them. I've added a paragraph to the commit
-message to explicit this behavior change.
-
-Thanks for the review,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+> Patch 1 fixes the TX timeout work, which ends up waiting for itself
+> through cancel_work_sync() in emac_down(), so every TX timeout leaves
+> RTNL held forever.
+>
+> Patch 2 takes RTNL in emac_suspend() and emac_resume(), which fixes the
+> "suspicious RCU usage" warning from phy_disconnect() on suspend. It
+> depends on patch 1: suspend disables the TX timeout work before taking
+> RTNL, so it never waits for the work while holding the lock.
+>
+> Tested on Orange Pi RV2 (SpacemiT K1) with a lockdep kernel: 12
+> suspend/resume cycles without the warning. The board loses its network
+> after about a dozen cycles with or without this series; that is a
+> separate issue.
+>
+> Changes in v2:
+> - New patch 1 to fix the TX timeout work deadlock (reported by Troy,
+>   approach suggested by Vivian)
+> - Patch 2: take RTNL before the netif_running() checks
+> - Patch 2: drop Breno's Reviewed-by, since the patch changed
+>
+> v1: https://lore.kernel.org/netdev/20261105123441.2524171-1-alitariq45892=
+@gmail.com/
+>
+> Ali Tariq (2):
+>   net: spacemit: Fix TX timeout work deadlocking on itself
+>   net: spacemit: Hold RTNL lock in emac_resume() and emac_suspend()
+>
+>  drivers/net/ethernet/spacemit/k1_emac.c | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
+>
+> --
+> 2.34.1
+>
