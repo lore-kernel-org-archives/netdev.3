@@ -1,60 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794609299;
-	b=KrYLbUIBEs7ewUj1HnJUhcedFbLLMHoZQkGlzBFieXQCcaf9PMF6i80wU+2GO9kAaOhl
-	 /AaqG38ckN/hPZPX1nNBypEPg/QfDh95m8f/rZS0jzfEcKrbqxCeZG3eQ6TTK2NvkECCT
-	 5ocNIeEUmmDduHHlAiAqpw7SBMQoqhmO9aAOkiJXA40u3AN0q88f1lmXWozb1XXVwqG5z
-	 sjhN2lRc73X6UrabdwN4+yyNGTvVqqDS6YoSx3TPiUKykS0Td15U98+S9J6d0N5yThdwp
-	 InYDFv5qzR5HjxxXAVpp/7t6zBdA8CdKJFQrsHdOfmXUj/egI56xWwhpVQKHlpzo6RQ==
+	t=1794609322;
+	b=X6Zd8EfR2EUSNCvC0U+OQvZBlEHxTo6UHkVmeqe7zR6lKMGK/epY3HI1z5/C5L7TvzOE
+	 H0Wi5bMTt4vJl4v74ivjHTG7BTeGM3J7yoRka1HIsfReIw+LhjAtwqTzpO0MSNXCS1Yw9
+	 vMRiQgq1PkR1mAvAYJwvRh9AZwvgX+qUh9yqKDoxKDjjFOkgsOo7pgWZ7GDz3McrDV86m
+	 y1wfzV+clkc/cW/J9QrlvQKCf5sMoiebEUPNmFe3jhI8R8eoE0LGURcNtWJKlbrS8DY0v
+	 chG863YsrHiOhYgJacvNqE6k5T2ONkvlwGJrXcyN4wqSNLLG1OQCAahSsnvJALzV1ag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794609299;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=n6gsk06Q/ZLkqrH++zBWhddiCHI+IJ0ggdABLE93hj0=;
-	b=lHyH/5E//O9MSGH/Og3mBVwx7uaNnPBxma3qLMvBkoSPhJGHnuCZWQSzq8MDg5i/jsm8
-	 CVLwLwrt0CgRuasLMtDuaYBlPgGloDKaM5ye+K1W+QM1z5hoagptWVbdYj0TayFrBkto0
-	 INwI1b5g/ZwgEod1is3FEdOasirr/E6lz3kgLnVC9dSFYuWmFkPPOk06HKD465YE74hcE
-	 u8cuMaUpiyWCxMwl/GohFqKSJps+2ogdzMwapsPuzgxka+gn4QpFSnWSl+9MYOQnCIiof
-	 QLvUI0B1Y0vgvQs5uZD5kc74kmuTc0v3rk41eNB0YN0shor5DN7GbMSL7gd+p6Wxz7g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794609322;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Received:
+	 X-Forwarded-Encrypted:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type;
+	bh=LITKaWV7XMnQptJT0JVIP2eNuxfwTtrcVKQlo7sTeg0=;
+	b=i3gcmG3CYuY7ImK37ATUN0pl1EkdToFCJ129CF57wgoSZ3wNK9JURQqOZUQ+phSPpj9V
+	 Um/IAspFfHJ1ZzQG07xjHHEsLSrer33zG4KD87b+Nkdj/XhsNdI1g+G1WbIoXmJm9ficH
+	 pVjd+1QiuoXBbPoc58xcKShz+B8n65jac+LfsO3gzk/krJwSexPdUkpuPo3Tz9mZRephr
+	 r8/w0HxX9gBkO5YhKHJc/EYA2NQ3ll3ZTM8EZ/FwBotIeG7DsGD9B/Yiz8JYXN12EVVXO
+	 cwAs/bAP0FEM7augWLt0MBcG4McWnEreFW8za20/eGTNu6V9YpKdI8Y/QM8neV6bsfg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b="v0/cM6Aa";
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=none header.from=telaak.dev;
+	spf=pass smtp.mailfrom=gmail.com;
+	arc=none smtp.remote-ip=209.85.216.45
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 9CC37606A8A0;
-	Fri, 13 Nov 2026 22:34:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9CC37606A8A0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=v0/cM6Aa
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1794609280;
-	bh=n6gsk06Q/ZLkqrH++zBWhddiCHI+IJ0ggdABLE93hj0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=v0/cM6AaYTzAZ5ET/oEYN7zdnDQdrdkn2x/Hq7VregG7dVWy235JzOCuymiNxcBq8
-	 y+rfJ49sTUl6dXLnHWfwgDHR1hnkyiAhwpPzbER+sYd+KpbuMUHeAyG2ShoE9/+/Rc
-	 bVEYQJ0KkiBEytwx9q+XvNIvotZTf1M4wIJE6wiXoT57AYzg50N9JIUixQXI1x7Wly
-	 KgJH95/PsDWywq1W90uu53xEO6AqKgpviBpCs4gXBtAeu3Nkr6hitBmP3tnBxraQkk
-	 Pcd2+RQRN23im6acVB9dI/5ReetD9jAtpZrDKiyxB8JDglPR8G7iiSWVblKzdy0n/3
-	 tAPwHImeKCQzA==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id DE02760056;
-	Fri, 13 Nov 2026 23:34:39 +0100 (CET)
-Date: Fri, 13 Nov 2026 23:34:37 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@kernel.org, horms@kernel.org,
-	fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net 00/15] IPVS fixes for net
-Message-ID: <aveQfaTYqu8toT3E@chamomile>
-References: <20261113011447.2357709-1-pablo@netfilter.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A75606A551
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 22:35:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51A75606A551
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=telaak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3ac78f4c10bso751719a91.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 14:35:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794609321; x=1795214121;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=LITKaWV7XMnQptJT0JVIP2eNuxfwTtrcVKQlo7sTeg0=;
+        b=wPdC40cBsEUf9mwIboY2H1V+Ipwh9PbIy/iEpC3jEfHAhFpg2LqFmwrF3MKEIS8wn2
+         pkC6MZOrvlz97xwWYRmLtRJ9+LGcrN1yA6nGhWICjwh2aSk4FprBcunKiF14YR8+xx2H
+         yd9pNTwyxFmqz1Hao5XUAiWjMXWh0MTr78YLpKjNjiWvFm8fZSr9nRPbXuDHQSuK9K0r
+         Fum0GaYS5fB8hRFKMpr1CSLZPCIPWZirBEZ29lMlcaJShb2uidokCadHcMImHAUF1Uuv
+         O5JiW6GRJIBrR0SuDY6rGYmHuJzcjj1s8YbDOUJzm59TTLqP/x/YD9ZwtBagHF5LpGGd
+         llPg==
+X-Forwarded-Encrypted: i=1; AL+hErGEVgZsK4R7X/bfIlFNRZW4CbONXdiBoI5bf5OBBMRnB2reOWLtJg/bt7GQc0TAKe0F1yZ7N/U=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/DyFkPk13o7V3RFCVTroGOkpXGbyFytaJQ0k15a3IBbwiYLEsl
+	rU1bDpsJiW0jFTMEBPmNharJv6o6kg6NRvtAlL8TmDEmejQ8eQ3lUxhzy9PF1h4i
+X-Gm-Gg: AYBFou3bVC6O9IoFLsH+1rwRVIfcxZTdIf5BgwIA4FJnrcDgXJoe7plTtr2PB1j1bB1
+	YHmXR1PHa4Z6F4xzzQ/cI7y8cSSNjWfhRVrORPeuRnEB96FBaRtFog54fxEU/FpkOIsRwoGQ95L
+	T6vICMhab2m4J6e+W5cjftsI+hbCXE3q+teL2XDyH34dxG4qKubWaIadQEL+QzV4Mreuo+LlTTy
+	mMlTNN2yMU/Q4vJJJCAl4EjNB/kttuF1ftECSMmWfgMqGZLFM7/4q68Fvrs5LRf1dxPGsJYJ4Yo
+	K3wcLkPJWtupr95l932CnFbUdwhlEpC80IaRugJW8JFDJd+eH3lcduCDYje5ghPo4jsIGe98KOO
+	9gV+K9o7sL8QAQS1uuIwaRwVF2blBFwJzBqQvsA3s1niNexecd8Ch2NVyVzScN63Sbs8Vt4LGbO
+	WUMOiKHst/b3BxV95A2XHp9LTvbrOFJFHkzNL7fIUwggq+ID+amCdeLHQruyckbyqXRU8rXkfA9
+	x6wWTM81NxnVcLQXXAPDfiZ1RwqVdjUdo1zx4EQ0gRpk4hR+kMh3lxj9Y548gzVhe1t6EuJn6cN
+	FvQP2jitwrRZkLmIQM36myVfikSUQ4QPfE9lkuxfpOvee89wFTZTdrCV3bjIDIlQjV2Vmpbdepm
+	pQFdWWM61n1lkGsE1K/zWeessHJK9C052S+UlBhAiR1lu
+X-Received: by 2002:a17:90b:17d2:b0:3b0:c11a:9026 with SMTP id 98e67ed59e1d1-3b1b0ba91aemr3941048a91.55.1794609321563;
+        Fri, 13 Nov 2026 14:35:21 -0800 (PST)
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com. [74.125.82.181])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d27d26sm11203113a91.13.2026.11.13.14.35.20
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Nov 2026 14:35:21 -0800 (PST)
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-3720addb068so2383768eec.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 14:35:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErHVRVOJSMnQZddtfHuAO9C2hMAmjdf/CI3LFm9u3y8Md663UHBFQOD18JX+lrhtCLgD/jIxm24=@vger.kernel.org
+X-Received: by 2002:a05:7300:85:b0:376:e950:873e with SMTP id
+ 5a478bee46e88-37965f9ad51mr2968029eec.12.1794609320230; Fri, 13 Nov 2026
+ 14:35:20 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,138 +81,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261113011447.2357709-1-pablo@netfilter.org>
+References: <20261112-mxl-gsw1xx-reset-v3-0-863e82074893@telaak.dev>
+ <a2f45802-b75b-4a19-9508-2d1b5ebe473a@lunn.ch> <avcoghKd4CU13QI_@makrotopia.org>
+ <9804b024-236a-4791-aa55-d83a71b2598c@lunn.ch> <CAPY4CJ6jQTNE=ZtyBysaxuOxG1Pb9zFsYcyas8isfXte2=OiKw@mail.gmail.com>
+In-Reply-To: <CAPY4CJ6jQTNE=ZtyBysaxuOxG1Pb9zFsYcyas8isfXte2=OiKw@mail.gmail.com>
+From: Joseph Telaak <joseph@telaak.dev>
+Date: Fri, 13 Nov 2026 17:35:08 -0500
+X-Gmail-Original-Message-ID: <CAPY4CJ4gB42mW6UW4Qk6r1+u2_AA=58WTFCvRrea2cedPuAcBA@mail.gmail.com>
+X-Gm-Features: AclHuK92955TDOieITeTuWAvZpOeGFZi5VRbt4O1JwbW-bk85arSJHpEKRZecOs
+Message-ID: <CAPY4CJ4gB42mW6UW4Qk6r1+u2_AA=58WTFCvRrea2cedPuAcBA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/2] net: dsa: mxl-gsw1xx: reset the switch
+ through reset-gpios
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Daniel Golle <daniel@makrotopia.org>, Hauke Mehrtens <hauke@hauke-m.de>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+On Fri, Nov 13, 2026 at 05:16:51PM -0500, Joseph Telaak wrote:
+> I'm testing the other way now, with the PHYs described at 1 to 3 and no
+> reset from Linux. If that works on warm and cold boots, this series
+> isn't needed and I'll drop it.
 
-I'm preparing a v2 of this batch with IPVS fixes, we have identified a
-few issues in this batch. I plan to submit it by tomorrow.
+It doesn't work. With the PHYs described at 1 to 3 and no reset from
+Linux, neither LAN port passes traffic, after the flash or after a cold
+power-on. The same board with this series works.
 
-Apologies and thanks.
+So the addresses aren't the whole story: U-Boot leaves the switch in
+some other state that the DT can't describe, and the reset clears it.
+On your earlier question, the driver already writes PHY_ADDR from the
+DT, in gswip_port_enable(), but only once the PHYs have been probed.
 
-On Fri, Nov 13, 2026 at 02:14:32AM +0100, Pablo Neira Ayuso wrote:
-> Hi,
-> 
-> The following patchset contains IPVS fixes for net:
-> 
-> 1)  Avoid out-of-bounds write in ip_vs_nat_icmp_v6() when an ICMPv6
->     error embeds a non-first ESP fragment, from Axel Mierczuk.
-> 
-> 2)  Update *offset for non-first fragments in ipv6_find_hdr(), so
->     callers no longer use the initial offset as if it had been
->     updated. Also from Axel.
-> 
-> 3)  Rework connection refcounting so the pending and running timer
->     hold a reference. This fixes a use-after-free race between
->     connection deletion and a concurrent timer callback, from
->     Julian Anastasov.
-> 
-> 4)  Expire controlled connection chains iteratively instead of
->     recursively to avoid kernel stack exhaustion, from Zihan Xi.
-> 
-> 5)  Reject zero and configured FTP control ports as data ports in
->     the FTP helper, from Zihan Xi.
-> 
-> 6)  Skip conntrack templates in ip_vs_ftp_out() to fix a UAF in the
->     expectation list after the CT rule is removed, from Theodor
->     Arsenij Larionov Trichkine.
-> 
-> 7)  Add the seqadj extension before linking the FTP expectation, since
->     krealloc() of ct->ext can otherwise leave the expectation pointing
->     to freed memory. Also from Theodor.
-> 
-> 8)  Update conn flags, seqs and related fields in the backup server
->     under cp->lock, from Julian Anastasov.
-> 
-> 9)  Read conn flags and seqs atomically in the master when building
->     sync messages, from Julian Anastasov.
-> 
-> 10) Fix a race that can leave a destination in the overload state
->     forever. Also make the LBLC/LBLCR schedulers honor the overload
->     state for cached destinations, from Julian Anastasov.
-> 
-> 11) Validate cport and IP_VS_CONN_F_NO_CPORT in received sync records.
->     This rejects templates and connections that incoming lookups
->     cannot match, from Axel Mierczuk.
-> 
-> 12) Skip cport 0 connections in ip_vs_conn_out_get(), using the same
->     rule as __ip_vs_conn_in_get(). Also from Axel.
-> 
-> 13) Do not create connections from packets with client or virtual
->     port 0, which could create a duplicate connection for every
->     packet, from Julian Anastasov.
-> 
-> 14) Wait for an RCU grace period before reusing a destination from
->     dest_trash, and before restarting its estimator, from Darong Lu.
-> 
-> 15) Pass the netfilter hook's state->sk to the update_pmtu handler,
->     and pass a NULL sk to ip_local_out() when forwarding through an
->     IPVS tunnel, from Julian Anastasov.
-> 
-> Please, pull these changes from:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-11-13
-> 
-> Thanks.
-> 
-> ----------------------------------------------------------------
-> 
-> The following changes since commit d1bb235aa409a4e5aeba6c748d953d948625b1e9:
-> 
->   netfilter: nat: zero newrange before filling it in (2026-11-05 13:31:11 +0100)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-11-13
-> 
-> for you to fetch changes up to 937b060406a547e4d931525e600540726ea26532:
-> 
->   ipvs: pass correct sk to update_pmtu and on tunneling (2026-11-13 02:08:35 +0100)
-> 
-> ----------------------------------------------------------------
-> netfilter pull request 26-11-13
-> 
-> ----------------------------------------------------------------
-> Axel Mierczuk (4):
->       ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6
->       ipv6: update *offset for non-first fragments in ipv6_find_hdr()
->       ipvs: validate cport in received sync records
->       ipvs: skip cport 0 connections in ip_vs_conn_out_get()
-> 
-> Darong Lu (1):
->       ipvs: wait grace period before reusing destinations
-> 
-> Julian Anastasov (6):
->       ipvs: fix problems during connection deletion
->       ipvs: update flags and seqs in backup server under lock
->       ipvs: read flags and seqs in master atomically
->       ipvs: honor the overload state and do not enter it forever
->       ipvs: do not create conns from packets with port 0
->       ipvs: pass correct sk to update_pmtu and on tunneling
-> 
-> Theodor Arsenij Larionov Trichkine (2):
->       ipvs: ftp: skip conntrack templates in ip_vs_ftp_out
->       ipvs: ftp: add seqadj extension before linking the expectation
-> 
-> Zihan Xi (2):
->       ipvs: avoid stack overflow from recursive connection expiration
->       ipvs: reject FTP control ports as data ports
-> 
->  include/net/ip_vs.h                     |  52 ++++++++----
->  net/ipv6/exthdrs_core.c                 |   6 +-
->  net/netfilter/ipvs/ip_vs_conn.c         | 133 ++++++++++++++++++------------
->  net/netfilter/ipvs/ip_vs_core.c         |  58 +++++++++----
->  net/netfilter/ipvs/ip_vs_ctl.c          | 140 ++++++++++++++++++++++++--------
->  net/netfilter/ipvs/ip_vs_ftp.c          |  39 +++++++--
->  net/netfilter/ipvs/ip_vs_lblc.c         |   8 +-
->  net/netfilter/ipvs/ip_vs_lblcr.c        |  13 +--
->  net/netfilter/ipvs/ip_vs_proto_ah_esp.c |   2 +-
->  net/netfilter/ipvs/ip_vs_proto_sctp.c   |  12 ++-
->  net/netfilter/ipvs/ip_vs_proto_tcp.c    |  12 ++-
->  net/netfilter/ipvs/ip_vs_proto_udp.c    |  11 ++-
->  net/netfilter/ipvs/ip_vs_sync.c         |  53 ++++++++++--
->  net/netfilter/ipvs/ip_vs_xmit.c         | 114 +++++++++++++++++---------
->  14 files changed, 462 insertions(+), 191 deletions(-)
-> 
+Since GL's own firmware resets the switch from Linux too, I still think
+a hardware reset at probe is the right fix. I'll send a v4 with the
+cover letter corrected, this explained, and Sashiko's points addressed
+(the silent skip with CONFIG_RESET_GPIO=n, and the repeated pulse on
+probe deferral).
