@@ -1,93 +1,88 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=193.142.43.55
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794596194;
-	b=IRN04ByGaeIb/eQbfmoqTaD+IV/Cn5i/ATsVHKUyM2Ikk91K60PkejDah+GPZEVlkMZB
-	 7fcZCWZL0kyhAXFpdSzUgr6dMimG0AfraUxyCkU9yiJtcbncFy0kOHEVTdjb5iRBZv3oK
-	 K+b2Cwttnc3lOdLOM7zMWefvBD6LZW77DxEKhdXNrSrYmksreNUXNkSe2++jL9NMyLVEh
-	 jYO7L9hB8ZVib3e1pB7cLK7Zgk4kxfgPd64o65/K6/UsJVsN9KSLSqmjToTBpW93n7cGz
-	 6aY1QNs4Oa4WM8QnF26/NJFzPCPeXDsncoY8zCSO80HP4+IjslN/ExChpEQoYs5j7Kg==
+	t=1794596307;
+	b=W84tTn2GzDw842WBCb+8h+7EZA5uYZeBBafkNmWzJka+ohPkFJTpFfIYdFhf/9WgIbaS
+	 jxRpzY8qY7ueJ58KtKRXtl7gLq04N4LZDC7bsSrSQ5Irbd3nhG/DygYWrEZ7fYKbmRb+K
+	 jPgVyI0GaqaQmZoyYjGI+W/adZtjBrrgscBBCbe2sR3xBz34Z9FGpztXGJ+HAkwdBrbKR
+	 ggfeSEjTsxa4WExUg6KEeHQ9JrPPNKbAf/+SV7/G+TLTvWF9MmAuq1705QEgO3gOT67YV
+	 3O+P56sURtpeJvJGGPiewqnNRpiDF4GFYK/bfgWw58qEU0xI0HlmyHd+0+Gd+2/ndkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794596194;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Virus-Version;
-	bh=CL4DK10DW5k/WPXah4xIbdozQuFXRdBBG8thXN24xkw=;
-	b=sXXIs5xn8Si625FRrbvOQLaHRjv4NZi73dpkjhqZ5U/Qq8+opBS/do/C63st9Yjd41mI
-	 pOvS77CYs8GNyDHjwuld1nQn40OyKXFDea1p5m0Z6GwDjyv5mDzpHnoLYJzgb39XKafzU
-	 fyZuRa/i4BK0L/odsy3ol0X2rpGyPXEjtCT8JJ9txtppgv8InP0o8sR8O3x/S2PxRnHCl
-	 K1PeJfwkV4s2Lp33GM20n2j+b5g6kh/LGvE0BdsQp6N3UG8vNsINY5kDi3d5aETR9a0qO
-	 ALXL2z1MmfUSuz3rUnuiCP7mo+Kn9KhTEMii4xUVmP16FXYvqVEZgWwjTVc2e0aJ2rA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794596307;
+	h=DMARC-Filter:Message-ID:DKIM-Signature:DKIM-Signature:Subject:From:
+	 To:Cc:Date:In-Reply-To:References:Organization:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=lEeskuJPkdiI8gE2TYZrxOjdiP0LZZey/2Bh096XvUk=;
+	b=Ic/u5TAUfed0xmSi3K3Bzsi3IhsZ3Mc6JmzbexayKRXhI3AtLLGZ0dyFZW/6xzXLO0TN
+	 ZQnoM51mdBkNR6KRL41Kw9bRVTCmwtIXSs4zF4sb5NP4camMAEheqsbZR9vH3mLJoPus9
+	 Tfo0PntJmUp4OaN8BD3M8qU6mV/+L6/PyHNfDpRVuBbosY+HxIDkgdfJ8lYmpmPtWEEl9
+	 R0jZ4M1JqIRCzZX1/vLjZDaguFWRTvi1FiY/02rBjBk9yaDrymLF1sHZut2/Cqoo/csKU
+	 Mmb3BlVJHxkrXqmIlzMosWtuoiDKX/gTHC3daaBjQpfEJV/7tj17PQsxCqRxDoSt+9A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=meta.com;
-	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=dVeSBFiR;
-	arc=none smtp.remote-ip=67.231.153.30
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	dmarc=pass header.from=linutronix.de;
+	spf=pass smtp.mailfrom=linutronix.de;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Nsa5LHdz;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b="+/Q+661T";
+	arc=none smtp.remote-ip=193.142.43.55
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAFD60A6F50;
-	Fri, 13 Nov 2026 18:56:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4DAFD60A6F50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379D16071069;
+	Fri, 13 Nov 2026 18:58:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 379D16071069
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=dVeSBFiR
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFSmhM2007105;
-	Fri, 13 Nov 2026 10:56:03 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=CL4DK10DW5k/WPXah4xIbdozQuFXRdBBG8thX
-	N24xkw=; b=dVeSBFiRg4xGT3aDoy3aA/YbXFtlHhC0Hd+dIinsJ2UuHe3Da+3E1
-	R7D/Kqt3+cEUyrbkFCpG6J6WGmYnNCnMPGBWRLnP8Ot1aQ1J4Uv7Yzi51nNxUARp
-	SpAfYMvHSfrgRJ4MSDVXVSZbsFbK/utbb56BiRFa55mVkxRvWkFkp52IQ0o1sw1e
-	wdw5isR5oF9Lu19/7PB08LzGMQ2u1+d0c7oimOAWhxhh/MUKapFaS27i8CeBzm+9
-	jy8MKAyLxWtEwr8lmdhBJ5AfDXzFx/XzLaNmfPpuY/tj38ewDF9xEz7jQDvnGqtr
-	o+8N6+Nfo6QpD6Q0C9zWMdDcxJ6Sh0Okg==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwj8cg3gv-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 13 Nov 2026 10:56:03 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 13 Nov
- 2026 18:56:01 +0000
-From: Todd Freed <toddfreed@meta.com>
-To: <netdev@vger.kernel.org>, <toddfreed@meta.com>
-CC: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Daniel Zahka
-	<daniel.zahka@gmail.com>,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        Wei Wang <weiwan@google.com>, Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jiri Pirko
-	<jiri@resnulli.us>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann
-	<daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau
-	<martin.lau@linux.dev>,
-        John Fastabend <john.fastabend@gmail.com>,
-        "Stanislav
- Fomichev" <sdf@fomichev.me>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        "Boris
- Pismenny" <borisp@nvidia.com>, <bpf@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH net 3/3] psp: only give time-wait sockets of PSP connections a validator
-Date: Fri, 13 Nov 2026 10:55:53 -0800
-Message-ID: <20261113185553.171059-4-toddfreed@meta.com>
-X-Mailer: git-send-email 2.53.1
-In-Reply-To: <20261113185553.171059-1-toddfreed@meta.com>
-References: <20261113185553.171059-1-toddfreed@meta.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Nsa5LHdz;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+/Q+661T
+Message-ID: <5a6183e3480a0d910e275acf591e2db8700da827.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1794596304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lEeskuJPkdiI8gE2TYZrxOjdiP0LZZey/2Bh096XvUk=;
+	b=Nsa5LHdz+ZYikhtmHbjxEddO/69fFul88+8iEoKxSL3lTvhRV1XLziHTU3MeQJ3m85tJeb
+	2Kd2ZM3rvEnfGugLwHF3OZt+vfXsl3gaBBE7aGESxEYk2fh/Xs6aWabHfnXb6qozVC3Ijc
+	btF/VsGDwPDS7lJzT0J1HHBG6C4hnnDf2PUHntndrG6ju0R13uLb6VnDbkxPpQoCOpILUq
+	uFekou8wbBekyhInQWdA9plgpMznKFC8iTfKdW8K1FaXLC6BZ0lKADdgf/QHcvjbhXAF/S
+	s89ezdujqXDPsv8Za0myV9KOVA+64E+v3yvyI2gKyWq6ddU7nkBrP3KWiT17UQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1794596304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lEeskuJPkdiI8gE2TYZrxOjdiP0LZZey/2Bh096XvUk=;
+	b=+/Q+661TL+IzyNJ7cFVuJ+g+Wd94X6upSp9cBnHdlJnTfdeNxCSPFyYNSd6A5eAhlhLKSm
+	HqZhgCH0i26RAqBw==
+Subject: Re: [PATCH net-next v4 4/8] dt-bindings: mfd: Add SoC-e SWIP parent
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Rob Herring <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>, Eric Dumazet <edumazet@kernel.org>, Lee
+ Jones <lee@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  netdev@vger.kernel.org, mfd@lists.linux.dev,
+ Martin Kaistra <martin.kaistra@linutronix.de>, Benedikt Spranger
+ <b.spranger@linutronix.de>
+Date: Fri, 13 Nov 2026 19:58:21 +0100
+In-Reply-To: <20261110192118.GA1412882-robh@kernel.org>
+References: 
+	<20261105-devel-vstrassheim-soce-dsa-ml-v4-0-02f3cde2afa1@linutronix.de>
+	 <20261105-devel-vstrassheim-soce-dsa-ml-v4-4-02f3cde2afa1@linutronix.de>
+	 <20261106-judicious-penguin-of-enhancement-b28c8b@quoll>
+	 <f5c7c9901aca84f0b814e5b6c153db84af826dd7.camel@linutronix.de>
+	 <cc35b2127b04772f05948ac51c8faa5ef07da0b0.camel@linutronix.de>
+	 <20261110192118.GA1412882-robh@kernel.org>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -97,68 +92,153 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfXxQPV4vVc9aFo
- +CRljNkzSWm48HXdKh/1zAlc/6gTRbhotscX3XNBo7PYhUkfIVi4iHRP7L489hZTamdW/rcl+GE
- bv5QTWgcLETpqM3Q2z1IskDtUQefRisl8/zumrl/BcAsy0EkndZavVBtmxiDgFQlfea9As2AO/i
- 7jn8ULLefChWIHcibxoFJhBQmpaDc7AD/Vv8GmuvFPoTqoy7rWsAzUaS/nKcwXrnPrPSmj6Mqx2
- xG2WnW6kF5e/qZ6l3uYC1QKi/ufEFrjnTq31m/SlZJDtXE0Z4UrFACLAzj+IlLXixqlaCY9FzCD
- pSSyFM9UBjlbDPcYrQXvq6CHBvelV0XNUREGwStZHs72uIi2FejMhDU4UQb+/IKpk1gHDB7SGCm
- oRCATXckcOxHlT3NDDJugQk4UoeQg2wm7aWb9qTAFReZxKSbmiWqaBHldySAjWY+SzzGv4bOQv4
- RGBTvEwKR0kAH/j0M9g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX21oULmicUOUe
- /Cwu8dzJqX+AnFnvtRzGYdEwHbZ9oxJ7pDO2vP9YRuMqRSv7HhPWMYero4D3kzw2drWX9tgic5a
- ZIR+QSPCJ+djUpHIauanZD+RDl/l68M=
-X-Authority-Analysis: v=2.4 cv=DuvDa2/+ c=1 sm=1 tr=0 ts=6af75d43 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=JnKecZnUtZousrUlYMGU:22 a=VabnemYjAAAA:8 a=lPjtF5NPWS3-9_hsH0QA:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: 3iuuzk2g_e_DY33Y6Cs2z8z5hi3ErO-P
-X-Proofpoint-ORIG-GUID: 3iuuzk2g_e_DY33Y6Cs2z8z5hi3ErO-P
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-13_05,2026-11-11_03,2025-10-01_01
 
-psp_twsk_init() sets tw_validate_xmit_skb on TCP time-wait sockets.
-Today, that becomes set whether or not the socket has PSP offload, which
-is not needed but is harmless. psp_validate_xmit() passes such packets.
+On Tue, 2026-11-10 at 13:21 -0600, Rob Herring wrote:
+> On Tue, Nov 10, 2026 at 05:10:15PM +0100, Vasilij Strassheim wrote:
+> > On Fri, 2026-11-06 at 22:51 +0100, Vasilij Strassheim wrote:
+> > > On Fri, 2026-11-06 at 12:13 +0100, Krzysztof Kozlowski wrote:
+> > > > On Thu, Nov 05, 2026 at 03:16:48PM +0100, Vasilij Strassheim wrote:
+> > > > > Add a binding for the SoC-e SWIP multifunction FPGA IP core.
+> > > > >=20
+> > > > > Describe the shared MMIO address space and address translation fo=
+r
+> > > > > the required Ethernet switch child and the optional integrated MD=
+IO
+> > > > > controller and MMIO-controlled MDIO multiplexer.
+> > > > >=20
+> > > > > Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
+> > > > > ---
+> > > > >  .../devicetree/bindings/mfd/soce,swip.yaml         | 137 +++++++=
+++++++++++++++
+> > > > >  1 file changed, 137 insertions(+)
+> > > > >=20
+> > > > > diff --git a/Documentation/devicetree/bindings/mfd/soce,swip.yaml=
+ b/Documentation/devicetree/bindings/mfd/soce,swip.yaml
+> > > > > new file mode 100644
+> > > > > index 000000000000..625be299e262
+> > > > > --- /dev/null
+> > > > > +++ b/Documentation/devicetree/bindings/mfd/soce,swip.yaml
+> > > > > @@ -0,0 +1,137 @@
+> > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > > +%YAML 1.2
+> > > > > +---
+> > > > > +$id: http://devicetree.org/schemas/mfd/soce,swip.yaml#
+> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > +
+> > > > > +title: SoC-e SWIP multifunction Ethernet switch FPGA IP core
+> > > > > +
+> > > > > +maintainers:
+> > > > > +  - Vasilij Strassheim <v.strassheim@linutronix.de>
+> > > > > +
+> > > > > +description:
+> > > > > +  SoC-e Switch IP (SWIP) cores integrate Ethernet switching logi=
+c, an
+> > > > > +  MDIO controller, and an MDIO bus multiplexer in one memory-map=
+ped device.
+> > > > > +  The MDIO bus multiplexer is wired to the integrated MDIO contr=
+oller.
+> > > > > +
+> > > > > +properties:
+> > > > > +  compatible:
+> > > > > +    const: soce,swip
+> > > > > +
+> > > > > +  reg:
+> > > > > +    maxItems: 1
+> > > > > +
+> > > > > +  '#address-cells':
+> > > > > +    const: 1
+> > > > > +
+> > > > > +  '#size-cells':
+> > > > > +    const: 1
+> > > > > +
+> > > > > +  ranges: true
+> > > > > +
+> > > > > +  mdio@204:
+> > > > > +    $ref: /schemas/net/soce,swip-mdio.yaml#
+> > > > > +    unevaluatedProperties: false
+> > > > > +
+> > > > > +  mdio-mux@202:
+> > > > > +    $ref: /schemas/net/mdio-mux-mmioreg.yaml#
+> > > > > +    unevaluatedProperties: false
+>=20
+> Given the MDIO bus and mux registers are adjacent, I don't know that=20
+> putting the mux into its own node and driver really buys you anything.=
+=20
+> Can't your MDIO driver handle the muxing directly? mdio-mux-mmioreg was=
+=20
+> created for when you have mux registers in some completely unrelated=20
+> block.
+>=20
 
-But a validator makes a socket look like it has an encryption offload of
-its own. The tc psp action in the net-next series "psp: introduce
-socket-less associations" relies on the presence of the validator to
-determine whether the socket has an encryption offload.
+What it buys me is less custom code to maintain for bus selection and
+selector-value validation.
 
-Set the validator only when the socket has a PSP association with a Tx
-key, as psp_sock_set_tx_key() does for full sockets.
+The MDIO controller and mux were combined in a previous version.
+Following Andrew's suggestion [1], I moved the controller into its own
+driver and stacked mdio-mux-mmioreg on top of it.
+Sure, the selector is part of the same MDIO control register. But the
+generic driver already provides the masked register update and
+selector-value checks. My preference is to keep the current approach
+to reuse existing code, even if it requires some integration and
+documentation efforts.
 
-Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
-Signed-off-by: Todd Freed <toddfreed@meta.com>
----
- net/psp/psp_sock.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+I don't mind changing to a combined MDIO controller and mux, as done
+in mdio-mux-bcm6368.c, while still using the generic MDIO mux core.
 
-diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
-index a6b1c42dd626..1df65505f1c6 100644
---- a/net/psp/psp_sock.c
-+++ b/net/psp/psp_sock.c
-@@ -314,10 +314,13 @@ void psp_twsk_init(struct inet_timewait_sock *tw, const struct sock *sk)
- {
- 	struct psp_assoc *pas = psp_sk_assoc(sk);
- 
--	if (pas)
-+	if (pas) {
- 		refcount_inc(&pas->refcnt);
-+		/* like the full socket case in psp_sock_set_tx_key() */
-+		if (pas->tx.spi)
-+			tw->tw_validate_xmit_skb = psp_validate_xmit;
-+	}
- 	rcu_assign_pointer(tw->psp_assoc, pas);
--	tw->tw_validate_xmit_skb = psp_validate_xmit;
- }
- 
- void psp_twsk_assoc_free(struct inet_timewait_sock *tw)
--- 
-2.53.1-Meta
+Could we agree on the preferred approach so that the binding and
+driver changes stay aligned?
+
+> > > > > +
+> > > > > +  ethernet-switch:
+> > > >=20
+> > > > Why are you mixing children with and without bus addresses? This is
+> > > > discouraged and shows that device is not correctly represented, e.g=
+. if
+> > > > the ethernet-switch does not have resources, then THIS device is th=
+e
+> > > > ethernet switch.
+> > > >=20
+> > >=20
+> > > There is no hardware reason for leaving the switch child unaddressed.
+> > > Just an error that occurred while converting the binding to the MFD
+> > > model.
+> > > I will describe the switch function as an ethernet-switch@0 child nod=
+e
+> > > with a reg property for it's register resources, like the ocelot MFD
+> > > binding.
+> >=20
+> > It looks like I need a different name for the MFD parent to avoid a
+> > naming collision with the ethernet-switch@0 child. I checked other
+> > bindings but could not find a suitable example.
+> >=20
+> > I would appreciate any suggestions for a suitable name for the parent
+> > node representing the FPGA IP core. It mainly acts as a container for
+> > its child devices. I am considering "bus", "ip-core" or "shell".
+>=20
+> Krzysztof's point was combine the child and parent nodes into the=20
+> parent. This is not really an MFD. Almost every ethernet MAC has an MDIO=
+=20
+> controller in it and none of those bindings are MFDs.
+
+The suggestion to consider an MFD also came from Andrew in an earlier
+discussion [2]. Since this FPGA design contains several functional
+blocks, I liked the approach of grouping them under a common parent.
+
+The IP core can also include an I2C master for accessing external
+devices as a synthesis option. It also supports synchronization with
+external PPS and 10 MHz reference signals. I had future Linux support
+for these functions in mind. Ocelot is another switch described as an
+MFD, with additional functions such as GPIO and pin control.
+
+I am open to either approach. Could we agree on the preferred hardware
+model before I update the binding and driver?
+
+I can also provide more information if any hardware details are still
+unclear.
+
+>=20
+> Rob
+
+Thanks,
+Vasilij
 
