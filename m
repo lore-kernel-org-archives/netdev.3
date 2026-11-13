@@ -1,112 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=129.217.128.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794566703;
-	b=YJuW06T6Bv0CRy4eSs26iyr7uTnrX3Q1J+oumnEv+pDB5AtJWjcFheC6MYHJT+RPtrpE
-	 2OrdDLd5upCpDjrEoD92dRoHp+d0YQ3Q6LkCPkhOVlvTV9kkDrn8+lD9U8WsWFAf3wy27
-	 dn9akgSHniaXH3fnIlYImEkMZnpoczp0kaj85Q7tbQnaIbKxyuKHI09JAbC0AKdxiw8a7
-	 MGUZsUGsJKRbaPnOf142aQfSN9xXnHNWC4Y7KvVqUG6tALzHHGamo4gq1i8egQkrmA+ap
-	 3gUp7EGMaxsjmCZ9xip1XzrZBZesYMgGVlnPXH2F9+gBroWBs7gsoVQAUgM+43JXHhw==
+	t=1794566837;
+	b=1/4yngowkaYHEgNnBIIP2FKbirfqVTF6YDuSvQ+ib04Hc88sIJHHj8gRG9618LONT26R
+	 GbTHGn+KquEakkkxI8/CMesUWSOE0ED+o90gHoFUpmPB1ZNIFYzotMOCzPBwn1uPlOetx
+	 hI6Qj7O1CozxFPMAv5K69UnHLZ6zPlInD8nQqk88JvkpWfko6SAbx5NzV9frvQIPMMQeF
+	 Bhdr6B04Q9IlJj4NKdNSL6pC14JHSRayuUy8hcTBpt+tftyxwwPdCW3d2FhgFZwSPaCk8
+	 XKvVwbQAB0suTiw6CjErFxc0Y2co2bqmYmxhvpp6RrW9U77xcNnyTbnU0JlJz7VWfUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794566703;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:X-Authority-Analysis:X-Proofpoint-GUID:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=ljDMRqOHYPM+180KLYBxEZozbfQKzrnp4W89QlCNPN8=;
-	b=iMYxr0R2Pp3cpDz7FzxaJTw/Uq72Q5I4yFW0eTDaVAGQ0qvU8zRyzE5zF+Dc/3B48VFe
-	 Nh8ds9HrLQvi65gHKbelXsJe+Bq1vu+x/GHn4ilFDv2Iq2dx12V3QT0e2rsVzwbmm7ZIu
-	 li19TePUUbFkpOtQYouMa5QRsPrrzOzhNbHDPoj+zKgwrqrfNT5wMy+hedXzHC9Fzt/qn
-	 ep7iaoUa5tEOUDdMVF3RGmw8NsUJQTVCOrr+tvBnybQirAP0kTYB0EUFY0UsW9LSCI7K9
-	 FKg62UBxBcSwO0kNstVWMvS5VKWZD7xtH/KmFD334bGbXmfrSqIV1DvR6nUY0tMUYLA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794566837;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=/ahb376Rz+D6TMMsATtsk3gaJYuApWj7VVw0DDRorjA=;
+	b=0TPynK4RipC8F+r/D9KYB0NCu8Ck0F3tXdZRc+alvokpfsJvqjvVfzCmkmIBZ+MxQ2A4
+	 2lQxDySOu90YVKvy9bq2/BkHTNp1HDyiZi+G9u6EQ0qhAE9FIJnLbfT5TrdsCwSzc2JIJ
+	 PF0tQYp1I8aguwf9w4wRZTOU1dzs9d7c8Nul97WNWUeJ+RvLfjjV8DUtb6hBQzeNN+nnz
+	 DVQR4dmB79HM0Ndw0iM8mBjdOFtd5ZQ/8xmUVFe2lBtFKunB/OUTsjbsZMmhZwRF9/Alz
+	 WvJTn1cpWUGNRjm2Z/JumE7M+d8ezilroGL+58n8pDrkVXdCv1lxs0Eo+LfAuPjh6Vg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=QLA7Mo6c;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=fG4j4S70;
-	arc=none smtp.remote-ip=205.220.168.131
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	dmarc=pass header.from=tu-dortmund.de;
+	spf=pass smtp.mailfrom=tu-dortmund.de;
+	dkim=pass header.d=tu-dortmund.de header.i=@tu-dortmund.de header.a=rsa-sha256 header.s=unimail header.b="pwRG6d//";
+	arc=none smtp.remote-ip=129.217.128.51
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C07D606A32D
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:45:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4C07D606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25011606A321;
+	Fri, 13 Nov 2026 10:47:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25011606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=QLA7Mo6c;
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=fG4j4S70
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6AD8VNJ32515782
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:45:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ljDMRqOHYPM+180KLYBxEZozbfQKzrnp4W89QlCNPN8=; b=QLA7Mo6cLIZZjf82
-	qk7w1ss19fAqrQxUtYV2M+uEjrZ1uu0mFeG4b43NEscXVF+9pW/XHNwLWpcQS77s
-	6dmMqW2NsMZ4g+JTwFcrpCcXNcdpoCNp0b7UvYsu4oSeH3/3J2aOFCZQSZVKxFTR
-	TxpthXxc9bCK4PNfTGuX64k6qH9U7q2JLwmdyR5qtdQnfYoNPB96bnJ9IiTY8sjt
-	epv2ng2Oew3L1krcTqeUps24WdNz4upXKvskRDifvYEPXr9OYKlXDo294hkCOfws
-	uYUpsV+KPrHmtDgus0b/4a8ZTLPFRTgpIV43Qlqz6fIf6fj96mL7yMxei8O4slDn
-	ZcXEwg==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hwg1bbnju-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:45:02 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-36fa5673fccso916253eec.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 02:45:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794566702; x=1795171502; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ljDMRqOHYPM+180KLYBxEZozbfQKzrnp4W89QlCNPN8=;
-        b=fG4j4S701Kq1/hZBqE2+DKp2rEL9Mlw8nTrVVMQCMtSpWkdJPmLjEPKtYHeQ0sSap1
-         WIAlFvoXMYY0nS4x4savN3Pz8ajxvRUjRfo/GwxoKVf5uge0dmAx3LLBBXe5BYuHPO7E
-         1Gy/t3WdMQoSwgReZWYG2Ol+lV3/fV0JIfqdMjjlrpE2C8PCDgTTiZWy2EcyAElKqh73
-         gWd00HbK1yAAxYwYANAjuae292RZWzulssgOrsCoTiW+mkslQx7FGR8YjSAL28+crycG
-         lhRxiSzbb5MvnKd3FYN0hiE8OykROMTXWC16KqcidZ9pHrdRGKPGzbiKcYH3YJ6jbCb2
-         Ltxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794566702; x=1795171502;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ljDMRqOHYPM+180KLYBxEZozbfQKzrnp4W89QlCNPN8=;
-        b=KoEsKyPjpFdWyklYVqiPP+37rLXczYshTeG7yFpu+lKbE/Taqr4MqinEtaS3WlZL/o
-         pDsZOaJVkPswnMLiM36rUhDJA0d8UVl4PwGOM061CnyQHTtuiZtG5KwRa2wxCxs1EWlL
-         IQB73g89w9Ep0jvwflo+GCDaUYM57JqYhrBZg0gDqGHt1ceAPIDvCJKmmOHvxFL0Yipt
-         TxqcCfwcJ62UHPUj/Ceazcuu3ogCMVmpYrK+tLdlTWmWin68cveNAaf0LNze4TXRPb2v
-         A0cK8C4ajBS/xT6w+ABthcUFqEYFKsfh7XSm6/Hgb6LccmXBxwyySQdFsrgsuswk8V/T
-         8pDA==
-X-Forwarded-Encrypted: i=1; AL+hErETsNIR5eZIBMQDOVfcp3QAHWr2wBBEY0LbDQ22okK1G/6m1fiik2B+btDZ5sVIMkooX4cXW8o=@vger.kernel.org
-X-Gm-Message-State: APuU4Z954v4n6nV/8huNh7nU8nvsRWmtji92pzV9Tr0wcMPhcUY30ouI
-	AZ35A1P2jJ4mwXeDCc0QAfhvoM3qg3fD0TAZBbO5RD7aautctocp7Z8HeCmhsR1zRds9y+X1RS1
-	/iDwBuhkdVZWM60YmrfR8XmjjJtmlQU036jOLWyUUiZg3krJD1d/YlXMaLQMoDhxqVis=
-X-Gm-Gg: AYBFou2DPwdBdymL3OSIKX1U47Zn+Ddugud+r1tWiw/hfGsrwV9buXABRX86tu252z6
-	utY5PYT837Vsu++3y0Y80Y8E1Az5l5U3vk0EQF1NseqfZ7oXFZ+Xv81JB+P0KxF1iKJPIwY+sKt
-	Q3QK1BGFy50qcCNeYydXIW3m0WLv7AVyEs9Bwin7txrQDyfTQfyoE/z0c0m1gkSfQeqqgsyw/5U
-	GrhF9SRINLtBhxn52fN4TM43MRSbI8w9GelYHkyO57AFvjFiNotFmYF/062LmADzCEv3Gx+/Gjb
-	fDXqQ4cNdJzm+uh1tm76CTzBLOQKAs7pmwdmFPZHM1ALZtHLyWanEXttQrs8HyeTNyQN2B187ML
-	VkQwhPwb5Hy0NGyyqZGF7Dd+e20IqYlwv8zZ8cngNyobRL+wlqCKIeSVSkyIf+wzutPuAiIr4Fs
-	PVCw==
-X-Received: by 2002:a05:693c:6293:b0:378:314:4033 with SMTP id 5a478bee46e88-379679e29f2mr1882077eec.32.1794566701696;
-        Fri, 13 Nov 2026 02:45:01 -0800 (PST)
-X-Received: by 2002:a05:693c:6293:b0:378:314:4033 with SMTP id 5a478bee46e88-379679e29f2mr1882040eec.32.1794566701053;
-        Fri, 13 Nov 2026 02:45:01 -0800 (PST)
-Received: from [10.217.216.70] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-379553316fdsm6746586eec.5.2026.11.13.02.44.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 02:45:00 -0800 (PST)
-Message-ID: <a476c249-74ed-4b23-bca0-13b8ae5a2888@oss.qualcomm.com>
-Date: Fri, 13 Nov 2026 16:14:53 +0530
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.a=rsa-sha256 header.s=unimail header.b=pwRG6d//
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tu-dortmund.de;
+	s=unimail; t=1794566812;
+	bh=/ahb376Rz+D6TMMsATtsk3gaJYuApWj7VVw0DDRorjA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=pwRG6d//5gohfuT00uzskQKo2qiqylxw+uEsrHK2JrrtfARMaNrGeiDYOJhDHLJKR
+	 hVfcRl8Ttk+3SQedQEgVjB/KsbDm5a761Q5cUYvxkRNmIPPySSeWCEH+O8+JkM7zMj
+	 otxfjjZu/KLszbGEyielMqHbNr0h3vBi8KNwAqGI=
+Received: from simon-Latitude-5450.cni.e-technik.tu-dortmund.de ([129.217.186.174])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 6ADAkoUr009632
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 13 Nov 2026 11:46:52 +0100 (CET)
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Toshiaki Makita <toshiaki.makita1@gmail.com>,
+        =?UTF-8?q?Jonas=20K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>, simon.schippers@tu-dortmund.de,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net 2/2] veth: wake the peer txq when deleting NAPI
+Date: Fri, 13 Nov 2026 11:46:48 +0100
+Message-ID: <20261113104648.225983-3-simon.schippers@tu-dortmund.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261113104648.225983-1-simon.schippers@tu-dortmund.de>
+References: <20261113104648.225983-1-simon.schippers@tu-dortmund.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -116,97 +74,208 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/10] dt-bindings: ptp: Document TSCSS hardware on
- Qualcomm QDU1000 SoC
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Eric Dumazet <edumazet@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
-        Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
-        Taniya Das <taniya.das@oss.qualcomm.com>,
-        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20261108-tscss-v2-0-d5f575010427@oss.qualcomm.com>
- <20261108-tscss-v2-2-d5f575010427@oss.qualcomm.com>
- <20261109-sticky-caiman-of-research-65e9a4@quoll>
- <28202f96-f234-4c7c-be6b-3019e119bb0a@oss.qualcomm.com>
- <c068e21a-6dcc-4080-a35c-8f604646aef8@kernel.org>
-Content-Language: en-US
-From: Imran Shaik <imran.shaik@oss.qualcomm.com>
-In-Reply-To: <c068e21a-6dcc-4080-a35c-8f604646aef8@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=c6Q+0h9l c=1 sm=1 tr=0 ts=6af6ea2e cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=Z8WexQQaEhEqRXIjmLQA:9 a=QEXdDO2ut3YA:10 a=bBxd6f-gb0O0v-kibOvt:22
-X-Proofpoint-GUID: azpescwZi-VelfXz2eq3UpqWPFI3OPiX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA0MiBTYWx0ZWRfXypRpfg9axLIF
- ikS2OyVHHomXT+Pr3/ndBFEI8AaDSj+Z40XsNTMwNAmMGlnsClSkSb4ih7RS7ya5c7lyjR0anwi
- /KJADbFd/lR91/7/BvO8XgtwiUJTeCrXlFCYIUNkqei7Xv06AE0Sp7M3PF8lPhiY6nhajaT4qha
- ue1dAvjJcc8MxI4m3a7Qe5qOimTl7Dmz77Oa2cm4IqdxgSq12Fn3844xB2CEMWeFz+E43sYfNuP
- hCJxHOqCpFgk63B/hcTdD9PR27c8lwgY1Om1epK5SH0iMKHCu1it7z8wOE2H5vwlR9+8I89+qS4
- jxmAX/rMIH7cDvfR3hsn2DB/LWODbNTIas2FMln11iHXAHNGuzdk5XJFW+rNa9wGNZei/bIEcqm
- 3cJaFlHLwWQQbHLtCoZOXx8+YscoKtA6TSGYZu/xNG14chJVK6KR5zrXOlk/9JpU7yrGlHtzIJp
- GoCMiTuSQ777A2B353Q==
-X-Proofpoint-ORIG-GUID: azpescwZi-VelfXz2eq3UpqWPFI3OPiX
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA0MiBTYWx0ZWRfX5KBMplBOZsmr
- JKCFOaWMyKJptrnRYc2R0rz4u8QBfMP94OTP2JlObRxiOfHgTA4gL2fBvZj9T8WUJ4V9r9Wa3Dv
- 2/6PAx1zaCDQ/RJC9q5BReZ5x5+uAyU=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-13_03,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0 suspectscore=0 priorityscore=1501 phishscore=0
- impostorscore=0 malwarescore=0 clxscore=1015 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130042
+Content-Transfer-Encoding: 8bit
 
+Since commit dc82a33297fc ("veth: apply qdisc backpressure on full
+ptr_ring to reduce TX drops"), only the peer's veth_poll() wakes a txq
+that veth_xmit() stopped on a full ptr_ring.
 
+If veth_xmit() stops the txq after the last poll before napi_disable(),
+its __veth_xdp_flush() can no longer schedule NAPI. Nothing wakes the
+txq, also not after NAPI is added back, so the device stops transmitting
+for good. This can happen whenever the peer deletes its NAPI: when it
+goes down, turns GRO off, detaches XDP or reduces its RX channels.
 
-On 13-11-2026 12:35 pm, Krzysztof Kozlowski wrote:
-> On 12/11/2026 10:32, Imran Shaik wrote:
->>>> +  The TSC block is a timestamp generator that maintains a running counter used
->>>> +  for system timekeeping, and is functional with just the AHB and counter
->>>> +  clocks.
->>>> +  The ETU block captures TSC timestamps for external hardware events. Each
->>>> +  ETU slice binds a slice number to an external event selector, and
->>>> +  generates its own interrupt when that event is triggered.
->>>> +
->>>> +properties:
->>>> +  compatible:
->>>> +    const: qcom,qdu1000-tscss
->>>
->>> I failed to spot the difference against your binding at patch #1. How do
->>> they differ?
->>>
->>
->> The ETU interrupt wiring between the QDU1000 and SA8775P/QCS8300 is
->> different.
->> The SA8775P/QCS8300 share one summary interrupt across all ETU slices,
->> and the QDU1000 has each slice with its own interrupt line. Due to this,
->> kept them as separate bindings.
->>
->> Can add them into one file with an if/then on compatible if you'd
->> prefer. Please let me know.
-> 
-> I see, it's fine to keep them separate, but you need common schema to
-> define common vendor properties.
-> 
+Wake the peer txq in veth_napi_del_range() once NAPI is deleted, also
+when the peer is down, as opening it does not restart its queues.
 
-Sure, I will introduce a common schema qcom,tscss.yaml with the shared
-properties, and take care of overriding SoC specific constraints in per
-SoC files.
+Reproduced in virtme-ng with a pktgen flood while toggling GRO on the
+peer, with a udelay() before netif_tx_stop_queue() to widen the race:
+the txq got stuck within four toggles without this patch, and not in 300
+with it. Without the udelay() it was not hit in 1200 toggles.
 
-Thanks,
-Imran
+Fixes: dc82a33297fc ("veth: apply qdisc backpressure on full ptr_ring to reduce TX drops")
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+---
+
+Notes:
+    Reproducer (needs >= 3 CPUs). The race only triggers reliably with the
+    debug-only hook below, which widens the window before
+    netif_tx_stop_queue(). Run as root:
+    
+      # stuck within a few toggles without this patch, never with it
+      ./repro-veth-napi-del-txq-stall.sh 300 2000
+    
+    Debug hook (not for merging, indented so git am skips it):
+    
+      diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+      --- a/drivers/net/veth.c
+      +++ b/drivers/net/veth.c
+      @@ -29,6 +29,11 @@
+       #include <linux/net_tstamp.h>
+       #include <linux/skbuff_ref.h>
+       #include <net/page_pool/helpers.h>
+      +#include <linux/delay.h>
+      +
+      +/* REPRO ONLY, never to be committed */
+      +static unsigned int repro_delay_us;
+      +module_param(repro_delay_us, uint, 0644);
+    
+       #define DRV_NAME	"veth"
+       #define DRV_VERSION	"1.0"
+      @@ -402,6 +407,8 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
+       		__skb_push(skb, ETH_HLEN);
+       		/* qdisc requeues the skb on the txq it points to */
+       		skb_set_queue_mapping(skb, rxq);
+      +		if (READ_ONCE(repro_delay_us))
+      +			udelay(READ_ONCE(repro_delay_us)); /* REPRO: widen window */
+       		netif_tx_stop_queue(txq);
+       		/* Makes sure NAPI peer consumer runs. Consumer is responsible
+       		 * for starting txq again, until then ndo_start_xmit (this
+    
+    repro-veth-napi-del-txq-stall.sh:
+    
+      #!/bin/bash
+      # SPDX-License-Identifier: GPL-2.0
+      #
+      # Reproducer: a veth txq stopped on a full ptr_ring stays stopped after the
+      # peer's NAPI is deleted.
+      #
+      # veth0 (init netns, pfifo qdisc, pktgen queue_xmit flood) -> veth1 (netns rx,
+      # GRO on, threaded NAPI). Needs at least 3 CPUs. The ring fills, veth_xmit()
+      # returns NETDEV_TX_BUSY and stops veth0's txq until veth_poll() wakes it. GRO
+      # on veth1 is toggled off and on, which deletes and re-adds its NAPI. If the
+      # txq is stopped after the last poll's wake check, nothing wakes it and veth0
+      # stops sending for good.
+      #
+      # Usage: repro-veth-napi-del-txq-stall.sh [iterations] [delay_us]
+      #
+      # delay_us > 0 writes veth.repro_delay_us, a debug-only hook (not part of any
+      # patch) that udelay()s between the ring-full check and netif_tx_stop_queue()
+      # to widen the race window.
+      #
+      # RULES (default 50) nft rules in netns rx slow the consumer down.
+      #
+      # Exits 1 if veth0 got stuck, 0 if it survived all iterations, 2 if the ring
+      # never filled.
+    
+      ITER=${1:-300}
+      DELAY=${2:-0}
+      RULES=${RULES:-50}
+      PG=/proc/net/pktgen
+    
+      cleanup() {
+      	echo stop > $PG/pgctrl 2>/dev/null
+      	wait 2>/dev/null
+      	ip link del veth0 2>/dev/null
+      	ip netns del rx 2>/dev/null
+      }
+      trap cleanup EXIT
+    
+      sent() { tc -s qdisc show dev veth0 | awk '/Sent/ { print $4; exit }'; }
+      requeues() { tc -s qdisc show dev veth0 | sed -n 's/.*requeues \([0-9]*\).*/\1/p' | head -1; }
+      rx() { ip netns exec rx "$@"; }
+    
+      # Threaded NAPI pinned away from kpktgend_0 (CPU 0), so the consumer can poll
+      # while the producer is between the ring-full check and the txq stop
+      gro_on() {
+      	rx ethtool -K veth1 gro on
+      	rx sh -c 'echo 1 > /sys/class/net/veth1/threaded'
+      	taskset -pc 2 "$(pgrep napi/veth1)" >/dev/null
+      }
+    
+      ip netns add rx
+      ip link add veth0 type veth peer name veth1 netns rx
+      ip addr add 10.0.0.1/24 dev veth0
+      rx ip addr add 10.0.0.2/24 dev veth1
+      ip link set veth0 up
+      rx ip link set veth1 up
+      tc qdisc replace dev veth0 root pfifo limit 1000
+      # pktgen skbs have no socket, so veth only takes them to the ring without TSO
+      ethtool -K veth0 tso off
+      gro_on
+    
+      # Slow down the consumer so that the 256-entry ring fills up
+      rx nft add table inet slow
+      rx nft add chain inet slow in '{ type filter hook input priority 0; }'
+      for i in $(seq 1 "$RULES"); do echo "add rule inet slow in meta mark $i drop"; done | rx nft -f -
+    
+      [ "$DELAY" -gt 0 ] && echo "$DELAY" > /sys/module/veth/parameters/repro_delay_us
+    
+      echo "rem_device_all" > $PG/kpktgend_0
+      echo "add_device veth0" > $PG/kpktgend_0
+      for c in "count 0" "pkt_size 60" "delay 0" "clone_skb 0" \
+      	 "xmit_mode queue_xmit" "dst 10.0.0.2" "udp_dst_min 9" "udp_dst_max 9" \
+      	 "dst_mac $(rx cat /sys/class/net/veth1/address)"; do
+      	echo "$c" > $PG/veth0
+      done
+      echo start > $PG/pgctrl &
+      sleep 1
+    
+      echo "kernel $(uname -r), iterations $ITER, repro_delay_us $DELAY"
+      echo "after 1s flood: sent $(sent) pkts, requeues $(requeues)"
+      if [ "$(requeues)" = 0 ]; then
+      	echo "ring never filled, raise RULES"
+      	exit 2
+      fi
+    
+      for i in $(seq 1 "$ITER"); do
+      	rx ethtool -K veth1 gro off
+      	a=$(sent); sleep 0.3; b=$(sent)
+      	if [ "$a" = "$b" ]; then
+      		echo "STUCK after $i GRO toggles: veth0 qdisc sent nothing in 0.3s"
+      		gro_on
+      		sleep 1
+      		echo "still stuck with GRO back on: sent $a -> $(sent)"
+      		echo stop > $PG/pgctrl; wait
+      		sleep 0.5
+      		ping -c 3 -W 1 10.0.0.2 >/dev/null 2>&1 &&
+      			echo "ping: ok" || echo "ping 10.0.0.2: fails"
+      		tc -s qdisc show dev veth0
+      		exit 1
+      	fi
+      	gro_on
+      	sleep 0.05
+      done
+    
+      echo "OK: veth0 kept sending through $ITER GRO toggles," \
+           "sent $(sent) pkts, requeues $(requeues)"
+      exit 0
+
+ drivers/net/veth.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 62a60a033675..faa837acea7b 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1087,6 +1087,7 @@ static int __veth_napi_enable(struct net_device *dev)
+ static void veth_napi_del_range(struct net_device *dev, int start, int end)
+ {
+ 	struct veth_priv *priv = netdev_priv(dev);
++	struct net_device *peer;
+ 	int i;
+ 
+ 	for (i = start; i < end; i++) {
+@@ -1099,11 +1100,17 @@ static void veth_napi_del_range(struct net_device *dev, int start, int end)
+ 	}
+ 	synchronize_net();
+ 
++	peer = rtnl_dereference(priv->peer);
++
+ 	for (i = start; i < end; i++) {
+ 		struct veth_rq *rq = &priv->rq[i];
+ 
+ 		rq->rx_notify_masked = false;
+ 		ptr_ring_cleanup(&rq->xdp_ring, veth_ptr_free);
++
++		/* veth_poll() can no longer wake a txq stopped on a full ring */
++		if (peer && i < peer->num_tx_queues)
++			netif_wake_subqueue(peer, i);
+ 	}
+ 
+ 	for (i = start; i < end; i++) {
+-- 
+2.43.0
+
