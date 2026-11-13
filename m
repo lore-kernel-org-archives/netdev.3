@@ -1,63 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794540246;
-	b=gcIgAVSs8rXUrvIv7O5O6HzUbOquRRbAK8/LEvetdJbPk72AqLKy9j/RqfD65R1wC9AM
-	 dU5weTAJEye4u/GyWno+b+vYi/5chiNgZAO5b1dqo3EcyPlgyqaDqTwUIE7EPXLrdRiU2
-	 Clc/QJ1msjZPXqV6vEarse39JuuhQXoMBx3YK8oYPsuq59smYqKXEFKOy5MSGeFWLOVlG
-	 r0F0rY7UZj0GIIZCfeFw8j/y86T/YicEcvelxElg6/DYm29SiPrZl0V4qOOCB1Gmsv6bD
-	 gMKQ/U424QMBsqVZv+qZSN5g7xNtmLeCYlz4VuBigaP4xGyn2oeUV18Dcn7ph215PsA==
+	t=1794540550;
+	b=fkXKBUgMFiZazLpYGPz1fTDN5NruESwInM7dacM0lovFa4rUsg6nru26Fw9PmHDF9Vfs
+	 3fvBWxSRkO7VgK6xERcpKAuYzMQV9e3Bg6XaHI20fLPSBRNimnEKhjS3vLMf7r6puyVgc
+	 AOBZ0AWZiphl8oyyaspRn9TNRuAISp4hqHZ4e0iE912SdeIYAE8VKmhowjm7WiOXAp3pt
+	 sEEBwQDCGb7ObRLQ3o0zsDdNIaJAt+ckbr2ucXtVNbeQ710lHd88UFSw25oKe3qwKSB+3
+	 tmNGoMhoKeTwjhW4UNxKqjjrNUwZWMie/0txyrurJymP4N/IXmK3rmWzr/fCD2Ypxgw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794540246;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Spam-Status:X-Spam-Checker-Version;
-	bh=r72rP2oLT4zT09yMIEBKGgs71HhgXzGMvm2dEiYeCFA=;
-	b=gEvUWOleJAmTJCCIF0w15yCnLaypHCq5ylBPont72V2Lsp2O+LyDPP0ScDCSqfKvAyB+
-	 WwOR5awB1AsJKLodoQ3v+OohBLFU1Gmvm01jUrN7PDJ0BvPIPxlXwXZR5l0a26nQzJfHL
-	 YDaS1PXqKsjQbK6qyZUGZafPNQaJfLEIcAOmZFQFf+5jrHcznMETW3LmJJZNA72s8cdMK
-	 eRdpokIQRljlteqgYYwFIflp9bJZPUDqWLSEqwjTAdGGWUs20I4dHKhHXQBRg2tfk4AWV
-	 gr8ZEHt8qm7pwZlnXjcZMEi2+RFTfCtH2B/GuGw5T+SMKq0bNLbFZh/80Qwtg+XlLdA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794540550;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=sfS7nB4gtLu1FKmXvUmoI2KWykiSmHoqnc+SrZgTJWU=;
+	b=2EU4dekvMhKqmOMjgjiVjFn16CGq11EsoIhwIfsUdxLZGwtEQtfQKLlspmJ77LUBn6lt
+	 /itwrVHKDBNlz22NF+X3EdCZ0QgW+8lSIR/gBQDnXPcvWH5fnFnQIMvr4VWhwQbWqunOC
+	 CBDbGMPS9Ny4jLAZkg6N9Bp3KdaGeus4QCr6PmsLJMfjRemf4iFIcd1lG/2m9AkNtZu1V
+	 GJbn0x4OuTnm04+3yqNkBU02u21Qtn2o12GLtdoOdyqX7avmAfCMz0OmxtNpknpEyfqXk
+	 v3eTHvghVXktMapuBgkWQb2fHBm1n2kc9pBxXBaNR4UN75z9+yrTwGalvnuKFLz7v8w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=netfilter.org;
-	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=aOS4Ponj;
-	arc=none smtp.remote-ip=217.70.190.124
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=b+cixmrE;
+	arc=none smtp.remote-ip=209.85.215.177
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id C49CC606A321;
-	Fri, 13 Nov 2026 03:24:05 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C49CC606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91480606A31C
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 03:29:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 91480606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=aOS4Ponj
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1794540243;
-	bh=r72rP2oLT4zT09yMIEBKGgs71HhgXzGMvm2dEiYeCFA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aOS4PonjN22OncF3nzoYUSFRPzr416/ILrI/0g1WJ+q9HH2AQUlCZsJStYia/rbvY
-	 caadaSux80juVamnkRmZnf5PzZoxATdyuHQ42Dl3rwBhIpTMLJFW7MKXcbD+j1dDl4
-	 UJCc134PO06UWK78ws0zcfmF2FiqvGecoAl3hqi7wND6r+9Pt2aF48BhB+0R57r5JR
-	 q6zJzdZF4mn2/kXrURKK0IRLj+r/BnJHp2J4L2P28z7f85wh2Sqp4n4m2DZLMTyfPq
-	 nU0kDlMAOEiP4VWsXV4qyyi4gHhJbW/CCg3Bzfd9gxhs0jriw6J3BlIFy811BXqhLn
-	 dEHxr4HNgwMVg==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 630D86005C;
-	Fri, 13 Nov 2026 04:24:03 +0100 (CET)
-Date: Fri, 13 Nov 2026 04:24:00 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net-next 01/15] netfilter: flowtable: do not hw offload
- flows in teardown state
-Message-ID: <avaC0HXnXTfLBBnb@chamomile>
-References: <20261113031251.2437074-1-pablo@netfilter.org>
- <20261113031251.2437074-2-pablo@netfilter.org>
- <179453982588.2168702.434281488157747833@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=b+cixmrE
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cdb75699c7cso179654a12.2
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 19:29:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794540544; x=1795145344; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sfS7nB4gtLu1FKmXvUmoI2KWykiSmHoqnc+SrZgTJWU=;
+        b=b+cixmrEkhG8B2FLuslGH/982o8yDK4CKzbnMcESoppN1oTQOqPMvYmraVAajZw7UO
+         lHGal90PN4yXv+1CZIGgzuveVliopVzmJs4CYVZsxjc4TVRaPOCb0s/wEhw5NUlmIgkm
+         8CYNhOv6dPEG5UcpOic1h33f4VgUaoU8sOW6LeGSvsLJBkQ3OftQpqu4l5j+PRbBaptG
+         yHcu4QoQNbNIvujdjt8niVrtl3v+qfj6+HP7jpptE0/7LlQtYcZvFS3KEr2fiWlZbEM7
+         crk4t7XR7cIPxfTvKXrPLGrFIDEbWPOiLIBbtwae/GvvV+KcLRUBVPR3ZdDYrcWU200B
+         ou/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794540544; x=1795145344;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sfS7nB4gtLu1FKmXvUmoI2KWykiSmHoqnc+SrZgTJWU=;
+        b=UVzjG1bZCZbFZYmRFGsNssrqR+iLWFsjSNMD3P+cAb/1mxGQ/Ohlv00XhRS6d0Vk4C
+         YGkvEOQm0XTG4LItl2HTZi3sBu5mWetpl3T7S7HBIXNMWVvn9xngcmxtTjL+3mGlUjkW
+         nWI1yCL0TyPsRao4CLLudNzUR4Cf1aGq5f4Kr1OSKPDMTQP1f3SL3sTz3CwDKkOM0ybu
+         xfOqRtRX/gSwpYY8qySgpRfOA976a+59nxWqpvuYtJO3BiABgyOPjlAIceIp+O51LsqX
+         aatj5j4i9fm+owZzmYEsPtP/R2XgVie0y8n7bCjB17NxHYxNKcsmOQdIY6wS7l/TNFhy
+         DTFQ==
+X-Forwarded-Encrypted: i=1; AL+hErG8XTcgdsLftMJoUWzszvZ0Yfs4PLVs3XiPI9B6En9j+69jyRgPJBwceRL5DywcVH4oAyuypHk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/9uWVU0FnQxvxHk3FT2R59Q7HojSxRt/Qi2UeFafyoBpO9AKOD
+	UK7wSKCzem9W69R2PnpJw5n4SI52esT1l5gjn8RBwqE9P0/kxCoT3MUS
+X-Gm-Gg: AYBFou1AGZMVTfm5dWn08SnhbCHF8RvR7zWzeIGPQr6GxraQtvhmAggMcZS19EK3b20
+	kUCPyOyjlruUjlL9+xXsYv7yd2UMg6OjGF2sihWnF3aZeY3Lw/I9iIx377h1FjWcRbTdTfrbcy3
+	p+82hfOYgZHybERkSL2A1CkckCfxpLSWo0P0/HmLlOuyQB1EZ5ZDVLlfiH79PPYtqyoQM2GmkJs
+	7jU1r/g3Y3lHDt81StdNYWbTkXZwg5Tsaf/ALhLBJrEVdDgB7eixxkt0UDZYUA3IFedrQVy5sME
+	BJkjHHfYUuwx/+3jX32ZIeDJiJzgMm/3Yx0r02EQMN5aomRRe5Gfwb0mLXmxTkSpw3cplEKcsc1
+	5RSKJvixOgSOtp422aRyle8gv8wOlaU24PwbGdoKEMccHQywm4YDNL0TJbFSjQnLEXkpfLifinX
+	vrA+jfxtAOKHGSr5xLC9OUvJvP/z5sdK85BBlgcXulDPU3BOkYgD+twNCDmbCKh3T/N2yEJK6bO
+	v3exUD2BDTOayqDMpOmE6e4Vgzd0jnQBuOFECazcNoPpyYr2mEvyOPpvbsgetnmpgJu5aaws6Jf
+	wYzMeIoRerBMMvdKUIFh7Tbd0mBt1mxoClo637lx5g==
+X-Received: by 2002:a17:90a:c2c8:b0:3ac:80dc:f40c with SMTP id 98e67ed59e1d1-3b1b0a0e9fbmr951734a91.14.1794540543447;
+        Thu, 12 Nov 2026 19:29:03 -0800 (PST)
+Received: from localhost.localdomain ([223.104.68.104])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197d32ea0sm7087063a91.15.2026.11.12.19.28.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 19:29:02 -0800 (PST)
+From: Yong Liu <pkfxxxing@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] sctp: revalidate association sockets after locking
+Date: Fri, 13 Nov 2026 11:28:02 +0800
+Message-ID: <20261113032805.1447885-1-pkfxxxing@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261110120212.1110283-2-pkfxxxing@gmail.com>
+References: <20261110120212.1110283-1-pkfxxxing@gmail.com> <20261110120212.1110283-2-pkfxxxing@gmail.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,75 +100,377 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <179453982588.2168702.434281488157747833@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+SCTP timer callbacks and ICMP error lookup cache asoc->base.sk before
+acquiring its BH lock. An accept or peeloff can move the association to
+a new socket in between. Processing under the old socket lock can then
+race with an abort on the new socket that tears down the association's
+queues. Transport and association references do not keep those queues
+alive. With mdelay() instrumentation widening the race, KASAN reported a
+slab-use-after-free in sctp_chunk_abandoned() from the T3 retransmit path.
 
-On Fri, Nov 13, 2026 at 03:17:05AM +0000, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-> 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by LLM and not proven at runtime). If it was triggered
->    please include the symptoms, like the stack trace or kernel messages.
-> 
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+The ICMP error handlers also reread asoc->base.sk after lookup, so they
+can use the new socket without holding its BH lock. In particular, the
+PMTU handler can reach the same retransmit path, while protocol-unreachable
+handling can run the state machine directly.
 
-This is a pull request for nf-next. It mixes fixes and new work, so
-here is the information per patch:
+Recheck the association's socket after locking it in the timer callbacks.
+Treat a mismatch like a busy socket and use the existing reference-counted
+retry path. Pass the socket locked by sctp_err_lookup() to both IPv4 and
+IPv6 error handlers, including their UDP encapsulation callers. Defer PMTU
+and protocol-unreachable processing and ignore redirects when that socket
+no longer matches the association. Require a matching socket for immediate
+error reports as well.
 
-- "flowtable: do not hw offload flows in teardown state" and
-  "lwtunnel: expose read-only sysctl nf_hooks_lwtunnel for non
-  init-netns": reported by Sashiko (LLM review, theoretical).
+Use READ_ONCE() for the socket pointer reads in the timer, ICMP, receive
+and backlog paths, paired with WRITE_ONCE() in sctp_assoc_migrate(). Take
+the new socket reference before publishing its pointer. The cached socket
+is protected by BH context and the endpoint's RCU-deferred sock_put().
 
-- "flowtable: retrieve stats on flow deletion" plus the mtk_ppe and
-  airoha updates: reported by Valentin Berezhnoy on netfilter-devel
-  (link in the Closes: tag). The last stats sync with conntrack is
-  missed on hardware flow deletion.
+The issue was discovered and fixed by Qihoo 360's Tulongfeng multi-agent
+system.
 
-- "flowtable: tunnel device poisons h_source of fast-path frames":
-  hit in production on a DS-Lite setup (ip6tnl over PPPoE over 802.1Q
-  VLAN). Every offloaded TCP/UDP flow dies because the PPPoE endpoint
-  drops frames with the wrong source MAC.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yong Liu <pkfxxxing@gmail.com>
+---
+Changes in v2:
+- Use Yong Liu for the author and Signed-off-by, as requested by Jakub
+  Kicinski.
+- Address Xin Long's review and the Sashiko ICMP finding: pass the locked
+  socket to the IPv4/IPv6 error handlers and their UDP encapsulation
+  callers, and revalidate it before immediate ICMP processing.
+- Use READ_ONCE() for socket pointer reads in sctp_err_lookup(), sctp_rcv()
+  and sctp_backlog_rcv().
+- Broaden the subject and commit message to cover the ICMP paths.
 
-- "xt_time: fix monthday computation for dates past 2039":
-  theoretical. LLM keeps banging on this as an issue, so let's
-  address it.
+v1: https://lore.kernel.org/all/20261110120212.1110283-2-pkfxxxing@gmail.com/
 
-- "nft_flow_offload: do not offload multicast": this was most likely
-  found in production.
+Based on b3dfbde62cf1981c4638939c159dfd087b7a72e9 (Linux 7.4.0-rc2).
 
-- "flowtable: do not clear the offload bit twice": Found while
-   developing a new driver supporting the flowtable.
+ net/sctp/associola.c     |  4 ++--
+ net/sctp/input.c         | 32 ++++++++++++++++---------------
+ net/sctp/ipv6.c          | 11 ++++++-----
+ net/sctp/sm_sideeffect.c | 41 ++++++++++++++++++++--------------------
+ 4 files changed, 45 insertions(+), 43 deletions(-)
 
-- "nfnetlink_queue: make skb writable before writing NFQA_L2HDR":
-   LLM finding.
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index 4521be3bd8..c5d520c8d7 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1088,8 +1088,8 @@ void sctp_assoc_migrate(struct sctp_association *assoc, struct sock *newsk)
+ 	sctp_endpoint_hold(assoc->ep);
+ 
+ 	/* Get a reference to the new sock.  */
+-	assoc->base.sk = newsk;
+-	sock_hold(assoc->base.sk);
++	sock_hold(newsk);
++	WRITE_ONCE(assoc->base.sk, newsk);
+ 
+ 	/* Add the association to the new endpoint's list of associations.  */
+ 	sctp_endpoint_add_asoc(newsp->ep, assoc);
+diff --git a/net/sctp/input.c b/net/sctp/input.c
+index 9494cfa511..e25c94ad08 100644
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -169,7 +169,7 @@ int sctp_rcv(struct sk_buff *skb)
+ 
+ 	/* Retrieve the common input handling substructure. */
+ 	rcvr = asoc ? &asoc->base : &ep->base;
+-	sk = rcvr->sk;
++	sk = READ_ONCE(rcvr->sk);
+ 
+ 	/*
+ 	 * RFC 2960, 8.4 - Handle "Out of the blue" Packets.
+@@ -217,7 +217,7 @@ int sctp_rcv(struct sk_buff *skb)
+ 	 */
+ 	bh_lock_sock(sk);
+ 
+-	if (sk != rcvr->sk) {
++	if (sk != READ_ONCE(rcvr->sk)) {
+ 		/* Our cached sk is different from the rcvr->sk.  This is
+ 		 * because migrate()/accept() may have moved the association
+ 		 * to a new socket and released all the sockets.  So now we
+@@ -226,7 +226,7 @@ int sctp_rcv(struct sk_buff *skb)
+ 		 * of the current sk.
+ 		 */
+ 		bh_unlock_sock(sk);
+-		sk = rcvr->sk;
++		sk = READ_ONCE(rcvr->sk);
+ 		bh_lock_sock(sk);
+ 	}
+ 
+@@ -292,7 +292,7 @@ int sctp_backlog_rcv(struct sock *sk, struct sk_buff *skb)
+ 		goto done;
+ 	}
+ 
+-	if (unlikely(rcvr->sk != sk)) {
++	if (unlikely(READ_ONCE(rcvr->sk) != sk)) {
+ 		/* In this case, the association moved from one socket to
+ 		 * another.  We are currently sitting on the backlog of the
+ 		 * old socket, so we need to move.
+@@ -304,7 +304,7 @@ int sctp_backlog_rcv(struct sock *sk, struct sk_buff *skb)
+ 		 * Otherwise, we can safely push the chunk on the inqueue.
+ 		 */
+ 
+-		sk = rcvr->sk;
++		sk = READ_ONCE(rcvr->sk);
+ 		local_bh_disable();
+ 		bh_lock_sock(sk);
+ 
+@@ -377,7 +377,7 @@ void sctp_icmp_frag_needed(struct sock *sk, struct sctp_association *asoc,
+ 	     t->pl.probe_size + sctp_transport_pl_hlen(t) <= pmtu))
+ 		return;
+ 
+-	if (sock_owned_by_user(sk)) {
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
+ 		atomic_set(&t->mtu_info, pmtu);
+ 		asoc->pmtu_pending = 1;
+ 		t->pmtu_pending = 1;
+@@ -410,7 +410,8 @@ void sctp_icmp_redirect(struct sock *sk, struct sctp_transport *t,
+ {
+ 	struct dst_entry *dst;
+ 
+-	if (sock_owned_by_user(sk) || !t)
++	if (sock_owned_by_user(sk) || !t ||
++	    sk != READ_ONCE(t->asoc->base.sk))
+ 		return;
+ 	dst = sctp_transport_dst_check(t);
+ 	if (dst)
+@@ -432,7 +433,7 @@ void sctp_icmp_proto_unreachable(struct sock *sk,
+ 			   struct sctp_association *asoc,
+ 			   struct sctp_transport *t)
+ {
+-	if (sock_owned_by_user(sk)) {
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
+ 		if (timer_pending(&t->proto_unreach_timer))
+ 			return;
+ 		else {
+@@ -492,7 +493,7 @@ struct sock *sctp_err_lookup(struct net *net, int family, struct sk_buff *skb,
+ 	if (!asoc)
+ 		return NULL;
+ 
+-	sk = asoc->base.sk;
++	sk = READ_ONCE(asoc->base.sk);
+ 
+ 	/* RFC 4960, Appendix C. ICMP Handling
+ 	 *
+@@ -526,7 +527,7 @@ struct sock *sctp_err_lookup(struct net *net, int family, struct sk_buff *skb,
+ 	/* If too many ICMPs get dropped on busy
+ 	 * servers this needs to be solved differently.
+ 	 */
+-	if (sock_owned_by_user(sk))
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk))
+ 		__NET_INC_STATS(net, LINUX_MIB_LOCKDROPPEDICMPS);
+ 
+ 	*app = asoc;
+@@ -546,11 +547,11 @@ void sctp_err_finish(struct sock *sk, struct sctp_transport *t)
+ 	sctp_transport_put(t);
+ }
+ 
+-static void sctp_v4_err_handle(struct sctp_transport *t, struct sk_buff *skb,
++static void sctp_v4_err_handle(struct sock *sk, struct sctp_transport *t,
++			       struct sk_buff *skb,
+ 			       __u8 type, __u8 code, __u32 info)
+ {
+ 	struct sctp_association *asoc = t->asoc;
+-	struct sock *sk = asoc->base.sk;
+ 	int err = 0;
+ 
+ 	switch (type) {
+@@ -582,7 +583,8 @@ static void sctp_v4_err_handle(struct sctp_transport *t, struct sk_buff *skb,
+ 	default:
+ 		return;
+ 	}
+-	if (!sock_owned_by_user(sk) && inet_test_bit(RECVERR, sk)) {
++	if (!sock_owned_by_user(sk) && sk == READ_ONCE(asoc->base.sk) &&
++	    inet_test_bit(RECVERR, sk)) {
+ 		sk->sk_err = err;
+ 		sk_error_report(sk);
+ 	} else {  /* Only an error on timeout */
+@@ -630,7 +632,7 @@ int sctp_v4_err(struct sk_buff *skb, __u32 info)
+ 		return -ENOENT;
+ 	}
+ 
+-	sctp_v4_err_handle(transport, skb, type, code, info);
++	sctp_v4_err_handle(sk, transport, skb, type, code, info);
+ 	sctp_err_finish(sk, transport);
+ 
+ 	return 0;
+@@ -660,7 +662,7 @@ int sctp_udp_v4_err(struct sock *sk, struct sk_buff *skb)
+ 	}
+ 	if (hdr->type == ICMP_DEST_UNREACH && hdr->code == ICMP_FRAG_NEEDED)
+ 		info = ntohs(hdr->un.frag.mtu);
+-	sctp_v4_err_handle(t, skb, hdr->type, hdr->code, info);
++	sctp_v4_err_handle(sk, t, skb, hdr->type, hdr->code, info);
+ 
+ 	sctp_err_finish(sk, t);
+ 	return 1;
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index 97390569c4..f96e79ca7f 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -123,11 +123,11 @@ static struct notifier_block sctp_inet6addr_notifier = {
+ 	.notifier_call = sctp_inet6addr_event,
+ };
+ 
+-static void sctp_v6_err_handle(struct sctp_transport *t, struct sk_buff *skb,
++static void sctp_v6_err_handle(struct sock *sk, struct sctp_transport *t,
++			       struct sk_buff *skb,
+ 			       __u8 type, __u8 code, __u32 info)
+ {
+ 	struct sctp_association *asoc = t->asoc;
+-	struct sock *sk = asoc->base.sk;
+ 	int err = 0;
+ 
+ 	switch (type) {
+@@ -149,7 +149,8 @@ static void sctp_v6_err_handle(struct sctp_transport *t, struct sk_buff *skb,
+ 	}
+ 
+ 	icmpv6_err_convert(type, code, &err);
+-	if (!sock_owned_by_user(sk) && inet6_test_bit(RECVERR6, sk)) {
++	if (!sock_owned_by_user(sk) && sk == READ_ONCE(asoc->base.sk) &&
++	    inet6_test_bit(RECVERR6, sk)) {
+ 		sk->sk_err = err;
+ 		sk_error_report(sk);
+ 	} else {
+@@ -181,7 +182,7 @@ static int sctp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 		return -ENOENT;
+ 	}
+ 
+-	sctp_v6_err_handle(transport, skb, type, code, ntohl(info));
++	sctp_v6_err_handle(sk, transport, skb, type, code, ntohl(info));
+ 	sctp_err_finish(sk, transport);
+ 
+ 	return 0;
+@@ -211,7 +212,7 @@ int sctp_udp_v6_err(struct sock *sk, struct sk_buff *skb)
+ 	}
+ 	if (hdr->icmp6_type == ICMPV6_PKT_TOOBIG)
+ 		info = ntohl(hdr->icmp6_mtu);
+-	sctp_v6_err_handle(t, skb, hdr->icmp6_type, hdr->icmp6_code, info);
++	sctp_v6_err_handle(sk, t, skb, hdr->icmp6_type, hdr->icmp6_code, info);
+ 
+ 	sctp_err_finish(sk, t);
+ 	return 1;
+diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+index 35f540fb15..bd6b23369f 100644
+--- a/net/sctp/sm_sideeffect.c
++++ b/net/sctp/sm_sideeffect.c
+@@ -233,15 +233,14 @@ void sctp_generate_t3_rtx_event(struct timer_list *t)
+ 	struct sctp_transport *transport =
+ 		timer_container_of(transport, t, T3_rtx_timer);
+ 	struct sctp_association *asoc = transport->asoc;
+-	struct sock *sk = asoc->base.sk;
++	struct sock *sk = READ_ONCE(asoc->base.sk);
+ 	struct net *net = sock_net(sk);
+ 	int error;
+ 
+-	/* Check whether a task is in the sock.  */
+-
++	/* Defer if the socket is busy or the association has migrated. */
+ 	bh_lock_sock(sk);
+-	if (sock_owned_by_user(sk)) {
+-		pr_debug("%s: sock is busy\n", __func__);
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
++		pr_debug("%s: sock is busy or moved\n", __func__);
+ 
+ 		/* Try again later.  */
+ 		sctp_transport_hold(transport);
+@@ -271,13 +270,13 @@ void sctp_generate_t3_rtx_event(struct timer_list *t)
+ static void sctp_generate_timeout_event(struct sctp_association *asoc,
+ 					enum sctp_event_timeout timeout_type)
+ {
+-	struct sock *sk = asoc->base.sk;
++	struct sock *sk = READ_ONCE(asoc->base.sk);
+ 	struct net *net = sock_net(sk);
+ 	int error = 0;
+ 
+ 	bh_lock_sock(sk);
+-	if (sock_owned_by_user(sk)) {
+-		pr_debug("%s: sock is busy: timer %d\n", __func__,
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
++		pr_debug("%s: sock is busy or moved: timer %d\n", __func__,
+ 			 timeout_type);
+ 
+ 		/* Try again later.  */
+@@ -362,7 +361,7 @@ static void sctp_generate_autoclose_event(struct timer_list *t)
+ 	sctp_generate_timeout_event(asoc, SCTP_EVENT_TIMEOUT_AUTOCLOSE);
+ }
+ 
+-/* Generate a heart beat event.  If the sock is busy, reschedule.   Make
++/* Generate a heart beat event.  If the sock is busy or moved, reschedule.   Make
+  * sure that the transport is still valid.
+  */
+ void sctp_generate_heartbeat_event(struct timer_list *t)
+@@ -370,14 +369,14 @@ void sctp_generate_heartbeat_event(struct timer_list *t)
+ 	struct sctp_transport *transport = timer_container_of(transport, t,
+ 							      hb_timer);
+ 	struct sctp_association *asoc = transport->asoc;
+-	struct sock *sk = asoc->base.sk;
++	struct sock *sk = READ_ONCE(asoc->base.sk);
+ 	struct net *net = sock_net(sk);
+ 	u32 elapsed, timeout;
+ 	int error = 0;
+ 
+ 	bh_lock_sock(sk);
+-	if (sock_owned_by_user(sk)) {
+-		pr_debug("%s: sock is busy\n", __func__);
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
++		pr_debug("%s: sock is busy or moved\n", __func__);
+ 
+ 		/* Try again later.  */
+ 		sctp_transport_hold(transport);
+@@ -418,12 +417,12 @@ void sctp_generate_proto_unreach_event(struct timer_list *t)
+ 	struct sctp_transport *transport =
+ 		timer_container_of(transport, t, proto_unreach_timer);
+ 	struct sctp_association *asoc = transport->asoc;
+-	struct sock *sk = asoc->base.sk;
++	struct sock *sk = READ_ONCE(asoc->base.sk);
+ 	struct net *net = sock_net(sk);
+ 
+ 	bh_lock_sock(sk);
+-	if (sock_owned_by_user(sk)) {
+-		pr_debug("%s: sock is busy\n", __func__);
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
++		pr_debug("%s: sock is busy or moved\n", __func__);
+ 
+ 		/* Try again later.  */
+ 		sctp_transport_hold(transport);
+@@ -454,13 +453,13 @@ void sctp_generate_reconf_event(struct timer_list *t)
+ 	struct sctp_transport *transport =
+ 		timer_container_of(transport, t, reconf_timer);
+ 	struct sctp_association *asoc = transport->asoc;
+-	struct sock *sk = asoc->base.sk;
++	struct sock *sk = READ_ONCE(asoc->base.sk);
+ 	struct net *net = sock_net(sk);
+ 	int error = 0;
+ 
+ 	bh_lock_sock(sk);
+-	if (sock_owned_by_user(sk)) {
+-		pr_debug("%s: sock is busy\n", __func__);
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
++		pr_debug("%s: sock is busy or moved\n", __func__);
+ 
+ 		/* Try again later.  */
+ 		sctp_transport_hold(transport);
+@@ -492,13 +491,13 @@ void sctp_generate_probe_event(struct timer_list *t)
+ 	struct sctp_transport *transport = timer_container_of(transport, t,
+ 							      probe_timer);
+ 	struct sctp_association *asoc = transport->asoc;
+-	struct sock *sk = asoc->base.sk;
++	struct sock *sk = READ_ONCE(asoc->base.sk);
+ 	struct net *net = sock_net(sk);
+ 	int error = 0;
+ 
+ 	bh_lock_sock(sk);
+-	if (sock_owned_by_user(sk)) {
+-		pr_debug("%s: sock is busy\n", __func__);
++	if (sock_owned_by_user(sk) || sk != READ_ONCE(asoc->base.sk)) {
++		pr_debug("%s: sock is busy or moved\n", __func__);
+ 
+ 		/* Try again later.  */
+ 		sctp_transport_hold(transport);
+-- 
+2.43.0
 
-- "flowtable: purge entries immediately when destroying the
-  flowtable", "flowtable: do not scrub as crossing netns" and
-  "flowtable: fix pmtu discovery in nf_flow_tunnel_ip6ip6_push()":
-  LLM findings too.
-
-- The two selftest patches add a test and fix a clang warning. They
-  are not fixes.
-
-Thanks.
