@@ -1,64 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.92
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794553869;
-	b=wx21qJwIWKCuqWiHmLaQfAG8PxFBTc/Eqat6KyGItSxRneFTiq/pus2mYT7QYJWbZu0A
-	 F+iYijB5NJPz290ffcBYKxJf8OQCa70T93H9A2QPPFECtTBCfnlcS0TmxW1LuANAHLMaX
-	 qbsS/T/+2Ieqdu/dkPX9PikObCOiAPcHGW5KpEyeTGmzFq/Jd/cWKZsRvpApsYKSWfI42
-	 WrKb2h1Vq5TgXNvz9IZ1+d+Lm3sufRpePAqBJN4l+fu4WvP0Txn5R1AKG2RX7sqkqMTlY
-	 7Ezgs7m+Rlb8K9ADCjhMWtxukMGXNlKQpYr//wCFg2jBrFYVKJKiFer232t0iqDWKDA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794553869;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=IJWs4zNE+gIaPoa05xg+qHkXlF1ISQhiWNboOXFLzhc=;
-	b=LiBxnLWdl5X+V5223xWSBBIxkYys2kWOfWzqLez1FJrlXWvNOH5edy6UpOQz9zHOTlSo
-	 vd4ZSGFcgqOKC5/QeotQefysp1oZW/lELkX9ytqXWVkP0ryyZoqk1wWyIva2t+XS09wAD
-	 0OYoqO3dSDy/2pAhLrLsc5eHs8neHTJE+C4hhyhCzSo64G4aYsMx6ym6ARuBMs+swDenF
-	 rGHRIF7OyWO3Gytj1yrnr8kzkca2dQoRDrkGzZ3jDvhrPOi4E/YWAqOGfyMRMu1jiAlDv
-	 kUc8WuMTAPEsiiSkZGvV4k1cK/DDE8uuHN+v7sZYbusYXlu4BxxINgU75V39dMex7Iw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CgLSTeyw;
-	arc=none smtp.remote-ip=95.215.58.92
-Received: from mta1.migadu.com (out-92.mta1.migadu.com [95.215.58.92])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794554011;
+	b=snjE67+BLEzSzG71gKuWgCXwv4NcCigVhws04c1lyh+Sigz5aaZnLDnGalj0zVYbzSp4
+	 TS2u2wYz26AZauYpuqD9CGHsZbsCXNYrCUmVAdUc1Ou5deNhlnfv7zBqqraT5bZqeCBMp
+	 lz5wD7enIgEPdNuNnqupkT/5NdCCNlttxdf27T3PxAsZ7De9vf00/WOTYrEo64j6bjLL2
+	 UxLorn7UfxrV9rlX6iE6xOu70tO3GIuvjb5vX0MqSJ7q03WHGQ39xKc2ZAMjn6aFhcWXS
+	 gacmZrYCstAOmCI2RKj7pdyD0xuWgCQj+21q2UcohhE3cxiiIbuwMWiTMkNBI4+V3Jw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794554011;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=/+VRHS43plOjIRbhGsfOqQ1nmhZowYRYK29KqoxHYMk=;
+	b=Np3PpOZbJQzt2Sg+DvhCzphYscn75ju0yfdDvC2iVDCol7RHt8jwQOVCeXmBHa/s9M2D
+	 hZMT9TSsLod2uWRbo0oTWiG08f8xphLl1vc58d1zb3ZyrRp74A/bkoK71UM24DGG0y2wC
+	 L50h03SuML5T8EtDAbcXNHZjDITbbU6FcZvKkaKa8E50n4jQc8uo8N4s3JQYO/Rh0AbY1
+	 rqElOVzZQoECI0lhn3EymI3NNKS4o25xixbXTsWs7MJq+HM2nWc7uvvxxoVyhBE4hrVBw
+	 K5qbE1jARpazF1HCWGMEHS86rvbsRGu8qadxgT840PTBJoRIQ1J9RxuXXUh0tL1sesQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=none header.from=pengutronix.de;
+	spf=pass smtp.mailfrom=pengutronix.de;
+	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b="aLyOpFE/";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D88D606A323
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:11:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6D88D606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4693760A3811;
+	Fri, 13 Nov 2026 07:13:29 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4693760A3811
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CgLSTeyw
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=HvD4JIhX9JMIJD9FDvhvLpV8go5wxlXlCHjEMqjep6A=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794553866; v=1; x=1795158666;
- b=CgLSTeywh5Ab76k4izWLBgQt+Afg18seRiEqC7lbW2t9NqgZjXIGu+u9pAKnIXWzjcG1HMuX
- a5r0n/1ea6raM92cULa4ySd18U+ls4Oc4NBOux2yYlHjrH8FE4a/hyI5BPd0T4hSBlGeAWgTHEZ
- DrejQYbHdD5j9uoXOO0gTuaU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 04b16ff434ed104c;
-	Fri, 13 Nov 2026 07:11:06 +0000
-X-Mizu-Trace-ID: 04b16ff434ed104c
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 13 Nov 2026 15:10:54 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	1342116488@qq.com
-Subject: Re: [PATCH net v2] team: validate the length of U32 and S32 option
- data
-Message-ID: <ava3_g_zsVdAjn93@fedora>
-References: <20261112090030.172342-1-sunwenbo@cmss.chinamobile.com>
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=aLyOpFE/
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 14081202C91;
+	Fri, 13 Nov 2026 08:13:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1794554008;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/+VRHS43plOjIRbhGsfOqQ1nmhZowYRYK29KqoxHYMk=;
+	b=aLyOpFE/2IJMm7cn+U8nSDPSkDdDU+nFF2MzxzB3AyGoqmTAv/YN+BH35BZ1KLGvBk01l9
+	skbsNgT9TsdL4FFXmllyR5NOLIysnIyINMDGJ0WMlppTgDcNTUBC5xOTFAlPDlDcH+ir4c
+	CK33Oo2XtWUv4sPhiwzRzvuFk6pgpeR1t7hr6LJfvddYRWDCwP7ZCtzMr614pC2q4qqXZr
+	G1A7ZjIAl/SuN3yBGue7WpkLjmfYI6SpHNB3GkZ2GfrjpQIW0wAGFSA1X0+mDacOLdlILL
+	daM4ffGlRf6NMKKvOYI/HUIfMuI1TwqJUUDR2hNZHe2u4bGmmc9seGRUbQDKPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1794554008;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/+VRHS43plOjIRbhGsfOqQ1nmhZowYRYK29KqoxHYMk=;
+	b=QKXmui41IM0LOQ/moQGdx8pszNMj5dXRJkJOGDIXYc57jg1HBdsXTYbe6lKgJNIkIDrNz0
+	TmO00dSD/SzbyIA8+ToMKs2xpB6rwUnudFaW2JCAw0e6pYPKw1X0KYkJIlEDLvMhbMNjqT
+	5WSGmuThrzCvTIb2D0w08vYdJzsVrBXyjoTIE7kB3T1ztPvR0As41L/Po6pLcA6kUw1t2i
+	uVoLe050axh680S1E6INiijBXcWuOMS0d9+IeF19iOWVu4GucvlG7vEakCN/0EPn+LIWg5
+	W4zzovPM8DKZg3U3J75BxiTa8IOCrjtWWV2csOCH6Pd3AtwEgKHCDX+QH3K8kw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794554008; a=rsa-sha256;
+	cv=none;
+	b=b7gqODv4iMgJToZdiKTwfDM2C8LzuN+HRbS4ID0yK4EyxAJ+YN3nUzu36oTz6k/kkjrumy
+	yLDCiw6MWHy8Q5PJVzmrcCDzC0BVqcBP0/9OO+UqaUY6P3GPJuH2uMX0KjjuhMu8iQhPzS
+	IDuLQW+AH9Z4Bb+1P+F0o+BYjbRX7D3wdIXtkmGYPdCBHtotxMsIor0t4Arjuz8mLwXXaZ
+	0ognug9XFhm/Kt2+tKvxIyLEgPFW+F1P3QiEYYuGRswk45/D1yUWj6rv83ffZtwzkC+0Bh
+	VgTe1e9qE58gm9xj0LGNAJq2JUT9q69poWOAWJvq+S32FD9NbVKMQkGg1HU+YA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xRlTT-003xHq-3B;
+	Fri, 13 Nov 2026 08:13:28 +0100
+Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id AAE365EA578;
+	Fri, 13 Nov 2026 07:13:27 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Quchaosheng <quchaosheng000406@163.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 3/7] dt-bindings: net: can: holt,hi311x: Convert to DT schema
+Date: Fri, 13 Nov 2026 08:08:51 +0100
+Message-ID: <20261113071325.4092169-4-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261113071325.4092169-1-mkl@pengutronix.de>
+References: <20261113071325.4092169-1-mkl@pengutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,78 +109,139 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261112090030.172342-1-sunwenbo@cmss.chinamobile.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 12, 2026 at 05:00:30PM +0800, Wenbo Sun wrote:
-> In team_nl_options_set_doit(), the policy for TEAM_ATTR_OPTION_DATA in
-> team_attr_option_nl_policy is NLA_BINARY because the payload layout
-> varies with the option type.
-> 
-> For TEAM_OPTION_TYPE_U32 and TEAM_OPTION_TYPE_S32, the payload is
-> read directly with nla_get_u32(attr_data) and nla_get_s32(attr_data)
-> without checking its attribute length. When userspace supplies a
-> truncated attribute (0 to 3 bytes), nla_get_u32() or nla_get_s32()
-> performs an out-of-bounds read past the attribute buffer. Conversely,
-> oversized payloads (> 4 bytes) would also have trailing bytes
-> silently ignored instead of being rejected as invalid input.
-> 
-> Validate that nla_len(attr_data) equals sizeof(u32) or sizeof(s32)
-> for TEAM_OPTION_TYPE_U32 and TEAM_OPTION_TYPE_S32 respectively, and
-> return -EINVAL otherwise, consistent with how NLA_U32/NLA_S32
-> attributes are validated and similar to commit 5bef3ac184b5 ("team:
-> better TEAM_OPTION_TYPE_STRING validation").
-> 
-> This issue was identified with the assistance of an LLM-based code
-> review of Netlink option handlers in the team driver, confirmed by
-> sending malformed U32 (notify_peers_count) and S32 (priority) option
-> attributes on a UML kernel, and verified after the patch that
-> invalid lengths (0..3, 5, and 8 bytes) are rejected with -EINVAL while
-> valid 4-byte options still work as expected.
-> 
-> Built with W=1 on UML, x86_64 allmodconfig, and x86_64 allyesconfig with
-> zero new warnings or errors.
-> 
-> Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
-> Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-> ---
-> 
-> Changes in v2:
-> - Check exact length (!= sizeof(u32) / != sizeof(s32)) instead of
->   only rejecting truncated payloads (<), as suggested by Hangbin Liu.
-> - Extended the UML test to also cover oversized option payloads.
-> 
->  drivers/net/team/team_core.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-> index 957cc7885d2f..8fa05c489b99 100644
-> --- a/drivers/net/team/team_core.c
-> +++ b/drivers/net/team/team_core.c
-> @@ -2833,6 +2833,10 @@ int team_nl_options_set_doit(struct sk_buff *skb, struct genl_info *info)
->  			ctx.info = opt_inst_info;
->  			switch (opt_type) {
->  			case TEAM_OPTION_TYPE_U32:
-> +				if (nla_len(attr_data) != sizeof(u32)) {
-> +					err = -EINVAL;
-> +					goto team_put;
-> +				}
->  				ctx.data.u32_val = nla_get_u32(attr_data);
->  				break;
->  			case TEAM_OPTION_TYPE_STRING:
-> @@ -2852,6 +2856,10 @@ int team_nl_options_set_doit(struct sk_buff *skb, struct genl_info *info)
->  				ctx.data.bool_val = attr_data ? true : false;
->  				break;
->  			case TEAM_OPTION_TYPE_S32:
-> +				if (nla_len(attr_data) != sizeof(s32)) {
-> +					err = -EINVAL;
-> +					goto team_put;
-> +				}
+From: Quchaosheng <quchaosheng000406@163.com>
 
-This part should be
+Convert the Holt HI-311X binding from free-form text to DT schema.
 
-Fixes: 69821638b274 ("team: add signed 32-bit team option type")
+Reference can-controller.yaml and spi/spi-peripheral-props.yaml. The
+HI-3110 sits on an SPI bus, so its node carries the standard SPI
+properties, spi-max-frequency among them. With unevaluatedProperties:
+false and no reference to spi-peripheral-props.yaml, dtbs_check rejects
+those properties:
 
-Thanks
-Hangbin
+  can@1 (holt,hi3110): Unevaluated properties are not allowed
+    ('spi-max-frequency' was unexpected)
+
+Keep the properties and the example as the original text describes them,
+including clocks as a required property.
+
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260922084542.104788-1-quchaosheng000406@163.com?part=2
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Quchaosheng <quchaosheng000406@163.com>
+Link: https://patch.msgid.link/20260922102258.138753-3-quchaosheng000406@163.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ .../bindings/net/can/holt,hi311x.yaml         | 67 +++++++++++++++++++
+ .../bindings/net/can/holt_hi311x.txt          | 23 -------
+ 2 files changed, 67 insertions(+), 23 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/can/holt,hi311x.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/can/holt_hi311x.txt
+
+diff --git a/Documentation/devicetree/bindings/net/can/holt,hi311x.yaml b/Documentation/devicetree/bindings/net/can/holt,hi311x.yaml
+new file mode 100644
+index 000000000000..9ec6abb1279a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/can/holt,hi311x.yaml
+@@ -0,0 +1,67 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/can/holt,hi311x.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Holt HI-311X stand-alone CAN controller
++
++maintainers:
++  - Marc Kleine-Budde <mkl@pengutronix.de>
++
++description:
++  The Holt HI-3110 is a stand-alone CAN controller with an SPI interface.
++
++allOf:
++  - $ref: can-controller.yaml#
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    const: holt,hi3110
++
++  reg:
++    description: SPI chip select.
++    maxItems: 1
++
++  clocks:
++    description: The clock feeding the CAN controller.
++    maxItems: 1
++
++  interrupts:
++    description: IRQ line for the CAN controller.
++    maxItems: 1
++
++  vdd-supply:
++    description: Regulator that powers the CAN controller.
++
++  xceiver-supply:
++    description: Regulator that powers the CAN transceiver.
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - interrupts
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        can@1 {
++            compatible = "holt,hi3110";
++            reg = <1>;
++            clocks = <&clk32m>;
++            interrupt-parent = <&gpio4>;
++            interrupts = <13 IRQ_TYPE_LEVEL_HIGH>;
++            vdd-supply = <&reg5v0>;
++            xceiver-supply = <&reg5v0>;
++        };
++    };
++...
+diff --git a/Documentation/devicetree/bindings/net/can/holt_hi311x.txt b/Documentation/devicetree/bindings/net/can/holt_hi311x.txt
+deleted file mode 100644
+index 3a9926f99937..000000000000
+--- a/Documentation/devicetree/bindings/net/can/holt_hi311x.txt
++++ /dev/null
+@@ -1,23 +0,0 @@
+-* Holt HI-311X stand-alone CAN controller device tree bindings
+-
+-Required properties:
+- - compatible: Should be one of the following:
+-   - "holt,hi3110" for HI-3110
+- - reg: SPI chip select.
+- - clocks: The clock feeding the CAN controller.
+- - interrupts: Should contain IRQ line for the CAN controller.
+-
+-Optional properties:
+- - vdd-supply: Regulator that powers the CAN controller.
+- - xceiver-supply: Regulator that powers the CAN transceiver.
+-
+-Example:
+-	can0: can@1 {
+-		compatible = "holt,hi3110";
+-		reg = <1>;
+-		clocks = <&clk32m>;
+-		interrupt-parent = <&gpio4>;
+-		interrupts = <13 IRQ_TYPE_LEVEL_HIGH>;
+-		vdd-supply = <&reg5v0>;
+-		xceiver-supply = <&reg5v0>;
+-	};
+-- 
+2.53.0
+
