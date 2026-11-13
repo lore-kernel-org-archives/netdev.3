@@ -1,76 +1,118 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794602915;
-	b=gmQhJpEJrj70FccE2Egn2DojPkzXERSz5x6zNoHcu57w9xqUgsewJQIKXm3CU6MiZgsE
-	 dvPiwZTV4o/0EdpAWJdGhfW+h3WSkQSR3K0l+/606gH4yDpqCXqrvWGhMPZrh8PRiiLag
-	 026/MLt5BQDOtXl4XJPH0rOSAvzUvADN5nsY1+FzevVsDZzu/ko3LSfXr5Slh7ENVQBld
-	 PUqYDuQ6QV9qHqtvS/V8DZebqK+kh9L+yOgwS1NST/JQlBC3a0gc+uUSK4E2IIAvBvvl5
-	 oaCjJ0P1jblZ9SGx2DI0FIo91B8T0YyGF1LOJn7PzwxnapAde3U47bHzSzMAvutnZZA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794602915;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=/Ktn3E20uyErc4L/7IYjC7izDZZdI2uwat4zTaX+wOI=;
-	b=pvzkJfBuo4J6uBtB0Q69EvGH0mrbLWSchdp2vfM6xXszu9DYhWEHaQAL0nPCqhXeiu8O
-	 7FYEhcAWUvDXq1epWXeU9l4UNrcKWhkl2UtnYQL2rTPeHxYIf3sIJElV8GBbaNO57taiM
-	 OZ2N1FlARgX5hus9An0ipOfFmrvPu0T4vjR3/e7Dd//DPpnOeGXnY3XjXsLfC+YPECUmi
-	 pilbT70Y4v17QEedGa8P5k/s7pYQDf+xzZoikjq3xCS+NkFJwMTqVlAkUCBXXdo0UjfZZ
-	 OIEy5hzwbAkiMybQRbBKRNYRfHK9qxeXLeZFk13tC+8y1EqjJnm4qAXSdmOB1X2nJVQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fPpm7z8e;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.37
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794603199;
+	b=sWhmtqWcq3xgF17QXj6hnaRZmwLRw/kuqSgXPrjdOdLQh4Lw1irc9jjjmpMZKkZkJvP4
+	 rRKasT4kRxN1V6weLxr9o0b5+qhMbecWwPTvUs9Hy3i7XEgwZ8tshxJKYj/OOUM28HsZW
+	 vNoX8RDEBRGQrMTNbIfXWCFUnchrlmjUthyaXW35hSIIDC1ZSHbkEjSXSIlhZS67g+DXl
+	 6JSboPQGoCetr9Gqq39fOAJZjKtWqkcmtqkrt/Ec1JVf644/HyIhI/Iol+1tUby11cqhh
+	 qxYOpZcj6Y6gxJza4+le4QUqC00lckBCat7iONVy9al3BgedIY2HiL5Qkw2dBSB1Iaw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794603199;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-EOPAttributedMessage:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=vbJs1WBJaUcoreIKbex9CfghBlcbgLiuK2ZYSeX6pvs=;
+	b=TNhVBb01tBOt1tVhQfdNZ/EB6/bo5tQf9XfNrq/J75gIhUqkRdfRRgc5LMzN/2onPYn2
+	 rBMVYmYgyAalKoDQs0izwILcP+aX2xQcYd3o6jzw5NKv0KZYJ4EL+0YlORzkRzDVSz3b6
+	 cWL8d3J7PkXWD9a0szcx3z1uNBpS+NQbxCTzxLkzXql4GlM6IsgYrwK5tQgjxi3BTSdhs
+	 yvuHrrvXiwqxu7z640KJht4uc3dOihFgogsvZAe1XRJqwRU6NMQprMeW5gVOl6HPrtIHP
+	 mDgiW6RaGxCoqOEyVBuPuMajZXYfCg4RsParOup2goQ295UsT9eon5kfZXjvRt/dTSg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nokia-bell-labs.com;
+	spf=fail smtp.mailfrom=nokia-bell-labs.com;
+	dkim=pass header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.a=rsa-sha256 header.s=selector1 header.b=dl8wDFTt;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.66.37
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012037.outbound.protection.outlook.com [52.101.66.37])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0840F606A33A;
-	Fri, 13 Nov 2026 20:48:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0840F606A33A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3F4606A323;
+	Fri, 13 Nov 2026 20:53:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C3F4606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fPpm7z8e
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=/Ktn3E20uyErc4L/7IYjC7izDZZdI2uwat4zTaX+wOI=; b=fPpm7z8eZEPGwBxfGOC2TEjOnF
-	kA8xLUy/kTF7tMOzsMFXeDU/1hPQ79YR5NBN+RwZgm3KJDbzOSloDeqwYcyPMHU+FU+iE4o69CdQk
-	/I9Oqq6V1WsHm4DQNvubF5r8cNHvGFK9EQvfyvxSuhz87pUfglPSuD1G6HzFeNInUfRY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xRyCB-00GMVK-MP; Fri, 13 Nov 2026 21:48:27 +0100
-Date: Fri, 13 Nov 2026 21:48:27 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Eric Dumazet <edumazet@kernel.org>, Lee Jones <lee@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, mfd@lists.linux.dev,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Benedikt Spranger <b.spranger@linutronix.de>
-Subject: Re: [PATCH net-next v4 4/8] dt-bindings: mfd: Add SoC-e SWIP parent
-Message-ID: <e4417d39-390d-4ece-bb2d-5f1745185d37@lunn.ch>
-References: <20261105-devel-vstrassheim-soce-dsa-ml-v4-0-02f3cde2afa1@linutronix.de>
- <20261105-devel-vstrassheim-soce-dsa-ml-v4-4-02f3cde2afa1@linutronix.de>
- <20261106-judicious-penguin-of-enhancement-b28c8b@quoll>
- <f5c7c9901aca84f0b814e5b6c153db84af826dd7.camel@linutronix.de>
- <cc35b2127b04772f05948ac51c8faa5ef07da0b0.camel@linutronix.de>
- <20261110192118.GA1412882-robh@kernel.org>
- <5a6183e3480a0d910e275acf591e2db8700da827.camel@linutronix.de>
+	dkim=pass (2048-bit key, unprotected) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.a=rsa-sha256 header.s=selector1 header.b=dl8wDFTt
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kL22p8BZF/Emfj8IJkbvDzCaUJdCVWlN8Le2jw0n/OLcE9U9DIIcqIx8tSTlhAjHxzYBx5Tj7nC2KFqwuL6jS60jVuk6QxNtqK9kfoIE3pAH9k6ik+kJBsyMl3cct5cC7cjQNoCoxrqVdezm3hf2HmFvh3p9ec0PE9VTN8k1UCCFuMruVTrpLp3QBkAauSbZ+3e1dNDXrqMelcZx3jhtLogAzTsfHtgKJtTUOkWICf5gs3Gl+40o/TXPjsp0BxRF6V9dDZwMCHk7m7Zq9sTTDJt5CTyfIyRfssNvzoJCl71hNXGESLSziqACOyq8UJi9ZA0i/RxIfblKrWD6A8qEJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vbJs1WBJaUcoreIKbex9CfghBlcbgLiuK2ZYSeX6pvs=;
+ b=NfmO6Tgsr7k0+ZBmT5OKZBjbtqfpFCBPaRuQgLoaRUc8QmSqwOl8mWKInYY3b9bmG3lbhf9K/HUc0JB7kRMNvMPywbskIr581sr+Al1GdfDt1xkKcUethRppb+9YcqZEaxKj2vUkyj2gS2MfjXZEA9GBAhKdJbLIp8ZgzoOpOKc2p1Rr1nGmiR0gowJr0TkaW0Qd0+Y+LHW8A9jciuhd9vQaGOFmtcrxwGfCF4RIvF1NIVuV5UyLYgixXVBBzvCxctRbpGp6wvNnC9iIg+Znj2FthUBsv/eqAQ38a06YOGVrWdIwEvUWfQI38gLeWzxchhOlTHZN2MTp8k6HYil6ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.2.29) smtp.rcpttodomain=davemloft.net
+ smtp.mailfrom=nokia-bell-labs.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=nokia-bell-labs.com; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vbJs1WBJaUcoreIKbex9CfghBlcbgLiuK2ZYSeX6pvs=;
+ b=dl8wDFTtq6tsCVZ2/hNvzbKllW+o7L6zunmn7fGrmcsijJazhuQtBivZsF9gC+X11LcRpAXiiN1TuyETQBtXhz9TnOCsr8DRYhPfNq2wbOh9qLo2aEUw4aBSciBqNsEjTj+VjUL/q9iShQTXDkL4yF0ndaAW6t8/2BgMfhrpTv/HBJ9wykReoZYWMc7r9MDwPZM7kC/VJD4R3VwDLKMZKJWvzjueRDjP8TzuYXL6LaIsUS9r5iN9NTB5kNFbb4xU4raZfA50tYh2N0zhNCgXQA/sZIhaXwIEh+h+plFmcfa+ocrEjXwG8t1Hbcc6vOf+IcH4r4I9mvzB+7Q0jtYOhQ==
+Received: from PAZP264CA0074.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1fa::9)
+ by AS8PR07MB9397.eurprd07.prod.outlook.com (2603:10a6:20b:637::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Fri, 13 Nov
+ 2026 20:53:14 +0000
+Received: from ZR1PEPF0000E6B0.eurprd05.prod.outlook.com
+ (2603:10a6:102:1fa:cafe::93) by PAZP264CA0074.outlook.office365.com
+ (2603:10a6:102:1fa::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.10 via Frontend Transport; Fri,
+ 13 Nov 2026 20:53:12 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 131.228.2.29) smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not
+ signed) header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.2.29 as permitted sender) receiver=protection.outlook.com;
+ client-ip=131.228.2.29; helo=fihe3nok0735.emea.nsn-net.net; pr=C
+Received: from fihe3nok0735.emea.nsn-net.net (131.228.2.29) by
+ ZR1PEPF0000E6B0.mail.protection.outlook.com (10.167.241.87) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.4
+ via Frontend Transport; Fri, 13 Nov 2026 20:53:11 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fihe3nok0735.emea.nsn-net.net (Postfix) with ESMTP id AC22255B67;
+	Fri, 13 Nov 2026 14:57:01 +0200 (EET)
+From: chia-yu.chang@nokia-bell-labs.com
+To: linux-kernel@vger.kernel.org,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuniyu@google.com,
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen0607@gmail.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com,
+	Mike_Rudolph@comcast.com,
+	Jeff_Howe@comcast.com,
+	srichard@netapp.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH net-next v3 0/4] TCP Prague preparation series
+Date: Fri, 13 Nov 2026 13:56:24 +0100
+Message-Id: <20261113125628.2893742-1-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,40 +122,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a6183e3480a0d910e275acf591e2db8700da827.camel@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZR1PEPF0000E6B0:EE_|AS8PR07MB9397:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6224384f-f06f-40cd-17ac-08df41c82170
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|82310400026|7416014|376014|36860700016|1800799024|18002099003|3023799007|921020|11063799006|10067099003|56012099006|261009223027099003|261102123227099003|261102130727099003|261026121527099003|261021121427099003|261021123027099003;
+X-Microsoft-Antispam-Message-Info:
+	8a+WSusvS5xeQemooL6J7XFBRs/wxG1rGASY210j3isLJinHfzJ8yzqMw/o6KRg1nmXV9bEeeQkaQ8nyQvEG9zyqNw2IJDtrLsma1dlLQjG1UUnoXHMkhtD+XPFwhjVb5uqQUl4dnMDyEQYr2i6RA4jhcHCmsDOH0JUoqbTA19/ATINFCNgBk1cw0LfGFiG9BBFWd17cN8H4bybjRyVY+Sz2w9/wOnAPRONnRpl+3lv8Axcmm5cow1QyvR0W9E1hyb97rUPRL3iEzrfW9F2C8rfU977uuupQzs/wBaubUMyxwBt8ZM5QP5zlw6zdoUA/c5TGxuAsIdQA1+uQhHi4PH1mwocPqS7gMX3MBlgA9CXfIrVeQdPIcY5Y/ZxOrvAQ0QZfPX72PDbtlG177S3N14I2aATgdIw4rX37g5gGwwK9HoVgRdvl38tWPZshVW7ss/ecn8dUMWfdyMbf6+3HwuoYqFh9d6b8KcWvLV/Dq68B9RQ8elO3CAJS5ypIOA+YOQAYjUHjwM53zGB64zlChdHpC6JWCc/uxg1/4YYbA3+CN2x0EQ4KIc7IwQIH7MEvNn4Nqy2Xy8O7j0gXxYna/mKZmi9EHua+4SSwjlgJdgixyDA878Spkw6DBi4dZWwXmv6eE4oNxI54K5P0JFrsDZDVuGZu20QB6XMedJAwrTe7XQnYU6ee6Q5ZwrajJLKF/T+Z/lxnKDWJnv3IJf0ULS4dOYZcd5x1EwBcDSl5qqopq1IkunCoQhOwi77tUVG7
+X-Forefront-Antispam-Report:
+	CIP:131.228.2.29;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0735.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(7416014)(376014)(36860700016)(1800799024)(18002099003)(3023799007)(921020)(11063799006)(10067099003)(56012099006)(261009223027099003)(261102123227099003)(261102130727099003)(261026121527099003)(261021121427099003)(261021123027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	DBIvnOOaaKfRFujQ9LnrKsthLipPGUbOWZ3he649kpc4GxbtaUUPQZhdFyC1QTuoDe98yC9Er1fR2w2rU7hn7tS9Fpt7o1MbPzRsAvYX8GIXY5jImHL1Tcl/hu2xw+4mGzGooKclhpcWlxRbiVxiJkeC56PRKUEf0SZOy5ldh2n/diBPMwxW9mfeeFRfy+SVMkq3E0Adp9LbLe51z0/mQdJrsI1AjAXtC4y3vyXgaezcxuyNqdJHUUFprW4m9+LHZvMwT6Zdy4lF/Tdqcnugqboh6sj5DqZT/VScG51RJ1qSjH9dKgS5aFlvj+DQrnpo1o18e1HTX26YASfWvCr/xOu3e5u7JxGop4TRA8Dm4m/xNrmkDMHDizlOzbrQn7VkgLWWFkzSCdS9XM2KAIbp59WUa1A3FN0HzOLNKR4RQcfgRIbsKMlTIl3w3B4l/kp8
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 20:53:11.8843
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6224384f-f06f-40cd-17ac-08df41c82170
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.29];Helo=[fihe3nok0735.emea.nsn-net.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-ZR1PEPF0000E6B0.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR07MB9397
 
-> > Given the MDIO bus and mux registers are adjacent, I don't know that 
-> > putting the mux into its own node and driver really buys you anything. 
-> > Can't your MDIO driver handle the muxing directly? mdio-mux-mmioreg was 
-> > created for when you have mux registers in some completely unrelated 
-> > block.
-> > 
-> 
-> What it buys me is less custom code to maintain for bus selection and
-> selector-value validation.
-> 
-> The MDIO controller and mux were combined in a previous version.
-> Following Andrew's suggestion [1], I moved the controller into its own
-> driver and stacked mdio-mux-mmioreg on top of it.
-> Sure, the selector is part of the same MDIO control register. But the
-> generic driver already provides the masked register update and
-> selector-value checks. My preference is to keep the current approach
-> to reuse existing code, even if it requires some integration and
-> documentation efforts.
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-Since you have both implementations. Did the lines of code go down
-when you reused the existing mux?
+Hello,
 
-> The IP core can also include an I2C master for accessing external
-> devices as a synthesis option.
+Please find the v3 TCP Prague preparation series, and TCP Prague will
+be submitted after this series.
 
-SFP cage being the obvious thing.
+This patch includes the following additions:
+(1) Add ece_delta to rate_sample;
+(2) Rename existing rename ECN transmit helper function;
+(3) Add TCP_ECN_SEND_ECT_1 to use ECT_1 after negotiation;
+(4) Add MSS ceiling callback for congestion control to limit MSS.
 
-It will need to be a Linux I2C master in order that phylink can use
-it. And i would not be too surprised if the existing I2C drivers can
-drive it, it will be licensed IP. So an MFD will make it easier to
-instantiate.
+Best regards,
+Chia-Yu
 
-	Andrew
+---
+Chia-Yu Chang (3):
+  tcp: rename ECN transmit helper function
+  tcp: add TCP_ECN_SEND_ECT_1 flag for congestion control
+  tcp: add MSS ceiling callback for congestion control
+
+Ilpo Järvinen (1):
+  tcp: export CE count in rate_sample
+
+ include/net/tcp.h     |  6 ++++++
+ include/net/tcp_ecn.h | 12 +++++++++---
+ net/ipv4/tcp_cong.c   |  8 +++++---
+ net/ipv4/tcp_input.c  | 40 +++++++++++++++++++---------------------
+ net/ipv4/tcp_output.c | 18 +++++++++++++++++-
+ 5 files changed, 56 insertions(+), 28 deletions(-)
+
+-- 
+2.34.1
+
