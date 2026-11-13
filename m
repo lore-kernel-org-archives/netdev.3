@@ -1,62 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577877;
-	b=3o4YJdzKcKxKZOF0RMRO8oNCCyi3Y+e8yv2hosKyDhR8WGkL9/VNWSrQpYGJiQAoqSOs
-	 0GkH84sRVjuiCgoBU7+3g0D8M5caOPRDLpP6whqdH35RBEgzQLlvPw1C/WiNVVPk7TiAp
-	 w9TiuNfcVftqc2+ClykWpZsxoQL+A2kxS4HeccE6dgAByn6xXgCjq5cTq7Ueml7rGGEMX
-	 dinR0YUG+5c47ekupJperY4vTjfrjYN1eyhg9W2Xlzjw9lJ1/nG+yKr8RWsTEZ2nGGEpi
-	 gRlGxVGBhXX5Z+3LxGsEyQMCTerEZWNSuabFyhYhPqwHiJfD02y0UO+ea6jNoTfTomg==
+	t=1794577906;
+	b=gMpUNratWse+rXmGtq/us/ts7Dg/VukvlQwSMMNW9RbgmzYMITg7yWUaWbS+PB73KpBe
+	 3cTDk8pkgsIC24uV4mhgjWj03By1Z/kayUcelBlvTenXuWIGVSVpr++tgNSe+Y5P1qPQ2
+	 WXgxXZc042OXsrizjiRlTZkknENfIaamwEhPOSiBkbYEVEBH+F6hRh4ihGs9MXqEq+bV/
+	 PrWAuuCSTsUzZRukPZ8tQqLTbCFbMqXyclo9SokZYDRJCpwXEaY6feSFbP8yc2fu1eLLR
+	 9+oa5kqaZIMTAlcLxZ+7la9il2xAmmnABU5w9JqK9wBBYdS+vUBaIZxYxEsiRdk20Kg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577877;
-	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
-	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To;
-	bh=3tiE8wCVjWqKiSQHj9hDK/7ujfubXxT9LOiydm/3ZXE=;
-	b=Cz6J6B6iFoyyiWhyBjFoolZvaWe6vy1h+GNCtLLsKOGx04PS0nAwa6rDhL0Cb6vxTyY3
-	 2ht1RxThvSua5FSCRxbz4tLBA2xae2/kOjD+RvOAFJCagz490YGNrcM0AshfxUAeOsCPC
-	 4nZ+Sk/hYRhvb63zsRR8KTKVs4PXPGrc9kZzIHtsdps25/Mwou9U4FT/N5xR8scbUhr7w
-	 R7m8JlLH1spAr2wImhPf7dRW0XFNgeI2w+9Twm4PaNdjCJo52M/AbM5BfP6wKkvhM2ZFV
-	 Qq0oAUmqkHG2wtCXnhqJK0DSqLQ/5gyLT7e/s1N/L3rjpFB6cgRSRZ+LaOQsulMeRcA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577906;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=nzwVW9fNWfGXZUemLc1dTW/hhZ3xpHtCMfznCyx8mPI=;
+	b=LcwWA4gn0OPytWmr/YmkNg9ISNYImxmBXef8jHeIy7qppv/uBAet96VsvcAcE0ts73tX
+	 rHKQjCr6LnndDNSikMgGYjFarik8LyLuCwiwQI89o6ozw8kKJAYwlwD8CJO/fz+d2u4Ng
+	 p4KxbI0uqgpnFIUX5AX0K+yEgsC0KerqLIJ8rLZznCYnGYKvon7rZ553UMRV0DKIFJNBg
+	 vv8Ndmw+89jT5qhRFkn30ODffTyKlWv4lJLNrnPk8VvtLFEmxtf6rEyvqViieyg9+hHig
+	 VXrxWu3al7ePjacB0JpaM4TAjr5XwddHDwXdbTcGqLd9z35u0DWWGbwX5xqq7CjfW1A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=lunn.ch;
-	spf=pass smtp.mailfrom=lunn.ch;
-	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KaGmI2fz;
-	arc=none smtp.remote-ip=156.67.10.101
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PquMVjty;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ECIV4Jho;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB94606B1A1;
-	Fri, 13 Nov 2026 13:51:17 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EB94606B1A1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258DA606A88A
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 13:51:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 258DA606A88A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KaGmI2fz
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3tiE8wCVjWqKiSQHj9hDK/7ujfubXxT9LOiydm/3ZXE=; b=KaGmI2fzPhwM+U913Lq9k8ysvi
-	jljRrFge2AhRak87PzNhgHSnDOuVyVHrjIgbTRLu52GGseFhLFZ/Mr6sG3NfeKXdsMWuJDaV2wSDF
-	MS9UFsTqyZ2mV74HZVf4U4OwhSsMdy52Ko8yDV6R1oXz34gSh8l+fQC0ZEK6wLLGUPfY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xRrgA-00GHmY-AD; Fri, 13 Nov 2026 14:50:58 +0100
-Date: Fri, 13 Nov 2026 14:50:58 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Linkui Xiao <xiaolinkui@126.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, rosenp@gmail.com,
-	jacob.e.keller@intel.com, daniel.machon@microchip.com,
-	chunkeey@gmail.com, kees+treewide@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: Re: [PATCH net] net: ibm: emac: attach the fixed-link PHY with
- of_phy_connect()
-Message-ID: <ef2eb733-4b94-4c2e-9165-0b324733a482@lunn.ch>
-References: <20261112075321.3903875-1-xiaolinkui@126.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PquMVjty;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=ECIV4Jho
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794577905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nzwVW9fNWfGXZUemLc1dTW/hhZ3xpHtCMfznCyx8mPI=;
+	b=PquMVjtyZGfGYCr47ArvAw10Sx6XB1xjzp0Gz0SxHI8qWIFs80PQfh1xTcp4QHWjyKVu2g
+	ysiGasak4ZP6CZkD9riBMfdwJ6fkwRcbc/cmQa9nrDb/CSlWsAJ3FGmmrtlZkFxNO+vfCj
+	vjUaX5eIoNlUZBmyfUDOniWrUznGHQE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-OuLLWOS9N-yud_FWrdpAUg-1; Fri, 13 Nov 2026 08:51:43 -0500
+X-MC-Unique: OuLLWOS9N-yud_FWrdpAUg-1
+X-Mimecast-MFC-AGG-ID: OuLLWOS9N-yud_FWrdpAUg_1794577903
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4930269afdcso656364f8f.2
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:51:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1794577903; x=1795182703; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nzwVW9fNWfGXZUemLc1dTW/hhZ3xpHtCMfznCyx8mPI=;
+        b=ECIV4JhoLU17HxPiNt/9IPbToz1Q9M0ZMdWYEbZF9dgHjBSqYjxBItkMJAdLrPIE/w
+         9BaD9t99NeGPTSEuqAjus0I82h25o5EZpJtv8S6OvmXtCHTII9YNlxhqt80ejg7M4lPi
+         jZaF+6TL4ftJXcnFmrSq+VQarvnvLHKzO38cnffKeUram4D6URkhgK1jKnUwQTBTzSlU
+         VeS7ckUEYdgPXhCeZImkQ00tqQl3oG5kq2SXvcapUP2MG3X/gBOHnnM5VZuw7aMAYeeq
+         g3W+5Gi/OaaFPtqtZWWkPntCnpw7El38l8SDggJY8npS4m1ealjIDpCzWcOZ9aj0b6i+
+         mx1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794577903; x=1795182703;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nzwVW9fNWfGXZUemLc1dTW/hhZ3xpHtCMfznCyx8mPI=;
+        b=bfYdZzYxsd4KNsFUJVKHfJ7uCZ9HBQN7t7xE34k494Zoh9ZDTFvf2dD9SNY6Hfueda
+         2UeRCbMXAXK8OvqLmwcqaXqHBDJbCQIOe3sBiXJaGGzKA67LedCdLNJelJQmD9hj0Y5B
+         8gcW4oiy6W5a5Osga8cg19SKloJV3ovjRBNel3R3uwojcbDF0QvYvSVRmLUFsjfX3ghs
+         cNcWQ7nANDxnQMsOsXim+SQWP7Z2QVcToxJR+jsLmZ9VCN1Rd6zQlUrVFQ3BSDLXOpjO
+         nQyTqx512Qz7CcnWbjGG/W8Vqx9hWhR4GWdQr0/vbxhdXmn9JmSm16k02yHaZFRS9Skv
+         qWwA==
+X-Forwarded-Encrypted: i=1; AL+hErHYZNu+qlNlejN+eXfJmhe5bZqaoKH+EGv/TrIO4jDwS0HVZ3IOXWAu4izmvBb3TwxdSaSe028=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/ki1WY/Hc6DTQ9v1QKH5Y06OKM/LRhf1MJfsvVKfE1XjlM20l/
+	aAwI91MdROFpic1X7wEbRbDngxQrigndCnoKbvMF7MPwaw/UeRJG5sC/rfnqRvaGa89ums3fKiZ
+	8rsHjqHqc8hgt7yOI2yMuOLkH7oe0ZMxPr0FlbmgHwEq7hd1RUs90womM4A==
+X-Gm-Gg: AYBFou336XtiQDJixDsMv5AwpIma6l1vChg5hp15vQ0RUIMnY1E4fhgTdqSIBLAS09A
+	zzlmhtveLLFKOEXCe7VW7VevYNryPPAPG5KKSpd/lXkB0Gjm61zhnKU25KgZ4YcqY/W0skFOC5Y
+	S0X75L+7YgSEdX0F3xuV/NUOB3ZmysnuUQLndiX79qwWVUlcMyxVeV9fX1xPjqohpgvJ9HPPGrI
+	BrouPY9zokWuc/2tj+bCpccUlAZI2Z3BylLXLwLo8dWWE1hvq5L2VSp+kPJ5U4lWYWgCQ3JxBvK
+	kUFObWKfcEwM8cai7ME3ZXYcC9jkuBWttZZTO7j9UUC/v4U1mp1pJmQd/58WAIrGV2N6wEq6AB2
+	bGU34+N+AFVd6/Rv1EEgZw0WfjRkH4b4Jr47L+1Dd+g==
+X-Received: by 2002:a05:600c:c16d:b0:4ba:495c:2f5d with SMTP id 5b1f17b1804b1-4bb55a3e3f0mr51424455e9.9.1794577902496;
+        Fri, 13 Nov 2026 05:51:42 -0800 (PST)
+X-Received: by 2002:a05:600c:c16d:b0:4ba:495c:2f5d with SMTP id 5b1f17b1804b1-4bb55a3e3f0mr51423795e9.9.1794577901867;
+        Fri, 13 Nov 2026 05:51:41 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb5667a8aesm42328895e9.1.2026.11.13.05.51.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 05:51:40 -0800 (PST)
+Date: Fri, 13 Nov 2026 08:51:38 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: zhaoguohan@kylinos.cn
+Cc: bp@alien8.de, dave.hansen@linux.intel.com, eperezma@redhat.com,
+	hpa@zytor.com, jasowang@redhat.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, mingo@redhat.com,
+	netdev@vger.kernel.org, tglx@kernel.org,
+	virtualization@lists.linux.dev, x86@kernel.org
+Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on
+ x86
+Message-ID: <20261113083351-mutt-send-email-mst@kernel.org>
+References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
+ <20261113012937.40818-1-zhaoguohan@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -68,108 +121,140 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261112075321.3903875-1-xiaolinkui@126.com>
+In-Reply-To: <20261113012937.40818-1-zhaoguohan@kylinos.cn>
 
-On Thu, Nov 12, 2026 at 03:53:21PM +0800, Linkui Xiao wrote:
-> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+On Fri, Nov 13, 2026 at 09:29:37AM +0800, zhaoguohan@kylinos.cn wrote:
+> On Thu, Nov 12, 2026 at 05:53:47AM -0500, Michael S. Tsirkin wrote:
+> > vhost had a TODO to replace page pinning with a version
+> > of set_bit that works on userspace memory, since forever.
+> >
+> > It is really best to avoid GUP on fast path entirely.
+> > Implement set_user_bit and use it in vhost, to do just that.
+> [...]
+> > lightly tested. pls test and resubmit with your tool.
 > 
-> emac_init_phy() handles a "fixed-link" property by registering a fixed
-> PHY for the MAC's own OF node and then assigning net_device->phydev to
-> it by hand:
+> Thanks, this is much simpler than my version. Two comments on
+> set_bit_user() before I resubmit:
 > 
-> 	res = of_phy_register_fixed_link(np);
-> 	ndev->phydev = of_phy_find_device(np);
-> 	if (res || !ndev->phydev)
-> 		return res ? res : -EINVAL;
-> 	emac_adjust_link(dev->ndev);
-> 	put_device(&ndev->phydev->mdio.dev);
+> > +	int __err = 0;							\
+> > +	__uaccess_begin();						\
+> > +	asm volatile("\n"						\
+> > +		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
+> > +		     "2:\n"						\
+> > +		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
+> > +					   %[errout])			\
+> > +		     : [errout] "=r" (__err),				\
+> > +		       [ptr] "+m" (*(u8 __user *)(addr))		\
 > 
-> net_device->phydev is meant to be set by phy_attach_direct(), which is
-> what the of_phy_connect() helper reaches. Assigning it by hand skips
-> everything attach does: phydev->attached_dev stays NULL, no link change
-> handler is wired up, the PHY never enters the netdev's phy_link_topology,
-> and the put_device() drops the reference the driver just took, so the
-> phy_device is kept alive afterwards only by the fixed MDIO bus it is
-> registered on.
+> errout is only written on the fixup path, so it needs "+r", as in
+> __try_cmpxchg_user_asm(). With "=r" gcc drops the initialisation; here
+> (gcc 13.3, x86_64_defconfig) it even shares a register with mask:
 > 
-> The missing topology entry is what prompted this. ethnl_req_get_phydev()
-> returns dev->phydev as-is when an ethtool netlink request carries no
-> phy-index, so ETHTOOL_MSG_PHY_GET on an EMAC port with a fixed-link finds
-> a phydev and then looks it up in a link_topo that was never allocated:
+>      1a3:	lock or %dl,(%rax)
+>      1a9:	test   %edx,%edx
+>      1ab:	jne    1bd <log_write+0x5d>
+>      ...
+>      1bd:	mov    $0xfffffff2,%eax
 > 
-> 	struct phy_link_topology *topo = reply_data->dev->link_topo;
-> 	pdn = xa_load(&topo->phys, phydev->phyindex);
+> so every call returns -EFAULT, and log_write() stops after the first
+> page.
 > 
-> which dereferences NULL in phy_prepare_data().
+> > +	__uaccess_begin();						\
 > 
-> Every other phylib driver with fixed-link support registers the fixed PHY
-> and then passes the MAC's own OF node to of_phy_connect(): gianfar, fec,
-> davinci_emac and nixge all do it, and so does emac_dt_phy_connect() for
-> the phy-handle case. Do the same here. of_phy_connect() takes the attach
-> reference and drops the of_phy_find_device() one, so the explicit
-> put_device() goes away. emac_adjust_link() is still called once by hand
-> afterwards and the PHY state machine is still not started, because a
-> fixed link does not change. The rest of the driver already treats
-> dev->phy.address < 0 as "no PHY to poll" and never reaches
-> dev->phy.def->ops, so nothing else changes.
+> No access_ok() here. vhost checks the log range when it is set up and
+> I couldn't find a way around that, but GUP used to reject kernel
+> addresses by itself. user_access_begin() would keep the check (and the
+> nospec barrier) local. Something like this, build-tested on x86_64 and
+> i386 only:
 > 
-> The hand assignment itself dates back to commit 08e39982ef64 ("net: emac:
-> fix fixed-link setup for the RTL8363SB switch"), but it only started
-> affecting the net_device when commit baab9de385a8 ("net: ibm: emac: use
-> netdev's phydev directly") moved the pointer from the driver private
-> dev->phy_dev into ndev->phydev, so that is the commit fixed here.
-> 
-> No in-tree DTS pairs "ibm,emac" with a "fixed-link" property, so this is
-> latent in mainline; it is out-of-tree users such as the Netgear WNDAP620
-> that hit it. There is no such hardware here, so the change is verified by
-> cross compilation and inspection only.
-> 
-> emac_remove() still does not call phy_disconnect(), which the phy-handle
-> path gets wrong today as well. That is left to a separate change.
-
-This commit message is overly verbose and contains a lot of irrelevant
-information. That is typical of LMM generated commit messages.
-
-Please try writing the commit message by hand. Its O.K. to write it in
-your first language and use a LLM to translate it to English.
-
-The commit message is about "Why?". And it is there to answer
-questions the reviewer might have. This last sentence about
-phy_disconnect() was one of the things i thought about while looking
-at the change, but because the commit messages was so long, i had
-given up reading it....
-
-> Fixes: baab9de385a8 ("net: ibm: emac: use netdev's phydev directly")
-> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-> ---
->  drivers/net/ethernet/ibm/emac/core.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
-> index 640618c..6e8b711 100644
-> --- a/drivers/net/ethernet/ibm/emac/core.c
-> +++ b/drivers/net/ethernet/ibm/emac/core.c
-> @@ -2674,11 +2674,14 @@ static int emac_init_phy(struct emac_instance *dev)
->  				return res;
+> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+> --- a/arch/x86/include/asm/uaccess.h
+> +++ b/arch/x86/include/asm/uaccess.h
+> @@ -597,19 +597,23 @@ _label:									\
+>  /* set_bit() on a byte of user memory; returns -EFAULT on fault. */
+>  #define set_bit_user(nr, addr)					\
+>  ({									\
+> -	int __err = 0;							\
+> -	__uaccess_begin();						\
+> -	asm volatile("\n"						\
+> -		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
+> -		     "2:\n"						\
+> -		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
+> -					   %[errout])			\
+> -		     : [errout] "=r" (__err),				\
+> -		       [ptr] "+m" (*(u8 __user *)(addr))		\
+> -		     : [mask] "q" ((unsigned char)BIT(nr))		\
+> -		     : "memory", "cc");				\
+> -	__uaccess_end();						\
+> -	__err ? -EFAULT : 0;						\
+> +	u8 __user *__p = (addr);					\
+> +	int __err = -EFAULT;						\
+> +	if (user_access_begin(__p, sizeof(*__p))) {			\
+> +		__err = 0;						\
+> +		asm volatile("\n"					\
+> +			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
+> +			     "2:\n"					\
+> +			     _ASM_EXTABLE_TYPE_REG(1b, 2b,		\
+> +						   EX_TYPE_EFAULT_REG,	\
+> +						   %[errout])		\
+> +			     : [errout] "+r" (__err),			\
+> +			       [ptr] "+m" (*__p)			\
+> +			     : [mask] "q" ((unsigned char)BIT(nr))	\
+> +			     : "memory", "cc");			\
+> +		user_access_end();					\
+> +	}								\
+> +	__err;								\
+>  })
 >  
->  			res = of_phy_register_fixed_link(np);
-> -			ndev->phydev = of_phy_find_device(np);
-> -			if (res || !ndev->phydev)
-> -				return res ? res : -EINVAL;
-> -			emac_adjust_link(dev->ndev);
-> -			put_device(&ndev->phydev->mdio.dev);
-> +			if (res)
-> +				return res;
-> +
-> +			if (!of_phy_connect(ndev, np, &emac_adjust_link, 0,
-> +					    dev->phy_mode))
-> +				return -EINVAL;
-> +
-> +			emac_adjust_link(ndev);
+>  /*
+> 
+> If this looks right, I'll fold it in, run my test in a VM and resubmit
+> with the test as a second patch.
+> 
+> Thanks,
+> Khan
 
-Why is emacs_adjust_link() still called?
 
-    Andrew
+So, you were right, it's better to check access. But I don't like
+paying nospec. Let's use the modern scoped accessors?
+Like this maybe? Very lightly tested, no time today, sorry.
+If you want to use it:
 
----
-pw-bot: cr
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+
+
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 3a0dd3c2b233e..0bffa43e02179 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -594,6 +594,28 @@ _label:									\
+ 	__ret;								\
+ 							})
+ 
++/* set_bit() on a byte of user memory; returns -EFAULT on fault. */
++#define set_bit_user(nr, addr)					\
++({									\
++	int __err = -EFAULT;						\
++	u8 __user *__p = (addr);					\
++	scoped_user_rw_access(__p, efault) {				\
++		__err = 0;						\
++		asm volatile("\n"					\
++			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
++			     "2:\n"					\
++			     _ASM_EXTABLE_TYPE_REG(1b, 2b,			\
++						   EX_TYPE_EFAULT_REG,	\
++						   %[errout])		\
++			     : [errout] "+r" (__err),			\
++			       [ptr] "+m" (*__p)			\
++			     : [mask] "q" ((unsigned char)BIT(nr))	\
++			     : "memory", "cc");				\
++	}								\
++efault:									\
++	__err;								\
++})
++
+ /*
+  * We want the unsafe accessors to always be inlined and use
+  * the error labels - thus the macro games.
+
