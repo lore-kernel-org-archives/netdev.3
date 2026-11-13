@@ -1,45 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794602799;
-	b=SJqj2Q8+h78PKm8joXcELldwwoJXUF8hm2LmS7uKdUW+pFrR90htMHBG5qQmnBI4Vc00
-	 pL7Z6yUOVKDi/ortQ4R+wJkQtjHUsX0BaQF8EOChHf/wV71KARVQOJO0IVcfV95GPanL0
-	 LtyLu3DCZ7yQyGOl3Zv5RJH07RLM+OpVDC1kXueiLfKsMdTayiB2BhzlLNom8Mv/QybB+
-	 nieo4t7j4Uoz9HBfnDvmujbrj0xXg9Y/UcUeOfy8eMcjhxyJ0Z5mAdAYB6JzMtnvys/V5
-	 az/UZfvqR4/16RFTWrQcrgjuNGcmpjs4HvdJ75bf26L7ZQY7hj72VAgAbcWuJIilmrg==
+	t=1794602915;
+	b=gmQhJpEJrj70FccE2Egn2DojPkzXERSz5x6zNoHcu57w9xqUgsewJQIKXm3CU6MiZgsE
+	 dvPiwZTV4o/0EdpAWJdGhfW+h3WSkQSR3K0l+/606gH4yDpqCXqrvWGhMPZrh8PRiiLag
+	 026/MLt5BQDOtXl4XJPH0rOSAvzUvADN5nsY1+FzevVsDZzu/ko3LSfXr5Slh7ENVQBld
+	 PUqYDuQ6QV9qHqtvS/V8DZebqK+kh9L+yOgwS1NST/JQlBC3a0gc+uUSK4E2IIAvBvvl5
+	 oaCjJ0P1jblZ9SGx2DI0FIo91B8T0YyGF1LOJn7PzwxnapAde3U47bHzSzMAvutnZZA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794602799;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:Message-Id:
-	 In-Reply-To:References:Subject:From:To:Cc:Date;
-	bh=mvDC8AgZ3N1caSO2w8AjVA+n1IhC5yWLMz1RCK3jyqY=;
-	b=3tU+WVHxlvCysKAtqazHNC+8y7+TC2pLtF76OEMaNXYwY8tyxYRfNgdPLyFN9MeubfH8
-	 A8DT/kr799O/NsBV9YSHMZeHEfBqje+WPPpvEgs+UGa3+JWBc9xh/7rA1I7dprgS7LSPM
-	 lmiKyAB306HhXLhvuA+y4mnLw3wkAbBZggSmZbsacclhseTRQZpZ70NR9Kx8nW5RcXnuq
-	 zRqbGyRHRsn/3BoRSxPi+RUaaFQMJB4fG52NSMf41sxM+qJ5ltTZvmf7mSzShQ/AsNEBD
-	 cspOJXwi1awiVHDsUVF7VaS/v3d18Sn+FizUSewSjs5BdbPAJn3vpaSfR/qmDEO0DDQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794602915;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=/Ktn3E20uyErc4L/7IYjC7izDZZdI2uwat4zTaX+wOI=;
+	b=pvzkJfBuo4J6uBtB0Q69EvGH0mrbLWSchdp2vfM6xXszu9DYhWEHaQAL0nPCqhXeiu8O
+	 7FYEhcAWUvDXq1epWXeU9l4UNrcKWhkl2UtnYQL2rTPeHxYIf3sIJElV8GBbaNO57taiM
+	 OZ2N1FlARgX5hus9An0ipOfFmrvPu0T4vjR3/e7Dd//DPpnOeGXnY3XjXsLfC+YPECUmi
+	 pilbT70Y4v17QEedGa8P5k/s7pYQDf+xzZoikjq3xCS+NkFJwMTqVlAkUCBXXdo0UjfZZ
+	 OIEy5hzwbAkiMybQRbBKRNYRfHK9qxeXLeZFk13tC+8y1EqjJnm4qAXSdmOB1X2nJVQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j0q+0SFk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fPpm7z8e;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B32C606A337;
-	Fri, 13 Nov 2026 20:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0840F606A33A;
+	Fri, 13 Nov 2026 20:48:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0840F606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j0q+0SFk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CD91F000C8;
-	Fri, 13 Nov 2026 20:46:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794602798;
-	bh=mvDC8AgZ3N1caSO2w8AjVA+n1IhC5yWLMz1RCK3jyqY=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=j0q+0SFkiBXQSraN4EqvJBROKR2mcquGuAPCbOw0DgeacG6PMuxZawuosKEih7CED
-	 QgYF0XyOo7iFI+scNPKIIt6n8Afo9cykJo9eomLUGMFqoA0xLfxj/T5iF7VrbnIVR+
-	 sSLp4D0Uz6whxGQcMJb95LXEe2yzgI/nIXooRk/GvHoCrpV38terTMDZ8kVLNjSxlZ
-	 GKdZkpybhNC/aFTkS8vjFyZUpVLs+ik0tHxJ7BbgOGLVhJIunDkfuPzEJow1Ts0qxJ
-	 OPh92ofxKEjSzJlTF+9roDgYqWIeuOEwDq0yQS9Buw2EYscKBOrrGQ957LKmjo/+nW
-	 cInVamCDKEASw==
-Content-Type: multipart/mixed; boundary="===============6062532438743464253=="
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=fPpm7z8e
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=/Ktn3E20uyErc4L/7IYjC7izDZZdI2uwat4zTaX+wOI=; b=fPpm7z8eZEPGwBxfGOC2TEjOnF
+	kA8xLUy/kTF7tMOzsMFXeDU/1hPQ79YR5NBN+RwZgm3KJDbzOSloDeqwYcyPMHU+FU+iE4o69CdQk
+	/I9Oqq6V1WsHm4DQNvubF5r8cNHvGFK9EQvfyvxSuhz87pUfglPSuD1G6HzFeNInUfRY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xRyCB-00GMVK-MP; Fri, 13 Nov 2026 21:48:27 +0100
+Date: Fri, 13 Nov 2026 21:48:27 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vasilij Strassheim <v.strassheim@linutronix.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Eric Dumazet <edumazet@kernel.org>, Lee Jones <lee@kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, mfd@lists.linux.dev,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Benedikt Spranger <b.spranger@linutronix.de>
+Subject: Re: [PATCH net-next v4 4/8] dt-bindings: mfd: Add SoC-e SWIP parent
+Message-ID: <e4417d39-390d-4ece-bb2d-5f1745185d37@lunn.ch>
+References: <20261105-devel-vstrassheim-soce-dsa-ml-v4-0-02f3cde2afa1@linutronix.de>
+ <20261105-devel-vstrassheim-soce-dsa-ml-v4-4-02f3cde2afa1@linutronix.de>
+ <20261106-judicious-penguin-of-enhancement-b28c8b@quoll>
+ <f5c7c9901aca84f0b814e5b6c153db84af826dd7.camel@linutronix.de>
+ <cc35b2127b04772f05948ac51c8faa5ef07da0b0.camel@linutronix.de>
+ <20261110192118.GA1412882-robh@kernel.org>
+ <5a6183e3480a0d910e275acf591e2db8700da827.camel@linutronix.de>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -49,87 +80,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <651acc6e21aae9067dd3b8ccce4aa38da032b57324836cc75a1fbaa959e2ef10@mail.kernel.org>
-In-Reply-To: <20261113-cbpf-ind-nospec-v1-bpf-v1-1-764ac4c14573@nvidia.com>
-References: <20261113-cbpf-ind-nospec-v1-bpf-v1-1-764ac4c14573@nvidia.com>
-Subject: Re: [PATCH bpf] bpf: mask speculative out-of-bounds skb helper loads
-From: bot+bpf-ci@kernel.org
-To: datrujillo@nvidia.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,john.fastabend@gmail.com,sdf@fomichev.me,davem@davemloft.net,edumazet@kernel.org,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org
-Cc: bpf@vger.kernel.org,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,datrujillo@nvidia.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Fri, 13 Nov 2026 20:46:36 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5a6183e3480a0d910e275acf591e2db8700da827.camel@linutronix.de>
 
---===============6062532438743464253==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> > Given the MDIO bus and mux registers are adjacent, I don't know that 
+> > putting the mux into its own node and driver really buys you anything. 
+> > Can't your MDIO driver handle the muxing directly? mdio-mux-mmioreg was 
+> > created for when you have mux registers in some completely unrelated 
+> > block.
+> > 
+> 
+> What it buys me is less custom code to maintain for bus selection and
+> selector-value validation.
+> 
+> The MDIO controller and mux were combined in a previous version.
+> Following Andrew's suggestion [1], I moved the controller into its own
+> driver and stacked mdio-mux-mmioreg on top of it.
+> Sure, the selector is part of the same MDIO control register. But the
+> generic driver already provides the masked register update and
+> selector-value checks. My preference is to keep the current approach
+> to reuse existing code, even if it requires some integration and
+> documentation efforts.
 
-> bpf: mask speculative out-of-bounds skb helper loads
+Since you have both implementations. Did the lines of code go down
+when you reused the existing mux?
 
-TL;DR: The nospec masking may be incomplete: inline classic BPF ABS/MSH loads
-from convert_bpf_ld_abs() on efficient-unaligned-access architectures bypass
-the helpers, so a short packet could still transiently read out of bounds.
+> The IP core can also include an I2C master for accessing external
+> devices as a synthesis option.
 
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
+SFP cage being the obvious thing.
 
-[ ... ]
+It will need to be a Linux I2C master in order that phylink can use
+it. And i would not be too surprised if the existing I2C drivers can
+drive it, it will be licensed IP. So an MFD will make it easier to
+instantiate.
 
-> +static __always_inline const void *
-> +bpf_skb_load_nospec(const struct sk_buff *skb, const void *data,
-> +		    int headlen, int offset, int len)
-> +{
-
-[ ... ]
-
-> +	/* Out-of-bounds transient offsets select NULL as the load address. */
-> +	return (const void *)(((unsigned long)data + (long)offset) & mask);
-> +}
-> +
->  BPF_CALL_4(bpf_skb_load_helper_8, const struct sk_buff *, skb, const void *,
->  	   data, int, headlen, int, offset)
->  {
-
-[ ... ]
-
->  	if (headlen - offset >= len)
-> -		return *(u8 *)(data + offset);
-> +		return *(const u8 *)bpf_skb_load_nospec(skb, data, headlen,
-> +							  offset, len);
-
-This isn't a bug in the hunk itself, but is the mitigation complete?
-
-On architectures with HAVE_EFFICIENT_UNALIGNED_ACCESS, a classic
-BPF_LD|BPF_ABS load with k >= 0, and BPF_LDX|BPF_MSH|BPF_B, do not reach
-these helpers.  convert_bpf_ld_abs() emits an inline check and load
-instead:
-
-    TMP = H - k;
-    if (TMP s< size) goto helper;
-    A = *(size *)(D + k);   /* BPF_REG_D == cached skb->data */
-
-This is the same bounds-check-then-load pattern described in the commit
-message, and nothing masks it.  An unprivileged SO_ATTACH_FILTER program
-chooses k, and packet size controls the linear length.  After training the
-branch with long packets, a short packet could transiently load from
-skb->data + k past the linear area.  The value could then go through
-BPF_LSH/BPF_TAX into a BPF_IND load, which reaches
-bpf_skb_load_helper_*() and passes the new mask because the shifted index
-is in range.
-
-The commit message says "For indirect loads, packet data can determine the
-offset", yet the patch also masks ABS loads that go through the helpers.
-
-Should convert_bpf_ld_abs() get the same treatment (for example, always
-calling the helpers, or masking D + k in the emitted code), or should the
-changelog explain why constant-offset loads are out of scope?
-
-[ ... ]
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/43500835329
---===============6062532438743464253==--
+	Andrew
