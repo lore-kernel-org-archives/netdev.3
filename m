@@ -1,63 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794532377;
-	b=f2OeUdaCP3nb2MyhrotDQkGu/8F+8F2AAEWpWzKUfiJSJmKn659IEBhDFLHdgCW4IVpy
-	 92CZ4gDf/ihs5MUAPCrGZo/VxFjvrmQRXMliL8fUR8w76ROjXQI1DM3+GgodcmoVAAI1j
-	 n7xc7JYFDcfWAt/QMQgQMHciUp1qtJL/MQU7in2OwCzU8p6DNlJRBIjJxC2Bu2WjeGrxq
-	 exeelPL59wYgbKvIjJz9BJ+J/zRNp/Lp3EUUUR75CtgMWi+KZGwF1pYcMDDPJygBjvHO5
-	 VV8JvKvEvVfwjmebzxYIaBpQ4tprDggJF6NhsmJ2aKLq05bZ+KKSBNwJf0T2OAMAPsg==
+	t=1794532499;
+	b=ycUE3pccM1f0URjSXvxjUHsMNgJ/4iwadavAodOu81HWpVBa+hGloUrs2zwPxPRDbjBQ
+	 EuDbIeTkfYrREzz57K8OllHyj4I2rLwbGKs9vxrcrQXv6WDXuu5TXIO0k0c30DjXzuxI8
+	 4ugenR4RWXbI1NTKs5zXuU01zOhx85wnhjImzgbCUVnTcp1vZzuC4EiQpBPpiImurI0da
+	 AI5Dl8HPd41HqqkM49m9Jwbsn8j9SftYrWfpwz07BDtBc/2yo2eJRRfJW6tSKjfRp35LT
+	 RovTEE8fZ4tfeK1+frFN8UNP2/28iSkDK6zjgOURr/TfShhCzsMP18rhTZe6m2MwyFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794532377;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=QRKjoaIFdZcdNI6xhQFS3ddkteDcVtqc9gdnFl/fkT8=;
-	b=GFCHWPU2GBpJNRc4n0peOGiVMrihDofG1C3gABsktNwI/+wd7uzZ9qOWJY7WR3Ql71CT
-	 o2u5ZVJ+mxOY6bRJuaAKscj9mgd/NOucXiRwmgdYHOwrW3NL3l6Iu29MS+w/HKr5fiv+a
-	 4yxYLtrDy30SEgV7PDBQostp32K9F3med+7INvCpIEn2DjjyCVRz03FyzkbrGWvTAaGmD
-	 ZQiC5ramoPEob65c/qeUcSEu2JBFJnIxLD7H/gOfwpK+0fog93sfQSW5O/VzkNWjz46Bk
-	 gp91wLHopqZhriFzq+xz5K0XBTztRKVXvAtEft/9sCXtBg/WQ9oZNrqwxGr1+fzGWOQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794532499;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
+	bh=v41bCtFzAN8QCeZS7l5n270HMrE/5hpeD/4liMHjCLc=;
+	b=eSBxkTzSi7wK6NGipg5OgELxz3Lg/36CjdVT9g5B6iBCIygJFFQSutS9ZciCbxQxcLvG
+	 tUW2KYbnqKbvr9tZSaz5OQrB4xfHSSlba4Ek7L9K/0zStoCcARrbnw2L4pYiD77JX+g54
+	 rDhdiFlV2bVmK5FHfSC4YLz5VC0PmOEbxuG8+AvWUOzDvqye07lmkQ4WKDqBDn0O2m7lq
+	 NPr9tfuJ6CbpR94+BgM/J8/cBc/gS4MpOAnX9qVdNSp6zurC035baAHfhwLIydLcBdJzt
+	 p+ZDuMjtiyT0Nli2W7glhUOG3EOIIV4XscjNr0Btahlr76Ecy4KHsUV6SHIB0xgkJZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TZYHFhah;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=netfilter.org;
+	spf=pass smtp.mailfrom=netfilter.org;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Bib7dVBb;
+	arc=none smtp.remote-ip=217.70.190.124
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F06606A321
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E7A606A32D;
+	Fri, 13 Nov 2026 01:14:59 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 57E7A606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TZYHFhah
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE071F000C4;
-	Fri, 13 Nov 2026 01:12:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794532377;
-	bh=QRKjoaIFdZcdNI6xhQFS3ddkteDcVtqc9gdnFl/fkT8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TZYHFhahqmElA5MW2pQ6ZQ2qOg+lf/IYVwyL/n5aQ2eWzMT7TAk4ouf7Ae8UIhxuQ
-	 QEGndXlwnASTEI2oZaUtLpqaV0JwJbOmuRIymQ79hZWtGrEAmLIJZekM2klU6G/9Hk
-	 Uephg7ESa4Onh+knber4yDnnIjiJujkQM8DotLkcJ4yHqIjt5GsjKwsgSiKUmp/LkP
-	 ve1Qtj4aXhGwaVXuFENVPJ02AZha19GaR/0kJRy70R57y4eTeaAeVbaQaNHRxaPJti
-	 2HFRvE9I+/CMRerPV5TkcUnEghpH6LKTmsLS131JepVhxJFcLF8hi66YYsQSK/HsJm
-	 haqC+gSoKk+kQ==
-From: netdev-bot+sinfo@kernel.org
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- Ivy Lopez <skunkolee@gmail.com>, dima.ruinskiy@intel.com,
- luoxuanqiang@kylinos.cn, nsvatoslav515@gmail.com,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Moriya Kadosh <moriyax.kadosh@intel.com>
-Subject: Re: [PATCH net 1/3] e1000e: fix incorrect modified flag check in
- e1000_read_nvm_spt()
-Date: Fri, 13 Nov 2026 01:12:55 +0000
-Message-ID: <179453237593.2168702.4296888375202263590@kernel.org>
-In-Reply-To: <20261113005823.130021-2-anthony.l.nguyen@intel.com>
-References: <20261113005823.130021-1-anthony.l.nguyen@intel.com>
- <20261113005823.130021-2-anthony.l.nguyen@intel.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=Bib7dVBb
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1794532497;
+	bh=v41bCtFzAN8QCeZS7l5n270HMrE/5hpeD/4liMHjCLc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Bib7dVBbtrdTbVqf5l5iCnBHemKa//P/geKMjijFPdMaN9a0ar4FIo2XjxnyKGVDw
+	 ux4ePkK3OEo98ZLT1Ff/+9ouQrLauBqwlBVctH44AyWKhINfVT+e/ABPFdp7s9S3yH
+	 IQK3nir2sZNOZPC2s5fJ1TEevVzxHJiAuQLG2kCHC6uu+LUoTbBMgYXy2sqZyADvfF
+	 7V6Q49QEJkL99G+ig/3hYT4HiKYHZy9sZhbECWniRdu7WWmLJ28illsIEOWGLfraEc
+	 upV8gTgme8cCxg/K3YSWt4aSpLLbo1ydMuSeH4q0+ze1jh6aCvJ+yuTr+RWUPumDJ/
+	 IIfToUeOBOCCw==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id E2B286005B;
+	Fri, 13 Nov 2026 02:14:56 +0100 (CET)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net 01/15] ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6
+Date: Fri, 13 Nov 2026 02:14:33 +0100
+Message-ID: <20261113011447.2357709-2-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261113011447.2357709-1-pablo@netfilter.org>
+References: <20261113011447.2357709-1-pablo@netfilter.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,29 +71,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+From: Axel Mierczuk <axel.mierczuk@1password.com>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+ipv6_find_hdr() does not set the header offset for non-first
+fragments, so an ICMPv6 error embedding such an ESP fragment leaves
+ip_vs_fill_iph_skb_icmp() with len == off. The NAT paths size
+skb_ensure_writable() from len, and ip_vs_nat_icmp_v6() then writes
+the embedded addresses after the validated area.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Include the embedded IP header in ciph.len at both ICMPv6 call
+sites when parsing stops at a non-first fragment. ESP lookup does
+not require a transport header. Non-first TCP, UDP and SCTP fragments
+bypass IPVS ICMP handling before connection lookup.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by LLM and not proven at runtime). If it was triggered
-   please include the symptoms, like the stack trace or kernel messages.
+This fix does not depend on patch 2. Stable kernels without commit
+342e24a339b9 ("ipvs: do not mangle ICMP replies for non-first fragments")
+also need that commit to handle incoming ICMPv6 errors quoting
+non-first ESP fragments.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Fixes: 63dca2c0b0e7 ("ipvs: Fix faulty IPv6 extension header handling in IPVS")
+Cc: stable@vger.kernel.org
+Suggested-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Axel Mierczuk <axel.mierczuk@1password.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/netfilter/ipvs/ip_vs_core.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+index 8a3c880fdb26..76213159404f 100644
+--- a/net/netfilter/ipvs/ip_vs_core.c
++++ b/net/netfilter/ipvs/ip_vs_core.c
+@@ -1206,6 +1206,13 @@ static int ip_vs_out_icmp_v6(struct netns_ipvs *ipvs, struct sk_buff *skb,
+ 				     true, &ciph))
+ 		return NF_ACCEPT; /* The packet looks wrong, ignore */
+ 
++	/* ipv6_find_hdr() does not include the embedded header for
++	 * non-first fragments, add it so that ESP can pass and the
++	 * NAT writable checks cover the rewritten addresses
++	 */
++	if (ciph.len == ciph.off)
++		ciph.len += sizeof(struct ipv6hdr);
++
+ 	pp = ip_vs_proto_get(ciph.protocol);
+ 	if (!pp)
+ 		return NF_ACCEPT;
+@@ -2036,6 +2043,13 @@ static int ip_vs_in_icmp_v6(struct netns_ipvs *ipvs, struct sk_buff *skb,
+ 	if (!ip_vs_fill_iph_skb_icmp(AF_INET6, skb, offset, true, &ciph))
+ 		return NF_ACCEPT;
+ 
++	/* ipv6_find_hdr() does not include the embedded header for
++	 * non-first fragments, add it so that ESP can pass and the
++	 * NAT writable checks cover the rewritten addresses
++	 */
++	if (ciph.len == ciph.off)
++		ciph.len += sizeof(struct ipv6hdr);
++
+ 	pd = ip_vs_proto_data_get(ipvs, ciph.protocol);
+ 	if (!pd)
+ 		return NF_ACCEPT;
+-- 
+2.47.3
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
