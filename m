@@ -1,107 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794613848;
-	b=Xe1SQaLdrvNSAburDZ0N4NkqV2xdCFKHGfCVwfTBPg7t+xNBi6Psjgx7ooWARHldakLF
-	 QLRTsnjqlCcvsD6fXpzn/o/Itde/06xk45YSP+2pjdGyWBWUNsrRC3RpLYKenMj7oP+Hw
-	 II1D8Pv+ksmg7nbU5vZ+h4sbMpCycAYJ9/XQSEGvXPTA8Mb/j9RzJwCNGCGt2CPdlYSZk
-	 pspNBKYgqm6VFI4YyD8gY04y5aZaFCMknFLDKz69FcBhmjq/GdpgjzoLs7EmDFkJ4nz2H
-	 JeJUyb2R5MpEXC+vECVFoab+PzR29OoolSTiQ1HniZQt/eTLQTwLEjLC+T1wna/5tIg==
+	t=1794613997;
+	b=FqDpfsGBUcDhtue7QWI50vXUTZK8FZNTKsznAaLNlNdWmx+q9Sy1JyY88bIoarLRod9e
+	 2yMauVnWGv9O3Nud3kHZdpuQOo6RSvYl/fqpZzxpVlMBCSmX1PZ976fnFy9NMKNC4vY84
+	 yNEiBC9NOKtHjAuE4ZzLVJH4GOo5i/k42DyJE5QZVXiN/ryMcK8OGGl1/FpjCdRF6mF1G
+	 LtmohoUa25Gt5SqHlTFxxzkZjyYP/k338djuB9Z7Z3EluLjSITLktt0gEck6qCzt3J9nP
+	 YDiysX31Ya8qQjsngn3ethR4TVifKKN+8+bwuCVZMViX3zbKxt47yaul/OYjMPijccg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794613848;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Content-Type:Date:Message-Id:Subject:From:To:Cc:In-Reply-To:
-	 References:Content-Transfer-Encoding:MIME-Version;
-	bh=aW4OUjIIQjUPFcHTtnWclyPPg4R7VFoUgK4imjGVz3A=;
-	b=zKLmd6cXUgrlTE4UPKCDD3IvCvK7cAui3o4WIpapNFEdMZEb6jBNrrSpyu4Vl8gWXjn+
-	 DzHYJgQ1/g55FM3XmYvevIARMuvqU4vxMitb8lwH9IGRZm/d071ZcWJjkV+RBtAD0skj7
-	 hP4Vr/WHNrsKtZaj7OZW2lQmTWzjhV8baOt8WCmqZpBu2C/wq5YuDn+MYiAbI/URI8TWe
-	 1nElldXfjkUubPg/bdyAbrsXF1Sz/rKadWla1Y5LelzmozP7/DaTqdhmyTJ/UHXYGedZS
-	 dP4sH0iyCZivzQESasLIX72yCv1SefF/Zcf0vGk11MJjF6YeewGRwU0Uygyu7MtAxsg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794613997;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=h/mLbiKADvGR7z5YM9SFJJjqhyHQGjb51zVpQkm0VDw=;
+	b=DfLLO7QOL1325tGa7sRoDBogb5xwwFgj2nx+FrVdH2LHPQyx5f7hg+fT1n6ntPxEhFC7
+	 F4p/Xw80G4CSNoEKKJyc/E+Gx4K2fgi5/NRVepXd4sPOrw8njEHk0K283jqKu7SQf/O3d
+	 AyS/ZhESBPNq51L2GuqzvsgpC1/Iv2O2iIDuEQNaVqLu8haEwjum2ZNANnkX+AbI8gbhO
+	 PU0s5tpDAjpiIOfsLnkk5Lt1jY0Rgh10zVRh++biVp234mBRqwUiW5XbR9plq/p8ava4Z
+	 RURB8+eHfiSmeTOzLP8oGuykbvGSaNtTzC1xtCmrIV9P+/sDZ5PaLqMsDrA5raGZcCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v2faQj2s;
-	arc=none smtp.remote-ip=209.85.216.50
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EgQcoHvG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7976D606A884
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:50:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7976D606A884
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DDA606A33B;
+	Fri, 13 Nov 2026 23:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v2faQj2s
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3b08a162d4bso806755a91.3
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 15:50:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794613848; x=1795218648; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:cc:to
-         :from:subject:message-id:date:content-type:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aW4OUjIIQjUPFcHTtnWclyPPg4R7VFoUgK4imjGVz3A=;
-        b=v2faQj2sHjPThklo3kvSAsdztwwUVuRSFp3BgLG0TbuqHqTjQ0SRFZfLGVnHzRdt4h
-         BPFLguLiU6iNuxLrBySq2qMcoIL3vedz6F9MaXkfKvqUDFhpuaNBtgnmkHiFN/1GspGh
-         umudzPDvpiOKqZHDOz3xtaZuVQOO4OQspjSacvFJFWn5Vi5TqLdJZQRqwf36D8FOzL8Z
-         JKLL6pd7Z1vDlXZYPL0d4CYDZ7Ev5uVq/MEIJfj5uYrgkG1M9zvh2KIFJ04OGhAwgJJj
-         vFxiuvwsWIbcMUERQhKmZu2sg78xA3dM76/kDq8MFXa0ZnoAoeGo8sosWedpCZzi4SeW
-         HQNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794613848; x=1795218648;
-        h=mime-version:content-transfer-encoding:references:in-reply-to:cc:to
-         :from:subject:message-id:date:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=aW4OUjIIQjUPFcHTtnWclyPPg4R7VFoUgK4imjGVz3A=;
-        b=SQWnNacGLfVO4/9yI7n849OxVxxQe05Xc/J2mt4T+w4Q0wWrm6somf6h9AXdf6j93/
-         OrlZBOcFC5ojoYqcknah3CVZzedx0GXQWNbVfoB8fl8dCC+GlNwbD7CVX0RKV3Y+HexD
-         ZfxlcCF4Q3l6qBqxx9SCSmL1YdhIT7oK7gl/QhgvGKetivtrLCSqvzTuft3jVrZqOqwf
-         4OfvatEBk79DYbubHRP6L1kdVr3XcqyEex34/gj+I6JAoXPNTiGILdewHO0ofGij2kdR
-         HPp8ZJuof6cBhNIqv46ZSnWNRjBSFEgyDaz80bmUqBkR4v4S5h7w/GDEfOmpocHK7rA4
-         AnZA==
-X-Forwarded-Encrypted: i=1; AL+hErHAT27370/Hu6Eimiz8zXSj7zy/FON2iFgvlO0RtHsBus1UUu+7yraONXYXzP3DrPJ7Yj3/R60=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/tdJNzPMqdEu0u2xZhYUND9GLQco2vzKhHyBoe9H3I2haexkcf
-	CBdRFw3LCTk8fCISzK02mw2t2sjuq+7Q7vfuoGBTsZt1EmRktgWFs9gg
-X-Gm-Gg: AYBFou3/3iXvMBTzmb3a/JWsiy6gNvEqex4mDGW9WJwsxDVadkI9YR8re4GgahRqive
-	7qDmBhnefepps2L73rAYa7cum5dFphyK3hiqvdDcqQK9F2+AcQ0dkIc/xgaWcmWiFV8zdVqYbpy
-	IPFvyHeawvTXT02AIXuWIv0SVQQlmmsuX5o4Ja5qCde7tRtO8BgvGBqQCxz9EAYlUP6elWoFD9B
-	qCGxtkRavPBeHg7fb8gfv9j0/GlUsQu0DfYWkAT5w/pSk4LPaga2WU/UxIocsnkvl4R7Wr75ua/
-	h6lh+Ec1S09LXdr3PxNMkZD1ZLVdfEnitJox4pTv8gWtfKBVRzGqFx/xpQbm+fxEI4TiQN1Qwvk
-	r6fHq3oCWD9p5cHhrv87Ob7haGhaDEUQetxx8gyo3JNjsNUKFUYuocDirrWvAM5PLB0p2eLfhpV
-	Sls85aC5+UydwOle+dApp+W5TW+u0MUW+XRCqgHxl5zV0oOWpgFyIS9SuiXM1D2PVK3wlEfs3ru
-	gCbS/0IohhDk2jHdva/SKy5JNZxDqIfhHN443yHADUjzkpLx/5rKNAALHii5fcRs49Dp3qK4Tzc
-	fxgQdTEWR6Fx1HKz6KD0q7+55vVcxqgjVEB5QF2KdukzIFmgYTf8/IuZu7CBqkdNPMZfxWBRzc9
-	QzQo3Mq+I7NLaDs6odmO1NYkLnsIeY5VXARw=
-X-Received: by 2002:a17:90b:2f0c:b0:3b0:8947:fad2 with SMTP id 98e67ed59e1d1-3b1b0ba0a4emr3788699a91.53.1794613847830;
-        Fri, 13 Nov 2026 15:50:47 -0800 (PST)
-Received: from localhost ([153.61.198.241])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197c6c9c5sm11507001a91.1.2026.11.13.15.50.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2026 15:50:46 -0800 (PST)
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Nov 2026 23:50:45 +0000
-Message-Id: <DMUHIJ5FC8EA.2XFM7TJ6AH0YB@gmail.com>
-Subject: Re: [PATCH bpf] bpf: mask speculative out-of-bounds skb helper
- loads
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: <datrujillo@nvidia.com>, =?utf-8?q?Dani=C3=ABl_Trujillo_via_B4_Relay?=
- <devnull+datrujillo.nvidia.com@kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"
- <memxor@gmail.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
- <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
- <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "Ihor
- Solodrai" <ihor.solodrai@linux.dev>, "John Fastabend"
- <john.fastabend@gmail.com>, "Stanislav Fomichev" <sdf@fomichev.me>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>
-Cc: <bpf@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-In-Reply-To: <20261113-cbpf-ind-nospec-v1-bpf-v1-1-764ac4c14573@nvidia.com>
-References: <20261113-cbpf-ind-nospec-v1-bpf-v1-1-764ac4c14573@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EgQcoHvG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E171F000C4;
+	Fri, 13 Nov 2026 23:53:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794613997;
+	bh=h/mLbiKADvGR7z5YM9SFJJjqhyHQGjb51zVpQkm0VDw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=EgQcoHvGnYl4z6SVsU2Y2s8g+Rde/TXX4R5fY4/GAKBZvQsswzfxy0r7s/MtVbBFA
+	 aQOSVi2OT5NPVlP7fZ1h/qprjgklwPmoCEF08+BkfKdQvp4AWjgRVHhVCPNPvnbLAT
+	 rQ1kSzoFxbl5XylTsBxO8DKODiz4A051+IbvJN6KEHP8SLBqFhljIQRhUaoKQ50Esr
+	 yuhM3sNGYkg7IurcRmXtkDPnB/GWk0qOvmAyR4xHsWUWw0BGl2ue0vpedMButHPxOb
+	 1bcq0n5pQoWzSp8MlaMTya8aEsSw+RC0tm05Xap7rX4mMXUFckARBHpu7Ly6yfgO0t
+	 kbSIifCcoea+Q==
+Subject:
+ Re: [PATCH net-next 3/5] net: record XDP programs propagated to lower devices
+From: netdev-bot+sashiko@kernel.org
+To: kuba@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, jv@jvosburgh.net,
+ haiyangz@microsoft.com, ast@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, bpf@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+Date: Fri, 13 Nov 2026 23:53:16 +0000
+Message-ID: <179461399614.2199510.14192155072084970014@kernel.org>
+In-Reply-To: <20261112235027.4072149-4-kuba@kernel.org>
+References: <20261112235027.4072149-4-kuba@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -113,18 +66,187 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-On Fri, Nov 13, 2026 at 12:15 PM Daniël Trujillo via B4 Relay <devnull+datrujillo.nvidia.com@kernel.org> wrote:
-> Mask the load address when the converted offset falls outside the
-> permitted range. This removed the leakage in the described setup.
-> Derive the lower bound from the network and MAC header
-> positions. An out-of-bounds transient offset dereferences NULL instead
-> of a potential secret.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-I suspect you don't have a reproducer and it's all theoretical.
-Because if you had one you would have seen that your patch does nothing.
-convert_bpf_ld_abs() inlines the LD_ABS fast
-path with its own bounds check.
+Critical: 0 · High: 0 · Medium: 1 · Low: 3
 
-wont-fix.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-pw-bot: cr
+- [Medium] netvsc_register_vf() (drivers/net/hyperv/netvsc_drv.c) calls
+  netvsc_vf_setxdp(vf_netdev, prog) before netvsc_vf_join() has created…
+- [Low] The commit fixes a user-visible bug but has no Fixes: tag.
+- [Low] dev_xdp_attach() in net/core/dev.c now checks dev->xdp_from_upper
+  before the existing 'don't allow if an upper device already has a…
+- [Low] The comment on dev_xdp_has_own_prog() in net/core/dev.c says it
+  answers 'was it installed directly on the device rather than…
+
+--
+
+net: record XDP programs propagated to lower devices
+
+This commit records XDP programs that an upper device propagates to its
+lowers in the lower's xdp_state[], and marks them with a new
+xdp_from_upper flag. It adds dev_xdp_has_own_prog() so bonding and netvsc
+can tell a lower's own program apart from theirs, and refuses attach on a
+lower while the flag is set. The flag is cleared when the master unlinks.
+
+>   ethtool -G $slave tcp-data-split on
+>
+> is refused by dev_xdp_sb_prog_count() for a device running a
+> single-buffer XDP program, but not for a bond slave running the bond's,
+> even though netif_xdp_propagate() would have refused to install that
+> same program had header-data split been on already. Binding a memory
+> provider has the same asymmetry.
+
+[Severity: Low]
+This describes a user-visible bug, but there is no Fixes: tag. The
+install-direction checks in netif_xdp_propagate() came from these
+commits, and neither of them covered the reverse direction:
+
+  2d46e481a9af ("net: disallow setup single buffer XDP when tcp-data-split is enabled.")
+  170aafe35cb9 ("netdev: support binding dma-buf to netdevice")
+
+Should the commit carry Fixes: tags for them?
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 69ee4342f43ee..3a520c798d4a8 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -9326,6 +9326,9 @@ static void __netdev_upper_dev_unlink(struct net_device *dev,
+>  
+>  	__netdev_adjacent_dev_unlink_neighbour(dev, upper_dev);
+>  
+> +	if (changeupper_info.master)
+> +		dev->xdp_from_upper = 0;
+> +
+>  	call_netdevice_notifiers_info(NETDEV_CHANGEUPPER,
+>  				      &changeupper_info.info);
+>  
+
+[Severity: Medium]
+The commit message says that clearing the flag here lets the device own a
+leftover program "rather than leave it with nobody allowed to remove it".
+Can a lower end up with xdp_from_upper set when no master link was ever
+created, so that this code never runs?
+
+netvsc_register_vf() propagates netvsc's program before it joins:
+
+    ret = netvsc_vf_setxdp(vf_netdev, prog);
+    ...
+    if (netvsc_vf_join(vf_netdev, ndev, context) != 0) {
+        ret = prog ? netvsc_vf_setxdp(vf_netdev, NULL) : 0;
+        if (ret)
+            netdev_warn(ndev,
+                        "failed to remove XDP program from VF %s: %d\n",
+                        vf_netdev->name, ret);
+        return NOTIFY_DONE;
+    }
+
+The first call stores the program in vf_netdev->xdp_state[XDP_MODE_DRV]
+and sets xdp_from_upper. netvsc_vf_join() can fail in
+netdev_rx_handler_register() or in netdev_master_upper_dev_link(). Both
+failure paths return without a master link.
+
+If the driver's ndo_bpf() then refuses the NULL program,
+netif_xdp_propagate() returns before it touches xdp_state[] or the flag:
+
+    err = dev->netdev_ops->ndo_bpf(dev, bpf);
+    if (err)
+        return err;
+
+netvsc returns NOTIFY_DONE without storing the VF in
+net_device_ctx->vf_netdev, so it never comes back to this VF. No master
+was linked, so __netdev_upper_dev_unlink() never clears the flag. Only
+dev_xdp_uninstall() at unregister does.
+
+>From then on, every IFLA_XDP set or remove and every BPF link attach on
+the VF hits the new -EBUSY check in dev_xdp_attach(). netvsc's program
+keeps running on the VF. Before this patch xdp_state[] was empty in this
+case, so the user could attach a program and then detach it to clear
+things up.
+
+The only way out seems to be linking the VF to some master and then
+unlinking it. Should the failed-join path, or netif_xdp_propagate(),
+handle this case?
+
+bond_xdp_set() has a smaller version of the same problem. If the unwind
+call fails:
+
+    err_unwind = dev_xdp_propagate(slave_dev, &xdp);
+
+the slave keeps the new program with xdp_from_upper set, while
+bond->xdp_prog has been reset to old_prog. That slave can't be fixed
+directly until it is released from the bond.
+
+> @@ -10561,6 +10564,15 @@ u8 dev_xdp_prog_count(struct net_device *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(dev_xdp_prog_count);
+>  
+> +/* Does the device have an XDP program, and was it installed directly on the
+> + * device rather than propagated down by an upper with netif_xdp_propagate()?
+> + */
+> +bool dev_xdp_has_own_prog(struct net_device *dev)
+> +{
+> +	return dev_xdp_prog_count(dev) && !dev->xdp_from_upper;
+> +}
+> +EXPORT_SYMBOL_GPL(dev_xdp_has_own_prog);
+
+[Severity: Low]
+This isn't a bug, but does this comment still match what the function
+returns? It describes where the program came from. The new kernel-doc in
+include/linux/netdevice.h does too:
+
+    @xdp_from_upper: the program in @xdp_state was installed by an
+        upper device with netif_xdp_propagate(); it belongs to the
+        upper and can't be replaced or removed through this device.
+
+__netdev_upper_dev_unlink() clears xdp_from_upper on any master unlink.
+That includes the case where the upper's NULL propagate failed and
+bonding or netvsc only warned. After that, dev_xdp_has_own_prog() returns
+true for a program that an upper propagated.
+
+Could both comments describe the flag as current ownership, including the
+hand-over on master unlink?
+
+[ ... ]
+
+> @@ -10773,6 +10816,10 @@ static int dev_xdp_attach(struct net_device *dev, struct netlink_ext_ack *extack
+>  	}
+>  
+>  	mode = dev_xdp_mode(dev, flags);
+> +	if (dev->xdp_from_upper) {
+> +		NL_SET_ERR_MSG(extack, "Can't replace an XDP program installed by an upper device");
+> +		return -EBUSY;
+> +	}
+
+[Severity: Low]
+This check now runs before the existing loop that refuses an attach when
+an upper has a program:
+
+    netdev_for_each_upper_dev_rcu(dev, upper, iter) {
+        if (dev_xdp_prog_count(upper) > 0) {
+            NL_SET_ERR_MSG(extack, "Cannot attach when an upper device already has a program");
+            return -EEXIST;
+        }
+    }
+
+For a direct bond slave or a joined netvsc VF, the upper keeps its
+program in its own xdp_state[]. Attach, replace and detach on the lower
+were therefore already refused, with -EEXIST. They now fail with -EBUSY
+and a different extack message.
+
+The commit message says dev_xdp_attach() reads the flag "to keep the
+program from being replaced or removed behind the upper's back". However,
+that protection is only new for nested lowers and for the netvsc window
+before the join.
+
+Is the errno and message change for the common direct-lower case
+intended? If so, could the commit message mention it?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261112235027.4072149-1-kuba%40kernel.org
