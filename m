@@ -1,65 +1,91 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.152
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794552404;
-	b=YHKMuBKK7RJWOHrWsLbe/8NNhPX/E52BhUXj5DyLMCDafV1so5PBAF2uJK4VGgGxjndl
-	 zmHVQKuNTksnyD+JQJ74Jy7uGyYJzXb+88ae88Vebv9m/0HLsQgrWRRh8pnjzkBq/WYp0
-	 gBcxm4fxiCrpRfsC5y1F2XR56u+allGpKdgVi+J6cLeXmJiTUPfMomve2osVEj8n3Bzra
-	 0kF3J7I49OouS14ORNcAJBi14mhx1BQ1g853yFoevamcFohpf4Z7v6E5nBaPPTckoX1mM
-	 +d2RBV6zy5tlbFHf4wXeFs4Q6HWnU+byeAMPjBBrnXnmg/uTaR5ZK0qYrvGY2CAAC3Q==
+	t=1794552746;
+	b=J7BUnQvtsWM4PWfxyb2deyLjfqS7rbvaXWJVJpJ33OkOxZzeTQhzx6iV7AP6tG+ehJ7U
+	 WQy6RgXGpuN4XrKBXPdo/cC3HNjzKHfwnoJgOlceQsaH7+GeDlP+A9PKCos2IvqZesNNt
+	 AdxaKHFtp/0L9TByT3z4RhDblyRasz8a8wvn49o8pEreZ4jrbEztCqSGkifLh5qeUyxnM
+	 lgrFxe8t9eJ//Xo5rEMzEqkB0T6PiHw6MY+RtLOB/RapUc1UwYn4FggVPeyvEFu5Z8KHH
+	 fge2Y/88QJXksPbUdeuvpH3ybI/r0lv2x5s4b2eykQ+ZXgNR9zezGrvxAg/NFaQMdNg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794552404;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=yAgAt0XLovdcBjoYisxQBS4FvH+YQnymMRd0TOGYu4k=;
-	b=xB6ILeHrsErfO8QCFnEtLbGJkIPN+bokO7fW46iEHo2TVSiARxauACsWvqRwo21i/AnX
-	 /eSkdnns+RK0kSk1dlOcvH3J2xllgyB81kgZmTYt72v898piVAKzkaTHT4jO08ytJ6x42
-	 L+2Wsa8eZHSvnY0TBamBcSlTWExsB4kekriM7IaL+9/9QidTGMsd6p9ux5HIejRx0OET/
-	 sgrQ92OGw5vN9jh0E2+tjlhnysFZr0ty7BpL997rcOHuf09B3HtiO8YZhxGEQ/vQ70wGe
-	 QDGBoT4oE/0Cce1a4e4uT05IRMBLWgMGXAwnd84cIvkdExBbi5jUN3JcMPIjcPjt4+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794552746;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:X-ME-Sender:
+	 X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=2XQrnwAhwtkRALyvygGxCMh98jqLHcFie2WnTlzzUsQ=;
+	b=F5m2bgI4xU8xDn4tj5dIMPpAXQ3XbP8DQKqMJLhXTjkdyc1Z+n9kq08822PmbjUMavCs
+	 QQ+97e5eXd9SYLhVLYH0j5n/CmE4FkU9VtQmpS8e+uFBw6e7ehcHSfEy/49jAHAUgS1Ch
+	 cT7PbrHq/WF2g1/RRg37eiFQObfN4t284ldFG+lSC6cawbTQFqCIQ8f1Th8F3hMwgiCg0
+	 Ma/D7lPvR90VqzAuevkatRHqOMvjwBRib9h/K8PuBQPGAHbF/I9+4c8jKrBMQ4KRIOx0w
+	 KcdI/bU8wE4VOiS8wUURvQ9IIeQO19uxU6OaCKBEv99XayV3hw9GEpOw+VcGK0WrlYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="L/9HpUNN";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=idosch.org;
+	spf=none smtp.mailfrom=idosch.org;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=1FL19jss;
+	arc=none smtp.remote-ip=202.12.124.152
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29260606A8BB;
-	Fri, 13 Nov 2026 06:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBAC606A321
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 06:52:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org ABBAC606A321
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L/9HpUNN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97681F000CD;
-	Fri, 13 Nov 2026 06:46:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794552404;
-	bh=yAgAt0XLovdcBjoYisxQBS4FvH+YQnymMRd0TOGYu4k=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=L/9HpUNNbJsQMGSFg1bqdiKxqTzduaVekYN/OyCFiuVef/ENZTPPF2dpDVYT5E/+C
-	 Vd/tyo8LcYRo/ouxC8GKgU8NuFw5scO3oJu6P2tjab7yA2R8ZMj7hfVWpbGxkA1B23
-	 slY8T0URBVjXVsCf4tCISaMKmrwKL3KZyH4LcWu6ie1dPyB7SkKRBkhjuf95TCelT1
-	 bGsJQNsSv52gTaom2IOP9FGGaFH8V9UELPlvf2So8m4GBH667nqJhHMud56Er9tHuK
-	 PRZ5DCdt6Bao9z7x3E3rCCXaUiNQtA82lCv63rmcMx9I8aKZ5IOE91rlSLPCfQiqvq
-	 FDKxkyybAwybw==
-Subject: Re: [PATCH net-next v10 4/4] net: mana: add dynamic HWC queue depth
- with reinit path
-From: netdev-bot+sashiko@kernel.org
-To: weh@linux.microsoft.com
-Cc: longli@kernel.org, kotaranov@microsoft.com, kuba@kernel.org,
- davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
- andrew+netdev@lunn.ch, jgg@ziepe.ca, leon@kernel.org, haiyangz@microsoft.com,
- wei.liu@kernel.org, decui@microsoft.com, shradhagupta@linux.microsoft.com,
- horms@kernel.org, ernis@linux.microsoft.com, stephen@networkplumber.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- gargaditya@linux.microsoft.com, kees+treewide@kernel.org, kees@kernel.org,
- mawasthi@linux.microsoft.com, weh@microsoft.com, edumazet@kernel.org
-Date: Fri, 13 Nov 2026 06:46:42 +0000
-Message-ID: <179455240227.2199510.2666165032389090040@kernel.org>
-In-Reply-To: <aa4e08e8bc9a7139778b11875e41921d2d813712.1794208055.git.weh@linux.microsoft.com>
-References: <aa4e08e8bc9a7139778b11875e41921d2d813712.1794208055.git.weh@linux.microsoft.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=1FL19jss
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 4B4117A026B;
+	Fri, 13 Nov 2026 01:52:24 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Fri, 13 Nov 2026 01:52:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794552744; x=
+	1794639144; bh=2XQrnwAhwtkRALyvygGxCMh98jqLHcFie2WnTlzzUsQ=; b=1
+	FL19jssRHZNAizhNfCcNi8okBbmWImVYi2Byx/6fNLT1QfG6cQr+6bZD7Rw10oce
+	sCujH/9ysbRh4rogYnQprKhfIn8GYj/ffyZW8aEYhosmZX00SzSljw/xgLzQr90u
+	SkCstsw5ViQoLA+K76C2tyis5waCGTEAotGWzkTLxwiTcZwu8byeAQyBmP9LYQqk
+	k4otG45Sr7P8PgmIseafnvZCr0NxkkkghWWo+HjO1ixRWHpvSxhewEIwBzLHP8mm
+	jChPQxnRfkMYccYHySd759Ba/Qh22p0sUPIwh1i1PRPgumyMF2pxwHRteI8PjRJp
+	HNhpEthGHrLnYVKkEW30w==
+X-ME-Sender: <xms:p7P2aug-kjLMVNP5REdRVYI94v9g6-vGf6n4JCOL7lKXcu5MragttQ>
+    <xme:p7P2anNJG92oLB_128YMO14J7jFwWIyq9nkSJDTPOppBkLR6CRW8fxNA5EDyGlrFt
+    6dGDrBFjkKHjdjAR0ZYGWiJu33ZAip-f2d-xULMZTZ7bn1v1J39>
+X-ME-Received: <xmr:p7P2ahpaGqID-9d4_SQvNCwWvg_Rr2eo7qfUbP4UFh8jmpeNz_S-70yI_Y5lkCqzjJEqYUT7WxsJLoaNLL4LS9grGpf8JQ>
+X-ME-Proxy-Cause: dmFkZTGGvy8QNFMUGu3RsKrwE62F6NxJtw/CRFFD1tNzzHGhFoQ6CO5d25P1makStN1j4x
+    wzVzSUdKALwWF4X//CTxL94qTAmtojJpIEhvJ91RzCSgOq42GYuZVEmBFA+XzHRJwjWkIQ
+    8Wkt2CmCYwuCyYbOkuCOoSeNRUR8/s9ZkOzDkeN/cF6QGg2Q3J3vQQB1Q/BN/ZHJSKLXur
+    vrLBkyA/yt8ZdtkAYZhIFqEYPjbgROlTq1uMNyIVyogItoF1q0bR6KEL4p3XRA7HCRausD
+    3R8QGWLkOiW4F+bR3hOKLDunlboXKsTOuxop+lAEETbIslfiPM5tQzbFrANDAxYvYvNjfe
+    vD2fBqPFoNh38lu09iSaQHnsxfuEZ0kTdBG/h8+100eJu2599nNPO3xZWd3qj+SSIUg+cC
+    /s7HxObdiQ54V6H2mzY14n0jNHutxhNMfavufI67+dykxHlwtqhA1P6QGraKFqkRPeJyxZ
+    5dZnwwwXyNcDeyr3kviMtVoB535AZWyaihk8YxaYqBmBE0rkjBKH/dBTaDQ+Aj001H4Zeo
+    vEB8XGtXt3g2qVvGfoAfOqwOrDK+nZVGrN5pK/Y8PnY8Q9BnaMHiXz0H/Xt0wkVXN2h5e7
+    +1Ar/LQMBcJY2BEtvf5ulrJznuW5/eatKlp3myzy6pfSgPRoHVlTCghBLMaA
+X-ME-Proxy: <xmx:p7P2ah4_nLDXI-Q5D6TFLzEnP87WRj1intKnGdH_0cYyI11_iytN0A>
+    <xmx:p7P2angXMr4Rrg1zsR1yqKpSLKHgMLrlD-agF4sCYlBqPfAb70SMdA>
+    <xmx:p7P2av6g7qU6qPP2w-mfO-7DoDmjBM0-ckSDMfAtTbXPITojuF9B8Q>
+    <xmx:p7P2akHbMYl7iRCi0vYYuZ1mnAovDJjP7juwXyCFql4VN8LoRQkZYw>
+    <xmx:qLP2ajJuhTeivhrjuWisOrIDZRf189PaQYE_nq8IW4TGaYYoUX6Kh5aS>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 13 Nov 2026 01:52:22 -0500 (EST)
+Date: Fri, 13 Nov 2026 08:52:20 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: idosch@nvidia.com, netdev@vger.kernel.org, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
+	jv@jvosburgh.net, andrew+netdev@lunn.ch, razor@blackwall.org,
+	aahila@google.com
+Subject: Re: [PATCH net-next 1/2] bonding: 3ad: Receive packets in COLLECTING
+ state
+Message-ID: <20261113065220.GA3517282@shredder>
+References: <20261111171947.2816258-1-idosch@nvidia.com>
+ <179451491706.2199510.1058504888559496420@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -69,249 +95,134 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179451491706.2199510.1058504888559496420@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+tl;dr - I believe the patch is fine as-is.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+On Thu, Nov 12, 2026 at 08:21:57PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 � High: 0 � Medium: 1 � Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The fix clears 'inactive' only when ad_enable_collecting()
+>   runs.
+> - [Low] The patch fixes a real, user-visible bug but has no Fixes: tag.
+> 
+> --
+> 
+> bonding: 3ad: Receive packets in COLLECTING state
+> 
+> With coupled control disabled, an 802.3ad port in COLLECTING state should
+> receive packets, but the RX path only delivers from slaves whose inactive
+> flag is cleared. This patch makes bond_set_slave_rx_enabled_flags() clear
+> slave->inactive in addition to slave->rx_disabled.
+> 
+> > When coupled control is disabled, a port in COLLECTING state is supposed
+> > to receive packets, but it does not. The bond only delivers packets from
+> > slaves whose 'inactive' flag is cleared, whereas
+> > bond_set_slave_rx_enabled_flags() only clears 'rx_disabled'.
+> >
+> > Fix by clearing 'inactive' as well.
+> 
+> [Severity: Low]
+> Should this carry a Fixes: tag?
+> 
+> bond_set_slave_rx_enabled_flags() was added by commit 240fd405528b
+> ("bonding: Add independent control state machine"), and that commit only
+> cleared rx_disabled. The RX gate in bond_should_deliver_exact_match()
+> checks only bond_is_slave_inactive(), so the bug goes back to that commit.
+> 
+> The notes say this targets net-next because it never worked, and that
+> makes sense. A tag would still let stable and distro maintainers link the
+> fix to the original commit:
+> 
+> Fixes: 240fd405528b ("bonding: Add independent control state machine")
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Addressed in the notes. Not a regression and therefore should go via
+net-next and shouldn't be picked up for stable.
 
-- [Medium] The patch turns the PF-reported HWC_INIT_DATA_MAX_REQUEST /
-  HWC_INIT_DATA_MAX_RESPONSE values into enforced per-direction limits.
-- [Medium] The rebuild makes the HWC SQ, RQ and CQ rings larger, but
-  nothing tells the PF the new ring sizes, and nothing checks that it…
-- [Low] Before this patch the PF's QUEUE_DEPTH, MAX_REQUEST and
-  MAX_RESPONSE init reports were read and ignored, so the channel always…
-- [Low] The patch fixes an existing out-of-bounds MMIO bug inside a large
-  feature patch, with no Fixes: tag.
+> 
+> > diff --git a/include/net/bonding.h b/include/net/bonding.h
+> > index 598d56b1bc970..cb89aff437f44 100644
+> > --- a/include/net/bonding.h
+> > +++ b/include/net/bonding.h
+> > @@ -594,6 +594,7 @@ static inline void bond_set_slave_active_flags(struct slave *slave,
+> >  static inline void bond_set_slave_rx_enabled_flags(struct slave *slave,
+> >  					       bool notify)
+> >  {
+> > +	slave->inactive = 0;
+> >  	slave->rx_disabled = 0;
+> >  }
+> 
+> [Severity: Medium]
+> With this change, inactive is only cleared when ad_enable_collecting()
+> runs. Can a COLLECTING port still be left with inactive=1 and
+> rx_disabled=0?
+> 
+> bond_option_all_slaves_active_set() can still set inactive without
+> touching rx_disabled when all_slaves_active goes from 1 to 0:
+> 
+> drivers/net/bonding/bond_options.c:bond_option_all_slaves_active_set() {
+>     ...
+> 	bond_for_each_slave(bond, slave, iter) {
+> 		if (!bond_is_active_slave(slave)) {
+> 			if (newval->value)
+> 				slave->inactive = 0;
+> 			else
+> 				slave->inactive = 1;
+> 		}
+> 	}
+>     ...
+> }
+> 
+> A COLLECTING port matches !bond_is_active_slave(). This is because
+> ad_disable_distributing()->__disable_distributing_port()->
+> bond_set_slave_tx_disabled_flags() left it in BOND_STATE_BACKUP.
+> 
+> The steady-state COLLECTING recheck in ad_mux_machine() only looks at
+> rx_disabled:
+> 
+> drivers/net/bonding/bond_3ad.c:ad_mux_machine() {
+>     ...
+> 					if (aggregator->is_active &&
+> 					    bond_is_slave_rx_disabled(slave)) {
+> 						ad_enable_collecting(port);
+> 						*update_slave_arr = true;
+> 					}
+>     ...
+> }
+> 
+> Since rx_disabled stays 0, the recheck never fires. Until the next mux
+> transition, bond_should_deliver_exact_match() keeps returning true, and
+> every non-LACPDU frame on that port gets RX_HANDLER_EXACT.
+> 
+> The notes list this as known issue 1 and describe COLLECTING as
+> transient. However, the companion selftest ("selftests: bonding: Add a
+> test for 802.3ad with coupled control disabled") keeps a port in
+> COLLECTING indefinitely by clearing the partner's Collecting bit. So a
+> partner that never sets LACP_STATE_COLLECTING would keep the port
+> dropping traffic.
+> 
+> Would it work to also check bond_is_slave_inactive(slave) in the recheck,
+> for example:
+> 
+>     bond_is_slave_rx_disabled(slave) || bond_is_slave_inactive(slave)
+> 
+> That would let the port recover on the next state machine tick.
 
---
-
-net: mana: add dynamic HWC queue depth with reinit path
-
-The HWC is rebuilt at the PF-reported queue depth when that depth is
-between 2 and 128 and both reported message sizes equal the 4096-byte
-bootstrap allocation. If the rebuild fails, the driver falls back to
-fresh bootstrap queues. The reported request and response sizes become
-per-direction limits shared with the GDMA and RDMA request builders, and
-the device-supplied HWC doorbell index is now checked against BAR0.
-
-Link: https://lore.kernel.org/r/20260908035201.402424-5-longli@microsoft.com
-Link: https://lore.kernel.org/r/179196575846.434549.7933818740976196422@kernel.org
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> index 8bc00001d20e5..867f8dd3ea547 100644
-> --- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> +++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-
-[ ... ]
-
-> @@ -246,8 +264,18 @@ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
->  	switch (event->type) {
->  	case GDMA_EQE_HWC_INIT_EQ_ID_DB:
->  		eq_db.as_uint32 = event->details[0];
-> +		if (!mana_gd_is_valid_doorbell(gd->gdma_context,
-> +					       eq_db.doorbell)) {
-> +			dev_err(hwc->dev, "HWC: invalid doorbell %u\n",
-> +				eq_db.doorbell);
-> +			WRITE_ONCE(hwc->hwc_init_error, -EPROTO);
-> +			complete(&hwc->hwc_init_eqe_comp);
-> +			break;
-> +		}
-> +
->  		hwc->cq->gdma_eq->id = eq_db.eq_id;
->  		gd->doorbell = eq_db.doorbell;
-> +		hwc->hwc_init_doorbell = true;
->  		break;
-
-[Severity: Low]
-This isn't a bug in the new code, but this check fixes an existing
-out-of-bounds MMIO write, together with the INVALID_DOORBELL early return
-added to mana_gd_ring_doorbell().
-
-Before this patch, eq_db.doorbell came from the device and was stored
-without any check. mana_gd_ring_doorbell() then wrote to:
-
-    addr = gc->db_page_base + gc->db_page_size * db_index;
-
-for any index the PF reported. If the INIT_EQ_ID_DB event never arrived,
-db_index was INVALID_DOORBELL (UINT_MAX).
-
-The commit message says this "hardens initial setup, which previously
-accepted an unchecked device-supplied index". This fix does not depend on
-the dynamic depth rebuild. Could it go in a separate patch with a Fixes:
-tag, so older kernels can get the check? The doorbell bounds check in
-mana_gd_register_device() covers the same kind of bug.
-
-[ ... ]
-
-> @@ -1175,32 +1256,169 @@ void mana_hwc_free_retained_channel(struct gdma_context *gc)
->  	gc->hwc.gdma_context = NULL;
->  }
->  
-> -static int mana_hwc_create_bootstrap_channel(struct hw_channel_context *hwc)
-> +static int
-> +mana_hwc_validate_report(struct hw_channel_context *hwc,
-> +			 const struct mana_hwc_init_report *report,
-> +			 u32 expected_depth, bool check_depth,
-> +			 bool require_exact_msg_sizes)
-> +{
-> +	if (!report->queue_depth || !report->max_req_msg_size ||
-> +	    !report->max_resp_msg_size) {
-> +		dev_err(hwc->dev,
-> +			"HWC: invalid maxima depth=%u req=%u resp=%u\n",
-> +			report->queue_depth, report->max_req_msg_size,
-> +			report->max_resp_msg_size);
-> +		return -EPROTO;
-> +	}
-
-[Severity: Low]
-Before this patch, the QUEUE_DEPTH, MAX_REQUEST and MAX_RESPONSE init
-reports were read and then ignored. The HWC always came up at depth 1
-with 4096-byte limits.
-
-mana_hwc_prepare_channel() now runs this check on the bootstrap report
-before it decides whether to keep the bootstrap queues.
-mana_hwc_restore_bootstrap() runs the same check on the fallback path.
-
-Can a PF that leaves out any of these HWC_INIT_DATA types, or reports 0,
-still bring up the HWC? It looks like HWC creation now fails with -EPROTO
-even in the depth-1 setup that used to work, with no fallback.
-
-The commit message does not mention this change. If it is intended, could
-the commit message say so? Otherwise, should a missing report fall back
-to the bootstrap values?
-
-> +
-> +	if (require_exact_msg_sizes &&
-
-[ ... ]
-
-> +static int mana_hwc_finish_channel(struct hw_channel_context *hwc,
-> +				   const struct mana_hwc_init_report *report)
-> +{
-> +	int err;
-> +
-> +	/* MAX_REQUEST sizes the RQ; MAX_RESPONSE sizes the SQ. */
-> +	hwc->rx_msg_size_limit = report->max_req_msg_size;
-> +	hwc->tx_msg_size_limit = report->max_resp_msg_size;
-
-[Severity: Medium]
-Which direction does the PF mean by HWC_INIT_DATA_MAX_REQUEST?
-
-Here MAX_REQUEST becomes the RX (response) limit and MAX_RESPONSE becomes
-the TX (request) limit. The request budget in hw_channel.h then uses only
-fields that come from the response side:
-
-    /* Host-to-PF requests are bounded by the negotiated TX limit and SQ stride. */
-    static inline u32
-    mana_hwc_get_max_req_size(const struct hw_channel_context *hwc)
-    {
-    	return min(hwc->tx_msg_size_limit, hwc->max_resp_msg_size);
-    }
-
-So the PF's MAX_REQUEST report never limits host-to-PF requests.
-
-This matches the existing queue sizing in mana_hwc_init_queues(), where
-the RQ stride comes from max_req_msg_size and the SQ stride from
-max_resp_msg_size. Before this patch, though, mana_gd_create_dma_region()
-and mana_ib_gd_create_dma_region() used hwc->max_req_msg_size as the
-request budget. Both constants are 4096 and the PF reports were ignored,
-so the two conventions never disagreed in practice.
-
-That changes now. mana_hwc_prepare_channel() keeps the bootstrap queues
-for depth 1, or for depths above 128, even when MAX_REQUEST !=
-MAX_RESPONSE. This function then installs those reported values as live
-limits.
-
-What if MAX_REQUEST means the largest request the PF accepts?
-mana_hwc_get_msg_index() would then reject valid requests larger than
-MAX_RESPONSE with -EMSGSIZE. Requests larger than the PF's real request
-limit would still be sent. The RDMA CREATE and ADD_PAGES batch sizes
-(max_pgs_create_cmd and max_pgs_add_cmd) would also come from the wrong
-report.
-
-The commit message talks about "directional maxima" and "the effective
-host-to-PF request budget". It does not say that the request budget now
-comes from MAX_RESPONSE. Could the direction be documented with a
-reference to the device specification? Alternatively, could both
-directions be limited by min(MAX_REQUEST, MAX_RESPONSE), with the fields
-renamed to match?
-
-[ ... ]
-
-> +static int mana_hwc_rebuild_channel(struct hw_channel_context *hwc,
-> +				    u16 q_depth,
-> +				    struct mana_hwc_init_report *report)
-> +{
-> +	u32 timeout_ms = mana_hwc_timeout_read(hwc);
-> +	int cleanup_err;
-> +	int err;
-> +
-> +	err = mana_hwc_teardown_queues(hwc);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mana_hwc_build_channel(hwc, q_depth, report);
-> +	if (!err)
-> +		err = mana_hwc_validate_report(hwc, report, q_depth,
-> +					       true, true);
-> +	if (!err)
-> +		err = mana_hwc_finish_channel(hwc, report);
-> +	if (!err)
-> +		return 0;
-
-[Severity: Medium]
-How does the PF learn the ring sizes of the rebuilt channel?
-
-At depth 1, mana_hwc_create_wq() and mana_hwc_create_cq() create 4 KiB
-(MANA_MIN_QSIZE) rings. Above depth 8 the rings get larger:
-
-mana_hwc_create_wq() {
-    ...
-	if (q_type == GDMA_RQ)
-		queue_size = roundup_pow_of_two(GDMA_MAX_RQE_SIZE * q_depth);
-	else
-		queue_size = roundup_pow_of_two(GDMA_MAX_SQE_SIZE * q_depth);
-    ...
-}
-
-At depth 128 the SQ is 64 KiB, the RQ 32 KiB and the CQ 16 KiB.
-
-The HWC queues are only allocated locally; no GDMA_CREATE_QUEUE is sent.
-The only message to the PF is ESTABLISH_HWC from
-mana_smc_setup_hwc_locked(). It carries the four queue PFNs and the EQ
-MSI-X vector, but no sizes.
-
-Doorbells carry an offset that keeps increasing (queue->head *
-GDMA_WQE_BU_SIZE in mana_gd_wq_ring_doorbell()). The device therefore
-needs the same ring size to wrap at the same point as the driver.
-
-The bootstrap channel already runs with 4 KiB rings while the PF reports a
-larger depth. So the PF does not seem to size the rings from the depth it
-reports.
-
-The checks here also don't seem able to catch a mismatch. This
-mana_hwc_validate_report() call only checks that the PF repeats the same
-depth. mana_hwc_test_channel() sends one GENERATE_TEST_EQE request, which
-never wraps a ring.
-
-What happens if the PF keeps assuming 4 KiB rings? The SQ would first wrap
-after about 8 WQEs, once the channel is already published. Could the driver
-and device then disagree on ring positions, so that stale WQEs are run
-again, CQEs are lost, or the device DMAs at the wrong ring offsets?
-
-The fallback through mana_hwc_restore_bootstrap() sends a third
-ESTABLISH_HWC with 4 KiB rings after one with larger rings. That depends
-on the same undocumented rule.
-
-Could the commit message or a comment describe how the PF learns the ring
-geometry?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1794208055.git.weh%40linux.microsoft.com
+Again, addressed in the notes. COLLECTING is not a steady state. A
+partner that never sets the Collecting bit is not distributing either,
+so there is no traffic to drop. Once it sets the bit, the port moves to
+DISTRIBUTING and 'inactive' is cleared. The selftest is only able to
+send traffic to a port in COLLECTING state because it is clearing the
+Collecting bit in received LACPDUs using tc-pedit.
