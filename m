@@ -1,82 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794596134;
-	b=TENjjQ4dRtp0E/xX/IzrKswJiL7fM1JSUBxU6L4mmU4tbRurqfzklTsRdC93KHZpVqQM
-	 c3Kg6JiYh9R/yP2QdAenfh/pbOAFCpBRq9NtM2lXkTjdqbgUdReCZuGa7fxTy3XxoPbek
-	 GX/6uOpJMBx0VDZiCK7SCSnHNX4Q6tK5cPiroZCprbA98cmgKDOy9HaVr3CVes4kl/CQb
-	 2ukRQsrPl3xvR96AoEUJlOj7b1AAV+CQQG4Jsv2ArzMPunAoJX5kPoVWgv2rqm4xhL2q8
-	 +HEoMaJiBzz+zFsUTclOXjtO3fcB+RY4TxQvSpvJFKbaUbaV7pueQ88bOBz4HbhSQBw==
+	t=1794596191;
+	b=RzgYLJQr+MUmkgCnvqXznM+5GowFmQPRksimGWIbDWQjiDhxzwJ2Qlhk59r+i0W3MzBj
+	 uzBj9uO8Jg9o0LF+ZxKrEmp7ntD4a30yB6xU32+/jD545qPoZUA5W8Z5IAtabtB5snJo2
+	 gKe75o5rxaeBUiMkhyk+jSc+YlTmW4xWjQOUFyWPIqatdG+pXCwqU7kGTkF3WWnJZW3z9
+	 SL0/Iyab68wUnRAIxccMktjKeaiUld5FtQue9sgcIljwxHmoEl9bSf9Utdw/G7w3yiYZe
+	 81VkhYEEaMOjy5wZ6exzoEu5fPbJH9qsX4lAZsYBa4Dgt9XOOOpLi4H6atcfDEBkARA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794596134;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Authority-Analysis:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794596191;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
 	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=MzQo6b40FJqZIOj7U/fNaW1qa/xGJTIi7wkOrZE5CFE=;
-	b=e4GsxnaiSS6vwIj2pxcyoySRstsy0qYZdVs47HGI6jYzs1KSJsVSTYdGaZ8UvDuwQw5P
-	 q1FQ8VOd1UFdjNmguaSdJVIU0/tm+inU+xL4lLRXDoo8ehdACmt0J6T9hum9+qY/hgxfq
-	 l6PbxyVCUW5dcE4CfpKKgL5+phLcBV6aHH5XOtD7OS7Xemc/SlIxCYrBoS0SrCSxtf2yZ
-	 X4Xu8ycjPfK/fkMH8lUPj4autz78PGCwd/2Oo67jhx+Rn96AdFtepSHANscK6K0JzM35e
-	 hkAjG1pjYfnAZeVNZfFV8FsuG26KLxf0Zwcid7i0/lCSpAJ5hfE3LrHtRvOoFZbk9HQ==
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Virus-Version;
+	bh=g0ioZjHygxwZjnEMNPplVdcx1LXsFhIZuILyLp54kuw=;
+	b=VjYBhOWGbBvz9tMZn/kNHkCY/ewz51+i2jvVbelUL5yENqdRvWExA1nw8x0MET4BwjZQ
+	 +DkQ04tFs6X6xYispxlDAG4ww5H0JFU9OLlQJdyXpXig8+PqkJ8Jqf8ap8ugOu7pnWZl+
+	 idFGhi6AqFjG7Pa0k9i0gvKXMfNC5DWN/kRQJE5gxroQjKi0Jhl7Ia6qKd3ov4aDMF1EH
+	 9B15ns0xtPE0AU0IRz3OsEpDJv1DM6vId+ExByG+p+dqm8BYQA3Z3cdrJGiUyoStmS/is
+	 RVeS9D6VNsVss5I7U8NrQlUveo54+V+e/EU2g0IV0R8j6ji7ySfOQryqAkhhqxmRfNg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PxOxofnA;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=hbBX0fWc;
+	arc=none smtp.remote-ip=67.231.153.30
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E26606A330
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:55:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D6E26606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8468A607107B;
+	Fri, 13 Nov 2026 18:56:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8468A607107B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PxOxofnA
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFiXv03395037;
-	Fri, 13 Nov 2026 18:55:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=hbBX0fWc
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFSaRb2006580;
+	Fri, 13 Nov 2026 10:56:02 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=MzQo6b
-	40FJqZIOj7U/fNaW1qa/xGJTIi7wkOrZE5CFE=; b=PxOxofnAcz2RXbeVI+w4mz
-	7sOH+7JT9u401lKOJKbaBr816SGas5BqkObpQpqIjGLv6W3ny7rcAWWo/m4TXbeY
-	08t+S8wfLEXzEZ0ZmSzs+65xksXDt5wQL54yq3AhaKFjf5CQMBCtYbe/9sky3Z5b
-	7X/I6dH/+cO5ATa7PCFLqEiwdG8HyVw6LCAf3LkgpkbZsL1fTB/3YEN+1WHa4UVu
-	1mzBEsSSRHxk8Pa4n5RZJuueM7hL0XIgFoz9LytKg801IjPA72UwGbaZ26ha9nkQ
-	B+/FBZ2QRTpu0Nxw3vapDr0NQQHgVFybd9UJEGwR3M6VkT0f3wVB4VRA0zv3zrdQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hssdm4pqr-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 13 Nov 2026 18:55:16 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFYxbD2453156;
-	Fri, 13 Nov 2026 18:55:16 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hwegfd4kh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Nov 2026 18:55:16 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ADIsrHi30802638
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Nov 2026 18:54:53 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E84E358059;
-	Fri, 13 Nov 2026 18:54:52 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BFD7F58017;
-	Fri, 13 Nov 2026 18:54:49 +0000 (GMT)
-Received: from [9.67.72.137] (unknown [9.67.72.137])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 13 Nov 2026 18:54:49 +0000 (GMT)
-Message-ID: <361a5a43-9fcb-423a-808f-d8cdf1d9ad5e@linux.ibm.com>
-Date: Fri, 13 Nov 2026 10:54:49 -0800
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=g0ioZjHygxwZjnEMNPplVdcx1LXsFhIZuILyL
+	p54kuw=; b=hbBX0fWcl/fbq9z/VNbDm8yVk8j45/LDBG6hYrXQ7kVeNwra2Kby2
+	p42sqhNkKW6Y62Vjoz0G3QYNsjHxbFWvvvYtVdMtFICSB5FyUsHpBa/8WqaczaOF
+	S5kruvpQOgydrEekAgJrrc9Qop+SdOW5wBrnC1WC1VS3R/xOOz7Z5CA6n1bJo/u+
+	MjMtJ7YzfAcinPefqQrzNcUTHPlx4Pmbwr0XWe8oQIPcH9ow5X/8Tw13d9C5GuwN
+	72JCBfVQT/oUi5DZ5dlpCbcLN6kwxSWXO+t63nb5urrDVpl7fhBqZdQfHb4D1xDB
+	G2vuJlwaj8u2Fb5MhVRNhsrRYqUz7XdlQ==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwj8cg3gn-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 13 Nov 2026 10:56:01 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 13 Nov
+ 2026 18:56:00 +0000
+From: Todd Freed <toddfreed@meta.com>
+To: <netdev@vger.kernel.org>, <toddfreed@meta.com>
+CC: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Daniel Zahka
+	<daniel.zahka@gmail.com>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        Wei Wang <weiwan@google.com>, Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jiri Pirko
+	<jiri@resnulli.us>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann
+	<daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau
+	<martin.lau@linux.dev>,
+        John Fastabend <john.fastabend@gmail.com>,
+        "Stanislav
+ Fomichev" <sdf@fomichev.me>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        "Boris
+ Pismenny" <borisp@nvidia.com>, <bpf@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH net 2/3] bpf: don't redirect decrypted skbs from egress to ingress
+Date: Fri, 13 Nov 2026 10:55:52 -0800
+Message-ID: <20261113185553.171059-3-toddfreed@meta.com>
+X-Mailer: git-send-email 2.53.1
+In-Reply-To: <20261113185553.171059-1-toddfreed@meta.com>
+References: <20261113185553.171059-1-toddfreed@meta.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -86,284 +97,74 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 06/15] ibmveth: Refactor TX resource
- allocation in open/close paths
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        horms@kernel.org, edumazet@kernel.org, pabeni@redhat.com,
-        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
-References: <20261109235556.60604-7-mmc@linux.ibm.com>
- <179452782258.2199510.1384176100068608942@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <179452782258.2199510.1384176100068608942@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=POqaavqC c=1 sm=1 tr=0 ts=6af75d15 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=KieAIxUdgdruANkDTVcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3MyBTYWx0ZWRfX7nLydZXzMXJL
- 3AgPPTSlHVnbiEbgJBkjz/ktN4eicQFBYZqpeD4S4vJyCHVkRPQg1jAmHa52zC410w6IVY0Zpmc
- kgcZMTAuqZbeCUT/i3Mxt323opgrserS73zZuVX/JaTPMqlmv9TxZgLtT4tQ13af8L6jCWkhMbD
- QmG5AA7Cf2Qci5WO4yh+xnXmiFiHfRJIupv+R2DYBYW0oLmHBEsninWzy1teoI2I/hfBs4R+G2P
- egXMkFZIYUs7GneKe/TfzXLDb2VywutryuOqgDX5mKWtKlDIRq37tZ2tnF6aDDZi4uyQ7gniu0j
- vQHCzkinxy/sHIDgIiz+QgIDaRjvhXGGmy67W2kjA9jzYrSUdkSDHZlneUvk4zO+UBd14+pvKIE
- J7bKyb7CFMZuKxpfGgxJowB/6E7/BasOmnHwOKctD8D9brZ04l6mKZCSbuR3/P2/ouYXOch9GvN
- XjvllB81jVPGPKChikQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3MyBTYWx0ZWRfXx91O3UGKVtUs
- f2WHpksSz0K7cv2YBxXFTZ6qv9sa3qOjcN72+0KiWGI7a4uinsC1jtpl8tXjNtkcB0oBh+EQjfU
- 62qGPCAW9UN/+5pbIsZBeamXOT1MH1Q=
-X-Proofpoint-ORIG-GUID: BdisUuincl5p1a-ZwwcazCuCBT4xWSKd
-X-Proofpoint-GUID: o6PiT2dxa8hDAdoa84RAaa-VrurgN88t
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX/dTB1AVLshkA
+ CGPIhBRtZXaf2gNJMWgVKH1pY3JifbIvceaCqcMg8lQloY/S/fBVGaQHJpxmwrtkmMf8ZPGSYPE
+ 2RziXRF5pgt0UcYqO9aq2srPaqLMI/Ua9syFSB0yjmGvdbnCppRAF2O5tKX1JngWQZ5ofC+ZofF
+ XfGrcaAn4wPkcZZvH+jOAQfjgElgjSA6dJmhOR3EnsK8UcCrVXNwWpBYjQ07ZmWSd/wXB1fm8jN
+ Ncy5aeD6AimEK7UGZG3ZEcVsvVW7/2mfnhB+taBeKh4Vo2jJn8LyaQUYVFQqD7mO1BqCvJxuyF/
+ TXfq0vWpsZUSNAtl1x0e67pXbv6M5bY9h1va6Q9Iz8LbMNHBnE+753UhblPrYLQLq+S6Eh26Nzn
+ KCy+k/UbbsXA+WBYDLnDt2pdWpj6GT0Jtt9nhc+iv8WUnph/7cybtjbMFaNP1xjNKIqWBc0qjR9
+ LeMVPER/yu5qLzCI/OQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX4c5LPZ4kjzqR
+ LWRm+Y6OYj1FkzEyaLxihkiK+/Exc9f/7cVKnH08ficSqYfPWky2lEvlt3l+SYEEHlGyUMEbDWq
+ GadTnLjtnB5CEcZ4kTr7d7mj/uOUyfs=
+X-Authority-Analysis: v=2.4 cv=DuvDa2/+ c=1 sm=1 tr=0 ts=6af75d41 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=JnKecZnUtZousrUlYMGU:22 a=VabnemYjAAAA:8 a=jdngVG28WKp3NRxkfb0A:9
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: PsL5oux0oVFQlN2YOdeSOUujfH5u8__b
+X-Proofpoint-ORIG-GUID: PsL5oux0oVFQlN2YOdeSOUujfH5u8__b
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-13_05,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130073
 
+On transmit, skb->decrypted means that the device must encrypt the
+packet, e.g. a packet of a kTLS or PSP device offload socket.
 
-On 11/12/26 3:57 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 0 · Medium: 3 · Low: 0 (2)
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [Medium] The patch is titled 'Refactor', but it also carries the only
->    fix for a NULL-pointer dereference that already exists in the base…
-> - [Medium] ibmveth_open() now allocates the TX LTBs (line 1432) after
->    h_register_logical_lan, ibmveth_alloc_buffer_pools(),…
-> - [Medium] The patch makes a non-NULL tx_ltb_ptr[idx] mean 'this LTB is
->    usable'.
->
-> Pre-existing issues:
-> - [Low] Not a real bug for the scenario described (baseline decision:
->    false).
-> - [Low] Resolved later in the series (baseline decision: false).
->
-> --
->
-> ibmveth: Refactor TX resource allocation in open/close paths
->
-> This patch moves TX LTB allocation and freeing in open() and close() into
-> the new ibmveth_alloc_tx_resources() and ibmveth_free_tx_resources()
-> helpers. It also moves the TX allocation to the end of open(), after RX
-> is live. It adds netif_tx_disable() at the start of open(), and adds a
-> check in ibmveth_start_xmit() that drops packets when tx_ltb_ptr[] is
-> NULL.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 62e6c9a9f5e91..cab895cc970c5 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> [ ... ]
->
->> +/* Caller must ensure tx_ltb_ptr[idx] is NULL. open() runs on
->> + * probe-zeroed slots; set_channels() skips populated indices.
->> + */
->>   static int ibmveth_allocate_tx_ltb(struct ibmveth_adapter *adapter, int idx)
->>   {
->>   	adapter->tx_ltb_ptr[idx] = kzalloc(adapter->tx_ltb_size,
->> @@ -1277,12 +1287,54 @@ static int ibmveth_allocate_tx_ltb(struct ibmveth_adapter *adapter, int idx)
->>   			   "unable to DMA map tx long term buffer\n");
->>   		kfree(adapter->tx_ltb_ptr[idx]);
->>   		adapter->tx_ltb_ptr[idx] = NULL;
->> +		adapter->tx_ltb_dma[idx] = 0;
->>   		return -ENOMEM;
->>   	}
-> [Severity: Medium]
-> ibmveth_free_tx_ltb() now takes a non-NULL tx_ltb_ptr[idx] to mean the
-> LTB is usable, and the new check in ibmveth_start_xmit() depends on that.
-> Does ibmveth_allocate_tx_ltb() follow the same rule?
->
-> It stores the kzalloc() result in tx_ltb_ptr[idx] before tx_ltb_dma[idx]
-> is mapped. On the map failure path it calls kfree() before it clears the
-> slot.
->
-> The stale sender that the new guard is meant to catch could hit these
-> windows on a later grow. After a shrink, netif_tx_wake_all_queues()
-> leaves the freed index j without DRV_XOFF. If ethtool -L then grows the
-> queues, ibmveth_set_channels() does this:
->
-> 	netif_tx_stop_all_queues(netdev);
->
-> 	/* Allocate any queue that we need */
-> 	for (i = old; i < goal; i++) {
-> 		...
-> 		rc = ibmveth_allocate_tx_ltb(adapter, i);
->
-> The grow path has no synchronize_net(). A stale sender that already
-> passed the DRV_XOFF check could see a non-NULL tx_ltb_ptr[j] and
-> memcpy() into it. It could then put tx_ltb_dma[j] == 0 into the
-> H_SEND_LOGICAL_LAN descriptor, or write into memory that the map failure
-> path is about to kfree().
->
-> The grow-failure free loop in ibmveth_set_channels() also frees the slots
-> it just allocated without waiting for a grace period.
->
-> Would it be safer to allocate and map into local variables, and publish
-> tx_ltb_ptr[idx] last with WRITE_ONCE() or a release store? On failure,
-> the slot could be cleared before kfree(), and ibmveth_start_xmit() could
-> read the pointer and the DMA address once each.
->
-> [ ... ]
-That publish-before-map ordering was already there. This patch doesn't
-touch the allocation order or the ethtool -L TX grow loop; it only
-clears tx_ltb_dma[] on the map-failure path and in the free helper. So
-in net-next today, a stale sender after a shrink can hit a NULL
-tx_ltb_ptr[], and one during a grow can hit the window you describe.
-The new check turns the first case into a drop, but it doesn't try to
-fix the grow window.
+On receive, skb->decrypted means that the device decrypted the packet,
+and kTLS device offload trusts it as such (tls_device_decrypted()).
 
-Your suggestion is the right fix: allocate and map into locals, publish
-the pointer only once the DMA address is valid, clear it before freeing
-on failure, and read the pointer and DMA address once in xmit. I'd
-rather do that as a follow-up to the TX resize code than grow this
-series.
->> @@ -1373,26 +1424,36 @@ static int ibmveth_open(struct net_device *netdev)
->>   	 */
->>   	rc = ibmveth_setup_rx_interrupts(adapter);
->>   	if (rc)
->> -		goto out_free_buffer_pools;
->> +		goto out_unregister_lan;
->>   
->>   	netdev_dbg(netdev, "initial replenish cycle\n");
->>   	ibmveth_schedule_rx_queue(adapter, 0);
->>   
->> +	rc = ibmveth_alloc_tx_resources(adapter);
->> +	if (rc)
->> +		goto out_cleanup_rx_interrupts;
-> [Severity: Medium]
-> Can a TX LTB allocation failure here now free RX buffers that PHYP still
-> owns?
->
-> By this point ibmveth_schedule_rx_queue(adapter, 0) has posted RX skb DMA
-> addresses to the hypervisor. If kzalloc() or dma_map_single() fails in
-> ibmveth_allocate_tx_ltb(), open() jumps to out_cleanup_rx_interrupts and
-> falls through into:
->
-> out_unregister_lan:
-> 	do {
-> 		lpar_rc = h_free_logical_lan(adapter->vdev->unit_address);
-> 	} while (H_IS_LONG_BUSY(lpar_rc) || (lpar_rc == H_BUSY));
-> 	ibmveth_free_buffer_pools(adapter);
-> out_free_queue_mem:
-> 	ibmveth_cleanup_rx_resources(adapter);
->
-> Any H_FREE_LOGICAL_LAN result other than busy is ignored. The posted RX
-> skbs are then unmapped and freed, and so are the RX ring and the buffer
-> list pages. If the H_FREE failed, could PHYP still DMA inbound frames, or
-> the buffer list drop counter, into pages already returned to the
-> allocator?
->
-> Before this patch, TX allocation ran before LAN registration, so only
-> close() had this window.
->
-> The commit message says a later patch keeps this memory mapped on a hard
-> failure. At the end of the series, though, ibmveth_free_all_queues() only
-> returns -EIO in multi-queue mode:
->
-> 	if (lpar_rc != H_PARAMETER && adapter->multi_queue)
-> 		return -EIO;
->
-> so single-queue mode would still free the posted buffers on this path.
->
-> Does TX LTB allocation need to move after the replenish kick? Since
-> ibmveth_alloc_tx_resources() unwinds its own partial failure, it could
-> probably stay before h_register_logical_lan(), or at least before
-> ibmveth_schedule_rx_queue().
->
-> [ ... ]
-Only if two things go wrong in the same open(): the TX LTB allocation
-fails after the RX buffers are posted, and then H_FREE_LOGICAL_LAN
-returns a hard failure. In multi-queue mode (patch 10 onward)
-ibmveth_free_all_queues() returns -EIO and open() leaves the LAN memory
-mapped, so the next open() or remove() can retry the free. Single-queue
-mode still does what close() has always done: log the H_FREE failure
-and unmap.
+bpf_redirect() and bpf_clone_redirect() with BPF_F_INGRESS send the
+packet to a device's receive path with the bit still set, where it claims
+to have been decrypted by the device, although it was never encrypted.
 
-Moving the TX allocation ahead of h_register_logical_lan() would close
-this particular window. I didn't want to reshuffle open() again for a
-case that needs both a TX allocation failure and a hard H_FREE failure.
-The single-queue hard-H_FREE policy is something I plan to fix
-separately.
->> @@ -1864,6 +1923,14 @@ static netdev_tx_t ibmveth_start_xmit(struct sk_buff *skb,
->>   	int i, queue_num = skb_get_queue_mapping(skb);
->>   	unsigned long mss = 0;
->>   
->> +	/* TX LTBs are freed on shrink; a sender that picked its queue
->> +	 * before the shrink can get here after the free.
->> +	 */
->> +	if (unlikely(!adapter->tx_ltb_ptr[queue_num])) {
-> [Severity: Medium]
-> Does this check fix a NULL pointer dereference that is already in the
-> base tree?
->
-> On a TX shrink, ibmveth_set_channels() frees the dropped LTBs and then
-> wakes every queue, including the freed indices:
->
-> 	for (i = old; i > goal; i--) {
-> 		if (adapter->tx_ltb_ptr[i - 1])
-> 			ibmveth_free_tx_ltb(adapter, i - 1);
-> 	}
->
-> 	netif_tx_wake_all_queues(netdev);
->
-> Some senders can still have a queue_mapping that points at a freed
-> index. One is AF_PACKET with PACKET_QDISC_BYPASS, preempted between
-> packet_pick_tx_queue() and dev_direct_xmit(). Another is pktgen reusing
-> a cloned skb. In the old ibmveth_start_xmit(), such a sender reaches the
-> memcpy() into adapter->tx_ltb_ptr[queue_num] with a NULL pointer.
->
-> If so, could this check be sent as a separate minimal patch for net,
-> with a tag like the following?
->
-> Fixes: 10c2aba89cc0 ("ibmveth: Ethtool set queue support")
->
-> Right now it sits inside a refactor in the middle of a net-next series,
-> along with the open() reorder and the RX helper dependencies, so it
-> can't be backported on its own.
-Yes, though the trigger is narrow. Normal stack TX is drained by the
-synchronize_net() in the shrink path. What's left is senders holding a
-stale queue mapping that bypass that path, e.g. PACKET_QDISC_BYPASS or
-pktgen reusing an skb after ethtool -L removed the queue.
+In addition, the redirect drops the metadata dst (skb_scrub_packet()),
+which will hold the Tx association for socket-less PSP offload in the
+net-next series "psp: introduce socket-less associations".
 
-I kept the check in this patch because it's where start_xmit() learns
-to cope with a missing LTB, and the later MQ patches build on that. If
-the maintainers want it for stable, I can peel it out as a minimal net
-fix with the fix tag.
-> Also, the commit message says:
->
->    a sender already in xmit during the free is not covered, as before
->    this series.
->
-> Isn't that sender already drained on the shrink path? When queues are
-> being disabled, netif_set_real_num_tx_queues() calls synchronize_net(),
-> and ibmveth_set_channels() calls it before the free loop. What remains is
-> a stale sender that arrives after netif_tx_wake_all_queues(), and that
-> is the case this check catches.
-Yes. netif_set_real_num_tx_queues() runs before the LTB free loop and
-synchronizes when queues are removed. What's left is a stale sender
-that shows up after the later wake. The commit message sentence about
-an already-in-xmit sender not being covered is too broad; I'll fix it
-in the follow-up.
+Drop decrypted skbs which bpf redirects from egress to ingress, as mirred
+does since the previous patch.
 
-Thanks,
-Mingming
+Fixes: 414776621d10 ("net/tls: prevent skb_orphan() from leaking TLS plain text with offload")
+Signed-off-by: Todd Freed <toddfreed@meta.com>
+---
+ net/core/filter.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 946b07a17fce..defbef3a9f75 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2226,6 +2226,16 @@ static int __bpf_redirect_common(struct sk_buff *skb, struct net_device *dev,
+ static int __bpf_redirect(struct sk_buff *skb, struct net_device *dev,
+ 			  u32 flags)
+ {
++	/*
++	 * On transmit, decrypted asks the device to encrypt the packet. Sent
++	 * to ingress, the packet would read as decrypted by the device.
++	 */
++	if (unlikely((flags & BPF_F_INGRESS) && !skb_at_tc_ingress(skb) &&
++		     skb_is_decrypted(skb))) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
++
+ 	if (dev_is_mac_header_xmit(dev))
+ 		return __bpf_redirect_common(skb, dev, flags);
+ 	else
+-- 
+2.53.1-Meta
+
