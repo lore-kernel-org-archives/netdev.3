@@ -1,79 +1,79 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
 	t=1794589174;
-	b=abAuDDXzX2Ft68iV0Srp0KMHiLnDBIA8gcikEJvv+EHpj63unUuHouNUtUWhFvL0WEXL
-	 2Dw1C5AIPYgByeJrRweOFGTtaLe6w4EsLVbmOCKB8cveLf/2iBPo3u08TLFje/XJdm7I0
-	 Y17fJw/rOEjtIqYBsVgHxOKmkX4YAaQ3Nti1Dca3NkuhhT2g3gYAR+Ba+Oe8VJdqdaL4X
-	 sWDS5jl4lCFsOQZu/TlyTu7PE3CLhGjIrZfq2rNRHJa6Zqvi3qQniijuz2/oDPn5vXzoY
-	 xPLVz786A4Id/MVIUVZUopDeoyBEO862XWguvgHP7edQlmj7mCkIPdXhDqnTrqVYPhQ==
+	b=W5koCU8RKIaT1ttHV4JBiGRUwT2YMk638b2eDocC7bjNX16Jxhu3/Y3wQ85O6lzOwO04
+	 y9yUS4wq/cLR6rYgmaMDK3QTM6eOw5kOzlLRxNbgZHbz1EV7VdNXAfx8jk2UzeMh5x8hS
+	 4bWPaV/jFSq/+MHW97SidWFLOOBfI0HwaqlfoGXa1VclIUAQs2h8pMSSFycaoEvFXffxY
+	 MC8XgTtI8XJLM7D+arL9eIpGZr2GgHS+6+Ueqm1FqO91+P78MJzaMGc9XEw76NIWKO6lG
+	 RHC1nuu5Om0Di1DRRaE/M++UnavmSqfVqZ0gJL6hNqGtDNfcBCtZTi/BF0yQBh2d+Cw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794589174;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=+L6GxWJvFVJvbC9mX5pc9tpnkZRd3788j2xKiqHowK0=;
-	b=uMnSI0O0MOjz79O+RRrjEHSjNSQFcU33JvRsPp5aFDOzo5971f1VzNQdpDm/L2ZdEeUJ
-	 oGBOUZRXl5BEtOO9dsNxkUQ/z0wx71U8J94Xg+FiR97c1y81cRc1w1Y+sLT5PnZOJv5Xx
-	 XKASG7hNGjw3IH6EV6RILfI8MMw/oayP2CHi5IvFcVTsFLw2r4fwzlEuZJ2w/xW0W+/I+
-	 r4Jm/GBStPL+jnQdGxN/SypuGs0apuV9JlKc2jQNJ++n8ONo0beNAxTVbNp+wQbD3zy3c
-	 KjFF1s3HiYD+FjJdMPjcamfXI6IwrJHPCfx2bcQr+0BUnTg6fjGATinfaGgAGDP4b8g==
+	bh=jmOffP14quhOszj41G3AzG2mASrLh6OsTCTzGgE5dqE=;
+	b=BGEJW1i0OOzG/lRkFD8XaWcgeRru4YXFLLZ5jv8jiebKXZqZDgheQaIwcI69AfuGk1yB
+	 YtHU8ahuvYjl2jSCD3WYy/zQ8tF0nrCiUxAK+beV5S/6SYouyBSQaspXStjfU1j6RpcE0
+	 bTm7ChZCqQ4SEI7QxlHxTZokj14Zz1zYPoHG4ZBVyC7ezjj8FKS0PRaFjS9N4hcenBOz0
+	 7DtxLWfKv5xMtlBpA5zkwycjXlsYeW3kJ7xX7Q+A40nrxY9mkNMqdppyB2OPf7sId1Nf3
+	 JeRj2TKGaN6qAEVoi3dbqnrV3QZAI30Y/3J9VUsbKZMNpyF7T51SNiIz6LFFmtX7UEQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j6qcGWB0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k+3w+jUI;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A13606A32D;
-	Fri, 13 Nov 2026 16:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C16160A263A;
+	Fri, 13 Nov 2026 16:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j6qcGWB0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k+3w+jUI
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794589173;
-	b=fWqFE5fhrMeuEgn+TUbxDSl7c2E0ut+wFGnAwMfRacTwTYYOLtYfP2nhEMd298cUAUFD
-	 RtBByWu83IvtREkj3PqlUYYJ5wT2JXN+p38XcEmha3UFcdF/zT7ti0/xbluY5Ih+dbYk4
-	 LT268SBmgGdqnlgljQlwem6Oy4WHoqS/+sdtRCyqLQvWN2cAPpT3n1Ogj/8oM5lc0nTrX
-	 GodTJgC3SkJjPlOXIciSAtYynS377slj7TiGFHEzKSAmrFhSNTSSK988JOeSRNuV42n61
-	 cDORijjKu6naRSCgtI559oyTpMZDtQfqceTp/ElUvSNqbz+r2yVCrymVwhKaPRNNhiA==
+	t=1794589174;
+	b=f8LDIUhVYEVnYHNqbD/d6l/rSjdiBu/RRImpddP41pl21q5LjBI5oQFLqd79v2IFPVbB
+	 bJBqvVPOFKLTN9jUhlbDHOnCpl3v9NS70RC8mwkbClRSLzksMKKzCIYE00GZxss/Whges
+	 XwZ41keQW4a0bOso644e9L95QYk0ZPAWGdhHYM9OdJJE0twPq1jNoDkTbJ1rYABUQdnYG
+	 Gasm+TEHqJJ7ukf21Jr0ZzifCSiwzVOYkg1WxfN6q7/oVlUzKk+6hEFDmr8OzkO2FM+ZV
+	 eHVmwgxu+FyKlIIBFGPwCEI/w6ujO/0MhuVSe1PlSqN3rvwDyRWK5AMDqINux6yiLGA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794589173;
+	c=relaxed/relaxed; t=1794589174;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=+L6GxWJvFVJvbC9mX5pc9tpnkZRd3788j2xKiqHowK0=;
-	b=fDpsG7OxBTcNisbMcZi86lKhYbGUtt6Ej2AnUZeNarKWVjDMVJFx4iQG5OykAEelL+UG
-	 6GhbcTmT72FQprYcEe02C4frDXty6fcq7h6XE6gSHF33jymYdGwfOB8LsmBrZDynrhbOK
-	 vd6mKnN9wSO3WCsXf05KwxekFVo5REIB2lXcW2d7e7UdwSCmxIjd31Lh9L/nZ6Sr6nZLS
-	 tIiPAzqJ+aGF1Nri27ECls4PzzjpEgScd6V8mhyOZ6hU+zWQ09CdcMUcBudr324CiXu/Y
-	 fc4V7Nxk4WsLw/TQyEsqxobTBBd/7NmvLBSHCgv2l4rkP0MDEJN1ayc+/lo3LbnRKxg==
+	bh=jmOffP14quhOszj41G3AzG2mASrLh6OsTCTzGgE5dqE=;
+	b=EzpRd48E0ycbkIymWca1Lw1bGIvZCW99qwca1kNwi7u8R5VBl20LLkm3g83lkScuNihP
+	 7Gx161trVscu5kCWr9pR9RvpH1ZPbDp5ICFXmav9QJe1JT+RShwNwwWMndv5DYAgZB22i
+	 7dseDZTZCzBho/JGj4Fs69U/maFrcf61+eEm9AM/looRTh344vz2bbrRqXDdh3ZSH8xtz
+	 qjAVTDlXFut/bSrbjatlssbMK3xJog4DHEaOLSon+WP6roBwtp8UmViCO/hFzUToelsxM
+	 /TNoYKOUb6QMTuEm64SzJ28jVDxkg5OyF6I5oMlFmUUjro0Gy7tXPvUzBsydIN23rLg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 3336F1F00932;
+	by smtp.kernel.org (Postfix) with ESMTPS id 382FB1F00933;
 	Fri, 13 Nov 2026 16:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794589173;
-	bh=+L6GxWJvFVJvbC9mX5pc9tpnkZRd3788j2xKiqHowK0=;
+	s=k20260515; t=1794589174;
+	bh=jmOffP14quhOszj41G3AzG2mASrLh6OsTCTzGgE5dqE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=j6qcGWB0MDt0FHgECeC++SOAtDEe93Qu/RItTKfppROGeBjJ19GBSlXU/EhfaWURn
-	 Hx1yJZLa3WoENcUSzG9aZdCyrYfe98ylxDqmg528iO5dhiY/BeTzsnJFu/kXo77lMB
-	 WeEtiNIVK5AQB9cJHobWi2k+oY+sMWgQn0VZXRL9v4MlYwG1vx8MWntkzyBJJGbzxY
-	 FPgeCB68kdRowVho/aW28Cn3h561gGXVnYRvP0zRJn9pTLnGhBG72Tz6TVF539fSuO
-	 UfXvnmwijPvoOk/Yyzp9Y2Cxosdqm0OTYKPA3NLlF2Ykx7ArQg+m+NwTJ/5bG2ZLHd
-	 AUAviBsKs75Lw==
+	b=k+3w+jUIgqe5oWWGsx7FPvb4LDlFJ4Sdkzud2RkJ0v0sNnJuRJwPmQIPltd2arD2D
+	 njTWxMVkdvpH73dDSJh0+tBM8iiLSBb1QlG51jvBw7WyZPRK3gz5lgPIqMHn3XHPwN
+	 TH4/Uxq8+SBBe3buiLu0QXUHB8PApHYArcamFIk0xgsp5Xm0hYpF2EbpO0687WVYq9
+	 4XZsDCruowzSo9sBKZvJ7QjFd/Lg+cnR6N8jLvyUBuItnj1oWoFtCUey4zbpTWKYng
+	 iQF5d7hu4eBcQFnzNQYUdusO/LghIOaXRqCsBIMKQk8q7ebEoxeeNh1jM7rAtuh5JC
+	 pJhCtrY7k8S1Q==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id DAA1249A37;
+	by lkml.kernel.org (Postfix) with ESMTP id EF92449A3B;
 	Fri, 13 Nov 2026 16:59:29 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Fri, 13 Nov 2026 08:59:30 -0800
-Subject: [PATCH net-next v11 11/14] net: ethernet: onsemi: s2500: Add
- selftest support
+Date: Fri, 13 Nov 2026 08:59:31 -0800
+Subject: [PATCH net-next v11 12/14] net: phy: Add helper to modify only the
+ PHY loopback bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,7 +84,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-s2500-mac-phy-support-v11-11-7a186141952c@onsemi.com>
+Message-Id: <20261113-s2500-mac-phy-support-v11-12-7a186141952c@onsemi.com>
 References: <20261113-s2500-mac-phy-support-v11-0-7a186141952c@onsemi.com>
 In-Reply-To: <20261113-s2500-mac-phy-support-v11-0-7a186141952c@onsemi.com>
 To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
@@ -108,11 +108,11 @@ Cc: Selva Rajagopal <Selvamani.Rajagopal@onsemi.com>,
  Jerry Ray <jerry.ray@microchip.com>, 
  Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794589162; l=1974;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794589162; l=3182;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=WH9d7pri849TCTPKCiEfO7p1BC22IefPtsHGHwczn+Y=;
- b=NkvbQfuN5GCezyCM1QXnlhD0fh63H5db39dnd7ZlMkJz8+hjrHlceqngk3J1aeaKMkjg+Nmzy
- DTTiMglbheYDWZN8c85Q3z7YV7d7LsOxtXct5nE2aCg1JhbaMfOlUBZ
+ bh=RL9y6WXjC9i9YRoszTZLdBOdvmvDtwuoqd7Nc6APYAs=;
+ b=vhcPPLPGLnOLAbG/2RLBr399qiYitV4Uuj8Y4vvGmYyJR4fTQePPlEQSoFQ/73ZPHLe7aGvSZ
+ u+vJRyu9PhxDOGXqaTKgSkf9Rr2b5qzpT4yVZ/8vpHGc+rFtblebrXc
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -123,73 +123,92 @@ Content-Transfer-Encoding: 7bit
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Add selftest support for onsemi S2500 MAC-PHY. Make it a separate
-patch for the ease of review.
+Add a generic helper function, genphy_loopback_no_speed(), to modify
+the loopback bit of the PHY only, without setting the speed. This will
+help the PHY drivers, like 10BASE-T1S or any other PHYs that want to
+handle the loopback bit only.
 
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
 ---
 changes in v11
-  - No change
+  - Made the changes to phy core into a separate patch. Previously
+    changes were in a patch that also had vendor code changes.
+  - Documentation in the comments section is made accurate.
 changes in v10
-  - Added a check for CONFIG_NET_SELFTESTS before returning the
-    count value
-changes in v9
-  - Added net_selftest entry to the ethtool_ops in the correct patch
-changes in v8
   - No change
+changes in v9
+  - replaced "fixed_speed" with "no_speed" for the API.
+  - Improved the comments to be specific about not setting the
+    speed.
+changes in v8
+  - No code change. Changes were in two different patches.
+    Merged into one.
 changes in v7
   - No change
 changes in v6
-  - Moved the signed off information to the correct place.
+  - No change
 changes in v5
   - No change
-changes in v4:
-  - Added a selftest as a separate patch
+changes in v4
+  - Moved the onsemi implementation to a new, genphy API to
+    make it vendor agnostic.
+changes in v3
+  - Added loopback functionality for onsemi's PHY driver
   - First patch
 ---
- drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/phy/phy_device.c | 24 ++++++++++++++++++++++++
+ include/linux/phy.h          |  2 ++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
-index 2fc09107aed3..feacb406778d 100644
---- a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
-+++ b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <linux/ethtool.h>
-+#include <net/selftests.h>
- #include <linux/phy.h>
- 
- #include "s2500_hw_def.h"
-@@ -205,6 +206,10 @@ static int s2500_get_sset_count(struct net_device *ndev, int sset)
- 	switch (sset) {
- 	case ETH_SS_STATS:
- 		return S2500_MAC_STATS_LEN;
-+	case ETH_SS_TEST:
-+		if (!IS_ENABLED(CONFIG_NET_SELFTESTS))
-+			return -EOPNOTSUPP;
-+		return net_selftest_get_count();
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -218,6 +223,9 @@ static void s2500_get_strings(struct net_device *ndev, u32 stringset,
- 		memcpy(buf, s2500_mac_stat_strings,
- 		       S2500_MAC_STATS_LEN * ETH_GSTRING_LEN);
- 		break;
-+	case ETH_SS_TEST:
-+		net_selftest_get_strings(buf);
-+		break;
- 	}
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index b39e945cebd7..80d93bb43312 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2923,6 +2923,30 @@ int genphy_resume(struct phy_device *phydev)
  }
+ EXPORT_SYMBOL(genphy_resume);
  
-@@ -376,4 +384,5 @@ const struct ethtool_ops s2500_ethtool_ops = {
- 	.get_ts_info = s2500_get_ts_info,
- 	.get_regs_len = s2500_get_regs_len,
- 	.get_regs = s2500_get_regs,
-+	.self_test = net_selftest,
- };
++/**
++ * genphy_loopback_no_speed - Enable or disable PHY loopback, speed unchanged
++ * @phydev: The phy_device struct
++ * @enable: Flag to enable or disable the PHY level loopback.
++ * @speed: Speed setting. Not supported: -EOPNOTSUPP is returned if it is
++ *         non-zero when enabling loopback. Ignored when disabling.
++ *
++ * Description: Only BMCR_LOOPBACK is modified. It fails with -EOPNOTSUPP if
++ * @speed is non-zero when enabling loopback, or with the error from the
++ * BMCR access.
++ *
++ * Returns: 0 if successful, negative error code on failure.
++ */
++int genphy_loopback_no_speed(struct phy_device *phydev, bool enable,
++			     int speed)
++{
++	if (enable && speed)
++		return -EOPNOTSUPP;
++
++	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
++			  enable ? BMCR_LOOPBACK : 0);
++}
++EXPORT_SYMBOL(genphy_loopback_no_speed);
++
+ int genphy_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
+ 	if (enable) {
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 21afc2082b17..6e57f83757bb 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2317,6 +2317,8 @@ int genphy_read_status(struct phy_device *phydev);
+ int genphy_read_master_slave(struct phy_device *phydev);
+ int genphy_suspend(struct phy_device *phydev);
+ int genphy_resume(struct phy_device *phydev);
++int genphy_loopback_no_speed(struct phy_device *phydev, bool enable,
++			     int speed);
+ int genphy_loopback(struct phy_device *phydev, bool enable, int speed);
+ int genphy_soft_reset(struct phy_device *phydev);
+ irqreturn_t genphy_handle_interrupt_no_ack(struct phy_device *phydev);
 
 -- 
 2.43.0
