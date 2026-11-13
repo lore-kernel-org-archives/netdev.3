@@ -1,100 +1,115 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.214.172
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794548669;
-	b=R/2biNhxqCjUEbh3lZUzfQWmKbcdda4s8r7gS+ZLoMZ2YIkdyqmO5NphknF2CCEWQ6hk
-	 4TKGhA3uz4EIYxWozR9Isn8CicUAr4o8TVutaHe/+d5lH1qCQyYcQ5Pmp/sjXgfEBx15I
-	 nUtm7xahHavUNBcSjehJ86tcDUhppQKCOtNrkoVruxFXlxxZcCVi5PHF+cz8ksTxS+FiL
-	 8VEq89x+N64faAzlVOtHyPeX352sWk4/Hw4YLEm1buOT44O1tGovX/kbub7UrXZDjKMMY
-	 vK4bE6K0iqFXCr/rvBGD57u62wqXpta0FNd5j8MDdsOWqPiyKp9S+qe5L/W9S5C5O6w==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794548669;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794548835;
+	b=ahEXdC43wfdH5iz9DmA1XFRtSU+Pi5ojiM8dhm60Xo/OFDnUKVEgEAfU1fT3po2VVJco
+	 FwAC0Sc/gPhZVMRAm07Gt3L3SollXtLD6CjBdME69cyANetLV+asZQi0gzlAwGCJ78DJW
+	 wLrvmBO+w8qVtpogbd8U8lotSekzR94UQ/kS3kzw/Vow7MH0jpdVYv+doxNv7qBdXSQfq
+	 7Hip17efZp/Z/ivuPNYrKaHL2KKtDJ9Xb6r4vQtafOkgzScb0Lj8obN9GEnwPfwdinktn
+	 XykqqeBbDFrzrm4aQsf/fC037grVx9O22/STppuofn6h5SJRsCti/lgG0i8v6L2BSfQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794548835;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=UDUDmvLFrjDceUNHFFnKFwmFqi3Bs4rQ7NT0WKbQyu0=;
-	b=EERkdTYSe7W1bRw5Iw1Y3rJ8btH5NL2C9getTV2lmMRFwDfG9vffULC5OaeElSWtu60+
-	 tzQ6fK8dmy+WFbfnaPPCfQ5hHGx8lFPLv5pgyJUE9VRNrvD0oaAhZRHMaG8W6NIlf7TDc
-	 9WaiBH3Mzh34wDoURDRAYcbHKgaTLAm+X3zxnyBxEFd1njqOhOHeYekQRa3IPHJxmY6R8
-	 W5aCQ8y8UfeT+hXyLE3ZHecrQF9Qrg4b4Q1H+xYvtsHB08VPJDXhEa7LL3sSJU61oY0jm
-	 qkCFPkbPNtEKuXy+JHZ2Mbb0t7EX5xyQn98sGqJlJ4wlV9OyoxCTsM3pYt6WIxElKRQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YlwZfLjy;
-	arc=fail smtp.remote-ip=209.85.214.172
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=zv2dwLznTDzlBwaiBmqu3E6e2BGNnEevgfuztfawCII=;
+	b=WS6O9b4LC/P/1uRD1c3+RsiDYTtxgfT2GMO9fD4oNdaLyeJZkyZ/v3YqXUN2x3Ac3CkZ
+	 xACm69sskJinDr7bR8jAb4wP/ZbYaWGuwiIvP6TyaGI/MpK9uSpsPFw5NBtm2yVLD9yME
+	 q/yO4XpPIA1MuRKzJhG/S5rE/+I1QcVxI06v1OHYJjgzaj+v3Qh4OZFKyIW+ZYTfmD2Xz
+	 41tnJPd2H6pxTcVlL8/IzZM4fHzmw4WBJA7blh1DR1rNW2YXm91d0MhGuBBxtm+njbD2w
+	 4yuSutrCxcPmHjjfv73cjvMKPdeQ4+8q8UlXFjHajysl6pjDgkOR9XCNVa6Mm4Ps5Xg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VRUCH7A5;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=kx1EArwl;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB9F606A321
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:44:28 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 2EB9F606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC07606A32A
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:47:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0AC07606A32A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YlwZfLjy
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ea7190aea1so2368325ad.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 21:44:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794548668; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pwbQiN6WLhe2Q7f3uBqgh4JSzJSq0oP1rjMkDehB5OS+VRBT5V8oyl4q4nJYtogcQK
-         NLuE5js87KTCBIyydPVPYjKPzOfyGNLcGh5O0NL4yEoaUxEvbYty8sbCDofXKmkVoKCe
-         RdX5ZIMsdvUmI2dMaD4cSc+cIwaj1+FN5lXFvbBeZZEV845CsBSXgbtzVWwR9tVoMmcj
-         ExLtA9sYj7uKKInV3iw6akb+Tc+CqB4l3lkS0v03Pvb8rUnSP47K5d6iOpUVT14EZ2IB
-         m+V/p+C2lO37AO/09W/fcE48L/M8Ps9Xe2ZRbnxurRKdawylyyoKOoxieVDBecDxWzSQ
-         pg7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UDUDmvLFrjDceUNHFFnKFwmFqi3Bs4rQ7NT0WKbQyu0=;
-        fh=9YvNp0C54cykasSWwukReMLw03gD9ZYu1NFSRDpkRy4=;
-        b=fZFVMd3+A+sKuAql+6M4c9Kmrm1/CyeZ+T9sRWLsc+DarpbZT0XyS2y8i6dISgxW8J
-         B5tpWtrgmGE6nhGFZq9CzbJNhY/wyk1cq6Uz3i+yMYOUhFqCpBEjZW/pFjcmDopkgbpc
-         3rAq6n/Pl+ZJTG8cvwf+13esHyCCXUd8nXZug6Xm1d7bAxxITiSJd9I+wGpAkDjtrSUL
-         Zwr4TD3++NYN03OhO6zSxq99hvQX3OzBtTvWjAwLDm+NdeOTl/2zb1/TtfQQeSU02jme
-         ZQQtpcL+1r57xL/FIJO389STOK+IAxQhWlHPOVxzAIfRZ51o/ycqRP4CV0e6bzSIhcn0
-         hyUg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VRUCH7A5;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=kx1EArwl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794548834;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zv2dwLznTDzlBwaiBmqu3E6e2BGNnEevgfuztfawCII=;
+	b=VRUCH7A5X78vBeGc4sinXweIdZJAKlJNpCa8Q5iygIZvcOEPjsSKMqHjuxZ6yboEcksUdh
+	OXrtExEugR2k++cly4qmaSRDbnib4bWwCkvhyge9NN3NY5KrlYwh20lMTQ2zvayYTHCGnv
+	QWNa+h+tPcYgmKhmd8Y0i7haQUgzCVw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-573-f4yYyxLKP2Ccy44oIYXNBA-1; Fri, 13 Nov 2026 00:47:11 -0500
+X-MC-Unique: f4yYyxLKP2Ccy44oIYXNBA-1
+X-Mimecast-MFC-AGG-ID: f4yYyxLKP2Ccy44oIYXNBA_1794548831
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4ba078abd70so3037665e9.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 21:47:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794548668; x=1795153468; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1794548830; x=1795153630; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=UDUDmvLFrjDceUNHFFnKFwmFqi3Bs4rQ7NT0WKbQyu0=;
-        b=YlwZfLjyBPstI07GiXcbgY1PgHaL+X5W1yWOy/eXHR65Fx/h/UCfPh0Yr1zgMQmRs1
-         6nZ1jxA0xPOT+RzxfuvQB99/uzu3eIj6nWI1wr59N0wuB77ZtYWgvaa52BphV79zRU/j
-         QfteFPa6jhw8RqeQu008yjqsZCt1PsR8lXYCiG0B1RkfoszrAuFbtM2poeYz128vYgMG
-         0F5Gu6WwU/Zq0Y91DTakxZVD8AQFazyjvKgStdJwrcpEO5f84X7vog3Tww+C8afVkiIy
-         dnqdzIlRv5GFAQz+hTgqvFJc6dRJUFgMtRItZwxxYtjd3c54F4UCBdH0pua4OUMgzeCL
-         +35w==
+        bh=zv2dwLznTDzlBwaiBmqu3E6e2BGNnEevgfuztfawCII=;
+        b=kx1EArwlWeE8EHOxBgI15kP3cZxEl//llm1cQIwT7cDh7jWtmu3m2q0brkuk/prvYz
+         JhWxGgYXB1//jimEFovyYIE2JZNEkjitFvGb6ikeZ2Y1DvpIK3oIri74V/n5EFpgFqhr
+         4gQVpTxgkquuYNINLUTwwlktc/9U3+uO5UxloCMCJrkHFAyaTxdTtGcnR0j7IuNz+nBw
+         MJo5e6X86q0q+87qEovDHKxKSVJhc1zoWLvJUEV4FasPY9pyZ82KmI56nXqFMG2QfGvF
+         P98/+Y3/xkRf45BZzsXUCdaGcBGFQdyueHSRkJDqmbTR3G7hXtO94Vbaf3ufrkyzsnaf
+         rl+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794548668; x=1795153468;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794548830; x=1795153630;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=UDUDmvLFrjDceUNHFFnKFwmFqi3Bs4rQ7NT0WKbQyu0=;
-        b=XSd5C61MQAaKvlrmZoxxIVI0mHtw/CD7mn0bPvVqPbjmqLzEaL89pt2PJP7RHcs/p3
-         6hwDtd6OupsMd1zVxBdxdk3XVoswf1CcJEgbZ7RC0guAkODBg+fZ1BsGgMuXvUBRaVLW
-         TA2Y8elO9RN2YLzyq3qeZ74cDg634P5Yl2eFPWBIBcZw5lQxAfw5KN6Zbq4AAP2CZzmG
-         4TjTSoFwPbUR/RvK217Y+X9NGACM8bEBjhmxgvGgtBpM30kpfMA38jB/DmptQGUNu9yP
-         gY8WeMA9fLkiTU76mi+GmQkzrty13X1igpaKIKf2OqQbwfx3JyGrpsIWGXqmOw1Yfh4s
-         oMJQ==
-X-Forwarded-Encrypted: i=1; AL+hErH+h3xKrDc/B8r6fKbjwW1o2U0AWwvv8oAHNh/R9hjDQ9yunMy3Ov3Lmrf5orI4DD1ORDRs2Ls=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8EmFeqIWLBNN4k/7qEPBEuZ4VhwcBs6xET3TfEKHgCB/CgF8/K
-	4UXCp0YkAtPEfgOq5Xs9FRWUomKR28q1fCw5bw1gO00jYlCd1qBiOrzOZelrFk6n4v9hAoqb6OE
-	SRRFGPYiBEG3jZR+Cra98zEmESqqwTHw=
-X-Gm-Gg: AYBFou1XLLm/kxiUMOBzedOs0yqycTr4Z3s4jxqOlIfzL79huWoT2Qj0KjeRcHvcDTJ
-	AzY1LYYaGNj/f4xOOC0+6rChlRgRW1GOwRV0VtWDtILRq6wgg29pyExUQxEf7+gnrF0Xj0K+jyI
-	XDFdx1BVuoLjdFaZBY5FOLPfgXibdLrW3KhLj/6GkAEjZaVcGS9HPuYiENIPGyUcc9aFyOiJ3n4
-	c5iZ7c8rcqNZUSo7TpKhbPz4ITAo4mB88eBMaYTuXa9/oBDOE9bN+0FAQ2/LvbJCQbVasYyqlOK
-	VUfBQacpYgKNK2U9oEf8efJ9I8GRWzrflipVMqa5XlSvujQl8vhplU4YnI4guTCUddVez9LqvRn
-	/RzkNgM524/WrxdRykW6Z1STV6jVdVfBOd9c=
-X-Received: by 2002:a17:90a:ec05:b0:3b0:c11a:902d with SMTP id
- 98e67ed59e1d1-3b1b09fac26mr938995a91.10.1794548668130; Thu, 12 Nov 2026
- 21:44:28 -0800 (PST)
+        bh=zv2dwLznTDzlBwaiBmqu3E6e2BGNnEevgfuztfawCII=;
+        b=zjqLh5WIpbMoPHfO5QO2IHKXNoDSnsCfVI6G2fj30kx7B9IR3Bus8sbDp7dmAT9zsb
+         GidX5C14jJp4NOihFDJEtx+0jDktJPddP+HlAhdxz5o1PKcQm4eOXxGavuE2DFdjIR8Q
+         p5nfg/oPRZ/s2vOUcp4S+IujB/Bwc8ZGGASmgpUoLfRaWzETtipWjMVp02j5CGtEiyV4
+         ggEEAzArxY33JWWzWZNSrizrD8liODZArF0GME1GvNOw8VLosxe0IDrmh44E3psDKghh
+         +6X9k3S3to6RFurGL+x1RRCpA7KBzrCBkk/MeNzpjpn0OJHFyRTsq1+WqBrWTLe1cDQF
+         e3iA==
+X-Forwarded-Encrypted: i=1; AL+hErGUn3254sCB+xHkCC6qsZNe/oU52J3gy0/sFKCKDqTOKXhjyMGaqT0hirGK9fiHVQ4sSuFztGk=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9/eHv29fOdodN6D5LTUH1yfMfQoHgOesEB9zBmzeIikmz12TJV
+	JmGkrikYBfvlLgVV5cg2SdeCp8hADZYLl3DtQ13NSQtkUadRW5c7EInHvqMd831EXgOD3mNCyCp
+	/SG2lqy2qGtmcakqXL5CecQgaN6KWoIHwF0WHHJgaWTHL9q6ReMKO9sz5pg==
+X-Gm-Gg: AYBFou0XSsfHQrmjNKJDvqcFOrCwxXimXN0Piq+JeKR4uNQLopl9nLVDCs15V/rKgMO
+	tIlaXq1wviR2Sks3PxD6w2b9QOyiEM9LKN6QNMnGSDYsE3Z4syrDTUvpvTlhMzJhCIBynRvpA9J
+	MzrIkatuVTvDFk4a81GnUFBVZP/PhAWSMxvluDBurVAMBpVypbl/rc3uv9tiPRMKUg1E82hiE/X
+	s3w7NC7RdsIpq9Ui9LU8DjUqHjb3KvOyckTqyPiAHIRrWZZRNYTM976aZ/sUMoHBa5Z7DDJIH1a
+	+scFP0v0KV01yuieruIlirzRwCmHh4TcJjEdDpiiNQcz28gO682ttZGKnuvLDBdZfmOXEvpisPG
+	GjOLYEJeX9NhGKiTvxWK8AyTCyzsprpjnWpNq8oq08w==
+X-Received: by 2002:a05:600c:4685:b0:4a6:eca1:7d5c with SMTP id 5b1f17b1804b1-4bb55a91e31mr25254795e9.32.1794548830555;
+        Thu, 12 Nov 2026 21:47:10 -0800 (PST)
+X-Received: by 2002:a05:600c:4685:b0:4a6:eca1:7d5c with SMTP id 5b1f17b1804b1-4bb55a91e31mr25254505e9.32.1794548829900;
+        Thu, 12 Nov 2026 21:47:09 -0800 (PST)
+Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4e2adf53sm122130755e9.15.2026.11.12.21.47.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Nov 2026 21:47:09 -0800 (PST)
+Date: Fri, 13 Nov 2026 00:47:05 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: zhaoguohan@kylinos.cn
+Cc: bp@alien8.de, dave.hansen@linux.intel.com, eperezma@redhat.com,
+	hpa@zytor.com, jasowang@redhat.com, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, mingo@redhat.com,
+	netdev@vger.kernel.org, tglx@kernel.org,
+	virtualization@lists.linux.dev, x86@kernel.org
+Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on
+ x86
+Message-ID: <20261113004435-mutt-send-email-mst@kernel.org>
+References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
+ <20261113012937.40818-1-zhaoguohan@kylinos.cn>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,165 +119,115 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109030042.2956-1-nashuiliang@gmail.com> <179443085204.2199510.12725312671048285646@kernel.org>
-In-Reply-To: <179443085204.2199510.12725312671048285646@kernel.org>
-From: chuang <nashuiliang@gmail.com>
-Date: Fri, 13 Nov 2026 13:44:17 +0800
-X-Gm-Features: AclHuK9F9oQ5Qrk0_Q8z0DxMdLD_AqhLC4iCmwIoVy-nc5xaLnUdD7relDJgbSU
-Message-ID: <CACueBy6qrkoTqOi6b5FN7YEFLVzUve3+tbzS=f67ZJO1Px7xiQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v12] net: reduce ARFS flow updates by checking
- LLC affinity
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, 
-	skhan@linuxfoundation.org, sdf.kernel@gmail.com, daniel@iogearbox.net, 
-	bobbyeshleman@meta.com, kuniyu@google.com, willemb@google.com, 
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261113012937.40818-1-zhaoguohan@kylinos.cn>
 
-On Thu, Nov 12, 2026 at 5:00=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] set_rps_cpu() (net/core/dev.c:5281-5284) decides whether to
->   skip ARFS hardware steering by comparing next_cpu with old_cpu.
->
-> --
->
-> net: reduce ARFS flow updates by checking LLC affinity
->
-> This patch makes set_rps_cpu() skip the ARFS ndo_rx_flow_steer() call
-> when the CPU recorded for the flow and the new target CPU share an LLC.
-> rflow->cpu is still updated. A new sysctl, net.core.arfs_llc_affinity,
-> turns this on and off, and it is off by default.
->
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index 3b60b15e2175e..0011cec296402 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
->
-> [ ... ]
->
-> > @@ -5273,6 +5277,12 @@ set_rps_cpu(struct net_device *dev, struct sk_bu=
-ff *skb,
-> >               if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
-> >                   !(dev->features & NETIF_F_NTUPLE))
-> >                       goto out;
-> > +
-> > +             if (static_branch_unlikely(&arfs_llc_affinity) &&
-> > +                 old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
-> > +                 cpus_share_cache(old_cpu, next_cpu))
-> > +                     goto out;
-> > +
->
-> [Severity: Medium]
-> Does rflow->cpu reliably show which LLC services the hardware queue the
-> flow is arriving on?
->
-> get_rps_cpu() takes old_cpu from the hash slot in the arrival queue's
-> table:
->
->         tcpu =3D rflow->cpu;
->         ...
->                 rflow =3D set_rps_cpu(dev, skb, rflow, tcpu, next_cpu, ha=
-sh);
->
-> That value is software bookkeeping, and other flows can share the slot.
-> The new check runs before the cpu_rmap_lookup_index() /
-> skb_get_rx_queue() comparison. So it can suppress ndo_rx_flow_steer()
-> even when the arrival queue's IRQ/NAPI CPU is in a different LLC from
-> next_cpu.
->
-> The skip path still reaches:
->
->         WRITE_ONCE(rflow->cpu, next_cpu);
->
-> sd_llc_id equality is transitive, so every later migration inside that
-> LLC would skip again. Could the flow then stay on a far queue
-> indefinitely?
->
-> Here are some ways rflow->cpu can drift away from the real hardware
-> queue:
->
-> - After a successful steer from queue A to queue B, packets still in
->   flight on A go through set_rps_cpu() again and hit:
->
->                 if (hash !=3D READ_ONCE(tmp_rflow->hash) ||
->                     next_cpu =3D=3D tmp_cpu)
->                         goto out;
->
->   This records next_cpu (LLC X) in A's slot, but A's IRQ may be in LLC
->   Y. Two later cases then hit the new skip, with the application on
->   another CPU in LLC X. One is a flow whose hash collides with that slot
->   and which RSS delivers on A. The other is the original flow coming
->   back on A after rps_may_expire_flow() let the driver drop its rule.
->   No failure is needed for this to happen.
->
-> - The existing goto out paths still record next_cpu without moving the
->   hardware queue. These are ndo_rx_flow_steer() returning rc < 0 (for
->   example -ENOMEM, -EPERM or -EPROTONOSUPPORT from
->   mlx5e_rx_flow_steer()), a target queue with no flow table, and an
->   active colliding filter. Before this patch the next migration retried
->   the steer. With the sysctl on, migrations within the same LLC never
->   retry.
->
-> - irqbalance or an admin moves queue A's IRQ to another LLC. cpu_rmap
->   gets updated, but the skip happens before cpu_rmap is consulted.
->
-> - A driver drops all of its hardware rules without touching
->   rps_dev_flow, for example mlx5e_arfs_disable()->arfs_del_rules().
->
-> In each case NAPI would process the packets on a remote LLC, and they
-> would then go through the RPS backlog to the application's CPU with an
-> IPI.
->
-> This also seems to conflict with the new text in
-> Documentation/networking/scaling.rst, and with the similar wording in the
-> commit message:
->
->   "since the application's cache locality is preserved either way"
->
-> The reported ~99% drop in mlx5e_rx_flow_steer calls cannot tell avoided
-> redundant updates apart from steering that is wrongly suppressed.
->
-> Would it be more accurate to compare next_cpu with the CPU servicing the
-> arrival queue instead of the previously recorded rflow->cpu? For example,
-> that could be smp_processor_id() for non-threaded NAPI, or the CPU tied
-> to the queue from skb_get_rx_queue(skb).
->
-> >               rxq_index =3D cpu_rmap_lookup_index(dev->rx_cpu_rmap, nex=
-t_cpu);
-> >               if (rxq_index =3D=3D skb_get_rx_queue(skb))
-> >                       goto out;
+On Fri, Nov 13, 2026 at 09:29:37AM +0800, zhaoguohan@kylinos.cn wrote:
+> On Thu, Nov 12, 2026 at 05:53:47AM -0500, Michael S. Tsirkin wrote:
+> > vhost had a TODO to replace page pinning with a version
+> > of set_bit that works on userspace memory, since forever.
+> >
+> > It is really best to avoid GUP on fast path entirely.
+> > Implement set_user_bit and use it in vhost, to do just that.
+> [...]
+> > lightly tested. pls test and resubmit with your tool.
+> 
+> Thanks, this is much simpler than my version. Two comments on
+> set_bit_user() before I resubmit:
+> 
+> > +	int __err = 0;							\
+> > +	__uaccess_begin();						\
+> > +	asm volatile("\n"						\
+> > +		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
+> > +		     "2:\n"						\
+> > +		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
+> > +					   %[errout])			\
+> > +		     : [errout] "=r" (__err),				\
+> > +		       [ptr] "+m" (*(u8 __user *)(addr))		\
+> 
+> errout is only written on the fixup path, so it needs "+r", as in
+> __try_cmpxchg_user_asm(). With "=r" gcc drops the initialisation; here
+> (gcc 13.3, x86_64_defconfig) it even shares a register with mask:
+> 
+>      1a3:	lock or %dl,(%rax)
+>      1a9:	test   %edx,%edx
+>      1ab:	jne    1bd <log_write+0x5d>
+>      ...
+>      1bd:	mov    $0xfffffff2,%eax
+> 
+> so every call returns -EFAULT, and log_write() stops after the first
+> page.
+> 
+> > +	__uaccess_begin();						\
+> 
+> No access_ok() here. vhost checks the log range when it is set up
 
-The scenario walkthrough was very helpful, and the issue is real.
-I will add a READ_ONCE(rflow->filter) !=3D RPS_NO_FILTER check to
-set_rps_cpu() in the next revision:
+exactly
 
-if (static_branch_unlikely(&arfs_llc_affinity) &&
-   old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
-   cpus_share_cache(old_cpu, next_cpu) &&
-+   READ_ONCE(rflow->filter) !=3D RPS_NO_FILTER)
-goto out;
+> and
+> I couldn't find a way around that, but GUP used to reject kernel
+> addresses by itself. user_access_begin() would keep the check (and the
+> nospec barrier) local.
 
-> [ ... ]
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261109030042.2956-1-nashuiliang%40gmail.com
+What we *definitely* don't want is nospec on fast path.
 
-pw-bot: cr
+> Something like this, build-tested on x86_64 and
+> i386 only:
+> 
+> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+> --- a/arch/x86/include/asm/uaccess.h
+> +++ b/arch/x86/include/asm/uaccess.h
+> @@ -597,19 +597,23 @@ _label:									\
+>  /* set_bit() on a byte of user memory; returns -EFAULT on fault. */
+>  #define set_bit_user(nr, addr)					\
+>  ({									\
+> -	int __err = 0;							\
+> -	__uaccess_begin();						\
+> -	asm volatile("\n"						\
+> -		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
+> -		     "2:\n"						\
+> -		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
+> -					   %[errout])			\
+> -		     : [errout] "=r" (__err),				\
+> -		       [ptr] "+m" (*(u8 __user *)(addr))		\
+> -		     : [mask] "q" ((unsigned char)BIT(nr))		\
+> -		     : "memory", "cc");				\
+> -	__uaccess_end();						\
+> -	__err ? -EFAULT : 0;						\
+> +	u8 __user *__p = (addr);					\
+> +	int __err = -EFAULT;						\
+> +	if (user_access_begin(__p, sizeof(*__p))) {			\
+> +		__err = 0;						\
+> +		asm volatile("\n"					\
+> +			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
+> +			     "2:\n"					\
+> +			     _ASM_EXTABLE_TYPE_REG(1b, 2b,		\
+> +						   EX_TYPE_EFAULT_REG,	\
+> +						   %[errout])		\
+> +			     : [errout] "+r" (__err),			\
+> +			       [ptr] "+m" (*__p)			\
+> +			     : [mask] "q" ((unsigned char)BIT(nr))	\
+> +			     : "memory", "cc");			\
+> +		user_access_end();					\
+> +	}								\
+> +	__err;								\
+>  })
+>  
+>  /*
+> 
+> If this looks right, I'll fold it in, run my test in a VM and resubmit
+> with the test as a second patch.
+> 
+> Thanks,
+> Khan
+
+
+Given the point is to optimize this code, let's optimize.
+vhost pre-validates addresses so accesses are safe without
+re-checking later.
+
+
+-- 
+MST
+
