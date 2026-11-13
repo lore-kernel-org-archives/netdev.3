@@ -1,82 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.182
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794596463;
-	b=xE620TLOKAh2xD4rbl/uXLfIAYF3Jb+3rpzSeg5RqWLeVoSgVw9GPxKaWftSrET34p88
-	 1fHgTYJBRl4ri51kuP0yAaim0KigAyhcYfFuQTBCAd76xfcXRGmoytJ4DZ8KrGvnKEEjH
-	 Oc8D09sXLoACxeM9Y/5MSMuOtM2PNCA8kvDIe3mKOOOTfuIOH1E79Oj2N18PoHXD3E4XI
-	 tuozn/Tr9f++xWQUlzUUTzQNCLM/Wfvk4rqbgUKq0nsxeMLaWjWXBk3JjvFquwRtsPO9C
-	 MUzxuWDnzQvkFof3aNGZr4mztm5LzjSv/1GkYafS19f84nmusdB61WMIqT0YgJ3FjMg==
+	t=1794596636;
+	b=VTNzO/vy+0sxr40zmSAr4j3HeHa8JkX8JSjyTx8MCYtrjWtJXLuscyNi5+u5056Edb5g
+	 MobCW41Qk7w8/j0xtULh6VeRDn29H2sCXOycZfnjJA9mpkDA4s3G+hkK1WQc6+TmGLWXH
+	 CCLLJm5/nx1XMPwAOdcHEr4xS4bLjJ9RzwPg6uhgElQc+gefvP60lXNsbRH3tPSpez7OE
+	 vjrzqiSoMfNjzey/6H2HLbXjS5rKTd7IuGMGjqrWBn1tHFeNbWDFpyhglciMLnQRmss/S
+	 kDS8/QOX3+JvlTmEEMku9bp4LYg1WrpIaLxeoxVpAI4bxcKlPtVMSfuuLMJ2JVKR+Ig==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794596463;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Received:
-	 Received:Received:Received:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-TM-AS-GCONF:
-	 X-Proofpoint-Reinject:X-Authority-Analysis:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details;
-	bh=fuewAPLlqIvqq2VHFaSIXpBbZE+s6t70GvF1/X1V2MI=;
-	b=tWzit6zdCeMpauFrKJSzSTeOeYQ/AxjSqhFJ9KgeQbldFrsdehYXSVqtOOjyU05veb/K
-	 LfO4qGS992D6E3FAkheimGpxSbBs5KZJBxh2nzOvPALOTZCvW2EBvUCapU9O1/5ls+CtZ
-	 1TTuwJrMejUdZ+Tc6UNWTpBprIwvft0+Vn9s8f+0kUg+5/gkRow8xlFOeJjQxTiBwqzQv
-	 eNqZYL0SKPrObIS8OqeL65u7S/CJF/oJr9G/uwyzLREQb717GIzVXbPtNLw2qBh8ikviu
-	 RnijaD7yYSoc8k8sxJcLLebjKsDPXbCNtabrSKIv0+6z2qxPVH0yRcQNKYOn4wYsUtA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794596636;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=8DhktJUUGysUbtfb0tmJTo5XW0cehShNaBR9ivWue5A=;
+	b=Tnb5wqDIGrM9e+BFeT5ZBXWGt4oBs+yEY1ePkKYzoxiANspxglqO6R3FrUYSMtKNOPho
+	 FWc36MK7twc5fUl3jJbS+Vg4QFE5gyKTATSWNav59H5OPHYR9A62Bk0bRDnjXRxtZaxXH
+	 YVfC9e3i0wFbySHDp8VuKouZgEUGbzERGATdfYqXrijos2/kv3F427nSiBLhEy1TSD9v8
+	 2AFt+XXLnkesRpE+AYbqs0DfMzDmbR2tfXF6OhTrPAqCCpLayhQUNJwtgHH/Tu2zRkAFR
+	 XXrefoiedSS9B5eU7e+OPHT7TlWba3P/4VK2OA+f40Qn9UMQPrXz3YFNMiN7Y89LRjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.ibm.com;
-	spf=pass smtp.mailfrom=linux.ibm.com;
-	dkim=pass header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k3dST9qf;
-	arc=none smtp.remote-ip=148.163.158.5
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=ieee.org;
+	spf=pass smtp.mailfrom=ieee.org;
+	dkim=pass header.d=ieee.org header.i=@ieee.org header.a=rsa-sha256 header.s=google header.b=ExICz8P4;
+	arc=none smtp.remote-ip=209.85.128.182
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33621606A339
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 19:01:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 33621606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E14606A332
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 19:03:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D0E14606A332
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=k3dST9qf
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADIvi5t2705793;
-	Fri, 13 Nov 2026 19:00:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fuewAP
-	LlqIvqq2VHFaSIXpBbZE+s6t70GvF1/X1V2MI=; b=k3dST9qfahmvoyhDfdMMTx
-	nXZN+U4RCeWMiHRoqwqNPc429nqECawJHwmWyjFHuU4T4aFnOAQitU/qKshnshEt
-	8+RCxdHW8MqYwETwNsfalYhnph3EIlF5ZxBi+pN2BfKjCcmba9cdqPNmnRDQ9RMB
-	YJ7JDooQ/slwtxJmqOaa4HycS6zH5AgogB/G2CWTcymVnUHgmaKawNy0ov+mHwiS
-	PZBCPmhME77kVCDqLhM5aUmjQPeNSqSv7MI5sS4eNgo+d33U/9g0FcVz3Cf36EBI
-	HRyKCXkxv97Y8CehWAbc37xJMEysGv5tUdLUSi/bKR2yOPxk8Zkj7rvuy3IHECBw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hstdgm3fb-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 13 Nov 2026 19:00:46 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFYxd22531475;
-	Fri, 13 Nov 2026 19:00:45 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4hwjcf47ek-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Nov 2026 19:00:45 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6ADJ0hkJ16974510
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Nov 2026 19:00:44 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4FABF58028;
-	Fri, 13 Nov 2026 19:00:43 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3BBBD58017;
-	Fri, 13 Nov 2026 19:00:40 +0000 (GMT)
-Received: from [9.67.72.137] (unknown [9.67.72.137])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 13 Nov 2026 19:00:40 +0000 (GMT)
-Message-ID: <bb29cbf9-20dc-4574-b084-0c3832849645@linux.ibm.com>
-Date: Fri, 13 Nov 2026 11:00:39 -0800
+	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.a=rsa-sha256 header.s=google header.b=ExICz8P4
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8b0dba37a7fso15247077b3.0
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 11:03:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google; t=1794596634; x=1795201434; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8DhktJUUGysUbtfb0tmJTo5XW0cehShNaBR9ivWue5A=;
+        b=ExICz8P4fXxjgxs3giLZpJeiyL04Vuw8hAxUaB6CTLnhd54zVSuoAcn5AC1HAzUtnz
+         a7g6gthrLeu+e6gO+HXo7VglgGprVg1gviCW7di95hANPwlzvOQ3HWCBCSG9CGL94xRZ
+         wkZVwYoIONyGjl71EkMD/0AG2LGy4p7s2P6Hw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794596634; x=1795201434;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8DhktJUUGysUbtfb0tmJTo5XW0cehShNaBR9ivWue5A=;
+        b=Xv2YYqSSHijVtDW153hzz0PzQHvKryzSQZfp22jX9D7qhfYbWGOlwQGBBnfGCLn4wh
+         NdmTnS5ewzyS4Mb1Haqh5M4OwX6x92WFITqdLrWV2Y2t5/y7VeUaFxuSYv6C5BUofseC
+         M62ghy5FuyM2gw7LOxGo3VZiaallpc2EBzK1ERW2bzCDaL2RYkZGTa7HrITxTmqIx/I9
+         sVIu/VLQ2YNjhhJ1By/zM65dp2Fgk+UlWud6lotpdjwcJw4Vxyp4veD0HapAk2YgrWua
+         6GDAMn5SHg/+hjcBKuM+vtdNPWcx5LOx59JTLfdcwZbdbRvQuG/UXrXoREgH5XpiWEUO
+         lxVQ==
+X-Forwarded-Encrypted: i=1; AL+hErHEcefQjzbHo+MC/OCYtAkzluS0uAt64rmSabYwKf8PWEaycAGGLj32JfUwCZOjxvL/NEuiBeE=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+0iNjcxKScYK5Iz9C0mj2L7j0Bs/Bq1fKCcIzDiQnHdtE1IpxD
+	Z+0i85IC/L+hfGIzq3UB9efK8evoTcVBUNI3RoNaM2L1GnoREx1EJJZ1pXjVMl+yiQ==
+X-Gm-Gg: AYBFou0VgMQag0LVl1Hzj6SBjk7Lhp59V4F7qjZH1sJhFTyrXXJHNMGihNb/BFcvVeR
+	9Kmaz9ZhIXAfe367swX1jLGhZjdG+O1O7VjFGyOasS60YwuzJjQHbGfR2ug0KUfaXzJbArzLBDX
+	rpgT1M1Hk+hNzqCVfsygRhRhqWAA8bqVWQXL4ltiikBe0URurdtdMXVLI1dPjoYvGap5rhPVZ/H
+	1gVCZmWSQX92SjY+xphwxrfQWteq97SkJ31d3F0aFDkxsf1CPaB6qXjybqum/5790ty6YGfDxXi
+	1KstwCyCJwrFS5SClTH6BPdQtvMWKbuEkFiBaGLwunkphwDbgG4pw07msHiSNU8gogNMSIFxvqU
+	WdMjmJtlmi5PbsM8fNmPzalVSpapMhCs00FTNG0kl6Tw1y/ucJNfuz/Cavmv1U2ifQTjkm6zdwb
+	496hqo6URMnEc2BwPn/K478rqVd6eA7Fhp7zZeANwPHhFaKDQ5ryUX/MqBY/UnKMyhDyyN6aNHN
+	JEox9JA8s9UqWaf5msgtGjHX0mpV2doO4d/m7+Vj2E31RdC2oXrUXm4EiAyqZh1dk8i8OXjxDm7
+	kemko6cv6qA8JNuou2+ovIW3
+X-Received: by 2002:a05:690e:168d:b0:67b:eda0:b411 with SMTP id 956f58d0204a3-67d895e6290mr1728922d50.48.1794596633744;
+        Fri, 13 Nov 2026 11:03:53 -0800 (PST)
+Received: from [172.22.22.28] ([73.62.185.64])
+        by smtp.googlemail.com with ESMTPSA id 6a1803df08f44-91f23d780e8sm27000686d6.27.2026.11.13.11.03.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Nov 2026 11:03:52 -0800 (PST)
+Message-ID: <bbadc472-655f-442f-86fd-9d56ff84abfc@ieee.org>
+Date: Fri, 13 Nov 2026 13:03:49 -0600
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -87,171 +90,143 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 11/15] ibmveth: Add per-queue RX and TX
- statistics collection
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        horms@kernel.org, edumazet@kernel.org, pabeni@redhat.com,
-        andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
-        haren@linux.ibm.com, ricklind@linux.ibm.com, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
-References: <20261109235556.60604-12-mmc@linux.ibm.com>
- <179452783113.2199510.7647821675893385517@kernel.org>
+Subject: Re: [PATCH v2 1/9] firmware: qcom: pas: add qcom_pas_context_init()
+ for pre-allocated context
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+ Sumit Garg <sumit.garg@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
+ <lumag@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+ Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+ Bryan O'Donoghue <bod@kernel.org>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Alex Elder <elder@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jeff Johnson <jjohnson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Abel Vesa <abelvesa@kernel.org>, Sean Paul <sean@poorly.run>,
+ Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+ Abhinav Kumar <abhinav.kumar@linux.dev>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+ linux-media@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+ linux-remoteproc@vger.kernel.org
+References: <20261113185009.157893-1-mukesh.ojha@oss.qualcomm.com>
+ <20261113185009.157893-2-mukesh.ojha@oss.qualcomm.com>
 Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <179452783113.2199510.7647821675893385517@kernel.org>
+From: Alex Elder <elder@ieee.org>
+In-Reply-To: <20261113185009.157893-2-mukesh.ojha@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=J+M/fwnS c=1 sm=1 tr=0 ts=6af75e5e cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=cprOaneoDXahzPzRN7oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfXy+UThZ55DPLP
- ys4aqRW5bQBAr4RAd6bEucztZGD00mfVj/BBJjXl1X/qFQG2TZH54EW5n0RgDh93dj77MXPpqCw
- uMT0LzGO17Q86ibVRfcDPU4YMNAKQnSBpXHbK1nXmHfoFOTxB6Nt+mSSuhEn9umK1hWG6K6WPH6
- NY/Oby31TZNc40fPNDpW81JYoXhupUfd0e7Rh2QalZM6Q7VU7g+Mq8PODje2JzJg5meaJz8t3PB
- 5NBnQFw46gq9GZd++W7+zdP/2icFw8SXYH6xx4PMfaFZymDGaFeYF91B0gvlY0gLp1JoSTHGzID
- 8MGYk1jrCK1wERdSl7FYt5fMWBH5cHhYYaj8hXHwrOTovdn7E79/b97groymGBABCK+zsKnT9mX
- UayW4pXbSZ4l5H00phBzyTuW8gFBuopNk+I11Lrvw6jpcV8GNRlHs8dQ97aATrPFqCOEQY2oT3c
- WJ26Wuf9dykkCIQ100A==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX10IzPe0IsRmi
- zqNyBg0XN9slpEep4EmOM/64kbYaJLhbsmLI6ZhlElT21YrOPFvUyRBmFAULMXsY2MMEu+UcGod
- BwLqMqK6+sPD2nllor8PbA31TMf2QKo=
-X-Proofpoint-GUID: Iai_D2yEjCc3ivGtgRB6SpyVECBPCytn
-X-Proofpoint-ORIG-GUID: EDDk7E4hx0onW7rFHgm0WFFocMd8dBDD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-13_06,2026-11-11_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 adultscore=0 suspectscore=0
- malwarescore=0 clxscore=1015 priorityscore=1501 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130075
+Content-Transfer-Encoding: 7bit
 
+On 11/13/26 12:50 PM, Mukesh Ojha wrote:
+> devm_qcom_pas_context_alloc() allocates and initializes a struct
+> qcom_pas_context using devres.  Several callers, however, either live
+> entirely on the stack (short-lived helper functions) or embed the
+> context in a larger structure that is already managed by other means.
+> Forcing those callers through the devm allocation path is wasteful and,
+> in the case of functions called on every power cycle, causes a devres
+> entry to accumulate on every invocation.
+> 
+> Add qcom_pas_context_init() that initializes a caller-supplied struct
+> qcom_pas_context in place using memset + field assignment, with no
+> allocation at all.  Rework devm_qcom_pas_context_alloc() to delegate
+> to qcom_pas_context_init() after the kzalloc, so both helpers share
+> the same initialization logic.
+> 
+> Update the kernel-doc for qcom_mdt_pas_load() to reflect that the PAS
+> context may now be initialized by either qcom_pas_context_init() or
+> devm_qcom_pas_context_alloc().
+> 
+> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-On 11/12/26 3:57 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [Medium] Statistics readers now take every RX queue's replenish_lock
->    with spin_lock_bh().
->
-> --
->
-> ibmveth: Add per-queue RX and TX statistics collection
->
-> This patch moves the adapter-wide RX and TX counters into per-queue
-> ibmveth_rx_queue_stats and ibmveth_tx_queue_stats arrays allocated at
-> probe. It exports packets, bytes and hardware drops through
-> netdev_stat_ops, adds ndo_get_stats64(), and keeps the existing ethtool -S
-> keys by summing the per-queue slots. It also adds a per-queue
-> no_buffer_retired carry so that rx_no_buffer never goes backwards across a
-> reopen.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index a0c3c06d2b9d9..45adf6e9be09b 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> [ ... ]
->
->> @@ -1063,7 +1197,45 @@ static void ibmveth_update_rx_no_buffer(struct ibmveth_adapter *adapter,
->>   	p = adapter->buffer_list_addr[queue_index] + 4096 - 8;
->>   	drops = be64_to_cpup(p);
->>   
->> -	adapter->rx_no_buffer = drops;
->> +	qstats = &adapter->rx_qstats[queue_index];
->> +
->> +	if (drops < qstats->no_buffer_drops)
->> +		IBMVETH_STAT_ADD(qstats->no_buffer_retired,
->> +				 qstats->no_buffer_drops);
->> +	WRITE_ONCE(qstats->no_buffer_drops, drops);
->> +}
->> +
->> +/* Snapshot live+retired under replenish_lock; see retire_rx_no_buffer(). */
->> +static u64 ibmveth_rx_no_buffer_pair(struct ibmveth_adapter *adapter, int i)
->> +{
->> +	struct ibmveth_rx_q *rxq = &adapter->rx_queue[i];
->> +	struct ibmveth_rx_queue_stats *qstats = &adapter->rx_qstats[i];
->> +	u64 drops, retired;
->> +
->> +	spin_lock_bh(&rxq->replenish_lock);
->> +	drops = qstats->no_buffer_drops;
->> +	retired = qstats->no_buffer_retired;
->> +	spin_unlock_bh(&rxq->replenish_lock);
->> +	return drops + retired;
->> +}
-> [Severity: Medium]
-> Should the stats readers be taking replenish_lock here?
->
-> This lock sits on the RX datapath. ibmveth_remove_buffer_from_pool() takes
-> it from NAPI for every received frame. ibmveth_replenish_task() holds it
-> for a whole multi-pool refill, which includes netdev_alloc_skb(),
-> dma_map_single_attrs() and the h_add_logical_lan_buffers*() hcalls.
->
-> The new ndo_get_stats64 calls this helper for every slot, whether the
-> queue is live or not:
->
-> ibmveth_get_stats64() {
-> 	for (i = 0; i < IBMVETH_MAX_RX_QUEUES; i++) {
-> 		...
-> 		stats->rx_missed_errors +=
-> 			ibmveth_rx_no_buffer_pair(adapter, i);
-> 	}
-> }
->
-> The rx_no_buffer ethtool -S key, ibmveth_get_queue_stats_rx() and
-> ibmveth_get_base_stats() also call it.
->
-> As a result, every /proc/net/dev read, RTM_GETLINK dump or bonding/team
-> stats poll takes up to 16 BH-disabling spinlocks. Unprivileged users can
-> trigger these reads.
->
-> Each acquisition pulls the lock cacheline away from the NAPI CPUs. A
-> reader can also spin with BH disabled for as long as a refill takes, for
-> example during the initial replenish in ibmveth_open().
->
-> Before this patch the driver had no ndo_get_stats64, and netdev->stats was
-> read without taking any lock.
->
-> Writers already hold replenish_lock. Could they keep a single combined
-> monotonic value (retired plus live drops) updated with WRITE_ONCE()? Then
-> readers could use READ_ONCE() and skip the lock.
->
-> This also looks unchanged at the end of the series, in "ibmveth: Complete
-> set_channels down-path". There, ibmveth_rx_no_buffer_pair() still uses
-> spin_lock_bh() and ibmveth_get_stats64() still calls it for every slot.
->
-> [ ... ]
-The lock is only there to get a consistent snapshot of the live and
-retired no-buffer counts. The retire path moves the live count into the
-retired one and clears it, so without the lock a reader could see a
-mixed pair and report a transient double count or a lower
-rx_missed_errors.
+This looks good to me.  Thank you for implementing it.
 
-It's a cost on the stats readers, not a correctness problem in the RX
-path. The reader holds each per-queue lock just for two loads, with no
-allocation, DMA mapping or hcalls under it. It can still contend with a
-refill that holds replenish_lock though, so I agree a lockless counter
-is the better shape.
+Signed-off-by: Alex Elder <elder@riscstar.com>
 
-I don't think that should block the series. If there's a respin I'll
-fold in a single combined monotonic value that the writers update and
-readers load with READ_ONCE(); otherwise I'll send it as a follow-up
-cleanup.
-
-Thanks,
-Mingming
+> ---
+>   drivers/firmware/qcom/qcom_pas.c       | 26 ++++++++++++++++++++++----
+>   drivers/soc/qcom/mdt_loader.c          |  4 ++--
+>   include/linux/firmware/qcom/qcom_pas.h |  2 ++
+>   3 files changed, 26 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
+> index d74dd7b4f332..fdf62003fbf1 100644
+> --- a/drivers/firmware/qcom/qcom_pas.c
+> +++ b/drivers/firmware/qcom/qcom_pas.c
+> @@ -14,6 +14,27 @@
+>   
+>   static struct qcom_pas_ops *ops_ptr;
+>   
+> +/**
+> + * qcom_pas_context_init() - Initialize a peripheral authentication service
+> + *			     context for a given peripheral
+> + *
+> + * @ctx:	  Caller-provided PAS context to initialize
+> + * @dev:	  PAS firmware device
+> + * @pas_id:	  peripheral authentication service id
+> + * @mem_phys:	  Subsystem reserve memory start address
+> + * @mem_size:	  Subsystem reserve memory size
+> + */
+> +void qcom_pas_context_init(struct qcom_pas_context *ctx, struct device *dev,
+> +			   u32 pas_id, phys_addr_t mem_phys, size_t mem_size)
+> +{
+> +	memset(ctx, 0, sizeof(*ctx));
+> +	ctx->dev = dev;
+> +	ctx->pas_id = pas_id;
+> +	ctx->mem_phys = mem_phys;
+> +	ctx->mem_size = mem_size;
+> +}
+> +EXPORT_SYMBOL_GPL(qcom_pas_context_init);
+> +
+>   /**
+>    * devm_qcom_pas_context_alloc() - Allocate peripheral authentication service
+>    *				   context for a given peripheral
+> @@ -39,10 +60,7 @@ struct qcom_pas_context *devm_qcom_pas_context_alloc(struct device *dev,
+>   	if (!ctx)
+>   		return ERR_PTR(-ENOMEM);
+>   
+> -	ctx->dev = dev;
+> -	ctx->pas_id = pas_id;
+> -	ctx->mem_phys = mem_phys;
+> -	ctx->mem_size = mem_size;
+> +	qcom_pas_context_init(ctx, dev, pas_id, mem_phys, mem_size);
+>   
+>   	return ctx;
+>   }
+> diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+> index 0d55e9e0af3f..c6ec67e1da09 100644
+> --- a/drivers/soc/qcom/mdt_loader.c
+> +++ b/drivers/soc/qcom/mdt_loader.c
+> @@ -476,8 +476,8 @@ EXPORT_SYMBOL_GPL(qcom_mdt_load);
+>    * firmware segments (e.g., .bXX files). Authentication of the segments done
+>    * by a separate call.
+>    *
+> - * The PAS context must be initialized using devm_qcom_pas_context_alloc()
+> - * prior to invoking this function.
+> + * The PAS context must be initialized using qcom_pas_context_init() or
+> + * devm_qcom_pas_context_alloc() prior to invoking this function.
+>    *
+>    * @ctx:        Pointer to the PAS (Peripheral Authentication Service) context
+>    * @fw:         Firmware object representing the .mdt file
+> diff --git a/include/linux/firmware/qcom/qcom_pas.h b/include/linux/firmware/qcom/qcom_pas.h
+> index 1d132e89536e..458075868bf5 100644
+> --- a/include/linux/firmware/qcom/qcom_pas.h
+> +++ b/include/linux/firmware/qcom/qcom_pas.h
+> @@ -36,6 +36,8 @@ static inline void __iomem *qcom_pas_ctx_map(struct qcom_pas_context *ctx)
+>   }
+>   
+>   bool qcom_pas_is_available(void);
+> +void qcom_pas_context_init(struct qcom_pas_context *ctx, struct device *dev,
+> +			   u32 pas_id, phys_addr_t mem_phys, size_t mem_size);
+>   struct qcom_pas_context *devm_qcom_pas_context_alloc(struct device *dev,
+>   						     u32 pas_id,
+>   						     phys_addr_t mem_phys,
 
