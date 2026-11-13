@@ -1,55 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=82.76.27.144
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794593950;
-	b=hRULG+djLXhhm8iB9j1+JsNsENV/2dw6cZ1R0JcMCTVXEHsO6Cvlo8AEVf4dbT7u+5rw
-	 BQPQmuq287XcnOrBxgiAxj3Uq1uWiSefR9noEmOLBg0wermNGD/ybSvIRaiH0FBqkDSE4
-	 iDnmEdBIFAAn2srPF8n1MbGA2FZvlm7H2X8v7vxYhjSb37YIYNKZWb225Z1CRmHFMEaYX
-	 A96nwOJMDuNbG7wdCUIJU42WgZg/vGt6tp3JKiGaPpGCn/KhC0OnDm1VN56mqeWn0c05D
-	 vS0EHag2b0hUe+FeUCXxnTmZEQmDCujd2JnebQs6tU/Bo5t5TffapnnZ53yMluWx6ow==
+	t=1794594383;
+	b=IcInzd85yPMaiMBXYyq7vzVwa1IoOvlJQYo7kh8lWdb79w2IeAuApdWV07qQkg9byuSy
+	 uSKsTz/Iy6dNy3U+He7srYRQOFFGudtDyiHm2bIdpJY0p1cGP3vg78Yv5p0ZB5iIFSEWi
+	 gmhYgjGL0iL79t1RxXRzU5urj/UhiVLyDBBo9Z9CcebaZcZn4kloilrGaZyiV29Qo3iSH
+	 DTq2rHN7trBSC6aq1r5dSt+EhBjC8376GETEV4a1MkGoZzhD+OcohiRMW4AkG2oQ6UwDk
+	 ez7ku+pH+XllfpDBFuC3e2DQbQHIDvLpKZZ8AT1/RR0yGF00Miz1l3EikSOKs3Rcw4A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794593950;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=/VIh85zZMfzSY6G83+v5V/TjnRLbNiLly0GYfH3nJNs=;
-	b=t5x8xi0TRkyR8iJ3UUKXMnZPoc9QcquUX45STYBhFxRu7x3iK7Ltd58SQdSEjMde4fyL
-	 UhlBsWjwV/CycfC5U22MLur1cdTRQTXnJD8xIdmQzmqK9jk7G/vCpsVEcIP/BO8uZJQ5T
-	 PH+x8MeudQYPu+tY8g8go0ZsE+xdtFGOfqYPF6/jtXkuQKVPsXgnoBLpqQBI8QawEgIwc
-	 23hvXrlEHSIBrkKg0Cv638ZmnoGGmLLCElDAANyNY/x1U26xaB9EA88CSW3cQ1BUBOL/E
-	 Dzmy806hdseQWkqz7O+/68/NZhEDGsgAm1U3irKePlBLkagD4rcq7r6N/3CJauMFVtQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794594383;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Originating-IP:
+	 X-ClientProxiedBy;
+	bh=lN6lv10nb8Hj9ZoBc4u2NsxzTta/2A4Lc4QtvNhDqTE=;
+	b=nrasmsBwV9PwDbg8TCe3s6RMu9Qh0rgh9qgFaWTBqkSuwcHlAU4oT3Tt+9iblZpZ76Gh
+	 sGhvc+fKxc+N2LAN3oelAMvD+E94a0d8Lsi8cnAVkbi5Md8i+MMBz2pFsflTmwsId4rR8
+	 eKFV8xsEO1Th9+FgJ8oKpu9Q5LO1UKL2/lvw0T1Yhjxo7b2gyR15nymB0Hy2tEbUokfZy
+	 wKl41PFolX6ZX4ySemE2z+HBeVYpxkTqAoUfmlRv/CycfZFcAQyYpjnwVkd7tS/g0Tcgp
+	 lzXErLev0t9a2q2ctfYFv+h0oJCG84jlUHM8eIlOQATk9HUbqXTksCZwbAW7prqB8rw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TzC7cE78;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=andrei-z.com;
+	spf=pass smtp.mailfrom=andrei-z.com;
+	dkim=pass header.d=andrei-z.com header.i=@andrei-z.com header.a=rsa-sha256 header.s=sig1 header.b=BFJZkQ+L;
+	arc=none smtp.remote-ip=82.76.27.144
+Received: from vtj.irix.systems (vtj.irix.systems [82.76.27.144])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA45606A8A6
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFE860A6F5B
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:26:22 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BBFE860A6F5B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=andrei-z.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=andrei-z.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TzC7cE78
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5543D1F000D3
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:19:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794593950;
-	bh=/VIh85zZMfzSY6G83+v5V/TjnRLbNiLly0GYfH3nJNs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=TzC7cE78kKFl2rFE1ESKez8K3/v6Pqk/6PLrXGyiq2H8nW8RaKll1mNR/hvrBhoAX
-	 9WUKboDxL2p3Jax+koelb066IybY3DAyK95vGOnYrQLEWCd8zr9JB2nkLXwMD48oro
-	 eBlcvuFHizULDj5hONrf7IDExHONWpvIf77MgXaUD3OXBqfZQ67bfgb2xPq1SoAoJK
-	 T3NkAz2AcSCaHe3eo20kPD9U/cE84jkgmN3fcFTb3UIgs2jbLigXSsu2MG4WlwRKQd
-	 lN4tR2+CCuZNMvYNucVewMR1jQy7sxt8uriatRDaKQNHlu1Xb8w/7Uzi3R4wDwiNfg
-	 QeLT7VoO7hmng==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5bcdae234ecso2100660e87.3
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:19:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEJxZ7vy2e5meUx8ywyvSQRECzMO1UiK/u1flK0R/yA7eN3qAyzHf8Nnir3uEmJekyGwYgSzoU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8mplm6QVo8ryailRLWmQsXF8R1MBldq9HzTciR/zyWpL8eqxKP
-	EiFR8BkazOAdebDEfCeVaUjnt/gd7lNtSnXxYS3kBz4OwYH4WQbFOvaMzfxdV0I7Eh9Hlnpfvv/
-	dswfD25DeLmCbAy07GJgumJYx4TBXJCI=
-X-Received: by 2002:a05:6512:1310:b0:5bf:cf80:dfd8 with SMTP id
- 2adb3069b0e04-5c170a0bb47mr1769832e87.23.1794593948320; Fri, 13 Nov 2026
- 10:19:08 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=andrei-z.com header.i=@andrei-z.com header.a=rsa-sha256 header.s=sig1 header.b=BFJZkQ+L
+Received: from MAILGW-DELL.dell.vtj.corp.irix.systems (localhost [127.0.0.1])
+	by vtj.irix.systems (Proxmox) with ESMTP id BD2061A3FE;
+	Fri, 13 Nov 2026 20:26:14 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=andrei-z.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=sig1; bh=lN6lv10nb8Hj9ZoBc4u2
+	NsxzTta/2A4Lc4QtvNhDqTE=; b=BFJZkQ+LOFCpFRt8TzjHVkt13Mtf3YgnCFx8
+	nkW+TVCLm3TjlTK4HLb8RhnACf0YmPBFUuJesLXZEPhKM2wA/3sea8O+sPdjoQS7
+	4c7t+X7hCSKMZ2/azPGT1KST3Y5z3GcjIy3dMuKmBYR1O/BWinOr3cQuwByO4NGD
+	048515s5quJOWYXfzpbbT8pblrMwoIAxuiOaSjhJXjhIltrJMV47CUeJ5oAYxa+d
+	uF+rSE1lPp8hVTiQ9+b1GFkYm1l2s27jx6szyLTN5xIuQOti24X+OM3JkWwhw4jp
+	J+NyTynXHPj8UT0bptionlKenmQt6Qkbs+GKkueROQQxoGgK9Q==
+Received: from VTJ-MX.corp.irix.systems (unknown [10.57.36.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by vtj.irix.systems (Proxmox) with ESMTPS id 21F3D1A523;
+	Fri, 13 Nov 2026 20:26:14 +0200 (EET)
+Received: from workspace.corp.irix.systems (2a02:2f04:1:9c23::c) by
+ VTJ-MX.corp.irix.systems (2a02:2f04:1:9c24::6) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Fri, 13 Nov 2026 20:26:13 +0200
+From: Andrei-Alexandru Bleortu <me@andrei-z.com>
+To: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: Re: [BUG] e1000e: I219 with jumbo MTU: RX CRC errors for unicast DAs not in the RAR (promiscuous/bridged ports)
+Date: Fri, 13 Nov 2026 20:26:08 +0200
+Message-ID: <20261113182608.24628-1-me@andrei-z.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <87fa6cd1-9a98-4c9b-aab3-6ac782c413fa@intel.com>
+References: <87fa6cd1-9a98-4c9b-aab3-6ac782c413fa@intel.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,98 +75,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
-In-Reply-To: <20261029163044.3062958-1-Frank.Li@oss.nxp.com>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Fri, 13 Nov 2026 19:18:55 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0jyuMjh4En_r2TYui+sNbGveJ0Rz1Da39LEK9e-HxHgGA@mail.gmail.com>
-X-Gm-Features: AclHuK9_YtJ6aWlSAf9yM8R-lWnFcHYi_anHWoQsLhZYkqzdVHJqxA51shEqA-Y
-Message-ID: <CAJZ5v0jyuMjh4En_r2TYui+sNbGveJ0Rz1Da39LEK9e-HxHgGA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] PM: runtime: change stub pm_runtime_get_if_active()
- return 1 when !CONFIG_PM
-To: Frank.Li@oss.nxp.com
-Cc: Frank Li <Frank.Li@nxp.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>, 
-	Karol Wachowski <karol.wachowski@linux.intel.com>, Oded Gabbay <ogabbay@kernel.org>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Matthew Brost <matthew.brost@intel.com>, 
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Alex Elder <elder@kernel.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Guan-Yu Lin <guanyulin@google.com>, Mathias Nyman <mathias.nyman@linux.intel.com>, 
-	linux-pm@vger.kernel.org, linux-usb@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-hwmon@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev, 
-	linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org, 
-	linux-staging@lists.linux.dev, netdev@vger.kernel.org, imx@lists.linux.dev, 
-	Rob Herring <robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: VTJ-MX.corp.irix.systems (2a02:2f04:1:9c24::6) To
+ VTJ-MX.corp.irix.systems (2a02:2f04:1:9c24::6)
 
-On Thu, Oct 29, 2026 at 5:31=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
->
-> From: Frank Li <Frank.Li@nxp.com>
->
-> When CONFIG_PM is not enabled, all devices runtime PM state should be
-> treated as active.
->
-> __pm_runtime_resume() returns 1 (called by pm_runtime_get()).
-> pm_runtime_get_if_active() is the try-and-get version of pm_runtime_get()=
-.
-> stub pm_runtime_active() also returns true. So pm_runtime_get_if_active()
-> should return the same value as the stub pm_runtime_get(), which is 1.
->
-> Analysis of all callers and their behavior with old (-EINVAL) vs new (1):
->
-> Pattern A: if (!pm_runtime_get_if_active(dev)) -- no impact
->   Both -EINVAL and 1 are non-zero, so !ret is false in both cases.
->   Callers: drivers/accel/ethosu/ethosu_perfmon.c,
->            drivers/gpu/drm/msm/adreno/a6xx_gmu.c,
->            drivers/gpu/drm/msm/msm_perfcntr.c,
->            drivers/gpu/drm/v3d/v3d_mmu.c,
->            drivers/gpu/drm/v3d/v3d_perfmon.c (x4),
->            drivers/media/i2c/gc08a3.c gc05a2.c og0ve1b.c ov6211.c,
->            drivers/media/i2c/ccs/ccs-core.c s5kjn1.c lm3560.c (x2),
->            drivers/media/i2c/s5k3m5.c thp7312.c imx283.c ov64a40.c,
->            drivers/media/pci/intel/ipu6/ipu6-buttress.c,
->            sound/hda/core/device.c
->
-> Pattern B: if (!ret) after get -- no impact
->   Both -EINVAL and 1 are non-zero, !ret is false in both cases.
->   drivers/gpu/drm/amd/pm/amdgpu_pm.c (comment says "allow access"
->     in kernels without CONFIG_PM), drivers/pci/pci.c
->
-> Pattern C: ret > 0 / ret <=3D 0 / ret !=3D 1 checks -- FIXED
->   drivers/usb/core/offload.c: checks (!=3D 1), old -EINVAL caused
->     -EBUSY even with !CONFIG_PM. Fixed: now returns 1, proceeds.
->   drivers/accel/ivpu/ivpu_job.c: drm_WARN_ON(<=3D 0), old -EINVAL
->     spuriously triggered WARN. Fixed: 1 > 0, no warn.
->   drivers/gpu/drm/i915/intel_runtime_pm.c: checks (<=3D 0), old
->     -EINVAL triggered error path. Fixed: 1 > 0, correct path.
->   drivers/accel/ivpu/ivpu_sysfs.c: (> 0), old skipped freq read.
->     Fixed: proceeds correctly without CONFIG_PM.
->   drivers/gpu/drm/xe/xe_pm.c: wraps (> 0), all xe callers
->     (xe_bo.c, xe_shrinker.c, xe_vsec.c, xe_ggtt.c, xe_guc_ct.c,
->     xe_pxp.c) now correctly treat !CONFIG_PM as active.
->   drivers/net/ipa/ipa_smp2p.c: power_on =3D (> 0), now correctly true.
->   drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c: (> 0), now correctly
->     executes stall register update.
->   drivers/staging/media/ipu7/ipu7-buttress.c: active (<=3D 0) early
->     return now skipped, correctly proceeds.
->
-> Pattern D: explicit -EINVAL check
->   drivers/hwmon/prom21-xhci.c: checks (> 0) then (=3D=3D -EINVAL).
->     Old: took -EINVAL fallback. New: takes (> 0) fast path.
->     Both succeed when CONFIG_PM is disabled; functionally equivalent.
->   drivers/hwmon/eic7700-pvt.c: call is guarded by IS_ENABLED(CONFIG_PM),
->     stub is never reached. No impact.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On 12/11/2026 16:21, Ruinskiy, Dima wrote:
+> Would it be possible to ask you to run a few additional tests, if you
+> haven't yet?
 
-People sent feedback, so I'm wondering if there's going to be a v2 or
-does someone else need to take care of this going forward?
+Hi Dima,
+
+Thanks. Both tests are done, on the same two machines and kernel as
+before: host 1 = OptiPlex 7060, host 2 = ProDesk 600 G5. lan0 was taken
+out of OVS for the tests, so it was not promiscuous: promiscuity 0,
+RCTL 0x06038422 (UPE/MPE clear), against 0x0603843A as an OVS port.
+Traffic as before: 1 GiB of TCP over ssh, MSS 8948, from a 10GbE
+sender, rx_crc_errors counted per GiB. Unless noted, every run
+delivered the full 1 GiB, rx_errors rose by twice rx_crc_errors,
+length/align stayed at 0, rx_missed_errors at ~0, and rx_smbus moved
+only by its background rate.
+
+Test 1
+
+The upper is a macvlan with a distinct MAC on lan0.13 (a VLAN device
+on lan0 that has lan0's MAC), created after lan0 was up. Its address
+reaches lan0's unicast list through dev_uc_sync() ("bridge fdb show
+dev lan0" lists it). Adding it did not set UPE, so it went to SHRA.
+
+                                                  host 1     host 2
+  control: DA = lan0's own MAC (RAR[0])             0          0
+  d. DA = the live-added secondary                418, 418   387, 390
+  e. same, after ethtool -G lan0 rx 4088            0, 0       0, 0
+     (e1000e_down()/e1000e_up(), uppers stay up)
+  e. same, after ip link set lan0 down; up        427, 416   394, 385
+  for reference, lan0 back in OVS (promiscuous)   416, 424   395, 398
+
+The live-added address behaves like one that is not in the RAR at all,
+and a reconfiguration with the address present fixes it.
+
+A plain down/up does not, and I believe that is down to how a
+VLAN-stacked address comes back. lan0 down closes the VLAN device, and
+vlan_dev_stop() unsyncs its list from lan0. On lan0 up,
+e1000_configure() runs e1000e_set_rx_mode() and then e1000_setup_rctl()
+before NETDEV_UP reopens the VLAN device and dev_uc_sync() writes the
+address back, so it arrives live again. (The workaround runs in
+e1000_setup_rctl(); my first mail said e1000_configure_rx(), which was
+wrong.) A fix that refreshes the workaround only on reset would miss
+this case.
+
+Test 2
+
+lan0's MAC changed to a locally administered address while up and not
+promiscuous. The VLAN device carrying the host's IP keeps the original
+MAC explicitly, so the original moved to SHRA as a secondary.
+
+                                                  host 1     host 2
+  b. DA = the new MAC, changed live               422, 423   379, 399
+  c. after a reset (ethtool -G), MAC unchanged      0, 0       0, 0
+  d. original MAC restored live                   nothing received
+                                                  until the next reset
+     after that reset                               0, 0       0, 0
+  MAC set while lan0 was down, then up              0, 0       0, 0
+
+So updating RAR[0] in e1000_set_mac() leaves the old CRC seed and the
+PHY's copy in place until the next reset.
+
+Step d is worse than CRC errors, and it reproduced every time, on both
+hosts. Once the original MAC is written back into RAR[0] while the port
+is up, nothing addressed to it is received on any VLAN until the next
+adapter reset. A tc ingress counter on lan0 for that DA stays at 0;
+rx_crc_errors, rx_errors, rx_missed_errors and rx_smbus do not move;
+transmit carries on. The host's IS-IS adjacencies time out on their
+hold timer. Without a reset it lasted 4 min 19 s; with the host
+resetting the adapter 30 s later it lasted 26-42 s, and a second
+secondary address being present made no difference. In that step the
+address does two things at once: rar_set() puts it into RAR[0], and
+dev_uc_del() removes it from the SHRA slot it held at the last reset,
+where the PHY's copy still has it. My guess from the outside is that
+the PHY matches the DA against its stale copy and crops it, and the MAC
+then finds no valid entry in that slot.
+
+If the analysis holds, the PCH_RAICC and
+e1000_copy_rx_addrs_to_phy_ich8lan() refresh looks needed after every
+RAR/SHRA write while the jumbo workaround is on, in e1000_set_mac() and
+e1000e_write_uc_addr_list(), not only in e1000_configure(). I can test
+a patch on both machines.
+
+As before, I ran this with the help of an AI assistant (Claude); the
+numbers were measured on my two machines.
+
+Thanks,
+Andrei
+
