@@ -1,58 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.153
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794559139;
-	b=Wox6Fc0656UnltiSeqB1z7JU82TSQK5x1IwaofZRz7kVnbIKDjkYRqHOLl8gpMXER/GT
-	 DDTomFtd44pKzO047VR1nP6YaW+JSby/SlaeiUZttFBVsvxmIhf4vgIQBZ5OR5hkj8Pp+
-	 vQAqACBWtWVwsR30KMymGfHcGvfTqLKx3YPqWzmaqi0jnkv9IEdgMOk7JsyBlq0Ii1Hrh
-	 PIZ106VPHlZqJhk/iNCp31bdGjJkFicxBgTy4ZiMG4hOgWzBOpmckxe7NS8A71VvbK9wH
-	 mgwcRDHpSfQTbboW2tbRpU+S4aHu9LiumkodUQa9o2lRjYJGXi5+iKFig5nfq71STqA==
+	t=1794559367;
+	b=4nfq9sqrZR4E3vlKgqRu5n5OzCmDKLhyj+wCj8D6J5r2FtBT74RCEkC9MXcA/SfRPNOp
+	 Ndf3zZJG1l0jHyx7wPNUpzdstpd04HRHtBfVKLOw+3ZW596tuYHJmqKno/+1PThe/v/yu
+	 Lz/0FKvOdfEPJVQJjkKIkHSt58sLOEJfGU1OAuMNZLGQYG1qfwt8ccItyQuXE6BpBfeq3
+	 5XZk8hDyS0gd2BIDUi7BDMQqWYctOEGp0mGRS9UTEh7g919M53HQ3kFIQSYUBmALa6w5i
+	 tKOiZtMiGt9wacjwY5fWP2uuk5ANVysbwB8s6gF6huuckWj2AfebnGBZd7V1EArvlJw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794559139;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=8t4QuEM/UAFTQif1padG43+4xJsVO798G1x6veCOSgw=;
-	b=XsqqhDxNqcc20XuU2noZ0mFUZA53bjpoXDh7PHXQwMKGmomDHA07izykyMOoKrNFSxSu
-	 PL38Nocq+MYeRmN9mYrNuqPvuQV/t3ilfaOvEA9wCpMBaB4dIm4B3Q4OYKp3Dn8IqOLkn
-	 jRL/owTDBOHUVP/07dLltQROfjmEp+akeQgr22xiA9OcU6s6/LFuTd4Cvb8G+n0W463j5
-	 sb3hNcM09UzlOITgpubu5W9k5PeCrz/tPGsF5uqI58tMG8h4PCY14cRWT5/d0XwKelSth
-	 jE6cuu10K6iKNxEud2HhhLIyLKeDldrKkj1frhdyJdl0VR2Hs5aXp0FMGiHgjxKsMbQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794559367;
+	h=DMARC-Filter:Received:Received:DKIM-Signature:X-ME-Sender:
+	 X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
+	bh=EP2SyCkNlTn8EMVIQYAEgqgA2lFhEBo38MvNL5VS+9g=;
+	b=y7X/XAypMcfOmvd0wRKry9KipzldoN6LgzNv9KJHK4FrkpdeLCs/ezbTVaYpzJ2mPLh/
+	 PS9kKguQsYcQYASTo0MsF0wpmeVxT80zPt919Q+eX01nHXur0ZcEz4G9U2BcOlo/eo2q8
+	 J3S2OlhsKi6QLpiOfkafpHUc4ExcSuB7AAXTlvT3LDNdU5g/7r24SdcrBHH7SNMS4nQQ6
+	 RzcRkIJO2B8U+f28kBpH6ditudiadQ34fedibus9V8ZG6h5QAgLPM+afhIoSPS592oT7Q
+	 m+PpF+iPz3Xyi46YPuFGYAJhoX4SZ2LyP0qbgtoZqtxxh3vcik1XDEN6xzFTpYEcuDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=IhrZGzHH;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dmarc=none header.from=idosch.org;
+	spf=none smtp.mailfrom=idosch.org;
+	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ffzd8GCp;
+	arc=none smtp.remote-ip=202.12.124.153
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A6E606A31C;
-	Fri, 13 Nov 2026 08:38:58 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 42A6E606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90679606A31C
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:42:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90679606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=IhrZGzHH
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 893454E415A4;
-	Fri, 13 Nov 2026 08:38:56 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 339D9601D5;
-	Fri, 13 Nov 2026 08:38:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4206B11BC06F0;
-	Fri, 13 Nov 2026 09:38:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794559134; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=8t4QuEM/UAFTQif1padG43+4xJsVO798G1x6veCOSgw=;
-	b=IhrZGzHHEal3ZdOVMwhzsvbm5iuwEnp5xHC0dulEJ8kc2vnVnVCp+mqGoO1a8XACcjFo3L
-	CemyoCGSjPFSqj+xVQN1dhltZ0iVnQmkCOSBvXU15Dmbd2Ahmr83mLPMw8X+qgICiJrJrp
-	SjwpXfrk0UcG4L72AZvp4eSvVUTv7Ve1b/Nd6cfIkkTIyTnqxwY1wg/q+RN66hpFjGpzXa
-	nK3gkzC44IvPJpC97sGgzIcepYInwd3pCKGgdYMEZqPIcGqMsC1oOfuloeDHhED46S3COf
-	CUuazr2dgS4G//37WSqK+pD/JNz35R1ayU9FGStfzCq/CZMKpQ3u3/D+P6Wh6Q==
-Message-ID: <85370a77-e2ef-4eae-96f0-7f591625f47d@bootlin.com>
-Date: Fri, 13 Nov 2026 09:38:41 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ffzd8GCp
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 5E17F7A02DC;
+	Fri, 13 Nov 2026 03:42:45 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Fri, 13 Nov 2026 03:42:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794559365; x=
+	1794645765; bh=EP2SyCkNlTn8EMVIQYAEgqgA2lFhEBo38MvNL5VS+9g=; b=f
+	fzd8GCpjIhf3EfTDnVdBNpRRw3Wn3r7fYYRu0of0fGAhBkwC02tReMVymmJUgsaJ
+	LkjgHH/nzaxqPcMU0UvtHc1TYNFAmHIYKmbuG0SsW0mJn01RILaKOZy2v4/AXcn9
+	QjvleWdNwYMwU6j0Z84S6bwezbmXxQWHHlSQQ2W6BolAL2puN/a4FXgWiEH3fbA4
+	EbXavIUdGyvZNWUt6Xfd36LdryVnqtG9fgjyHP5Mvc7B0h5g+Hojf8O4JM2A5let
+	044q6VKRvVGGLbO+IOLqxFx05Czp5bCisECn/gq5KEciJ5Jl5t+SpcqF00cFcM/E
+	XBoV5nsOpr3CWdLzLx+kw==
+X-ME-Sender: <xms:hM32ah1fDNZu3hVk3NrjI0qN4LZj9fvNKZMysm9Jjg9-dT6ezBubng>
+    <xme:hM32agSe5tdDsEDYDL-PQn3FpijTYWcE3vQ527KTw4dhs10ZYJFIMCllbNNmBiyt_
+    O9qShfxkMFqgcCThYFruPxXd4AM41yiTPF6G96QOZ0D8tOYncM>
+X-ME-Received: <xmr:hM32atehU8xjqZOKeNoIknCQi5mb6AdB3t14LBykUjimVUTTtsMxDQXWB-jLzpDw6WuQewshYX3SoHMBYE92O-4ac6MA7Q>
+X-ME-Proxy-Cause: dmFkZTGKyZELgZy1AVXtUKQfDe+LoPY/aNl94huhGjYCLjWEeEX046Z/nLirETcf4jjBv1
+    AC40+nzKUDkdEPDgHs3Q0uk0JpSkId4j6Stz/1EZqF5/uZUJo9WdP3F9PHu0V5aPI/tvXa
+    6zZ9s3SnvfsM8XGV0Sx+b41vKFEbUYfqljzAAtVeRcOulXEieK3Fdp8fiRYSlCrZQWpYlD
+    oTWGWrXsl39z59m0Dnn1UwfWUYcdXGwjZFqzaTLZcHBIv1jGfX7MKyOtpJBBl5koJdgtjl
+    5RtGyGc2hYZrmfNWvO2fGd7sfMh639ZTplbP5eUyiOYsWugwLFXa5E7j/dhw34Iya8YEVa
+    /Uc3EJLskHaDQq2vq5+xP1M+cXsL5HfVRhqWMM9ok4cFsjNN32XALQUh5BSvlnQcIk69+D
+    oBNmylW16wIxaP1WQcM6VebIxiZNoQdmco1oF8VzEaz+IplRq5jMfN21Rkxe7PWFbNYNiN
+    40X/LLXCiyy0chAwoyyYcmhVILCgIwB00WJWZIGb3cWsdBWX8Q5BsQR+0ELWZ8Fp70t1HZ
+    h6d9/VfRVHsj9Qn35+4M8E8+PAUoZT62JseCrciLFUaSn6EzasB3hPIu/iy9ArcpjL9C4W
+    uKoqFdEz7/HeTcVkcpujQwuCMgPkJv1+uTWZRU4gKpn71iaMRkTv0dFs6p4w
+X-ME-Proxy: <xmx:hM32apeYrylUGOdmoZvS2oGESznbtdrAg7K8LkKgp8dJ8MUJnmcYFQ>
+    <xmx:hM32av3lXRcdoJVK5gdR_427BkdmAoGmVK0ZtItrjbX8utsYcmO5Gg>
+    <xmx:hM32ap8NvbEalaSNgSQYTvTbHFrT99Th-Swwoh9rg1ziFzbG9qNp8w>
+    <xmx:hM32as7BGsgXGlbusq6e0Gm8abtQKs5GCfwgZJzgDC9uQr6wqlSrgA>
+    <xmx:hc32arU-TMNPYfsYResXhBFdt2IU6lSbuz6DhSdUZGipUCrExWS0tpbV>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 13 Nov 2026 03:42:44 -0500 (EST)
+Date: Fri, 13 Nov 2026 10:42:40 +0200
+From: Ido Schimmel <idosch@idosch.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
+	razor@blackwall.org, aahila@google.com
+Subject: Re: [PATCH net-next 2/2] selftests: bonding: Add a test for 802.3ad
+ with coupled control disabled
+Message-ID: <20261113084240.GA3595966@shredder>
+References: <20261111171947.2816258-1-idosch@nvidia.com>
+ <20261111171947.2816258-2-idosch@nvidia.com>
+ <avZ07oXIXo7xZyCC@fedora>
+ <20261113070732.GC3517282@shredder>
+ <avbAFdyJowX8CvOB@fedora>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,52 +98,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 1/2] dt-bindings: net: rockchip-dwmac: Add
- RK3572
-To: 1579567540@qq.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- David Wu <david.wu@rock-chips.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-References: <20261111-add-board-ok3572-c-net-v2-0-304466394970@qq.com>
- <20261111-add-board-ok3572-c-net-v2-1-304466394970@qq.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20261111-add-board-ok3572-c-net-v2-1-304466394970@qq.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <avbAFdyJowX8CvOB@fedora>
 
-Hi,
+On Fri, Nov 13, 2026 at 03:45:25PM +0800, Hangbin Liu wrote:
+> For a pair of physically connected ports, do you mean two ports connected
+> back-to-back on the *same* host? Otherwise I’m not sure how to run the test
+> using two physical ports across two different hosts.
 
-On 11/11/26 10:56, Cunhao Lu via B4 Relay wrote:
-> From: Cunhao Lu <1579567540@qq.com>
-> 
-> Add the rockchip,rk3572-gmac compatible with the snps,dwmac-4.20a
-> fallback and require rockchip,php-grf.
-> 
-> Signed-off-by: Cunhao Lu <1579567540@qq.com>
-> ---
-> Changes in v2:
-> - Add RK3572 to the shared Synopsys compatible list for consistency.
-
-This doesn't address Andrew's request to deprecate the tx_delay and
-rx_delay properties for that new SoC. Even if the board you're using
-doesn't need them, we need to make sure new designs will use the
-generic properties for RGMII delays :)
-
-The older rockchip glues have no choice but to keep accepting these for
-compat reasons.
-
-Maxime
-
-pw-bot: cr
+Yes, on the same host. That way we can test both the hardware data path
+and the software data path (with veth pairs). See
+tools/testing/selftests/net/forwarding/README 
