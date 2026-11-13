@@ -1,70 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=44.246.68.102
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.145.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794605727;
-	b=VfEhSxxmAW19ZT7kaj+POmw7GvhISWQnFmU3eVGXwHDjDWGbkX2NC6QeTuhTQZIjR4xm
-	 Cxi+GPrz/jS1svgTRXgs6dtv28ABnPRGoxo2Q9wmQq3Q/HxohJ10JXGL0Co6CElzHli7+
-	 H/tJl8UHEWQA4YAm+quEZezNua4Is3G+nZyM6OGQGnMPCmMcI/41ahZmEEIokasKrNBhy
-	 MWeowtjiIb5bDKx9/OlYgxYdFKYLCttJQTo/b7oZUrFk6VDvy400ZdyrJBZ+jmlM23Rjn
-	 AXTeexeVn59DPOL8sA7V1rxnDEAYImFkB84AD+4gSZE2jDBl/pxHEMQ2o9pz+v+zc9Q==
+	t=1794605744;
+	b=YuuEacuy3KL0cuNriseVQesOO/MzeA3vYBMR7vEev0SGBlE63Cy775osM6e2f52Uu4RI
+	 5YvzZMivTU5+8Q23eT+JVJeqRuj3kXEdNZVLPcVIetA5i1E5rngA5soeJfdX6Vi1j2msv
+	 eKoEZOBFiZytGR5WXuyESalQHFUA2AnPEQ+ENwge2vwhPHB+yt0yGM2RKpE/TQFtOnwaK
+	 grvV4tnaopEMwl8LaCPLMTKQqvHy1rKTy+kH3GpBUhMsZZJZNc2dlUOzAv2pM8wA1ketu
+	 aST8vy3dY8GpocpsmxGPkmbAw5sTcXjPk8TG4oCFMKK2OQvknlEkmEVIohI3lqvxwvg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794605727;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:Received:Received:X-Farcaster-Flow-ID:Received:Received:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Subject:From:To:
-	 CC:In-Reply-To:References:Date:Message-ID:X-Mailer:X-Originating-IP:
-	 X-ClientProxiedBy;
-	bh=iRIJ9O1v6GQmi9gOAFJukz4g/NK/Vku3u3+nsxtB+GA=;
-	b=f60dVBXchYkusB5qwjiR79cVZZxcDkWWWrSFJ+Xe6TYrkYjsKW1Xjc99MVKqctjRr/8c
-	 HEu/xrnJf58iBwmScUl1nGOcYbSxm+n/BVCx2U+F+pbWfg8lw4i4c2xT49Dc+np/pBgRm
-	 HnQpkwLS+0MA2mOiv40PAsVBbYW+K+RSD5iD0xCBIwEn1YxzB0VJ6YUW3cRx7C0J2GXZ0
-	 AmDy+f23RRfTcZGn3hpuRnOtcmORgwq+zh+p5T5pUPKPiSBK2ndCG3QLQBs5fnMg8um1t
-	 ikxAAYeFc+P2Od+M0LwO/g0yfoYXSrtjteMRHEtZoWAQjX6z+vTV+myTbWB6biAPWjw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794605744;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:Date:From:To:
+	 CC:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Originating-IP:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-Spam-Details-Enc:
+	 X-Proofpoint-Virus-Version;
+	bh=4iOYl7h/u5X/1BsQ9LaeXNUXC89a9eBu1n0c2YTCfu4=;
+	b=SmyRkfzvtRefRzAHzU1rIlVLEEtAmQi4CS5f8cXLS+tK53crSVzXFu4sWD9y0KquKVZ3
+	 ybJWJ6MiiM2WI6ZQL4o6MsdObahs55YbZKKzYQkQhqQa7KO/Kx53o04RZcFMKggiJzMwQ
+	 Ybk02twWH9z24Pfn23QGVZ2DIJsU0H2dr2TkXMLNY85XOeaHPZpfXSb4b4cRNR0MYKDEr
+	 o/MVnQnBHxkFkddpGhL703vVadgbpNOTZbZIRZTRiRz1qfO0NZeG0MLKhQtoqdqiQifFt
+	 BFvoGrt763X8i0H5LR/NIA+64m5apbGbrAReypgU5HCYe/LH11JXkFspykvUhQzdCqg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=amazon.com;
-	spf=pass smtp.mailfrom=amazon.com;
-	dkim=pass header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=Dnf9D5rQ;
-	arc=none smtp.remote-ip=44.246.68.102
-Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=meta.com;
+	spf=pass smtp.mailfrom=meta.com;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=F8CFVQ0F;
+	arc=none smtp.remote-ip=67.231.145.42
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9F8606A32E;
-	Fri, 13 Nov 2026 21:35:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6B9F8606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4F6606A8A3
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 21:35:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0B4F6606A8A3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=Dnf9D5rQ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1794605727; x=1826141727;
-  h=mime-version:content-transfer-encoding:subject:from:to:
-   cc:in-reply-to:references:date:message-id;
-  bh=iRIJ9O1v6GQmi9gOAFJukz4g/NK/Vku3u3+nsxtB+GA=;
-  b=Dnf9D5rQ+LGtlAda4ir9eO5wTRomXOsR7V3CRF5AuNeREP5ICKqocwM0
-   jLypmiqzJdT2McXxxExECevLGOMa8TGqKPFHcJFFI+1v+COPokQLc0q2j
-   aygs402TZ2ARepVSztqv159xQXmnKbsbs5Vm5gqxnzqmHd+lY6rT7Jglk
-   mqns2lOKXlihFjyNIAOy5mN8VyYU6ZkFDgVQbv4TfX5mNjOkbdWUpbceW
-   I57wFKV+Ze6owc/l1agWop7PovsHPMnrJyvrcXDheokhvfVr55nEh5mUq
-   Dp9D9+tatCaP4Cfd0708Jvxy9S2HTjqXRUGxsEiM/taneO7QpAty46APv
-   Q==;
-X-CSE-ConnectionGUID: EiwHto+kRTGEqr/CyKlnzw==
-X-CSE-MsgGUID: K8XQ4+3aTquqSBd3Z1YtSw==
-X-IronPort-AV: E=Sophos;i="6.27,212,1787011200"; 
-   d="scan'208";a="33873866"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 21:35:25 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:24242]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.227:2525] with esmtp (Farcaster)
- id 7d61ec3c-5559-4466-90a8-c6e606d7eb7b; Fri, 13 Nov 2026 21:35:24 +0000 (UTC)
-X-Farcaster-Flow-ID: 7d61ec3c-5559-4466-90a8-c6e606d7eb7b
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Fri, 13 Nov 2026 21:35:20 +0000
-Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Fri, 13 Nov 2026 21:35:19 +0000
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=F8CFVQ0F
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADLT1cg2585617;
+	Fri, 13 Nov 2026 13:35:36 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps82601-s2048-2026-q3; bh=4iOYl7h/u5X
+	/1BsQ9LaeXNUXC89a9eBu1n0c2YTCfu4=; b=F8CFVQ0Fw9/v03E8EGjly7S8Vk2
+	n0+khaT3g9ocy0Pj5e1cls1ce9nvvlQkSsyqMjVu95MpXqaR+INDoR58zirga3IQ
+	cMtbFo8iudqnUkwuf4yn1InSC9DlDtPrJadjHONwwadVqXdFlHN/PGM0wTtR0G+I
+	68gC0klBYgnZZj9IZ/jBfx/b8hncEsv7gCmS7mNBO18/9wDL1PTJ7PM3yTWxf7c+
+	sJx3eudRdaTwNMcI5aVdMzaL/QVDYOpa1pt4n8fCVxDGshnDfmaE+5q2dStX3Zps
+	gI+uaMtZh5iUJoIYwsFiQlB3nOUKDd9l8LGk61DDdotOHcNF7Lr8oJ3bQOw==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwjg5ruhp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 13 Nov 2026 13:35:35 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 13 Nov
+ 2026 21:35:34 +0000
+Date: Fri, 13 Nov 2026 13:35:33 -0800
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: Stephen Hemminger <stephen@networkplumber.org>
+CC: <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>,
+        Stefano
+ Garzarella <sgarzare@redhat.com>,
+        <virtualization@lists.linux.dev>
+Subject: Re: [PATCH RFC iproute2-next 2/2] ip: add "ip vsock" to move the
+ guest vsock device to a netns
+Message-ID: <aveCpf9XDQMCV0fK@devvm29614.prn0.facebook.com>
+References: <20261105-vsock-guest-ns-v1-0-b1c11b3b69c7@meta.com>
+ <20261105-vsock-guest-ns-v1-2-b1c11b3b69c7@meta.com>
+ <20261106103646.41a0f13a@stephen-xps.local>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,64 +78,172 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ena: reuse the whole RX page on 64kB
- page kernels
-From: Arthur Kiyanovski <akiyano@amazon.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: "Harry Yoo (Meta)" <harry@kernel.org>, Arthur Kiyanovski
-	<akiyano@amazon.com>, David Arinzon <darinzon@amazon.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Breno Leitao
-	<leitao@debian.org>, <kernel-team@meta.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-In-Reply-To: <20261111164751.5ac643fa@kernel.org>
-References: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
- <20261111164751.5ac643fa@kernel.org>
-Date: Fri, 13 Nov 2026 21:35:17 +0000
-Message-ID: <179460571746.22458.2892088316099736810.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261106103646.41a0f13a@stephen-xps.local>
+X-Proofpoint-ORIG-GUID: JKUT2pGgrnFahTRmpNO8QHCVZIxj_PD6
+X-Proofpoint-GUID: JKUT2pGgrnFahTRmpNO8QHCVZIxj_PD6
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA4NiBTYWx0ZWRfXzy7MxeUUzERD
+ NWG+geB4ff7yaYbafDTzsA83HwRgg74tXU3Wb20Q3rrqmjb5gxA7alLnpoS5QYjnmPpMQJHN8Z4
+ 9KusjkfEu1Wxh1yHInte9szAimAI4ow=
+X-Authority-Analysis: v=2.4 cv=Mcb5KJ/f c=1 sm=1 tr=0 ts=6af782a8 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=VEq9NWtHcDJz48dA:21 a=kj9zAlcOel0A:10 a=zJRp6_cAMcgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
+ a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=N7c5Zlm_GsJ_Jf1E2xsA:9 a=CjuIK1q_8ugA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA4NiBTYWx0ZWRfX8mS0i7qB91Cp
+ n78gokfkDjyc24R6hTKLOle2iz6Z/RYpPzAYxUNG17c40LBJaOsUf1RqiLElivAOGhMABCj+cnT
+ Wz7Fj5+VLO/LLAYarvw+MT8aaLOtlJAVb1sgXPEF7pr1V/fXJ1lzNIZg6YoaDxHwaiuOV7CqyU4
+ pSLqHMsehhEQVI/YQ5Np8SCovnVBqOFs+66YCNojafGl9ZIwwl7c85Ca5fYQK3q063hF+TzLpzE
+ NXJwAdcwNcbW1BU1yf4dKvZmmCGkPTF0w80STh6jxf3g0tnszvl0dsH8dwU/wn2gNy8XUKmhEi4
+ 6npN3jfdleeKuppC4OclaKi7Fxt87QZ5emMI/IIeFMyb+cKJENpBeTQYLiBtI4T5AL4JaADQ18u
+ iSaLMrbvlHqHKODLJgNpySahfE25BVqhUDjp1nxSA3ODkEbfbMn01J/obrKP9UpEdB4Eegk9VPG
+ MxCDhHJT2G3KgtI/2kw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-13_06,2026-11-11_03,2025-10-01_01
 
-On 2026-11-11 16:47:51-08:00, Jakub Kicinski wrote:
-> On Fri, 06 Nov 2026 03:17:11 +0000 Harry Yoo (Meta) wrote:
+On Fri, Nov 06, 2026 at 10:36:46AM +0100, Stephen Hemminger wrote:
+> On Thu, 5 Nov 2026 11:30:36 -0800
+> Bobby Eshleman <bobbyeshleman@meta.com> wrote:
 > 
-> > This shows up when RX data stays in socket receive queues, as each
-> > queued skb keeps the whole 64kB page alive while at most 16kB of it
-> > holds data. On an EC2 t4g.large instance (64kB pages, 8GB memory) with
-> > 519MB left unread across 64 TCP sockets, RX pages pinned 2869MB of
-> > memory while the socket layer accounted only 687MB.
+> > The guest's vsock device is not a netdev, so rtnetlink cannot move it
+> > between network namespaces. Add an "ip vsock" object that goes through
+> > the "vsock" generic netlink family instead:
+> > 
+> >   ip vsock set netns { PID | NETNSNAME | NETNSFILE }
+> >   ip vsock show
+> > 
+> > "set" issues VSOCK_CMD_DEV_NETNS_SET from inside the target namespace,
+> > since the kernel moves the device to the namespace the request was sent
+> > from. "show" issues VSOCK_CMD_DEV_NETNS_GET and prints where the device
+> > is, relative to the current namespace.
+> > 
+> > Link: https://lore.kernel.org/all/20261103-vsock-guest-ns-v5-0-48179b9b66b8@meta.com/
+> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> > ---
 > 
-> I'm not sure you're actually fixing the problem you're describing?
-> You optimize the memory use but the (unused) tail of the buffer is
-> still not charged to any skb, is it? Or does it now fit perfectly?
+> Semi-automated review using review-prompts for iproute2
 > 
-> Normally when the page can no longer be chunked up we should charge
-> the tail to whoever happened to use it last (see the page pool code
-> which does that).
 > 
-> Either way, you have to respin this on top of Breno's fix which
-> was applied earlier today.
+> On Thu, 5 Nov 2026 11:30:36 -0800, Bobby Eshleman wrote:
+> 
+> Thanks, this is mostly in good shape. A few things to fix before it
+> goes beyond RFC.
+> 
+> > +#include <linux/vsock_netlink.h>
+> 
+> This depends on a uapi header (and kernel series) that is not yet
+> merged. iproute2-next can only take this once the kernel side is in
+> net-next; the header update should then come from the normal uapi
+> sync rather than a hand-added copy in patch 1/2.
+> 
+> > +static int vsock_talk(__u8 cmd, struct nlmsghdr **answer)
+> > +{
+> > +	GENL_REQUEST(req, 128, 0, 0, VSOCK_FAMILY_VERSION, cmd, NLM_F_REQUEST);
+> > +	struct rtnl_handle grth = { .fd = -1 };
+> > +	int family = -1;
+> > +	int ret;
+> > +
+> > +	if (genl_init_handle(&grth, VSOCK_FAMILY_NAME, &family)) {
+> > +		fprintf(stderr,
+> > +			"Cannot resolve the \"%s\" netlink family, the kernel may not support moving the vsock device.\n",
+> > +			VSOCK_FAMILY_NAME);
+> > +		return -1;
+> > +	}
+> 
+> genl_init_handle() leaves the socket open when genl_resolve_family()
+> fails, so this leaks grth.fd. Harmless today since ip exits, but not
+> under "ip -batch". Add rtnl_close(&grth) on this path.
+> 
+> Also genl_resolve_family() already prints "Error talking to the kernel"
+> on failure, so the user gets two messages. Not a big deal, just be aware.
+> 
+> > +static void vsock_print_netnsid(int id)
+> > +{
+> > +	char *name;
+> > +
+> > +	if (is_json_context()) {
+> > +		print_int(PRINT_JSON, "netnsid", NULL, id);
+> > +		return;
+> > +	}
+> 
+> This copies the IFLA_LINK_NETNSID pattern from ipaddress.c, which is
+> fine for consistency, but note that JSON users never get the netns
+> name and get -1 for "unknown". Consider also emitting
+> print_string(PRINT_JSON, "netns", NULL, name) when a name exists.
+> 
+> > +int do_ipvsock(int argc, char **argv)
+> > +{
+> > +	if (argc < 1)
+> > +		return vsock_dev_netns_show();
+> > +
+> > +	if (matches(*argv, "show") == 0 ||
+> > +	    matches(*argv, "list") == 0) {
+> ...
+> > +	if (matches(*argv, "set") == 0)
+> ...
+> > +	if (matches(*argv, "help") == 0)
+> > +		usage();
+> 
+> and in vsock_set():
+> 
+> > +		} else if (matches(*argv, "help") == 0) {
+> 
+> New code must use strcmp(), not matches(). Abbreviation matching has
+> caused repeated breakage when keywords are added later (e.g. "s" here
+> already matches both "show" and "set"; order decides which wins).
+> Please convert all of these to strcmp().
+> 
+> > +	ret = rtnl_talk(&grth, &req.n, answer);
+> > +	rtnl_close(&grth);
+> > +
+> > +	return ret < 0 ? -2 : 0;
+> 
+> The -2 propagates out as the exit status of ip (254). Other ip
+> subcommands return -1/1 on failure; either is fine but please be
+> consistent with vsock_dev_netns_set() which returns -1 for its own
+> errors and -2 for a kernel error.
+> 
+> > +		"Usage:	ip vsock set netns { PID | NETNSNAME | NETNSFILE }\n"
+> > +		"	ip vsock show\n");
+> 
+> Literal tabs in the usage string; the rest of ip uses spaces for
+> alignment here ("Usage: ip vsock ...\n       ip vsock show\n").
+> Also "ip vsock help" should be listed.
+> 
+> > +static int vsock_dev_netns_set(const char *netns)
+> > +{
+> ...
+> > +	if (setns(netns_fd, CLONE_NEWNET) < 0) {
+> 
+> Design note, more for the kernel side than this patch: because
+> VSOCK_CMD_DEV_NETNS_SET has no target attribute, userspace has to do a
+> setns() dance, and "ip -n foo vsock set netns bar" ends up depending on
+> which namespace the genl socket was opened in. rtnetlink and devlink
+> both take an explicit NETNS_FD / NETNS_PID / NETNS_ID attribute for
+> this; doing the same for vsock would make the tool trivial and avoid
+> needing setns() (and the privileges to enter the target ns) at all.
+> Since this is RFC on both sides it seems worth reconsidering now.
 
+This does make sense, we'll use this approach in the kernel.
 
-Jakub,
+> 
+> If the kernel API stays as is, the setns/restore logic looks correct.
+> 
+> > +ip vsock set netns 1
+> > +.RS 4
+> > +Move the device back to the initial network namespace, undoing the assignment.
+> 
+> That only holds if ip is run in the initial pid namespace; "1" is a
+> PID, not "the initial netns". Maybe say so, or use /proc/1/ns/net.
+> 
+> Minor: the man page says "Nothing follows vsock when the device is in
+> the current namespace" -- worth also showing an example of the
+> "netnsid unknown" output so users know what it means.
 
-If I understand correctly what you are saying, you are correct.
-skb->truesize is still not reported correctly.
+Will address other feedback too.
 
-The focus in this patch is different. It is about using the whole
-64KB page instead of only the first 16KB.
-
-Harry's own figures show most of it is recovered — 497MB pinned for
-519MB unread, against 2869MB before — so the remaining gap is the
-final tail of each page, not the 48kB.
-
-So I agree the commit message needs to be more precise.
-
-The skb->truesize fix can come as a separate fix after this one.
-
-Thanks,
-Arthur
-
+Best,
+Bobby
