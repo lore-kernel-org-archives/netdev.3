@@ -1,59 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.38.221.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794615392;
-	b=Md81zYC/Vp/dHFvAgfhIOZwiXTxBe89HIsnGDbmqVkUuwiVim8bfhnSHejjNNaL2ROEx
-	 g3QVqwC3k6VnHLX6ipUIGrzBxkRATcUF4x8ZizZf518OGG/svVEw4NPK7P09FUQPxD6/I
-	 KP9Z5fLBQNxGajPwQOFebTSleIjPzlMB8IDp2HPItnyF4d4QkGpK3iI+IVBnpKeihtl0t
-	 7RzW+g5BhsGs8nTSXpnwDnfZEmCJhRRVSwzoU54Pnkzmi/A2Bouf9YeBbK6EyNFuLAq7Z
-	 qvGZg6juJW1WLtfT2kg8qeWA4BvHRYxTrS+o6BCvGc1MOnZJ4ohw0SOAemjZx5Z+H0A==
+	t=1794615607;
+	b=3eXz+vdGkXuiGvWwiwOkFn3/J6Vx6SAMuxZmQMI9ClO7uwGq9gpsAOvAgLyN0DIponAc
+	 H818dmMhrxZn5E9io5L1QwK0fXAl3xRJGt4xvPow8jwKAHCcCE09H3bpy98qNieRmvqlk
+	 uoRz3PSdB0hhOd2ACgRA4GRSPnDIonvMn7+wh6okso3c8JuglbXwWdDDfDFAcgeD3kwHq
+	 Lys+MXD9eE+e4Wp5xIxbwzAbHtEuQ/aFRZHEl9rxAhp9VWCm5Dk3RdSCgJ6N5/X9vRFHF
+	 R1ZWIJCOESwMNHZmlL0HA7zs4oK5PZv2vUKtshxhopOI4YkwV3eTqPjsSpMRrCSw4Cw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794615392;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=Guk0aJMCD2cOZJhykYYMTeDOfM6tQhjRyfXxpDWH01I=;
-	b=upWD3+FxpJvHjCR03zBPqTuTz4gIVr6xIvub7AM794Kgc0+vmto1eYcyCDpg2qmxf6/o
-	 mnL7dRYWESIEss3iab5BlseLjzgZtiFPQHalwEU2h01+ZI+CqYYQtBpvedoE77OZlF6Q6
-	 5vcmB6b+2qeQQphm8CDEJYO/MZyXa5hzzrQz/tM3ncWxQ8RgYd8BfKtVmTXoM5yhwvNmN
-	 9X1h8awB9GI8QvNjr0zaBteza5C69PVIhdYKoNKggDzXfcM4KiNPck2TqHs+pOJH2Vl2N
-	 W5RQPS/PJD6nmgg4H9b4XjPlnB3/LtlZnVKHlau8cVmOw1DKmtwn2RN/oJN4T9Fx3oA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794615607;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=uSNvE51YLCC+biUbP4t29+d0gpTTp78rVRLe4Op4Wsg=;
+	b=CWz36linzaeidsKtDSKw1xe21ZRCBcwCoMWRdTpsjddCKrmd2ThlgPPi2IPeAH1ukKCq
+	 JxstQch1HKaF4QlamTZInMOXb7onJ8kT1KIQeyW+xKZl+aVxTqfY8ILpKV4pPNr9EHtib
+	 hPV0sZL/PQLU8q8Y5rYOyaPfzsxJMZOXw78FsOvHZdEb5eYwQviIqbFzLOaehuPkd1n3e
+	 dZi7MQcvI3m3SOc7mGrSEyaAJbRV3Bd/1tisYJ5sH3HM35r4NyfgoTMyh+nY0DC4h9Dt0
+	 rILh8ZRAM++prQFjYKkFz+IjlFVmeyANUsTjHZrJSFS+7adlgPtaWKOBSeZUJs2tXHw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iKkgEkh3;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=loljews.com;
+	spf=pass smtp.mailfrom=loljews.com;
+	dkim=pass header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=bYymQIOK;
+	arc=none smtp.remote-ip=54.38.221.178
+Received: from mnc015mcc432.ss7-reroute.local (unknown [54.38.221.178])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E3D606A33D;
-	Sat, 14 Nov 2026 00:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0449606A336;
+	Sat, 14 Nov 2026 00:20:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0449606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=loljews.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loljews.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iKkgEkh3
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE491F000C4;
-	Sat, 14 Nov 2026 00:16:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794615391;
-	bh=Guk0aJMCD2cOZJhykYYMTeDOfM6tQhjRyfXxpDWH01I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=iKkgEkh3nvdGULC2ZH+VcEtVMwdO+VZ+VnYroH3Q+w1lRH8EiUx402lll70mN6Gfm
-	 zJkLi3ycoK/tsL46xyXOqMR/e2H94PCOO734dfUwwWEpT4jTv6bDfAt6pth1/SK1u3
-	 TkkiUsTuPn0bU8sN41QYFi2u1ft7e/6+TZIE1mLmP/R+AI44v0n6sRoRHBZ1bheKke
-	 0pFQhdpd13uSFMHAbqsSyav7VmAL8GVaNZhd07As4jNjMLar8r6VsH5cZkIZ/KNKUd
-	 Le+cXA3JjWxxPMJGjK0qfbqOmjtD/e9HmsVdG7v91NW5elgkAJsIz6VttARL2WR6kj
-	 EMeFD2jVQU3AA==
-Date: Fri, 13 Nov 2026 16:16:29 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- jv@jvosburgh.net, haiyangz@microsoft.com, ast@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, bpf@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next 3/5] net: record XDP programs propagated to
- lower devices
-Message-ID: <20261113161629.23d3d67a@kernel.org>
-In-Reply-To: <179461399614.2199510.14192155072084970014@kernel.org>
-References: <20261112235027.4072149-4-kuba@kernel.org>
-	<179461399614.2199510.14192155072084970014@kernel.org>
+	dkim=pass (2048-bit key) header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=bYymQIOK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=loljews.com; s=mail;
+	t=1794615596; bh=uSNvE51YLCC+biUbP4t29+d0gpTTp78rVRLe4Op4Wsg=;
+	h=From:To:Cc:Subject:Date;
+	b=bYymQIOKRIW7N9QQo4PPRd9EdoaTsumVJ8QTwEVt7Q/J7ym45iSFw/gCGv5KqfE00
+	 6OA/o+ADYCAmkFrIUiW2wBMwll21O81+EKQG7409L3rfCQ7kOPGB6jVFY5AIYrk+Z/
+	 KS7T0uYycdVNhK4Ru4HNaQB43RJzV41kw08xt7Z3q4Agv5ovzzcMKcWlRuYafJ/GyH
+	 XJrQ5cWJXLhr34fHwGLrKHki3kZl2q7Em6zdpHDkLuymgithCAx05GFIbWw2tNjtNC
+	 ehWRxRy2kPgyKAv9QdEYFkwXm4JTxChgFGBGQEAc75aAbtH8xz/GVNqzGGDHpQ7/Nk
+	 BlR8zwNs/xEqA==
+Received: from loljews.com (localhost [127.0.0.1])
+	by postfix (Postfix) with ESMTP id 498F027A347E;
+	Sat, 14 Nov 2026 02:19:56 +0200 (EET)
+From: Sandeep Haemoon <sandeeph@loljews.com>
+To: netdev@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Russell King <linux@armlinux.org.uk>, Daniel Golle <daniel@makrotopia.org>, Mason Chang <mason-cw.chang@mediatek.com>, Frank Wunderlich <frank-w@public-files.de>, linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v5 0/3] net: ethernet: mtk_eth_soc: 9K jumbo frame support
+Date: Sat, 14 Nov 2026 00:45:24 +0200
+Message-Id: <patch-f1e62a87eb0f914e1ea52a395f465998@loljews.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,152 +59,136 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, 13 Nov 2026 23:53:16 +0000 netdev-bot+sashiko@kernel.org wrote:
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index 69ee4342f43ee..3a520c798d4a8 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -9326,6 +9326,9 @@ static void __netdev_upper_dev_unlink(struct net_device *dev,
-> >  
-> >  	__netdev_adjacent_dev_unlink_neighbour(dev, upper_dev);
-> >  
-> > +	if (changeupper_info.master)
-> > +		dev->xdp_from_upper = 0;
-> > +
-> >  	call_netdevice_notifiers_info(NETDEV_CHANGEUPPER,
-> >  				      &changeupper_info.info);
-> >    
-> 
-> [Severity: Medium]
-> The commit message says that clearing the flag here lets the device own a
-> leftover program "rather than leave it with nobody allowed to remove it".
-> Can a lower end up with xdp_from_upper set when no master link was ever
-> created, so that this code never runs?
-> 
-> netvsc_register_vf() propagates netvsc's program before it joins:
-> 
->     ret = netvsc_vf_setxdp(vf_netdev, prog);
->     ...
->     if (netvsc_vf_join(vf_netdev, ndev, context) != 0) {
->         ret = prog ? netvsc_vf_setxdp(vf_netdev, NULL) : 0;
->         if (ret)
->             netdev_warn(ndev,
->                         "failed to remove XDP program from VF %s: %d\n",
->                         vf_netdev->name, ret);
->         return NOTIFY_DONE;
->     }
-> 
-> The first call stores the program in vf_netdev->xdp_state[XDP_MODE_DRV]
-> and sets xdp_from_upper. netvsc_vf_join() can fail in
-> netdev_rx_handler_register() or in netdev_master_upper_dev_link(). Both
-> failure paths return without a master link.
-> 
-> If the driver's ndo_bpf() then refuses the NULL program,
-> netif_xdp_propagate() returns before it touches xdp_state[] or the flag:
-> 
->     err = dev->netdev_ops->ndo_bpf(dev, bpf);
->     if (err)
->         return err;
-> 
-> netvsc returns NOTIFY_DONE without storing the VF in
-> net_device_ctx->vf_netdev, so it never comes back to this VF. No master
-> was linked, so __netdev_upper_dev_unlink() never clears the flag. Only
-> dev_xdp_uninstall() at unregister does.
-> 
-> From then on, every IFLA_XDP set or remove and every BPF link attach on  
-> the VF hits the new -EBUSY check in dev_xdp_attach(). netvsc's program
-> keeps running on the VF. Before this patch xdp_state[] was empty in this
-> case, so the user could attach a program and then detach it to clear
-> things up.
-> 
-> The only way out seems to be linking the VF to some master and then
-> unlinking it. Should the failed-join path, or netif_xdp_propagate(),
-> handle this case?
-> 
-> bond_xdp_set() has a smaller version of the same problem. If the unwind
-> call fails:
-> 
->     err_unwind = dev_xdp_propagate(slave_dev, &xdp);
-> 
-> the slave keeps the new program with xdp_from_upper set, while
-> bond->xdp_prog has been reset to old_prog. That slave can't be fixed
-> directly until it is released from the bond.
+This series makes the MediaTek SoC ethernet driver support 9K jumbo
+frames on the 10G XGMII MACs (MT7988).  The driver advertises a
+2030-byte max_mtu and programs the MAC max-rx field for at most 2048
+bytes, so MTU > 2K is rejected and 9K frames are not usable.
 
-I guess AI semi-randomly anchored this comment here, it's basically
-saying that since netvsc is buggy the state may get out of sync.
-Yes, as mentioned in the netvsc series I didn't manage to cover all
-the error paths there. And also that's the reason why I added the
-clearing of "from upper" on unlink, to make the bad state recoverable.
+Patch 1 fixes a pre-existing 36-bit DMA bug in mtk_poll_rx() that the
+review of v3 found: a descriptor released without a new mapping is
+handed back with the previous buffer's high address bits.  It is
+independent of the rest of the series and carries a Fixes: tag for the
+commit that introduced the bug, so the maintainers can route it to
+net directly if they prefer.
 
-IOW patch is working as intended. We're going from "no safety checks"
-to "some already buggy driver error path may fail to clean up".
+Patch 2 gates the page_pool on the ring's descriptor length: the pool
+hands out order-0 pages and maps at most MTK_PP_MAX_BUF_SIZE, so a
+ring whose descriptor length is larger has to use the
+netdev_alloc_frag()/mtk_max_buf_alloc() path.
 
-> > @@ -10561,6 +10564,15 @@ u8 dev_xdp_prog_count(struct net_device *dev)
-> >  }
-> >  EXPORT_SYMBOL_GPL(dev_xdp_prog_count);
-> >  
-> > +/* Does the device have an XDP program, and was it installed directly on the
-> > + * device rather than propagated down by an upper with netif_xdp_propagate()?
-> > + */
-> > +bool dev_xdp_has_own_prog(struct net_device *dev)
-> > +{
-> > +	return dev_xdp_prog_count(dev) && !dev->xdp_from_upper;
-> > +}
-> > +EXPORT_SYMBOL_GPL(dev_xdp_has_own_prog);  
-> 
-> [Severity: Low]
-> This isn't a bug, but does this comment still match what the function
-> returns? It describes where the program came from. The new kernel-doc in
-> include/linux/netdevice.h does too:
-> 
->     @xdp_from_upper: the program in @xdp_state was installed by an
->         upper device with netif_xdp_propagate(); it belongs to the
->         upper and can't be replaced or removed through this device.
-> 
-> __netdev_upper_dev_unlink() clears xdp_from_upper on any master unlink.
-> That includes the case where the upper's NULL propagate failed and
-> bonding or netvsc only warned. After that, dev_xdp_has_own_prog() returns
-> true for a program that an upper propagated.
-> 
-> Could both comments describe the flag as current ownership, including the
-> hand-over on master unlink?
+Patch 3 adds the MTK_NETSYS_RX_9K capability, advertises a 9194-byte
+max_mtu on the XGMII MACs (from the DT phy_mode at probe, so DSA can
+raise the conduit MTU before the netdev is opened), programs
+XMAC_RX_CFG2 and the PDMA RX SDL, derives the shared RX buffer length
+from the largest MTU (802.1Q headroom included) and sizes the RX rings
+from it, keeping the never-polled QDMA ring at its 2K buffers.  The
+MAC max-rx limits stay in sync with that shared length, including
+GMAC1's MCR jumbo field.  A runtime MTU change that needs larger
+buffers is rejected with -EBUSY while DMA is running; shrinking is
+allowed.  GMAC1, the built-in switch port, keeps its MCR programming
+(bucket plus the jumbo field in 1024-byte units), written after the
+MAC_MCR_FORCE_LINK_DOWN reset so it survives every mac_config();
+whether the internal switch path enforces that field at all is a
+hardware property the commit message documents.
 
-No, it's a failure mode / de-sync case. We shouldn't document it.
+This work is a forward-port of the MediaTek downstream jumbo work:
+Mason Chang's "change default rx buffer length" and "add 9k jumbo
+frame support" (MediaTek OpenWrt feed 999-eth-30/31, carried in
+frank-w/BPI-Router-Linux), plus Frank Wunderlich's "try to fix crash
+the right way".  The runtime reallocation of Mason's "dynamic rx
+buffer adjustment" (feed 999-eth-33) is not included and will be sent
+separately.  Attribution is prose plus Link: tags: Co-developed-by
+requires the original authors' own Signed-off-by lines, which we do
+not have, and the port diverges from the downstream implementation
+(2K buffer floor, per-ring pool gate, the -EBUSY rule, the XDP checks
+and the truesize fix are not in the downstream patches).
 
-> > @@ -10773,6 +10816,10 @@ static int dev_xdp_attach(struct net_device *dev, struct netlink_ext_ack *extack
-> >  	}
-> >  
-> >  	mode = dev_xdp_mode(dev, flags);
-> > +	if (dev->xdp_from_upper) {
-> > +		NL_SET_ERR_MSG(extack, "Can't replace an XDP program installed by an upper device");
-> > +		return -EBUSY;
-> > +	}  
-> 
-> [Severity: Low]
-> This check now runs before the existing loop that refuses an attach when
-> an upper has a program:
-> 
->     netdev_for_each_upper_dev_rcu(dev, upper, iter) {
->         if (dev_xdp_prog_count(upper) > 0) {
->             NL_SET_ERR_MSG(extack, "Cannot attach when an upper device already has a program");
->             return -EEXIST;
->         }
->     }
-> 
-> For a direct bond slave or a joined netvsc VF, the upper keeps its
-> program in its own xdp_state[]. Attach, replace and detach on the lower
-> were therefore already refused, with -EEXIST. They now fail with -EBUSY
-> and a different extack message.
-> 
-> The commit message says dev_xdp_attach() reads the flag "to keep the
-> program from being replaced or removed behind the upper's back". However,
-> that protection is only new for nested lowers and for the netvsc window
-> before the join.
-> 
-> Is the errno and message change for the common direct-lower case
-> intended? If so, could the commit message mention it?
+The equivalent change was tested on a BPI-R4 Pro 8X (MT7988, 10G
+lan6 / MxL86252) on the 6.18.60 backport: with both ends at MTU 9000,
+8K ICMP passes and iperf3 with MSS 8900 reaches ~9.87 Gbit/s (vs
+~2.57 Gbit/s at MSS 1460); the DSA conduit is raised to 9004 at boot.
+This v7.3 series is compile-tested with CONFIG_NET_MEDIATEK_SOC=y and
+COMPILE_TEST=y; no hardware run of this exact tree yet.
 
-Intended / doesn't matter.
+With the 1 KiB rounding the RX buffer length is order-1 (8 KiB) for
+rx_buf_len 4096..7168 and order-2 (16 KiB) from rx_buf_len 8192 up;
+at the 9K ring size the 16 KiB buffers pin around 64 MiB while DMA is
+up and make the refill a high-order GFP_ATOMIC allocation.  That cost
+is inherent to the downstream design; skb->truesize now reports the
+allocation that was actually made.
+
+Changes in v5 (the v4 review, in full):
+
+- 802.1Q headroom (Medium): the shared RX buffer length now includes
+  VLAN_HLEN before the 1 KiB round-up, and the advertised max_mtu is
+  lowered by the same four bytes to 9194, so a tagged maximum-size
+  frame (9194 + 18 + 4) still fits in rx_buf_len 9216 and the XMAC
+  9216 cap.  XMAC_RX_CFG2 and the ring buffers therefore cover a
+  tagged frame at every MTU, including the maximum.
+- GMAC1 MCR jumbo field (Medium): the vendor driver has a second MCR
+  max-rx field we had not ported.  mtk_set_mcr_max_rx() now clears
+  and programs the jumbo field (bits 31:28, 1024-byte units,
+  MAC_MCR_MAX_RX_JUMBO) for GMAC1, so the driver can program the same
+  shared length for the switch port as for the XGMII MACs.  The new
+  field handling is limited to the MTK_NETSYS_RX_9K SoCs; every other
+  SoC keeps its previous MCR programming bit for bit.
+- QDMA ring sizing (Medium): the helpers now take the buffer length
+  instead of struct mtk_eth, and mtk_rx_alloc() sizes the
+  never-polled QDMA RX ring at the fixed 2K length instead of the
+  jumbo length, so it no longer pins ~32 MiB of high-order pages.
+  HW-LRO rings keep their 12288-byte sizing.
+- pktlen bound (Medium): mtk_poll_rx() drops descriptors whose PLEN0
+  exceeds ring->buf_size, with rx_length_errors, before the buffer
+  can be passed up, so the larger build_skb() size can no longer hand
+  stale memory to the stack if the engine over-reports the length.
+- PDMA SDL encoding (Medium): kept as in v4; the comment and commit
+  message now say explicitly that the GENMASK(30,16) encoding (frame
+  length offset by MTK_PDMA_LRO_SDL) is the vendor's and not publicly
+  documented, and that a datasheet confirmation would be welcome.
+- XDP detach (Medium): the pool-size check now runs only when a
+  program is attached, so a detach always succeeds.  The shared
+  eth->prog weakness the review also points out is pre-existing and
+  is left to a separate fix.
+- 3/3 message (Low): the buffer-size math is corrected (order-1 for
+  rx_buf_len 4096..7168, order-2 from 8192) and the message now says
+  that the build_skb()/truesize change also covers the HW-LRO rings
+  on mt2701, mt7622, mt7623 and mt7629.
+- 1/3 subject and message (Low): retitled to describe the fix ("fix
+  the RX descriptor address on the release path") and the message now
+  cites 6e0490fc36cd and e10a35abb3da, which moved the
+  DMA_MAPPING_ERROR initialisation out of the loop and made the first
+  commit's protection ineffective after the first iteration.
+
+The pre-existing High finding of the review (a failure while filling
+an RX ring leaks the partially filled buffers and DMA mappings
+because ring->dma_size is still 0) is not part of this series: it is
+in the untouched v7.3 code and will be sent as a separate fix that
+sets ring->dma_size before the fill loop.
+
+Simon Horman's Reviewed-by is kept on patch 2 only: patches 1 and 3
+are new or changed materially since his review of v1.
+
+Previous versions:
+https://lore.kernel.org/all/patch-fc08a7ef40667bf3017366e452e6d3c0@loljews.com/ (v4)
+https://lore.kernel.org/all/patch-aad4cfa8d9522d1f7dbc9893ea12e813@loljews.com/ (v3)
+https://lore.kernel.org/all/patch-2793186c653124c4c0b3d463bde2ea3a@loljews.com/ (v2)
+https://lore.kernel.org/all/patch-4f863a941889f0bceca1c082f2d79624@loljews.com/ (v1)
+
+Sandeep Haemoon (3):
+  net: ethernet: mtk_eth_soc: fix the RX descriptor address on the
+    release path
+  net: ethernet: mtk_eth_soc: skip page_pool for RX rings whose buffers
+    do not fit
+  net: ethernet: mtk_eth_soc: add 9K jumbo frame support
+
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 324 ++++++++++++++++----
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h |  16 +-
+ 2 files changed, 282 insertions(+), 58 deletions(-)
+
+base-commit: c03c1a14507dfaf8b856c2608f9ac216021fc222
+-- 
+2.53.0
+
