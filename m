@@ -1,61 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.242
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794612854;
-	b=f2E+SgZewrevnkENgOM45cYQlaZXgknkybLZ4VneEH/n435G+/cP/SEK6uen13JZcGux
-	 a3Th4gzfcHy9G/IdQRlz3jHpjTwOiSmUO+TOQ454tmlVJn702vP2/81AYjNItSZZ69CGN
-	 a/ZqgrFIjohRjTc076Qtgy2qJjy3nZOGn+9cNZZ7PMXeAsdLkhwddWOSpAh4ZqrMlmN2Y
-	 7yqrxIIf35984EMCeHHPt+WKPwhsqYUrlr1QanHsx5WfpPTFig/ANdIY5cau8J3NZRiCO
-	 LplPpLNvx8tULISB7LZb8SFTtfmzBqSVUeZhNQmfO/kVmCIEcZduZlWpEIr7L3S7r/g==
+	t=1794613492;
+	b=wMStJbRFOPWUMTpIt9dtMaBaeVpIJUQL+KmNAj6YX4I//wcQNxuyC6t4iANAg7rx+cK+
+	 GNGsKxRN/+Lo2mjO+AgozqPLNWsT9mkgUnH14EQiJP1HFWb2+yfbRHBcjyRfK5gbEBKlY
+	 DXl9FQ4XMQl097EDY3IO64PlvzhYdlKIajCZE8ehIQIo0TwGVJQ8z+nLqGuTEtU4OmSqa
+	 OARTxLvGlgNboGEXFUvL4kzheiroqzxU1ac076WNY0cxmbOvjcpaak9e8BNKV/EKpIFU2
+	 zF+mNroDbzXjiIK84N+/JI6IimE+P3aAAlJv3Sdbvq1lv03kVKsVCn7ySNVk5DVJLrA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794612854;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=HWE9qB5/FYd66wghp0lgQgQG3+G/Uk8xX47Q6AQKNFk=;
-	b=Ulw/OAaXU5PjqEawEguLdkQwjQiHtlgWUtVlEVye9i6lxba2u0reweVW/Ip4icATAWR0
-	 A79Y5RgUvPpMs8fJa03NopQJurocv3WXKeIs8izAeUqr+G8pux2P7DVxUH9MYRpNgKitd
-	 8ihUv1w6JD3iEDd28sjDDTzyKQfAQ8Wp/870LwRPuULaj1Ci854wQ8YMnJXY13KI1ZB6X
-	 EPh2EoPqyS38m3ZnsnUb01QWCYLfW0OFfPNXzag4PXxqZzEw0dZfZCQJ+LOhWwAnuNRcS
-	 Jakj8L31AVtY/GuJQAHpBPQICk7dQyp8Mbp2jdSXFXSk2dPVy0IKftZ46AZrv/4X/jg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794613492;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=sfSwd+E8hxZNGFEXtM/YBMJuQSoOay1IgE8bLxa0aoY=;
+	b=p9UOYwQXDIftLoHWb4CYmL9zvI4qSCY9FD2ljX8SaBx986GcSvK5S4SLIwMJOe75xpDD
+	 oG7NNrSj+Ojif/Ivrdk10lo4Hqxz/az0iVnAx3caOg8/H0NcL09wwHmyv4dk9gbjgHD/L
+	 zIPa1WubepWNjNITrmvQI3HWY1gZsROD5mA0P9Ek6KX6n6LJvHJ+PEgXT8q0jhMbU53IP
+	 F5X2dsL/6CN2fsKb/filRb1tZ7GKD/njmCnbW4yVpWpkYLFhCETUonBagX2bm5DMDLuB+
+	 bBPkQtqXVEupf1MBApHNQSMt6B1c4mJnXosf5TMllqPTFso3662qraCKKdGFFaIQIsw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bv9X+um5;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=foxmail.com;
+	spf=pass smtp.mailfrom=foxmail.com;
+	dkim=pass header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=EMvDeECf;
+	arc=none smtp.remote-ip=203.205.221.242
+Received: from out203-205-221-242.mail.qq.com (out203-205-221-242.mail.qq.com [203.205.221.242])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD7A606A891;
-	Fri, 13 Nov 2026 23:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F60606A323
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 23:44:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 43F60606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bv9X+um5
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4781F000CB;
-	Fri, 13 Nov 2026 23:34:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794612854;
-	bh=HWE9qB5/FYd66wghp0lgQgQG3+G/Uk8xX47Q6AQKNFk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Bv9X+um5+bmN9SEwaiFNvbeFWjChgBczKEprYxEvtQWzjn04uQlwOCJ4u15aqDT4q
-	 C7YdIQr360Vr69Ct5bJLE6PsrzVwqtuKF47tUsqYSFzvS6ajMsh/jczMBfW9cCcLjZ
-	 vimi4EO23Yh8XoX/IjI5lpzEYAl+XHmvLlWWirSJkiZdhOy2btCMnv2h2ayGsAUxwi
-	 WFE2L+p22NEkGnLn+gLNJ1Ya2Dh8eN1NNULpdVDXqWfW5lGAMmkK4BdtE8OlJuuMQj
-	 O2i1MKuAn75WUkp0NK/RNFcbq08+H/Ths9qyf8QuJ112BTnLjrVYGLxzunx6gQEpsA
-	 8IpmnQY9z5tvQ==
-Date: Fri, 13 Nov 2026 15:34:13 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Arthur Kiyanovski <akiyano@amazon.com>
-Cc: "Harry Yoo (Meta)" <harry@kernel.org>, David Arinzon
- <darinzon@amazon.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Breno Leitao <leitao@debian.org>,
- <kernel-team@meta.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: ena: reuse the whole RX page on 64kB page
- kernels
-Message-ID: <20261113153413.541945b6@kernel.org>
-In-Reply-To: <179460571746.22458.2892088316099736810.b4-reply@b4>
-References: <20261106-ena-rx-reuse-64k-page-v1-1-ac75b20c5de8@kernel.org>
-	<20261111164751.5ac643fa@kernel.org>
-	<179460571746.22458.2892088316099736810.b4-reply@b4>
+	dkim=pass (1024-bit key, unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=EMvDeECf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1794613482;
+	bh=sfSwd+E8hxZNGFEXtM/YBMJuQSoOay1IgE8bLxa0aoY=;
+	h=From:To:Cc:Subject:Date;
+	b=EMvDeECfLE7cvE7kdUR2aYZGWeN70rssobxE27OiFhNnXT32Zksy4i/7y+tY9JJtw
+	 YHB66MjKMQRNHVRfa1xB7dmjJKk+NaC1MnqslugNDGppkSbBoc+v99PIrYvBtsaGnq
+	 yOrPlPPxNVGN0Mdy8mm320JvmepBMf3wG0ohmryQ=
+Received: from localhost.localdomain ([240e:3bb:3032:791:1c66:e624:37fc:2222])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id B2594C56; Sat, 14 Nov 2026 07:44:37 +0800
+X-QQ-mid: xmsmtpt1794613477tmeedlg0v
+Message-ID: <tencent_D2451CD0D7B4B812CEBADB56DC722BC33406@qq.com>
+X-QQ-XMAILINFO: N7NMbzIEsXzdiw2d/4uwoMFvoN/1Asv48GiXFyLkwGuWV6FBdpujzDocOVk57Z
+	 2ZQ83Bvuow2SzNR7ptDGUmQhepe2ifxU7WoBUfrCQdkKus5iOtc8+cJaRSPuc3nRXEJo23at5MQp
+	 d7gFUn0oIkw4DQkTX0TixlA8cZD7liRRERKrhw0NbFYWSY5UhyiLgkmbJ75eos1d6YPMELk5W9gG
+	 k/drAVfy3WxxMVEIwbqsaiV5zAVxAKwuzWQqclDt1vmAPvWIxGHq9lb5pAsbQrhHWRvpTAq9BLCc
+	 3x/ScKdfRWLE2QWhx3uAnju3EAIk4FQ4T4+tBgF4D6N3LYp2iuCvXxn38+/eusyvCeSO3B4dI5sB
+	 oz2BgdERPgWMyQlTwmWwU/yAYwlddtr2weENUWiT5VKsL+keZCNBzUnfMRfKWewjvRdtht4PTe3s
+	 /EySuIHUMGTaHesE1v6FinbV+qNVDjHaAbcfH+XdAEFlZN4P0oJV0EgLp6Mknuqyn3Cwv/DrcVl5
+	 nxJ5OktnyYou33O/5/HBPw43SoRMBwj8Pq5sFTuUfGJ3eMMbpBbT7pOyJxxSTJEukJFLB8Nn7ZsH
+	 P4Yi2/btI6qHyMTYu1KdNh66EftCKIZGyGOgVlevApGgJNrJs8wK3CS1+myP/wEcdhSLxU1fHTmc
+	 xUdnzJIVpdWb3Rd/Euv0ciYHs95KVCAcvh1YZYsdWJu3t8G4OUIB+qH1V+LIYbnV8Cqxu6eD4QxW
+	 wHG13OpyB2A5fHP4jvMDDxnGuOXrvaMYzKIYzBhFUk7p/vWHcIiEoCsgXJuTSoAE3bkUxB9Set+K
+	 CJFNF/FWetdjHgbu0Z5F/tlAi6+lD1hAThcY6Xyq39W5kpUmP+Xz0/ELVKk7Tu09xuOySJSjBq+L
+	 /VRSSxf3af16IVmGMF606XhLOYwqSIOnLeAd6zx7CzQqbbAPT5A7DakJzYImaGVgrkoTAuBz9ckf
+	 Juiw3dozmdk/D3fdTMmi9M7baGSmVwKQiFLGO6hjql8sdfnVXIECTtwrPEGqJ4eRuUhmXZA+aBb0
+	 +/hk1AIQeG1WYjFnYvbnOB1zTNH4X9pmRtaMeOVgRQXMcjeysw5o3byb/IrpNPZlYFqqNTpiKR0r
+	 hB7iYEsJcixUnmD8n7FBbrbJ+mUckWjWS849ZvPGBoliVrf7djDXwjIUzkWrWFMzPCNQGt
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+From: memoriaru@foxmail.com
+To: netdev@vger.kernel.org
+Cc: daniel.machon@microchip.com,
+	Steen.Hegelund@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	kuba@kernel.org,
+	memoriaru@foxmail.com
+Subject: [PATCH net v5 0/2] net: sparx5/lan969x: fix RX ring stall on frames from inactive ports
+Date: Sat, 14 Nov 2026 07:44:34 +0800
+X-OQ-MSGID: <20261113234436.75276-1-memoriaru@foxmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -65,57 +81,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, 13 Nov 2026 21:35:17 +0000 Arthur Kiyanovski wrote:
-> On 2026-11-11 16:47:51-08:00, Jakub Kicinski wrote:
-> > On Fri, 06 Nov 2026 03:17:11 +0000 Harry Yoo (Meta) wrote:
-> >  =20
-> > > This shows up when RX data stays in socket receive queues, as each
-> > > queued skb keeps the whole 64kB page alive while at most 16kB of it
-> > > holds data. On an EC2 t4g.large instance (64kB pages, 8GB memory) with
-> > > 519MB left unread across 64 TCP sockets, RX pages pinned 2869MB of
-> > > memory while the socket layer accounted only 687MB. =20
-> >=20
-> > I'm not sure you're actually fixing the problem you're describing?
-> > You optimize the memory use but the (unused) tail of the buffer is
-> > still not charged to any skb, is it? Or does it now fit perfectly?
-> >=20
-> > Normally when the page can no longer be chunked up we should charge
-> > the tail to whoever happened to use it last (see the page pool code
-> > which does that).
-> >=20
-> > Either way, you have to respin this on top of Breno's fix which
-> > was applied earlier today. =20
->=20
->=20
-> Jakub,
->=20
-> If I understand correctly what you are saying, you are correct.
-> skb->truesize is still not reported correctly.
->=20
-> The focus in this patch is different. It is about using the whole
-> 64KB page instead of only the first 16KB.
->=20
-> Harry's own figures show most of it is recovered =E2=80=94 497MB pinned f=
-or
-> 519MB unread, against 2869MB before =E2=80=94 so the remaining gap is the
-> final tail of each page, not the 48kB.
->=20
-> So I agree the commit message needs to be more precise.
->=20
-> The skb->truesize fix can come as a separate fix after this one.
+From: Zhang Hewei <memoriaru@foxmail.com>
 
-You sent it twice? Some LLM automation gone wrong judging by the
-m-dashes in your reply? :/
+The FDMA RX path on both sparx5 and its lan969x sibling stalls the RX
+ring forever when the hardware delivers a frame whose source port does
+not map to an active netdev: the inactive-port error branch in both
+drivers leaves the FDMA software cursor untouched, while the DCB keeps
+its hardware DONE bit - so every following NAPI poll picks the same
+DCB again and RX traffic stalls on all ports until the module is
+reloaded.
 
-Making more efficient use of allocated pages is not a fix, and
-will not be accepted to net or stable. Not accounting truesize=20
-correctly can be considered a fix. IOW the truesize accounting=20
-change has to come _first_. Then we can optimize the memory use=20
-w/ 64kB pages. They can both go to net-next, but the cannot both
-go to net.
+Patch 1 treats a bogus frame on sparx5 as consumed (free the skb, clear
+the array slot, return true). Patch 2 unifies the NULL semantics on
+lan969x: NULL always means "frame dropped, page recycled" (inactive
+port or failed build_skb()), and the poll loop advances past such a DB
+like it does for any other frame.
 
-Hope spelling out practical implications of what I said earlier
-makes it clear to everyone..
+v5: add the testing status to the commit messages as requested for fix
+series (patch 1 not tested - no hardware available; patch 2's
+drop-and-advance form was verified on lan969x hardware by Daniel Machon
+during review). No functional change since v4.
+
+v4 lore link:
+https://lore.kernel.org/netdev/20261113122429.26163-1-memoriaru@foxmail.com/
+
+Found by code inspection; the stall needs the hardware to emit a frame
+with an invalid source port, which cannot be triggered without hardware.
+Review from someone with access to sparx5/lan969x systems would be
+appreciated.
+
+
+Zhang Hewei (2):
+  net: sparx5: fix RX ring stall on frames from inactive ports
+  net: lan969x: fix RX ring stall on frames from inactive ports
+
+ .../microchip/sparx5/lan969x/lan969x_fdma.c        | 14 ++++++++------
+ .../net/ethernet/microchip/sparx5/sparx5_fdma.c    |  8 +++++---
+ 2 files changed, 13 insertions(+), 9 deletions(-)
+
+-- 
+2.39.5 (Apple Git-154)
+
