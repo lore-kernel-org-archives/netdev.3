@@ -1,79 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.55
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794567547;
-	b=cIsF75p/En6Shagwk/i5i6EnsZc5ns3CLgqb4JI4iA+4YB0KPU45QPsZuhUF1G8PWfMo
-	 C4f60pyJTfAfPcoIgQrImoqOrK4CuWfCqqQqZB/7Venyyv/qshKb/9diWGvRoSmX+bXcI
-	 2+0ngZoLb4nZZuAFChXOTR30UWdp+g4MrRdErWeqYmNvNyWvkfrmCOFpq0CXXQl7XsUO1
-	 LAWlPSIkRZ47A8XVfr1CXtDo+f4sGRPbfodzjc8puAn79qyU7CmniKOdp0baxja7CxySM
-	 VgPPrCMbt7M6aQ6oWLA4TzMh9m689JFbw/q9ky7mCNrLel2xkaPVtYlKUh8kFqn9xCw==
+	t=1794567809;
+	b=H27ias0vrybOnTwc6UoujCi8Y5OgJtXu6ndjqhaiGY8/MhLGmR4sO4oWdopfXxIU/rRy
+	 FFeSVF0a7ZHvcCUyhEAIIB1oYndh0lJy9AxQvCbCWILmb4yuwGY4egGQk52HyrkBG3O8D
+	 GCv0G0DRoooe32cVwvX6LTKDhe1SZ9cR0bDwbVaxwR6qj+XRUSvFvsGDBya4qzIhjFQgO
+	 yiqMnWAJQhdxhMWrIjnc5bZD3nIkKDF5+Rxtbal6uk4S1lZT7jC8vYV8UC3jCg8p9OGiI
+	 MP3+/M0qSlQ7VhNV76EqIW0nvXRodZpN3uunJifCoMMtN3iIJIn6trsmmXNIgZ9tWGA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794567547;
-	h=DMARC-Filter:Received:DKIM-Signature:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-Rspamd-Queue-Id;
-	bh=glKruA5muTr4k5zyDKpMfaKEQatBb9MU3FU/gWAzl6U=;
-	b=Hp3aSQHAJWzqiQpUuX1miqe8xmrcqc6HYpgjH7W+9vYEy9awW5FcHTYqYuOQAEpCOs3J
-	 NPM4s9TWMz9SoW2nPFpK4hP9vpRekVAwZs4fB/0VJ6xDERmUPzymEHKa2wGJkEbX+qcoH
-	 3gUMnxgn2b+ZmRj3Fr1dVma/ZAAbwPqmRJ+mNzNtwyDEnwQfYijZ5XtWVCcqodGheYIc4
-	 oS4GJmw8/hnd8lH9/oPQVWLNHkiicNVV7CVILMBvuObdrBOv9+ANwlLQVMKM8LuheWVz1
-	 jc0d2pyEP5y4b7syIfGL/XZ6hR/2p6TrqOyyj0vBwC/voEqBp1uWwCHY7ApEQACY3AQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794567809;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
+	b=JkgcBvHLw8XuW8lXs8VPQO5ok/ct2EC2baRzv8N75107DNyR8RlEkFkpyBYu3dvMVQD0
+	 XSkyQcYSYRLDFZeyA0NxdY3WaGuH/TnTk4oWMToo6q4XQ3mZk1s6Rv07Cx3D+F8Sjo3Nd
+	 NfQE37+SqBYO8CJO42hwPE+v22ArZy9bMebpmP2F9DWhA0UysD58RN/JnhqVRq09HSWeR
+	 Hvfar+Hyo9dTyn/RPmjMpC2nVIDu1xZ74C1h7OIClSWlqZpaXKkHNOtTmcz7emZbf8A49
+	 GV0PJD1FYlOauobivHRi82jre1bY3cOQj21WLplgLEgbdjFgqCCDRUARrpr8x+bvjsA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=mandelbit.com;
-	spf=pass smtp.mailfrom=mandelbit.com;
-	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=ClZB++I9;
-	arc=none smtp.remote-ip=195.10.208.55
-Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [195.10.208.55])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SOJotKJN;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC11D606B26C;
-	Fri, 13 Nov 2026 10:59:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC11D606B26C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4559E606A331;
+	Fri, 13 Nov 2026 11:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=ClZB++I9
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4jQvQ0026wzNmD9;
-	Fri, 13 Nov 2026 11:58:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1794567528;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=glKruA5muTr4k5zyDKpMfaKEQatBb9MU3FU/gWAzl6U=;
-	b=ClZB++I9/DL5q3UOhzm5ne4XL5kAB3pQHYGawyeMbkNlt/W4/XOlaDtsslcXdTfo1q+v2Q
-	CvZoFJF5COMcKf+InnoKOhb8SjDv+Eeuc7p0keMxQGoctyUTOeLcgAjPKcFyH0+TvHLR4i
-	B3OMkA7T5MpQM+S39Geys+tiFmoyKvoCehIKW859vmdOSp7ovCJHNmllMEPJOx3t25g6Yz
-	uwPZ587vMzM8m2BBb5Ux79Jjj5/6vAfFDXhLH6R0y+JeusamCp/9b+rQi6r7wpvE/47I1M
-	AkHCkaJBAruEXgAGqEGp9wkJnAlMGNbP4lJ8cvk8fWXa+fior//AXn1shxZnkg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
-From: Antonio Quartulli <antonio@mandelbit.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: Antonio Quartulli <antonio@mandelbit.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Yan, Zheng" <zheng.z.yan@intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 3/3] igb: only allow runtime PM if the device can wake up
-Date: Fri, 13 Nov 2026 11:58:33 +0100
-Message-ID: <20261113105835.3821433-3-antonio@mandelbit.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SOJotKJN
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B87A1F000CA;
+	Fri, 13 Nov 2026 11:03:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794567809;
+	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SOJotKJNM0NKD61qcP3wy6h4ZFy3nfecxTTzqxrrvpo8JEhjT+9xJELRreKFj5g+n
+	 Jar6SBPZknEnYlVxXfpeQshnwky1vfwycx3I4XPf3CN6G9+8c0YSk+G5q/bp39eHrE
+	 FCcafHeVdHdrZHKNUGfaXnjI4A73RNJ4YbFDRUmbvAV64j/r+xOg2VrZI1i5RqxJP1
+	 13W7Kr4v7hanyZI7YLaxXJ27ssK5r75A4Mh77roFf9ppcijqjfWYdEyUk+l05DsEUt
+	 maIxAB/geMsRV+AiKbVj3qg6+QS4XnO5NKsu5Dd6gIsJ1rjwbITXgwgj1iWI3D45Go
+	 +QqO6RfU1KTwQ==
+From: netdev-bot+sinfo@kernel.org
+To: Antonio Quartulli <antonio@mandelbit.com>
+Cc: intel-wired-lan@lists.osuosl.org, Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/3] igb: fix RTNL assertion when resuming from
+ runtime suspend
+Date: Fri, 13 Nov 2026 11:03:28 +0000
+Message-ID: <179456780803.2168702.14752754098228150172@kernel.org>
 In-Reply-To: <20261113105835.3821433-1-antonio@mandelbit.com>
 References: <20261113105835.3821433-1-antonio@mandelbit.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,56 +66,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4jQvQ0026wzNmD9
 
-igb lets the device be runtime suspended even if it can't signal a
-wake-up from D3. Such a device doesn't notice the link coming back, so
-the port stays down until it is resumed from user space.
+Hi!
 
-Allow runtime PM only if pci_dev_run_wake() is true, as e1000e and
-r8169 do. Devices that can't wake up no longer runtime suspend, even
-with power/control set to auto.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Fixes: 749ab2cd1270 ("igb: add basic runtime PM support")
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.ipfire.org/show_bug.cgi?id=13562
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
----
-Note: igc may have the same issue: igc_probe() also allows runtime PM
-regardless of pci_dev_run_wake(). We didn't have igc hardware to test a
-fix with, so no igc patch is sent for now.
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
- drivers/net/ethernet/intel/igb/igb_main.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 4d97399..59f59da 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -3677,7 +3677,11 @@ static int igb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	dev_pm_set_driver_flags(&pdev->dev, DPM_FLAG_NO_DIRECT_COMPLETE);
- 
--	pm_runtime_put_noidle(&pdev->dev);
-+	/* A device that can't wake up wouldn't notice the link coming back
-+	 * while runtime suspended
-+	 */
-+	if (pci_dev_run_wake(pdev))
-+		pm_runtime_put_noidle(&pdev->dev);
- 	return 0;
- 
- err_register:
-@@ -3900,7 +3904,8 @@ static void igb_remove(struct pci_dev *pdev)
- 	struct igb_adapter *adapter = netdev_priv(netdev);
- 	struct e1000_hw *hw = &adapter->hw;
- 
--	pm_runtime_get_noresume(&pdev->dev);
-+	if (pci_dev_run_wake(pdev))
-+		pm_runtime_get_noresume(&pdev->dev);
- #ifdef CONFIG_IGB_HWMON
- 	igb_sysfs_exit(adapter);
- #endif
--- 
-2.56.0
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
