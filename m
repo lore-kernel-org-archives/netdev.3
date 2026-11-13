@@ -1,69 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.34
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794549048;
-	b=Ez/LszK7wZ8NxbM6vCGzIsKO4Gc7g79ErXhJk6YFOrozq5RF8FoJAw54lFXzVU+A5M/V
-	 bKRdKrEQe4RjcHV/hZ+rBeB4bCeoQy7KhB8LkdbyEJP7NJlf0xgN6yWuFs/ZrQvlahyi+
-	 oCqKcaSElIv4XuRJ0wMmCgq+x1Pqr23asg7o5LUtBbKPyyoGCoUlXQoqrpWstm3HbZ9Hh
-	 nUaAxaZjt1nFMWNKWbQPkkh2lBKMkZZgsUc5w9/nBuQELR70YjWHjlRxUU2nZ44toAqPm
-	 WF1yybYe1X8PinKyHmnubdNhdl2e5AtWtH8fiW0ecinmAzN93cYEeJJskSUTaf3uIpg==
+	t=1794549083;
+	b=ob7fOAr5vkDUCK3rZipVVbYgz8iLiXNxTsr2i9D4XQxJbK5tL7YemkHqYubYpovm3jw4
+	 jnvgJyu4er5Ta85UfO7Tg5r8A/kkb3Px2tdZ5N80VPycc1sAdD+THCzYerrVa+azFG3BZ
+	 Gj2yDiSe6rikAJhJ4nuGu7qV3082N5VRxNFqGGMgTtUGUoHjRllEWnDNyunQ5Svicc4Go
+	 Og7Lk8jt+mKG8Ra/BjW3bHUfdhDA6n0SrEK622RRTFt5Lx01OcQLOu55UzF9d9jTOgLJH
+	 SvmsHGMhY5QGZMSFOOfk6/2eajxRvzrxgyDh2CUoHPDNcfO70beM0QZAPy5sEG8wPng==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794549048;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 X-Zmail-TransId:X-Mailer:Message-ID:In-Reply-To:References:Date:
-	 Mime-Version:From:To:Cc:Subject:Content-Type:X-MAIL:X-TLS:
-	 X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:X-Fangmail-Anti-Spam-Filtered:
-	 X-Fangmail-MID-QID;
-	bh=DWpA+av4hZgz5PDtIeWvKUt7bf0U0e+13BSJEMQ5ieU=;
-	b=XjkmHutDr858gmQEKlP0Hg8EB09Joz05G2zhbpE47Hjk6zCqzX59nY9px4Ql24/Wpdsd
-	 734AcyWP1QuJCxnJ4PWIDwytvCtTRuA0xQIcgOPxzq6TRqCYg2PqLCqYw61ipMDpfD/Rx
-	 ffcJHmw1mwT6VW5xVy9xpFa2KiMYTzufoH25+8kMzpTakgF0j2818xplkOKCTe6se6Dge
-	 CHGLDqhb4FjSj+iGg8c8jzeMy4JjJg3A6BONnEE2klslJCc3vJfsifztnsluMa4b9tMLD
-	 KXcQeH9HvAGrGaj/uOgxWUr9EdXh0al/4XyVEtv0EZruGrI1C5ANNBeSWElyjiS9D3Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794549083;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=R07tQz7kn6oV2V7MKV8H83hgqF5e3GIkYvn5QQvp8os=;
+	b=3MYzzey8FK0egB/EPh/qtKSmFL6htM9diciNWbecF/dv3GTd/QryzFeRaZxnmFwiFQWC
+	 QhsB72hcXESXPgbFxy2A+Pk35+TJx1JAVpgmCaeBuceVHzHMf6lYyZ5JJY0ASIuPi8hL8
+	 dGpbi4kfzf0yn8uJbgD3Tnucx1/mwvCr3q8qMWKxuflBcLd+WjiSTn9Hkj/ymNZOad4gr
+	 pUre7osOQ1aJipQniEi8i4wRqUGT8nAB6y8JYtj2Y4gRKMiB/evczqMnSFS3A0Z4BakDG
+	 XHHwKQ1JM4QScr6yXkU9WU3B9u00HRcAoUb0O1/uD9nhq/X2Wf2DV+qf3Fsnt7/baBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=zte.com.cn;
-	spf=pass smtp.mailfrom=zte.com.cn;
-	dkim=pass header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=sk4dCilW;
-	arc=none smtp.remote-ip=160.30.148.34
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gW7R9epk;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03D4606A32D;
-	Fri, 13 Nov 2026 05:50:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D03D4606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656C9606A889;
+	Fri, 13 Nov 2026 05:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=sk4dCilW
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jQmZZ1CG7z5BNS0;
-	Fri, 13 Nov 2026 13:50:46 +0800 (CST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
-	s=z202610; t=1794549046;
-	bh=K+f8WLpUrGziB3jE6nrp82KYl73LPQxVQjFPNxSQL7Q=;
-	h=In-Reply-To:References:Date:From:To:Cc:Subject;
-	b=sk4dCilWSE81wiujYZsb/XtatXnjP6V85WEhYYgPOR0zSLinaKtZbceVQ+KNnFR1w
-	 7Qh4t6bP6VoE1P47+vjlOZ4+nsTGZM+3WFf/PZvy8Ek8D0LjBtg8zV90d4uGVhjx1k
-	 XvcP3azj7O4G7Lhl3hJIQX5oKB+BL7qvCxDW9fGwahXfLhjKHugj9YejdH0TwkjDPM
-	 erC3MTbN2pYUsXNcRb6jb8lJoIYlGRpHC5lnw+9mHoVE7G9esAt3BwsS6cZJ2uZ1vK
-	 OJSMqUbImRpcsBJQXWTr28wyLrKZGFg4Ne3PtGyY91q3fP7O3QTyTyZjkdLAxjhUYY
-	 Hodc5D97p3c7g==
-Received: from njy2app04.zte.com.cn ([10.40.12.64])
-	by mse-fl2.zte.com.cn with SMTP id 6AD5oaVH099295;
-	Fri, 13 Nov 2026 13:50:36 +0800 (+08)
-	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njy2app01[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Fri, 13 Nov 2026 13:50:38 +0800 (CST)
-X-Zmail-TransId: 2af96af6a52eb7e-18bc0
-X-Mailer: Zmail v1.0
-Message-ID: <20261113135038394NowoSxTdiA32KKAPcTmCa@zte.com.cn>
-In-Reply-To: <20261113134743145KUhKvpwU6uqR0QzymEP96@zte.com.cn>
-References: 20261113134743145KUhKvpwU6uqR0QzymEP96@zte.com.cn
-Date: Fri, 13 Nov 2026 13:50:38 +0800 (CST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gW7R9epk
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AB11F000C6;
+	Fri, 13 Nov 2026 05:51:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794549083;
+	bh=R07tQz7kn6oV2V7MKV8H83hgqF5e3GIkYvn5QQvp8os=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=gW7R9epkuJTQU64jlMgBZTrWqZjhMRaCwCjvfGxts8NZF7ApSLSRqOlBxfi/xiGXT
+	 Wg+TDzbYg01Ho9vSXoGu5Kf73zRvyQBTsaxQmLNgfEhWttgYaLyq8iV5B5jWFZjL66
+	 unQUyCIpRAVE+Xopqd7ZU7Mwnmmht3Rbk3RaEBS52TZxMSHl8SOT1m1ur8guE5EVS6
+	 OrSBnw/NH0WJjmRNQLloF0B2F2Hbi5FKzE3/KLNu2gKwwpEC1S6fBCfqLUsSQVBLi6
+	 MXkEd8TKxZCA5gSRgH6PsAvYRCQbCBfdfFU+Mpa8kSgVtYBIXbSzLuUBkegQInkZTo
+	 A1aE0FengMSEg==
+Subject: Re: [PATCH net-next v3 3/3] net: phy: dp83tg720: report inclusive RX
+ packet totals
+From: netdev-bot+sashiko@kernel.org
+To: james.hilliard1@gmail.com
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+ rdunlap@infradead.org, o.rempel@pengutronix.de, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Date: Fri, 13 Nov 2026 05:51:21 +0000
+Message-ID: <179454908193.2199510.11384974363448482430@kernel.org>
+In-Reply-To: <20261109-submit-acx00-phy-stats-v1-v3-3-fbc6327c5be4@gmail.com>
+References: <20261109-submit-acx00-phy-stats-v1-v3-3-fbc6327c5be4@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -72,268 +64,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-From: <han.junyang@zte.com.cn>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
-        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY2IDEvM10gZGluZ2hhaTogYWRkIGZpcm13YXJlIHZlcnNpb24gY2hlY2sgYW5kCiBSSVNDLVYgcmVhZGluZXNzIHBvbGxpbmc=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 6AD5oaVH099295
-X-TLS: YES
-X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 13 Nov 2026 13:50:46 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AF6A536.000/4jQmZZ1CG7z5BNS0
+MIME-Version: 1.0
 
-From: Junyang Han <han.junyang@zte.com.cn>
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-The DingHai firmware publishes a version compatibility block and a
-RISC-V health buffer at fixed offsets within BAR 0.
+Low priority / nit picks for your consideration:
 
-After the PCI capabilities are mapped, poll the compatibility block
-until the firmware populates it (the region reads as all ones until
-then) and verify the driver/firmware version contract. Then wait for
-the RISC-V management core to set its power-on flag in the health
-buffer before the rest of the probe continues.
+- [Low] The patch carries `Fixes: 677d895af1cc ("net: phy: dp83tg720: add
+  statistics support")`, which tells AUTOSEL/stable to backport it to…
 
-Firmware images that support neither self-healing (health version
-other than 1) nor hot-plug interrupts (patch level below
-ZXDH_HPIRQ_PATCH) do not report the power-on flag and skip the
-readiness wait.
+Pre-existing issues:
+- [Medium] After this patch, two TI PHY drivers with the same counter
+  layout map it to different uAPI attributes.
 
-Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
----
- drivers/net/ethernet/zte/dinghai/en_pf.c | 130 +++++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/en_pf.h |  46 ++++++++
- 2 files changed, 176 insertions(+)
+--
 
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
-index 86d437408820..ddff9b0438fb 100644
---- a/drivers/net/ethernet/zte/dinghai/en_pf.c
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
-@@ -6,6 +6,8 @@
+net: phy: dp83tg720: report inclusive RX packet totals
 
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <net/devlink.h>
- #include <linux/dma-mapping.h>
- #include "en_pf.h"
-@@ -369,6 +371,120 @@ int zxdh_pf_modern_cfg_init(struct zxdh_core_dev *zxdh_dev)
- 	return ret;
- }
+This commit moves the accumulated PKT_STAT_4/PKT_STAT_5 RX packet count in
+dp83tg720_get_phy_stats() from rx_packets to rx_packets_total. The datasheet
+says the hardware counter includes errored packets. Userspace now sees it as
+RxFramesTotal instead of RxFrames in the ethtool phydev statistics group.
 
-+/* The firmware fills the compatibility block field by field, so it is
-+ * only ready to be read once every field we consume has lost its
-+ * erased value.
-+ */
-+static bool zxdh_pf_fw_compat_ready(struct zxdh_fw_compat __iomem *compat)
-+{
-+	return ioread8(&compat->module_id) != 0xffU &&
-+	       ioread8(&compat->major) != 0xffU &&
-+	       ioread8(&compat->fw_minor) != 0xffU &&
-+	       ioread8(&compat->drv_minor) != 0xffU &&
-+	       ioread16(&compat->patch) != 0xffffU;
-+}
-+
-+/* Read the firmware version block and verify the driver/firmware
-+ * version contract.
-+ */
-+static int zxdh_pf_fw_compat_check(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
-+	struct zxdh_fw_compat __iomem *compat;
-+	struct zxdh_fw_compat *fw_compat;
-+	bool ready;
-+	int err;
-+
-+	fw_compat = &pf_dev->fw_compat;
-+	compat = pf_dev->pci_ioremap_addr[0] + ZXDH_FW_COMPAT_OFFSET;
-+
-+	/* The firmware publishes the block within 10 s of boot; wait twice
-+	 * that to leave margin.
-+	 */
-+	err = readx_poll_timeout(zxdh_pf_fw_compat_ready, compat, ready,
-+				 ready, USEC_PER_SEC,
-+				 ZXDH_FW_COMPAT_TIMEOUT_SEC * USEC_PER_SEC);
-+	if (err)
-+		dev_info(zxdh_dev->device,
-+			 "compat region not populated, assuming legacy firmware\n");
-+
-+	/* Firmware predating the compatibility region keeps the erased
-+	 * pattern, which fails the module id check below and defers the
-+	 * decision to the readiness wait.
-+	 */
-+	fw_compat->module_id = ioread8(&compat->module_id);
-+	fw_compat->major = ioread8(&compat->major);
-+	fw_compat->fw_minor = ioread8(&compat->fw_minor);
-+	fw_compat->drv_minor = ioread8(&compat->drv_minor);
-+	fw_compat->patch = ioread16(&compat->patch);
-+
-+	if (fw_compat->module_id != ZXDH_MODULE_ID) {
-+		dev_info(zxdh_dev->device,
-+			 "unknown module id %u, skip fw compat check\n",
-+			 fw_compat->module_id);
-+		/* Unknown firmware is treated as predating the HPIRQ
-+		 * patch, so that the readiness wait is skipped.
-+		 */
-+		fw_compat->patch = 0;
-+		return 0;
-+	}
-+
-+	if (fw_compat->major != ZXDH_MAJOR) {
-+		dev_err(zxdh_dev->device,
-+			"driver major %u incompatible with firmware major %u\n",
-+			ZXDH_MAJOR, fw_compat->major);
-+		return -EINVAL;
-+	}
-+
-+	if (fw_compat->fw_minor < ZXDH_FW_MINOR) {
-+		dev_err(zxdh_dev->device,
-+			"firmware fw_minor %u older than required %u\n",
-+			fw_compat->fw_minor, ZXDH_FW_MINOR);
-+		return -EINVAL;
-+	}
-+
-+	if (fw_compat->drv_minor > ZXDH_DRV_MINOR) {
-+		dev_err(zxdh_dev->device,
-+			"driver drv_minor %u older than required by firmware %u\n",
-+			ZXDH_DRV_MINOR, fw_compat->drv_minor);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+/* Wait for the RISC-V management core of the firmware to finish
-+ * booting, so that later probe steps can talk to it.
-+ */
-+static int zxdh_pf_wait_riscv_ready(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
-+	struct zxdh_health_buffer __iomem *hb;
-+	u8 health_version;
-+	u8 power_on;
-+	int err;
-+
-+	hb = pf_dev->pci_ioremap_addr[0] + ZXDH_RISCV_HB_OFFSET;
-+	health_version = ioread8(&hb->health_version);
-+
-+	/* Firmware that supports neither self-healing nor hot-plug
-+	 * interrupts does not report the power-on flag.
-+	 */
-+	if (health_version != 1 &&
-+	    pf_dev->fw_compat.patch < ZXDH_HPIRQ_PATCH)
-+		return 0;
-+
-+	err = readx_poll_timeout(ioread8, &hb->riscv_power_on, power_on,
-+				 power_on == 1, USEC_PER_SEC,
-+				 ZXDH_RISCV_READY_TIMEOUT_SEC * USEC_PER_SEC);
-+	if (err) {
-+		dev_err(zxdh_dev->device, "timed out waiting for riscv power on\n");
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
- static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
- 	struct zxdh_core_dev *zxdh_dev;
-@@ -405,10 +521,24 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto err_cfg_init;
- 	}
+Link: https://www.ti.com/lit/ds/symlink/dp83tg720s-q1.pdf
 
-+	ret = zxdh_pf_fw_compat_check(zxdh_dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_fw_compat_check failed: %d\n", ret);
-+		goto err_modern_cfg;
-+	}
-+
-+	ret = zxdh_pf_wait_riscv_ready(zxdh_dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_wait_riscv_ready failed: %d\n", ret);
-+		goto err_modern_cfg;
-+	}
-+
- 	devlink_register(devlink);
+> diff --git a/drivers/net/phy/dp83tg720.c b/drivers/net/phy/dp83tg720.c
+> index 391c1d8688083..5824eff92937c 100644
+> --- a/drivers/net/phy/dp83tg720.c
+> +++ b/drivers/net/phy/dp83tg720.c
+> @@ -309,7 +309,7 @@ static void dp83tg720_get_phy_stats(struct phy_device *phydev,
+>  
+>  	stats->tx_packets = priv->stats.tx_pkt_cnt;
+>  	stats->tx_errors = priv->stats.tx_err_pkt_cnt;
+> -	stats->rx_packets = priv->stats.rx_pkt_cnt;
+> +	stats->rx_packets_total = priv->stats.rx_pkt_cnt;
 
- 	return 0;
+[Severity: Low]
+Can this be backported on its own, given the Fixes: tag?
 
-+err_modern_cfg:
-+	zxdh_pf_modern_cfg_uninit(zxdh_dev);
- err_cfg_init:
- 	zxdh_pf_pci_close(zxdh_dev);
- err_pci_init:
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
-index 7373dee8d1a9..730cb084a8ae 100644
---- a/drivers/net/ethernet/zte/dinghai/en_pf.h
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
-@@ -29,6 +29,51 @@
- #define ZXDH_PF_ALIGN2			2
- #define ZXDH_PF_MAP_MINLEN2		2
+    Fixes: 677d895af1cc ("net: phy: dp83tg720: add statistics support")
 
-+/* Fixed offsets of the firmware interface regions within BAR 0. */
-+#define ZXDH_RISCV_HB_OFFSET	0x5300
-+#define ZXDH_FW_COMPAT_OFFSET	0x5400
-+
-+/* Driver/firmware version contract. The firmware publishes its side of
-+ * the contract in the region at ZXDH_FW_COMPAT_OFFSET.
-+ */
-+#define ZXDH_MODULE_ID		1
-+#define ZXDH_MAJOR		1
-+#define ZXDH_FW_MINOR		0
-+#define ZXDH_DRV_MINOR		0
-+/* Firmware patch level that introduced hot-plug IRQ support. */
-+#define ZXDH_HPIRQ_PATCH	4
-+
-+#define ZXDH_FW_COMPAT_TIMEOUT_SEC	20
-+#define ZXDH_RISCV_READY_TIMEOUT_SEC	40
-+
-+/* Firmware version compatibility block at ZXDH_FW_COMPAT_OFFSET.
-+ * Fields are read through ioread*(), which converts from little-endian.
-+ */
-+struct zxdh_fw_compat {
-+	u8 module_id;
-+	u8 major;
-+	u8 fw_minor;
-+	u8 drv_minor;
-+	u16 patch;
-+	u16 rsv;
-+};
-+
-+/* Health buffer at ZXDH_RISCV_HB_OFFSET, maintained by the RISC-V
-+ * management core of the firmware. Fields are read through ioread*().
-+ */
-+struct zxdh_health_buffer {
-+	u32 synd;		/* Bitmask of active syndrome flags. */
-+	u32 health_counter;	/* Incremented heartbeat counter. */
-+	u8 status;
-+	u8 rfr;
-+	u8 fw_exception;
-+	u8 riscv_power_on;	/* Set to 1 once the core finished booting. */
-+	u8 fw_version[32];
-+	u8 pf_status[5];
-+	u8 health_version;	/* 1 when the firmware supports self-healing. */
-+	u8 rsv1[30];
-+};
-+
- struct zxdh_core_dev {
- 	struct device *device;
- 	struct pci_dev *pdev;
-@@ -54,6 +99,7 @@ struct zxdh_pf_dev {
- 	s32 modern_bars;
- 	void __iomem *pci_ioremap_addr[6];
- 	u32 dev_cfg_bar_off;
-+	struct zxdh_fw_compat fw_compat;
- };
+The rx_packets_total member of struct ethtool_phy_stats doesn't exist at
+the baseline. It comes from the earlier patch in this series, "ethtool: add
+PHY receive frame and byte totals". That patch also adds the kerneldoc, the
+ETHTOOL_A_STATS_PHY_RX_PKTS_TOTAL uAPI attribute and the "RxFramesTotal"
+string.
 
- void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size);
+Stable tooling will pick this up for kernels that contain 677d895af1cc.
+There it would either fail to build in dp83tg720_get_phy_stats() or bring
+a new uAPI attribute into stable. It would also change which phydev stats
+userspace sees for this PHY.
+
+Should the Fixes: tag be dropped? Alternatively, could the commit message
+state the dependency on the ethtool patch and say it isn't meant for
+stable alone?
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but it creates a difference
+between this driver and dp83td510.c, which still does this in
+dp83td510_get_phy_stats():
+
+drivers/net/phy/dp83td510.c:dp83td510_get_phy_stats() {
+    ...
+	stats->rx_packets = priv->stats.rx_pkt_cnt;
+	stats->rx_errors = priv->stats.rx_err_pkt_cnt;
+    ...
+}
+
+Both drivers describe the registers the same way:
+
+ * - DP83TD510E_PKT_STAT_4: Contains RX packet count bits [15:0].
+ * - DP83TD510E_PKT_STAT_5: Contains RX packet count bits [31:16].
+ * - DP83TD510E_PKT_STAT_6: Contains RX error packet count.
+
+The update_stats code and the rx_pkt_cnt/rx_err_pkt_cnt fields are also
+the same. include/linux/ethtool.h documents rx_packets as "Total
+successfully received frames".
+
+Does the DP83TD510E datasheet also define PKT_STAT_4/5 as a total that
+includes errored packets? If so, dp83td510 would report RxFrames with the
+same overcount this patch fixes for dp83tg720. Userspace would then see
+different meanings for RxFrames depending on which TI PHY is attached.
+
+Should dp83td510_get_phy_stats() get the same change?
+
+>  	stats->rx_errors = priv->stats.rx_err_pkt_cnt;
+>  }
+>
+
 -- 
-2.27.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109-submit-acx00-phy-stats-v1-v3-0-fbc6327c5be4%40gmail.com
