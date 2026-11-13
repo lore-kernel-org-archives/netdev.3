@@ -1,115 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.35
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794548835;
-	b=ahEXdC43wfdH5iz9DmA1XFRtSU+Pi5ojiM8dhm60Xo/OFDnUKVEgEAfU1fT3po2VVJco
-	 FwAC0Sc/gPhZVMRAm07Gt3L3SollXtLD6CjBdME69cyANetLV+asZQi0gzlAwGCJ78DJW
-	 wLrvmBO+w8qVtpogbd8U8lotSekzR94UQ/kS3kzw/Vow7MH0jpdVYv+doxNv7qBdXSQfq
-	 7Hip17efZp/Z/ivuPNYrKaHL2KKtDJ9Xb6r4vQtafOkgzScb0Lj8obN9GEnwPfwdinktn
-	 XykqqeBbDFrzrm4aQsf/fC037grVx9O22/STppuofn6h5SJRsCti/lgG0i8v6L2BSfQ==
+	t=1794548879;
+	b=v7sPsP56a4NjTackHHFaZqlaqQdfK21Z1QiZ5NSEBre44PyfqQBqU6GxH2ZhT6dLqJDE
+	 /W2D2FFUyEP8fvUcx1T3D/l5viwnfq/pOWtkjv+NoedCZwH+u1vnCksggRVNPRQvQDllB
+	 eyUaLY9DhrL4OGALgE5tTAYUVFrTmP2Ao19polvxsBByXpjzojS1e5nRocRfsEkBG2JlV
+	 ZPDBpvdu0zI0+3vLAx8kCJXIzWD9Dzr8/ZK2wkU9vTCNknGG0pGw21wia7pW66msGhunZ
+	 lExvlV0yAS6Z1LFSpKrshySD4YlT2rpGNhsFTMXzXqB+f8vSJWDIeQ4KGJto5EmXPCA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794548835;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=zv2dwLznTDzlBwaiBmqu3E6e2BGNnEevgfuztfawCII=;
-	b=WS6O9b4LC/P/1uRD1c3+RsiDYTtxgfT2GMO9fD4oNdaLyeJZkyZ/v3YqXUN2x3Ac3CkZ
-	 xACm69sskJinDr7bR8jAb4wP/ZbYaWGuwiIvP6TyaGI/MpK9uSpsPFw5NBtm2yVLD9yME
-	 q/yO4XpPIA1MuRKzJhG/S5rE/+I1QcVxI06v1OHYJjgzaj+v3Qh4OZFKyIW+ZYTfmD2Xz
-	 41tnJPd2H6pxTcVlL8/IzZM4fHzmw4WBJA7blh1DR1rNW2YXm91d0MhGuBBxtm+njbD2w
-	 4yuSutrCxcPmHjjfv73cjvMKPdeQ4+8q8UlXFjHajysl6pjDgkOR9XCNVa6Mm4Ps5Xg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794548879;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 X-Zmail-TransId:X-Mailer:Message-ID:Date:Mime-Version:From:To:Cc:
+	 Subject:Content-Type:X-MAIL:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:
+	 X-CLEAN:X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
+	bh=R/hztUFaUrZAxIgTvQh2iT2CdtlyFnFy+Eg07zRqZOY=;
+	b=j51XL0vjeqRMf45oJqvnse+v3+WX35EwS3PpK7b8vYKulglG8QVw6VJuE4N3cw1oiJju
+	 4TTvfw/Zjl5z3y/7p49HqpzLnQ3PAkrIBQ64VQW2FrVX2hsPFiY0XxaISUDbJNRK5MAPW
+	 mAx8K7XDmXa6XGpRn6DQitZf3nmNiViy3oPRcYxDwG2Fqi0Nleg8xrYhKv0J/+MKsOHPq
+	 oLCThvm10IdOkTfDeproox+c1FioyTl2WQvPDvKVJQgsrSvD6FIQHZDSmK0pnGbiNl/oC
+	 /v1X6Jm0qMr7m7cnCxNdD1Q/MYAZrP/XWbQxTfUxNipOm3PQFxjywG84NFU24BFBNWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VRUCH7A5;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=kx1EArwl;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dmarc=pass header.from=zte.com.cn;
+	spf=pass smtp.mailfrom=zte.com.cn;
+	dkim=pass header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=AfzLxChg;
+	arc=none smtp.remote-ip=160.30.148.35
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC07606A32A
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:47:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0AC07606A32A
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EB5606A31C;
+	Fri, 13 Nov 2026 05:47:58 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1EB5606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VRUCH7A5;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=kx1EArwl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794548834;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zv2dwLznTDzlBwaiBmqu3E6e2BGNnEevgfuztfawCII=;
-	b=VRUCH7A5X78vBeGc4sinXweIdZJAKlJNpCa8Q5iygIZvcOEPjsSKMqHjuxZ6yboEcksUdh
-	OXrtExEugR2k++cly4qmaSRDbnib4bWwCkvhyge9NN3NY5KrlYwh20lMTQ2zvayYTHCGnv
-	QWNa+h+tPcYgmKhmd8Y0i7haQUgzCVw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-573-f4yYyxLKP2Ccy44oIYXNBA-1; Fri, 13 Nov 2026 00:47:11 -0500
-X-MC-Unique: f4yYyxLKP2Ccy44oIYXNBA-1
-X-Mimecast-MFC-AGG-ID: f4yYyxLKP2Ccy44oIYXNBA_1794548831
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4ba078abd70so3037665e9.3
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 21:47:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794548830; x=1795153630; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zv2dwLznTDzlBwaiBmqu3E6e2BGNnEevgfuztfawCII=;
-        b=kx1EArwlWeE8EHOxBgI15kP3cZxEl//llm1cQIwT7cDh7jWtmu3m2q0brkuk/prvYz
-         JhWxGgYXB1//jimEFovyYIE2JZNEkjitFvGb6ikeZ2Y1DvpIK3oIri74V/n5EFpgFqhr
-         4gQVpTxgkquuYNINLUTwwlktc/9U3+uO5UxloCMCJrkHFAyaTxdTtGcnR0j7IuNz+nBw
-         MJo5e6X86q0q+87qEovDHKxKSVJhc1zoWLvJUEV4FasPY9pyZ82KmI56nXqFMG2QfGvF
-         P98/+Y3/xkRf45BZzsXUCdaGcBGFQdyueHSRkJDqmbTR3G7hXtO94Vbaf3ufrkyzsnaf
-         rl+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794548830; x=1795153630;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zv2dwLznTDzlBwaiBmqu3E6e2BGNnEevgfuztfawCII=;
-        b=zjqLh5WIpbMoPHfO5QO2IHKXNoDSnsCfVI6G2fj30kx7B9IR3Bus8sbDp7dmAT9zsb
-         GidX5C14jJp4NOihFDJEtx+0jDktJPddP+HlAhdxz5o1PKcQm4eOXxGavuE2DFdjIR8Q
-         p5nfg/oPRZ/s2vOUcp4S+IujB/Bwc8ZGGASmgpUoLfRaWzETtipWjMVp02j5CGtEiyV4
-         ggEEAzArxY33JWWzWZNSrizrD8liODZArF0GME1GvNOw8VLosxe0IDrmh44E3psDKghh
-         +6X9k3S3to6RFurGL+x1RRCpA7KBzrCBkk/MeNzpjpn0OJHFyRTsq1+WqBrWTLe1cDQF
-         e3iA==
-X-Forwarded-Encrypted: i=1; AL+hErGUn3254sCB+xHkCC6qsZNe/oU52J3gy0/sFKCKDqTOKXhjyMGaqT0hirGK9fiHVQ4sSuFztGk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9/eHv29fOdodN6D5LTUH1yfMfQoHgOesEB9zBmzeIikmz12TJV
-	JmGkrikYBfvlLgVV5cg2SdeCp8hADZYLl3DtQ13NSQtkUadRW5c7EInHvqMd831EXgOD3mNCyCp
-	/SG2lqy2qGtmcakqXL5CecQgaN6KWoIHwF0WHHJgaWTHL9q6ReMKO9sz5pg==
-X-Gm-Gg: AYBFou0XSsfHQrmjNKJDvqcFOrCwxXimXN0Piq+JeKR4uNQLopl9nLVDCs15V/rKgMO
-	tIlaXq1wviR2Sks3PxD6w2b9QOyiEM9LKN6QNMnGSDYsE3Z4syrDTUvpvTlhMzJhCIBynRvpA9J
-	MzrIkatuVTvDFk4a81GnUFBVZP/PhAWSMxvluDBurVAMBpVypbl/rc3uv9tiPRMKUg1E82hiE/X
-	s3w7NC7RdsIpq9Ui9LU8DjUqHjb3KvOyckTqyPiAHIRrWZZRNYTM976aZ/sUMoHBa5Z7DDJIH1a
-	+scFP0v0KV01yuieruIlirzRwCmHh4TcJjEdDpiiNQcz28gO682ttZGKnuvLDBdZfmOXEvpisPG
-	GjOLYEJeX9NhGKiTvxWK8AyTCyzsprpjnWpNq8oq08w==
-X-Received: by 2002:a05:600c:4685:b0:4a6:eca1:7d5c with SMTP id 5b1f17b1804b1-4bb55a91e31mr25254795e9.32.1794548830555;
-        Thu, 12 Nov 2026 21:47:10 -0800 (PST)
-X-Received: by 2002:a05:600c:4685:b0:4a6:eca1:7d5c with SMTP id 5b1f17b1804b1-4bb55a91e31mr25254505e9.32.1794548829900;
-        Thu, 12 Nov 2026 21:47:09 -0800 (PST)
-Received: from redhat.com ([2a0d:6fc0:1511:2900:ff37:b35c:a97:952d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb4e2adf53sm122130755e9.15.2026.11.12.21.47.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 21:47:09 -0800 (PST)
-Date: Fri, 13 Nov 2026 00:47:05 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: zhaoguohan@kylinos.cn
-Cc: bp@alien8.de, dave.hansen@linux.intel.com, eperezma@redhat.com,
-	hpa@zytor.com, jasowang@redhat.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, mingo@redhat.com,
-	netdev@vger.kernel.org, tglx@kernel.org,
-	virtualization@lists.linux.dev, x86@kernel.org
-Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on
- x86
-Message-ID: <20261113004435-mutt-send-email-mst@kernel.org>
-References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
- <20261113012937.40818-1-zhaoguohan@kylinos.cn>
+	dkim=pass (2048-bit key, unprotected) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=AfzLxChg
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jQmWB36d5z8XrrX;
+	Fri, 13 Nov 2026 13:47:50 +0800 (CST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
+	s=z202610; t=1794548870;
+	bh=UkjlPYbBuRGHzyN4ugD8RnQAqPPcq9laiZwvRkBQXrM=;
+	h=Date:From:To:Cc:Subject;
+	b=AfzLxChgLbyzAcIvsQD3luXLmJNhwgRBhIyKuG+GNGbToA4WSO8+pvxReMuLf+Cd9
+	 txmQkvo9NZ9YdyM/TEDxLcYPSrHqsiYJCuYPIfR1S16bobSK+w8ThOiKXtk5wAcA48
+	 BCvfq+aAn+BU4lSXdwRRNCeljbwZjPlF1OLOAgbUfLj3iYdV+69xLFKi/8htoLAUSn
+	 2zZTO0vhHKAfd/JS70MrifMik6ncyGH5uE7dCdjTiRmsxH9KYiTGD0I4rQyuRWbi+d
+	 31dOoLHrThrs/wt4V5EfL/diAaHAyOfzgZTqCq62KTaTwE2fT9clqDhqKIH3fJtgM3
+	 R2DFGRm1ASedg==
+Received: from njb2app06.zte.com.cn ([10.55.23.119])
+	by mse-fl1.zte.com.cn with SMTP id 6AD5lfHB034786;
+	Fri, 13 Nov 2026 13:47:41 +0800 (+08)
+	(envelope-from han.junyang@zte.com.cn)
+Received: from mapi (njb2app07[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Fri, 13 Nov 2026 13:47:43 +0800 (CST)
+X-Zmail-TransId: 2aff6af6a47f68e-346b4
+X-Mailer: Zmail v1.0
+Message-ID: <20261113134743145KUhKvpwU6uqR0QzymEP96@zte.com.cn>
+Date: Fri, 13 Nov 2026 13:47:43 +0800 (CST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -118,116 +69,141 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113012937.40818-1-zhaoguohan@kylinos.cn>
+Mime-Version: 1.0
+From: <han.junyang@zte.com.cn>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
+        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY2IDAvM10gZGluZ2hhaTogZmlybXdhcmUgaGFuZHNoYWtlLCBNU0ktWCBwb29scyBhbmQgYXN5bmMgZXZlbnQgcXVldWVz?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 6AD5lfHB034786
+X-TLS: YES
+X-ENVELOPE-SENDER: han.junyang@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Fri, 13 Nov 2026 13:47:50 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6AF6A486.000/4jQmWB36d5z8XrrX
 
-On Fri, Nov 13, 2026 at 09:29:37AM +0800, zhaoguohan@kylinos.cn wrote:
-> On Thu, Nov 12, 2026 at 05:53:47AM -0500, Michael S. Tsirkin wrote:
-> > vhost had a TODO to replace page pinning with a version
-> > of set_bit that works on userspace memory, since forever.
-> >
-> > It is really best to avoid GUP on fast path entirely.
-> > Implement set_user_bit and use it in vhost, to do just that.
-> [...]
-> > lightly tested. pls test and resubmit with your tool.
-> 
-> Thanks, this is much simpler than my version. Two comments on
-> set_bit_user() before I resubmit:
-> 
-> > +	int __err = 0;							\
-> > +	__uaccess_begin();						\
-> > +	asm volatile("\n"						\
-> > +		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
-> > +		     "2:\n"						\
-> > +		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-> > +					   %[errout])			\
-> > +		     : [errout] "=r" (__err),				\
-> > +		       [ptr] "+m" (*(u8 __user *)(addr))		\
-> 
-> errout is only written on the fixup path, so it needs "+r", as in
-> __try_cmpxchg_user_asm(). With "=r" gcc drops the initialisation; here
-> (gcc 13.3, x86_64_defconfig) it even shares a register with mask:
-> 
->      1a3:	lock or %dl,(%rax)
->      1a9:	test   %edx,%edx
->      1ab:	jne    1bd <log_write+0x5d>
->      ...
->      1bd:	mov    $0xfffffff2,%eax
-> 
-> so every call returns -EFAULT, and log_write() stops after the first
-> page.
-> 
-> > +	__uaccess_begin();						\
-> 
-> No access_ok() here. vhost checks the log range when it is set up
+From: Junyang Han <han.junyang@zte.com.cn>
 
-exactly
+This series continues the DingHai (ZXDH) PF driver bring-up: after PCI
+probing, it verifies the firmware version contract, waits for the
+RISC-V management core to become ready, sets up the MSI-X interrupt
+pools, and creates the async event queues through which the firmware
+will report events.
 
-> and
-> I couldn't find a way around that, but GUP used to reject kernel
-> addresses by itself. user_access_begin() would keep the check (and the
-> nospec barrier) local.
+Some notes on the IRQ design:
 
-What we *definitely* don't want is nospec on fast path.
+The vector space is partitioned into per-purpose pools (async, RDMA,
+vq). Event queues share a vector through an atomic notifier chain
+attached to the IRQ, and the sharing degree is governed by pool
+thresholds. The IRQ table hangs off a void *priv in the shared core
+device: the PF, MPF and SF core devices each carry a different pool
+layout behind that pointer, so a type-specific struct in en_pf.c keeps
+the shared header free of PF-only details.
 
-> Something like this, build-tested on x86_64 and
-> i386 only:
-> 
-> diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-> --- a/arch/x86/include/asm/uaccess.h
-> +++ b/arch/x86/include/asm/uaccess.h
-> @@ -597,19 +597,23 @@ _label:									\
->  /* set_bit() on a byte of user memory; returns -EFAULT on fault. */
->  #define set_bit_user(nr, addr)					\
->  ({									\
-> -	int __err = 0;							\
-> -	__uaccess_begin();						\
-> -	asm volatile("\n"						\
-> -		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
-> -		     "2:\n"						\
-> -		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-> -					   %[errout])			\
-> -		     : [errout] "=r" (__err),				\
-> -		       [ptr] "+m" (*(u8 __user *)(addr))		\
-> -		     : [mask] "q" ((unsigned char)BIT(nr))		\
-> -		     : "memory", "cc");				\
-> -	__uaccess_end();						\
-> -	__err ? -EFAULT : 0;						\
-> +	u8 __user *__p = (addr);					\
-> +	int __err = -EFAULT;						\
-> +	if (user_access_begin(__p, sizeof(*__p))) {			\
-> +		__err = 0;						\
-> +		asm volatile("\n"					\
-> +			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
-> +			     "2:\n"					\
-> +			     _ASM_EXTABLE_TYPE_REG(1b, 2b,		\
-> +						   EX_TYPE_EFAULT_REG,	\
-> +						   %[errout])		\
-> +			     : [errout] "+r" (__err),			\
-> +			       [ptr] "+m" (*__p)			\
-> +			     : [mask] "q" ((unsigned char)BIT(nr))	\
-> +			     : "memory", "cc");			\
-> +		user_access_end();					\
-> +	}								\
-> +	__err;								\
->  })
->  
->  /*
-> 
-> If this looks right, I'll fold it in, run my test in a VM and resubmit
-> with the test as a second patch.
-> 
-> Thanks,
-> Khan
+Changes in v6:
+- Guard the IRQ table teardown in patch 2 rather than deferring the
+  guards to patch 3, so the probe error paths of the MSI-X patch are
+  safe on their own and bisection cannot land on an unguarded cleanup
+  (sashiko review of v5).
+- Review findings not taken from v5:
+  The sashiko automated review of v5 [1], which was not posted to the
+  list, reported four findings. The IRQ table teardown NULL
+  dereferences on the probe error paths were real and are fixed in
+  this revision. The remaining three restate earlier findings or
+  do not apply: the BAR0 bounds item repeats the BAR 0 entry below;
+  the 20 s legacy wait is the legacy-firmware detection itself:
+  firmware that predates the compat region never populates it and
+  the driver reports and proceeds in legacy mode after the timeout
+  (see Changes in v4); and the health_version read cannot race the
+  RISC-V core initialization: the readiness skip fires only for
+  firmware with patch < ZXDH_HPIRQ_PATCH, which never reports the
+  power-on flag, while firmware that does report health_version
+  carries patch >= ZXDH_HPIRQ_PATCH and initializes the health
+  buffer before the compat block reports ready.
 
+  [1] https://sashiko.dev/#/patchset/20261014151200489685SCIlolykW0NGfL5EtQ%40zte.com.cn
 
-Given the point is to optimize this code, let's optimize.
-vhost pre-validates addresses so accesses are safe without
-re-checking later.
+Changes in v5:
+- Drop __packed from zxdh_fw_compat and zxdh_health_buffer: both
+  structs are naturally aligned with no padding.
 
+Changes in v4:
+- Fold the irq and eq table create() steps into their init()
+  counterparts and route every probe error path through the same
+  destroy() functions remove() uses, so cleanup has a single
+  authority from the start (review feedback on v3).
+- Give the pool name a buffer bound of its own (16 bytes) instead of
+  sharing the 100-byte IRQ name buffer, so W=1 builds stay clean of
+  -Wformat-truncation (review feedback on v3).
+- Lower the compat region wait from 200 s to 20 s: the firmware
+  publishes the block within 10 s of boot, so twice that leaves
+  margin, and the wait now sits far below the 180 s udev event
+  window raised on the thread (review feedback on v3).
+- Wait for the compat block with a per-field readiness check instead
+  of only the first dword: the firmware fills the fields one by one,
+  and a dword-granular check can read a half-populated block (the
+  "single write" justification given in v3 was wrong).
+- Log the legacy-firmware assumption when the compat region wait
+  times out, making the intentionally ignored timeout visible.
+
+Changes in v3:
+- Unmap the modern config MMIO regions on the probe error paths added
+  in this series; they used to leak when the fw compat check or the
+  RISC-V readiness wait failed.
+- Skip the RISC-V readiness wait for firmware without the compat
+  region: the erased patch field read as 0xffff and defeated the skip.
+- Make fw_minor unsigned so firmware minor versions >= 128 are not
+  rejected through sign wrap.
+- Balance the per-CPU IRQ accounting on release, so pool teardown does
+  not trip its leftover WARN; set the IRQ affinity for real with
+  irq_set_affinity_and_hint() instead of only updating the hint; name
+  IRQs after their pool instead of a hardcoded prefix; assert that the
+  pool is empty at free instead of force-releasing leftovers.
+- Clear eq->irq when the async IRQ request fails, so teardown does not
+  treat the ERR_PTR as a live IRQ.
+
+Review findings not taken:
+
+- xa_alloc() with a NULL entry does not fail: __xa_alloc() turns a
+  NULL entry into the internal zero entry as a reservation
+  (lib/xarray.c), which is the reservation semantics the pool relies
+  on.
+- BAR 0 length checks against a truncated bar: the bar layout is part
+  of the board firmware contract and the driver does not defend
+  against a broken device, as settled during the review of the
+  earlier device bring-up series (Andrew Lunn).
+
+Changes in v2:
+- Convert both firmware readiness polls to readx_poll_timeout()
+  (Andrew Lunn).
+- Read the fw compat block field by field through ioread*() accessors
+  instead of an ioread32_rep() bulk copy, which misplaces the u8/u16
+  fields on big-endian; no __le annotations are needed since each
+  accessor converts from little-endian (Andrew Lunn).
+- Use kref for the IRQ reference count (Andrew Lunn).
+
+Junyang Han (3):
+  dinghai: add firmware version check and RISC-V readiness polling
+  dinghai: add MSI-X interrupt pools
+  dinghai: add async event queue for firmware notifications
+
+ drivers/net/ethernet/zte/dinghai/Makefile   |   2 +-
+ drivers/net/ethernet/zte/dinghai/en_pf.c    | 223 +++++++++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h    |  56 +++
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.c  | 137 +++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.h  |  60 +++
+ drivers/net/ethernet/zte/dinghai/zxdh_irq.c | 406 ++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_irq.h |  73 ++++
+ 7 files changed, 956 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.h
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.h
 
 -- 
-MST
-
+2.27.0
