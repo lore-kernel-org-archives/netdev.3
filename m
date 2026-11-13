@@ -1,110 +1,64 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794564657;
-	b=0JwOGU93EW6vqA306OKdfTkdgwNPHST33bt27kOHB5RWJiOhSigVC8NQUiKA4VT57tk9
-	 YCQ6DUcZRvFHnwsWokCLvUmE2BvnAHOCuJ7HVBrb4KbkWUOWWFf47fGgiypTPIzxNYw61
-	 j1Op8zQ3ZWLU1xo39BOA00GboRkpkE2vv91cLOagG8I/I0CwZRD61O01x3qYT+azQBatc
-	 HXV7NIGBhbS8In/oPMLl2zN4ML5JFR3412FViqFmCBe3UXzKbJqIZRLeJGKKIZGsmJ3I0
-	 zKHlasXKQlOC+mQcSoKrssGogjw9MX99QbY8vbnyURRl+zWa8eT5gjqXaIPojO6Oixw==
+	t=1794564676;
+	b=2yyjgyETabnpMZdKaKeWLK88pdheDVgGPW0ARPaABhrUjo9rTd5UgT9KPbzzZV94FSMy
+	 JW2JHASwn80WakHlz3xS4Ro03PinoPQx/r4B/j05Rt6DU2jzjUBM/7m8kA+9p6L/CYBI8
+	 +uhj/1SypJH92sZvamYWaN7DXdXv+ZrLYMpq2etHFN5wvmQaxBj3lGr3VVCj/r+PIdk0Z
+	 lYJGFa+a7seck+YcnVlI5+UBHTfCJ5ZaTEGqpfXJZLss9A1W19I8kzSEEAk2xUZ4/d7rN
+	 EbdzO6a3ARn0kLHFby2kFZQCdiY/GNAG6MURfJ1Sg5FYWfFY/1AAQBiroCJLXlm1Ogg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794564657;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=RUn5HyOzv5zK74OCIfLVACQcizuS/sHn5qpIQd0Zvv8=;
-	b=1/DyqvVaIl9Wr8HJ2DGR7je2TF4sURny7p8Ppz7DunbrGFqALLBHVnps6HxSyz2Y1L38
-	 1II+Nt6Uqe4dBibTr3VqT2gac9YoyFVldm6IFjX95YfuTK473ZTOu6vUYXtJofxz693b7
-	 SFKpSl98XxETrbYjHvFBrUiWVQ7PSXhq8R9+6ZDxIXJ6rv8v31+P0h3+IP//v4yst5rAX
-	 ellfLaVxAO2ypRjdRwrkQAIjsHt9qJIDD1AtuCXkCp4n5KCjJ2dVPUSq253jdGoiD/A6K
-	 0g3aBkHZjThNq7J4u1KYQ7ccFkpIKiWrnSE7Wu9rlepSWmn4YdlvZluk+r6/cAHOY5w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794564676;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=z5RL1Gs6qBWGEalLbjFuinE+mo9K4/ly08HuaMSPvVI=;
+	b=BNoaXYnStqfhKsXDRkFg4nG8l15VOQF0qc3efFi6E8VQhhguxV15H/Ky5uRgtmy+JR+4
+	 AaFhFMxIUAgLpxZP2OaswAz16BoOyQcO3HV0KI1j6ioeDaCKdTyrc0w4jWPqF4Ikcxp26
+	 X7/vNXV8FbU+qyGVYGA6D1WUE2Ju+E3KX8hPZzFSa3i1TeLIykerKVrsiQZr4kdsiRx/I
+	 r9Di1WIJkguiGCe95gimQ+Vbqu/AnD81GoSRGZJTsLUkHXqfHp4t9imf4IJXDIRDRcU5Z
+	 HsjQIAjwZgm1zmMpNwqPgg3usmKUIUDxwDuApUb8dWLw/SmNuNAimZceLRF9WBeptFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=amutable.com;
-	spf=pass smtp.mailfrom=amutable.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=afSYRRYW;
-	arc=none smtp.remote-ip=209.85.221.43
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=axwNFDjK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16821606A331
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:10:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 16821606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amutable.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4A8606A31C;
+	Fri, 13 Nov 2026 10:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=afSYRRYW
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-490f38e9688so497692f8f.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 02:10:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794564655; x=1795169455; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=RUn5HyOzv5zK74OCIfLVACQcizuS/sHn5qpIQd0Zvv8=;
-        b=afSYRRYW0Lzg1RjNF5a8Z8fp4FTD8+wBAkqEEgX+uXVLN6iB/1Oe+S3s3pjBsHkfPy
-         t+OYs+BeBV0n1jEyBb10NVx3dBSZolIBqoZV0sAqk1NmAyPkc8BtADcPrCcEDzdTW4+p
-         zgkm0FzjpTOQt7I53MJB0zmRNwJ5JPK+9oiFhFL/qPiFq6x22bgZ8fSq9Se2ho9ikF+q
-         rg0gx4TedCmdQu2h6zCkoXcFHWmQ+ZQsRVeKTv2sVCXhncyHGZ2k8DCVvoh7926dtvhd
-         5w+l12l3Dd1UCqA4z70s6tomNhqNtGqcJuf3lRDB60cxVt/wNhZpOgzeegjchzcaCyfn
-         tojQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794564655; x=1795169455;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RUn5HyOzv5zK74OCIfLVACQcizuS/sHn5qpIQd0Zvv8=;
-        b=GGR6aq2nM0si6gnx3uPflsqgT9k0WPqApqrGQhl6oOTeZn/WrPN++gmpVGlNakwA/p
-         riFNVho/ugxiKbhRidx8ZJ7wHzKOLvi/e51IhUv4XjcI6q6JYvguGPNO/8ZIUNzs2D6p
-         7X2XgvjJ9O4cWmEdYe3fEqgQhrlLyHMSEpZXyryUfuxC6pE9KU1XXRBFDhoXlRMdxUlH
-         i9JXGbsG8K7qmQGoQAP1PExM/lE3PA21IM7xNtqHuMAoTSXCwQ+DjgjXLoas9rO7d1SN
-         7d/oyCyC6R0NnlpmhaQFx9VFkgiPP0caTzFEoLRh0mhzRuv8RkydELHEJHe2Rtb9b4+G
-         E1sg==
-X-Forwarded-Encrypted: i=1; AL+hErGksNXtIo1GHpngdomxWsd1ZiDq1zf0aVSCnM5cDta4mST05X+/D0dssohSpDFhY8pHjZ4I9+8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/dKek4y8aqKnsjYeORBAJUfRDKnmOP2G0xgsf99s6vH4o+v4H5
-	KGQpF45bNL6YX12xIUQvPxO3ncCRBYmB8fcWHytFpq04jCMJKLGO9c2cBMBV8DFaU3dk
-X-Gm-Gg: AYBFou0GIJp+wHnQLQZJTU9N+soCh3uoCVMA1zFc+aM0ltGyxo5otVRQMlH11Pdtr15
-	v7podpe8cNxRwvC1nSdi065FeHaPJHzUISe6HAxmu2uW9i9APuubSQkg4LNrIIvCXuUAiE72dV3
-	fiw4TZ4Qd+xASCmaoYtnJtwP6vDmFnmDtw38JtQci7eHH8o+5tL512Q5Kl75N+tz9YwdPZLPZj9
-	fJC9v1yyGagWMJTirRIwNEMjrkGKTa+HPTQy7b2q2MyaIZwwPYonwnS3znj1rHo3xeP/hrqo3s5
-	OmwYR0aT25plWN0pkTETky4aNGIPKwnKugByr9C+7khhsL4WdHjceQQubNxnBJm9jDNZcDejWiU
-	v9ZLmWh3RGmiRe/X7M0xbIKfmVQe0hF1NEQwgqG5ibr43IM0at6mvL+d/v7Lq6GXxUZgaVjAgOG
-	3fPKJnPCd9v4lVKuqJuUZNlM/nAml3UQMSZpQc0qNsKt4LhZYFjCq7yBre3w4Se/xdkQFU7xAOg
-	JhU6HbGpD/n+JbZU96mHuBQVSjGEwonAglxF/ZQ5CDCpSp0TpINM32Qd76AnXrH0fPN0Aad6qoM
-	XsMaXGKMga8RQmQjNtXmI3uYZQJVdSD6s4aoOQcdQx8Dh5+mroDGN07DNgvU438=
-X-Received: by 2002:a05:6000:470e:b0:499:ffd4:f519 with SMTP id ffacd0b85a97d-49b02d4c2cfmr11662822f8f.23.1794564655454;
-        Fri, 13 Nov 2026 02:10:55 -0800 (PST)
-Received: from [10.0.0.233] (tmo-086-54.customers.d1-online.com. [80.187.86.54])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5a32d336sm4988050f8f.0.2026.11.13.02.10.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 02:10:55 -0800 (PST)
-Message-ID: <0894c601b3f3c5b92008c6c399faaa539b658307.camel@amutable.com>
-Subject: Re: [PATCH RFC 17/41] securityfs: use fc_init_pseudo()
-From: Alexander Mikhalitsyn <alex@amutable.com>
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
- Bacik	 <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, 	driver-core@lists.linux.dev,
- linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org,
- netdev@vger.kernel.org, 	fuse-devel@lists.linux.dev,
- linux-efi@vger.kernel.org, 	xen-devel@lists.xenproject.org,
- ocfs2-devel@lists.linux.dev, 	linux-s390@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, 	linux-usb@vger.kernel.org, Amir Goldstein
- <amir73il@gmail.com>, 	linux-erofs@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org
-Date: Fri, 13 Nov 2026 11:10:52 +0100
-In-Reply-To: <20261110-work-loop-pseudo-v1-17-4c998976c6c7@kernel.org>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-	 <20261110-work-loop-pseudo-v1-17-4c998976c6c7@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=axwNFDjK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBE51F000C4;
+	Fri, 13 Nov 2026 10:11:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794564676;
+	bh=z5RL1Gs6qBWGEalLbjFuinE+mo9K4/ly08HuaMSPvVI=;
+	h=From:To:Cc:Subject:Date;
+	b=axwNFDjKra/n9fGQ6DitqiUJGJUTfTwNUpSzMjBM7UCepgbrgCqOsJYiF7/GeIVxy
+	 UZqGu0peJSmnZ6+Lw9UIWBt89YUmE3uySjtUdbt8rBY9ZELWMnYjo9Qkkznnq5jjL0
+	 JMXi1uyP6kjxGwfWfVb+pdfrWazOF1Bt7C1X2YNM1OcBn2Y4jImDZCk0ihBilqsUgA
+	 lFqBJYenW5MRpc4fAmhG660z9GNs6L2OuuHqRtPBsVsagkBgTH+c/QsYn43tPFzoir
+	 9NqcZ7Bhhq1Vq+i4hDEAeNCH/W945br1IDrcqI7ob8bmERm9F/u1vnHllz9qPEEbPp
+	 MXctHNnE0BuuQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Mina Almasry <almasrymina@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Wang Zhan <wang.zhan@smartx.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: kunit: move struct net_devmem_dmabuf_binding off stack
+Date: Fri, 13 Nov 2026 11:11:00 +0100
+Message-ID: <20261113101109.3227815-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -114,43 +68,132 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2026-11-10 at 10:14 +0100, Christian Brauner wrote:
-> Initialize securityfs as a pseudo filesystem. This raises SB_I_PSEUDO
-> and
-> also SB_I_NOEXEC and SB_I_NODEV. securityfs never holds executables
-> or
-> device nodes.
->=20
-> AppArmor puts a .null device node into securityfs but only ever opens
-> it via dentry_open() which doesn't care about SB_I_NODEV.
->=20
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
+The net_devmem_dmabuf_binding structure is really way too big to
+live on the stack, and causes warnings on my randconfig build machine
+with a reasonable per-function limit:
 
-> ---
-> =C2=A0security/inode.c | 2 ++
-> =C2=A01 file changed, 2 insertions(+)
->=20
-> diff --git a/security/inode.c b/security/inode.c
-> index 080402367674..93997a9f16fc 100644
-> --- a/security/inode.c
-> +++ b/security/inode.c
-> @@ -14,6 +14,7 @@
-> =C2=A0#include <linux/kobject.h>
-> =C2=A0#include <linux/fs.h>
-> =C2=A0#include <linux/fs_context.h>
-> +#include <linux/pseudo_fs.h>
-> =C2=A0#include <linux/mount.h>
-> =C2=A0#include <linux/pagemap.h>
-> =C2=A0#include <linux/init.h>
-> @@ -64,6 +65,7 @@ static const struct fs_context_operations
-> securityfs_context_ops =3D {
-> =C2=A0
-> =C2=A0static int securityfs_init_fs_context(struct fs_context *fc)
-> =C2=A0{
-> +	fc_init_pseudo(fc);
-> =C2=A0	fc->ops =3D &securityfs_context_ops;
-> =C2=A0	return 0;
-> =C2=A0}
+net/core/net_test.c: In function 'netmem_ref_test_tcp_devmem_recv':
+net/core/net_test.c:1720:1: error: the frame size of 1744 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]
+ 1720 | }
+      | ^
+net/core/net_test.c: In function 'netmem_ref_test_skb_segment':
+net/core/net_test.c:1477:1: error: the frame size of 1584 bytes is larger than 1536 bytes [-Werror=frame-larger-than=]
+
+Since the binding object is never used concurrently in multiple tests,
+avoid this by just having a global copy of it and reinitializing it
+for every user.
+
+Fixes: 2285346afc99 ("net: kunit: test netmem, page_pool, and skb frag refcounting")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+I don't particularly like this workaround, as global variables are
+always hacky like this. If anyone has a better idea to avoid the
+last stack structure, let's do that instead.
+
+Without the patch, I run into this every few randconfig builds,
+which did not happen on linux-next before the merge window.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ net/core/net_test.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/net/core/net_test.c b/net/core/net_test.c
+index 976d14896251..19f422300d9c 100644
+--- a/net/core/net_test.c
++++ b/net/core/net_test.c
+@@ -984,13 +984,14 @@ static void netmem_ref_test_pp_page(struct kunit *test)
+ #endif
+ 
+ #if defined(CONFIG_PAGE_POOL) && defined(CONFIG_NET_DEVMEM)
++static struct net_devmem_dmabuf_binding binding;
++
+ static void dummy_percpu_ref_release(struct percpu_ref *ref)
+ {
+ }
+ 
+ static void netmem_ref_test_net_iov(struct kunit *test)
+ {
+-	struct net_devmem_dmabuf_binding binding = {};
+ 	struct page_pool_params pp_params = {
+ 		.order = 0,
+ 		.pool_size = 4,
+@@ -1003,6 +1004,7 @@ static void netmem_ref_test_net_iov(struct kunit *test)
+ 	long base_ref;
+ 	int err;
+ 
++	memset(&binding, 0, sizeof(binding));
+ 	err = percpu_ref_init(&binding.ref, dummy_percpu_ref_release,
+ 			      PERCPU_REF_INIT_ATOMIC, GFP_KERNEL);
+ 	KUNIT_ASSERT_EQ(test, err, 0);
+@@ -1145,7 +1147,6 @@ static void netmem_ref_test_release_data(struct kunit *test)
+ 		.nid = NUMA_NO_NODE,
+ 	};
+ 	struct sk_buff *skb, *clone1, *clone2, *ext;
+-	struct net_devmem_dmabuf_binding binding = {};
+ 	struct net_iov niov = {};
+ 	struct page_pool *pool;
+ 	struct page *page;
+@@ -1154,6 +1155,7 @@ static void netmem_ref_test_release_data(struct kunit *test)
+ 	int base_ref;
+ 	int i;
+ 
++	memset(&binding, 0, sizeof(binding));
+ 	pool = page_pool_create(&pp_params);
+ 	KUNIT_ASSERT_FALSE(test, IS_ERR(pool));
+ 	page = page_pool_dev_alloc_pages(pool);
+@@ -1335,7 +1337,6 @@ static void netmem_ref_test_skb_segment(struct kunit *test)
+ 		.flags = SKBFL_ZEROCOPY_ENABLE,
+ 	};
+ 	struct sk_buff *head, *list, *segs, *seg;
+-	struct net_devmem_dmabuf_binding binding = {};
+ 	struct net_iov niov = {};
+ 	struct page *pp_page, *reg_page;
+ 	netmem_ref pp_nm, niov_nm;
+@@ -1343,6 +1344,7 @@ static void netmem_ref_test_skb_segment(struct kunit *test)
+ 	long base_pp_ref, base_iov_ref;
+ 	int base_pp_page_ref, base_reg_ref;
+ 
++	memset(&binding, 0, sizeof(binding));
+ 	pool = page_pool_create(&pp_params);
+ 	KUNIT_ASSERT_FALSE(test, IS_ERR(pool));
+ 	pp_page = page_pool_dev_alloc_pages(pool);
+@@ -1634,7 +1636,6 @@ static void netmem_ref_test_try_coalesce(struct kunit *test)
+ 		.nid = NUMA_NO_NODE,
+ 	};
+ 	struct sk_buff *to, *from, *clone;
+-	struct net_devmem_dmabuf_binding binding = {};
+ 	struct net_iov niov = {};
+ 	struct page *pp_page, *reg_page;
+ 	netmem_ref pp_nm, niov_nm;
+@@ -1644,6 +1645,7 @@ static void netmem_ref_test_try_coalesce(struct kunit *test)
+ 	bool fragstolen;
+ 	int delta;
+ 
++	memset(&binding, 0, sizeof(binding));
+ 	pool = page_pool_create(&pp_params);
+ 	KUNIT_ASSERT_FALSE(test, IS_ERR(pool));
+ 	pp_page = page_pool_dev_alloc_pages(pool);
+@@ -1766,7 +1768,6 @@ static void netmem_ref_test_tcp_devmem_recv(struct kunit *test)
+ 		.pool_size = 4,
+ 		.nid = NUMA_NO_NODE,
+ 	};
+-	struct net_devmem_dmabuf_binding binding = {};
+ 	struct msghdr msg = {};
+ 	struct dmabuf_token token;
+ 	struct dmabuf_cmsg *cmsg;
+@@ -1780,6 +1781,7 @@ static void netmem_ref_test_tcp_devmem_recv(struct kunit *test)
+ 	long base_iov_ref;
+ 	int ret;
+ 
++	memset(&binding, 0, sizeof(binding));
+ 	KUNIT_ASSERT_EQ(test,
+ 			sock_create_kern(&init_net, AF_INET, SOCK_STREAM,
+ 					 IPPROTO_TCP, &sock),
+-- 
+2.53.0
+
