@@ -1,55 +1,66 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794578802;
-	b=wIsMF2Pr6prv0o1r8SOzrO+yziYOSCXplg1Hu3ckw+dXhmZwYusgq+7I5AJqTxadyYQb
-	 dpy4FPWK/3IfuJEdBSSOCjnX3J/NyFOFjirotgEJqmCHnaH4VYqCqVLVvFnF3gmFAwda9
-	 RSofU9f8WSC+IajQZoAW3XQvwrJZq7t73tKXordcsla6ZKmYxlM/EZ2uSLmcrQG2KsS7E
-	 SL46TQUEnbYt3RZO5y5X6zQqRr/mpYESP29JUdkQk8nQ9MMNsqD2GmVeKMnHhLnU1fFPk
-	 D9GyFhI8/HtiiqLNvPobWmBWBfGLzZIgEgXwifks2n76rum8zVJmn9O9b8+QQkLs2Qw==
+	t=1794578908;
+	b=1u+aZ/96RnJOK1jf79rezfe+YWfvDMjGv3GWeOwjMEElexkzz+uPBCVjPV4HY4nmZM+M
+	 qZQcv4OLimXGkxiUInnu5v1wkDMy3MDHpQtLEx7pvM/fHl669RJ5NpLcvzTmGcwpqX/5R
+	 uMve8ImS5z6zZGyObfYBSFvJGgMYQVLmCwwJ/PFTA7ykTLOu1oxbS5sU+YA0AcV6nAGOV
+	 2ZW7ukSgTiyQeJps3uoYoHYxDkvFfX3QLz0xShgfmppcXLBmYshOzcCqwcDFetDeVxn01
+	 Dk9xCr0FtEIUnr8dUOEq+cojFiTStdt7LzN+ItPm32iiyKd1ebJTLzp/tMNKgkVUd9w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794578802;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:References:
-	 In-Reply-To:To:Cc:X-Mailer;
-	bh=7f9bU/O3D+ruldPY+B0WgXy7NAz35uXsO9r/E1V0JMU=;
-	b=e1Ano1w4/nuSc5lyXglnV7YqjwrnFWpDb0A0zLbxZytNuTM91kwofNWzBA86Z6xIuNYV
-	 kevK5efZIHwHI86M6SZ7Wpq3XIpMN3YiH7bfvr9SKKuaa3iv4RgIlFB1zzIkkUrJ5zfng
-	 xPt2b/92uCxmA/vznbEmUofkRnuRxtopltmc3Ytrsr+u147vi4ium+t0Ij3V3vBomPDGy
-	 kT0/0/2YpUhZgpmI6GD28sN9ekwAm0/jJiviZRKujfRdMjGafgf/C9ZNQRvYp72NC2PsB
-	 jvm3fFrYjcs3HWwY9CAo4B97LxqxVsSUAAd/qy9Oo0xyOzOpL1GBXBdTHJwinaaSRjg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794578908;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=WsrGw3edm9FzwMEE9G632XVGf6LNTuNlP557XSOGQsU=;
+	b=LhKOmcmi1KIQE/ANE69VJ6YhnZUNyq839KNbbZQbPJ1eCcWehLXCqVDIOMxTRqyPbM08
+	 yCQB32Z5cJmBz1CsQRMLKdQbkda0n46To4tgCDtpXaeH6ftV64RyjaLR23eWpGUGOzB70
+	 r/e9cCOIC9aXqVSCx9/P5tb5D0d2DgrceLzhXnVLx07j40MGWeM0ULGB9krVugLQut/9z
+	 483WGl4VQFvmsePo1vySCv39uLsOiMIV7ui9tGfbSAlWo9HWhqQpRw4vVYa7WMCf7quQM
+	 RTCRSk2gqRbpsiKmz4b7UlhXS4vy/GGNmfUWd+W676bMSAUHodGaQoZmec8E1r2kw8A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZE7sH7DZ;
-	arc=none smtp.remote-ip=91.218.175.9
-Received: from mta0.migadu.com (out-9.mta0.migadu.com [91.218.175.9])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=v1KRo8ct;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6925606A32E
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 14:06:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A6925606A32E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D8B606A323;
+	Fri, 13 Nov 2026 14:08:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 80D8B606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZE7sH7DZ
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=b5LPlkeB/6xMio1zmdhb8ss8/a+9v/3+hmivnjp4xNU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794578799; v=1; x=1795183599;
- b=ZE7sH7DZtyH8E0lIKKyNtzX89EgawHU0egfmGScivh0HC3MHMyNfFBJYtbga2RdTczT5Q+DU
- 6615FT0vCi27fIfkB4BEeMKbsIvTmZAxoszEQDC9AXCtdHR92tWUtMeU4qmG7r1qNR0I1iEF6wS
- 36bCUyNXYLHenzFdf1oGAKHc=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id d5599e53cf4d0115;
-	Fri, 13 Nov 2026 14:06:39 +0000
-X-Mizu-Trace-ID: d5599e53cf4d0115
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Fri, 13 Nov 2026 22:04:21 +0800
-Subject: [PATCH net-next 6/6] bonding: factor out bond_enslave_validate
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=v1KRo8ct
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=WsrGw3edm9FzwMEE9G632XVGf6LNTuNlP557XSOGQsU=; b=v1KRo8ctYX8V68DybfaVBGInQB
+	CAwiZBXVU6EzUsd1jj3OmGkx32696PURT0HnInRE5ZfPYpFtl0z1t/Dza3SLYw0hl935/NAJzDftN
+	P8qyfok68We1jdiuyeUcXCtGp13dv7DeaStf+ixq2AhQgy5LVkObq9Jn4EOVqsOUMvgs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xRrwo-00GHxb-VE; Fri, 13 Nov 2026 15:08:10 +0100
+Date: Fri, 13 Nov 2026 15:08:10 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: joseph@telaak.dev
+Cc: Hauke Mehrtens <hauke@hauke-m.de>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 0/2] net: dsa: mxl-gsw1xx: reset the switch
+ through reset-gpios
+Message-ID: <a2f45802-b75b-4a19-9508-2d1b5ebe473a@lunn.ch>
+References: <20261112-mxl-gsw1xx-reset-v3-0-863e82074893@telaak.dev>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,93 +70,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-bond_enslave_restruct-v1-6-364c549e78db@kylinos.cn>
-References: <20261113-bond_enslave_restruct-v1-0-364c549e78db@kylinos.cn>
-In-Reply-To: <20261113-bond_enslave_restruct-v1-0-364c549e78db@kylinos.cn>
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Hangbin Liu <hangbin.liu@linux.dev>
-X-Mailer: b4 0.16.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112-mxl-gsw1xx-reset-v3-0-863e82074893@telaak.dev>
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+> This is separate from commit 82e2c7db0830 ("net: dsa: mxl-gsw1xx: force
+> internal PHYs into a known reset state"), which only programs the PHY
+> bits of RST_REQ. On this board that commit is applied, and the PHYs still
+> sit at the shifted addresses; only a hardware reset of the switch moves
+> them back.
 
-bond_enslave() is a long linear function whose flow is hard to see
-behind the inline blocks. Factor out bond_enslave_validate to do
-all read-only checks.
+I don't think 82e2c7db0830 is relevant here. The commit message says
+nothing about the address of the PHY.
 
-Failures return directly, no undo needed at that point.
+How does the bootloader change the address? I assume there is a
+register it writes?
 
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
- drivers/net/bonding/bond_main.c | 36 +++++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+Is there a comment about why it changes the address?
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 5e36612cfaec..8f97b0e2c0b3 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1935,17 +1935,16 @@ static void bond_publish_slave(struct bonding *bond, struct slave *slave)
- 		bond_update_slave_arr(bond, NULL);
- }
- 
--/* enslave device <slave> to bond device <master> */
--int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
--		 struct netlink_ext_ack *extack)
-+/* Fail-fast validation of the slave and the bond.  Everything here
-+ * reads state only, so a failure needs no undo.  Must stay ahead of
-+ * the first mutation in bond_enslave().
-+ */
-+static int bond_enslave_validate(struct net_device *bond_dev,
-+				 struct net_device *slave_dev,
-+				 struct netlink_ext_ack *extack)
- {
- 	struct bonding *bond = netdev_priv(bond_dev);
--	const struct net_device_ops *slave_ops = slave_dev->netdev_ops;
--	int orig_fail_over_mac = bond->params.fail_over_mac;
--	struct slave *new_slave = NULL, *prev_slave;
--	bool alb_initialized = false;
--	struct sockaddr_storage ss;
--	int res = 0, i;
-+	int res;
- 
- 	if (slave_dev->type == ARPHRD_CAN) {
- 		BOND_NL_ERR(bond_dev, extack,
-@@ -2010,6 +2009,25 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 			return res;
- 	}
- 
-+	return 0;
-+}
-+
-+/* enslave device <slave> to bond device <master> */
-+int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
-+		 struct netlink_ext_ack *extack)
-+{
-+	struct bonding *bond = netdev_priv(bond_dev);
-+	const struct net_device_ops *slave_ops = slave_dev->netdev_ops;
-+	int orig_fail_over_mac = bond->params.fail_over_mac;
-+	struct slave *new_slave = NULL, *prev_slave;
-+	bool alb_initialized = false;
-+	struct sockaddr_storage ss;
-+	int res = 0, i;
-+
-+	res = bond_enslave_validate(bond_dev, slave_dev, extack);
-+	if (res)
-+		return res;
-+
- 	/* set bonding device ether type by slave - bonding netdevices are
- 	 * created with ether_setup, so when the slave type is not ARPHRD_ETHER
- 	 * there is a need to override some of the type dependent attribs/funcs.
+Does the driver have an implicit assumption about the addresses of the
+PHYs? Should the driver actually be writing this register to put the
+PHYs at the expected address?
 
--- 
-2.56.0
-
+	Andrew
