@@ -1,66 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.7
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794555955;
-	b=JKaw9gdK/i6f7jcM/kjHKLSR+LANMZURY+rUOpgaW/ErdsHyRvMTDs9Zv+7hpsm28CBw
-	 hK//bm/ZG23zCE/LXrO7oVhxh0XkN2Syg/+RAZnlstW+m+u3y29pYAzPQdiQA57FHD7dC
-	 OJVlgi3N1cHOvklXKlGR3oo9WZsVbxPUpRgoL7+5uqGEuhaI0O0Mn6CjhsouCkyVZYpuq
-	 u3+YjZiXl3hU6PRT6oSdzTpX95bt1gKf4Y7aFaOhARZbfIdAtXEua9JO4xFzWTSFi63Kr
-	 BeV1h7xXfMGkNuYmcI4HDZHs0E6o/0FpHzwytinKQCDnINSLC8YxUgeHSWRRDkDSD8A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794555955;
-	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
-	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=AfT7uUWR+HjWfuHF1XrjoR+uG1dvw6mA7zq+R48PPaY=;
-	b=dXo43GWFhOLqb9o5gHyW06gEoNJOaQb1CiwjqJcaSgWPV4SZya9BFK+4r7GQSUX9RQ0p
-	 Ycjei/p5ACAw/F0Ua70JxVI8tX26WKLqssIcKOdIUMIht6fxkUYHhXq9zEsacXCw2UKt7
-	 afgklT07BpkE1UkQXoOVLv5+Y0BsABUi9Q8C5Gkg/tUjlvOS5kzPJ/CtiSHK4oX2igBTR
-	 cgF0HrzC7/D15TmhHWcZZ/7Kj9NojcAwpsIXwmRWMme4t1GJDeocXe+11RgRczN5v6Rkx
-	 mY/XQKluiw2Zef7N6XjfJTks5Y6HKYEho6ZymXVwZ/kA2a2UwZ8UMRbx7sMWZEy1Zvg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.dev;
-	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h5m3UZXR;
-	arc=none smtp.remote-ip=95.215.58.7
-Received: from mta1.migadu.com (out-7.mta1.migadu.com [95.215.58.7])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.50
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794555964;
+	b=oKC3SDdFpmrtlF+L2CKBrMm7gB4EwlGwvct6OCBxM4xnp+O1U9/ESProPkaQb53dwvaO
+	 FBGuUK46w0s7N95QcJSBSQyaOJ8i6JMdtT6gxOsSJ/DYXT+5qeBUoccZjeixiDpv8CGdU
+	 mDbBKJt306ftqqhEvnKjeAzLUmOUXi3uYBHSCzbESfjJA+oxFAbUM3/7d+5ozmwnEIX3N
+	 soO9h+sAqqQl3a8DjGfAwklVxdPkSedd1MiPSqVDE4NDevn6GqUohhvjnvbwWkFffc8Vx
+	 gEHLew0wD8o1w33bdPqlNkK85lbwyz6J7690EBADAAKffg8JLt539EKa93ZZblPaLTg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794555964;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=tvPQQMwBZ/Lg3SekknzYW0QsE4BK2jGjRwomhq4ONEc=;
+	b=rdmf4BRtLgNWuNmp7ZS0BmG7FfHG4V35VnSdx8xkyeUBmfXSuMMvG/tCGf9XNvTpyYoK
+	 LVHRgqAEbUmaYMR+7JPsdptuKAAm+afFErFXQV9NGLARTN+LYQVzgY8dSlgC3F2tJhAGq
+	 iCfHffbmhIWOwDEh0DkcOFgF1qG+LSMPGXHUwHFPPK8IP371tlz9tyXRAk0Zc90xij8G3
+	 ej/5XHWChsdv033nH+lCJZUPQaiiwMoohJe5rMwwbseEBdxvO9JiTBIGaJbnVRs2OlhHH
+	 UQJgb+iqUga+zOcel3rEq/YPdXqpbt19NgMJUBLnOz/24Lzas4hMKXGO4gffv2oqr2g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DlV5pE4W;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.167.50
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CCE606A31C
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:45:53 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E2CCE606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54506606A32D
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 07:46:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 54506606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=h5m3UZXR
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=ki2r00FA9QQTrclX5fpRpLYxr58L48LKLHS4glbqT/I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794555952; v=1; x=1795160752;
- b=h5m3UZXRuNYLYQtnn+cJhEaYI9bk0koWARzO0uapev6tuoR+TnucIL9T5pnpn/AdDHa1ukKt
- Y2gm5USTtsRGiLy06zxdDjf9ttpmC5htgbLqqP726TweimrrYX5D7QAObwegM4AH8sOCaWKqBuG
- dVUdKxmY2YLnEmXipv9waHfE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 344b705ad4e98c2b;
-	Fri, 13 Nov 2026 07:45:44 +0000
-X-Mizu-Trace-ID: 344b705ad4e98c2b
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 13 Nov 2026 15:45:25 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Ido Schimmel <idosch@idosch.org>
-Cc: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
-	razor@blackwall.org, aahila@google.com
-Subject: Re: [PATCH net-next 2/2] selftests: bonding: Add a test for 802.3ad
- with coupled control disabled
-Message-ID: <avbAFdyJowX8CvOB@fedora>
-References: <20261111171947.2816258-1-idosch@nvidia.com>
- <20261111171947.2816258-2-idosch@nvidia.com>
- <avZ07oXIXo7xZyCC@fedora>
- <20261113070732.GC3517282@shredder>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DlV5pE4W
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5c09e2ed679so59238e87.3
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 23:46:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794555962; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TTtpY9RINjA66gmja/I4atzoCsH+As6ZL8ut1DzUSzBaBUlKsaXmGQKmFiPEIcwLVR
+         snI/0MNAUU7dgDIvQA4gznqgYoW7PbGrbRDOaPXV4UZR9KbhWti3CAHREzGhgB27Rrux
+         Q619/4K+qEWW3hBDaNnO2cEaey5WYeiimU9MVoVtBqbhe8fPwhvdY65L9t7PO68B6Ok2
+         EKHIVVm4H9AW+3QhCzYrcNr8F0HkLgIAQ/6XE0C+OCB5q1Ed3Dygt5JucOwjgKId5z/L
+         aVOhCiWvBI7IIv/tLSaRdvGtSmfXqt1Knq/Hmexy2662Qys+mgiM/wDpNwNyJzRzBsgd
+         znqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=tvPQQMwBZ/Lg3SekknzYW0QsE4BK2jGjRwomhq4ONEc=;
+        fh=QsoK8/+i+XD0ekSrftenAWuBoOe4Fyp7sBbk4gMAaQU=;
+        b=cp/KW24OY1dBAQu5lrMRNCp1En94IU/43vnK9TzlY3shRhmr3ZsIKUvX80att/PkZD
+         OU0xUULOE556bDllor8fOn2vbp4dVqdBv9erzqXNZYoCWfvPTFAQIU+DWqvcXSSqQQlH
+         t4jfSP1oYdSkQ7j/4MJpvL7gvMoJCuzJbzCk98nBKeb8FLnWfKQuUnEaPuF+FjzhM9ap
+         8VTpiWfY8HHM53h5+e0UjKAhNGBRaA0eOuFhaBrxD92+wbwJVEiNKK7Re+Knfcly20pw
+         7aH4S3IxLhd18CDh+r0YYeUCalk72Kt5MYR8XeeCCP4rUQQg0sdtTt90KamJZKDNa70n
+         eAAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794555962; x=1795160762; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tvPQQMwBZ/Lg3SekknzYW0QsE4BK2jGjRwomhq4ONEc=;
+        b=DlV5pE4WyozKzf3B5GLFZflBg69H+ArJqhA1q9Onj5Rac+wqD0MqfXqqkk6+0utQfH
+         oHo7TIF5iYCLL7Fc2hNjSjO3vs05ewSsUTy9mcDMZCSmSpieIyKszHgDUvZML6v9noul
+         NBHlUnHbzeMPl1O+MFM2IVK/LfZVMzJ5t5d5ScnWJwJenfTp9A4CFmtbZAsuZ05M5+Dw
+         YUEvm6L2v/VttYbRFz8v8XDWJU72wdYRJeCsDQHfd6j4exyXF1vggZDlf9+JBqbO979/
+         cnJbwKnqRKkZa/GSdZ2NGD5cp/idJe3tUyaEJ9aF2nraqyFZYntKX8truvnL9g55l841
+         Qoog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794555962; x=1795160762;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=tvPQQMwBZ/Lg3SekknzYW0QsE4BK2jGjRwomhq4ONEc=;
+        b=d73Q7bMegHJv4Y9CbBjZDZ4LyW9OBIjDkT7lnY3FFxLha2NTn7wOMgcnoS1M7q1bEp
+         bQv8xTpE4OC8hRCX49l6AILAJEYj5743/d4fBFNTOvVA+6igQUhKLefKe9xos78HwQsG
+         6PRy1QQgHXzLKF8PtuTCeOyWapDHwGBuIyZcNFoYtK4Y0+Ujy7SbE87Ux4utXjgEKgJU
+         wF7u9VXM1UJ1ZRbmgj9RJsSkTmgYrNrQejdNXZuJzk8LwawQdQyXdRUphnyAmEhebGJ9
+         LdHXOHB0/HYS/631y/xeSjGK439nMxHBZq7Bo86hTSNjW08jz6nNs3KZDvjmWzVdpRo9
+         adJA==
+X-Forwarded-Encrypted: i=1; AL+hErFLgvHFOCW1fs3sURyqyY3VrLPxNUIriu97Re218VSAIN0sxZd/6rPXLpKufgN5nRC3z9Yn7VU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+V8FTBlLVHbR5Bas36NBp3zr64MSsHz6spAo9Xp+fVgTqHmtP0
+	cDQ/M8RZJRZT/RtQbkBZgqlPD7eagCHWxaRTk1ak2tSAWuqWwnu2jK8/S+2VGDzMuZT1J+8ci6x
+	o50bco4fBa/FovLMDx40zgatROkvN6eE=
+X-Gm-Gg: AYBFou254ad8mX4SWBHPPSo+kYuVIudbc8JGY1J1Y44mNNVs8VrfuRDHUCdJkUUapg+
+	itRHYh85fvQ4nndx1y6xZvajnhchfQaItEH7ffKFx1cLJ7/ZhGrrV9jFpMCsHBL4Wdp2PBn9JBu
+	seMm5fqEtINa1iZseV9iIF9av07xMiSoRqk5BwfOJomb+Qd0qns9OrvOVfoJb2gmi7kQg2YU1Gh
+	ykqA0THfITLmYS2RNTG2e/MzEFNtscZqevA5QVFv0TU6vY+d6jTFgn2AjkgZXBb+Q6XFBhg+viq
+	CDiVTY8dM+MW+TPOiMXMe5XvJQ8xNFq5yrPuAX2tDr3eCTVgvVEbnG//3AainhY0A4Hi1AAoww8
+	uiKNEQroroKjuEw+elkgpfmPUsrW5ZwVtql57t5tNbI0wKxsArxYuM4iHkkIrkoLqC4eBSGQ=
+X-Received: by 2002:a05:6512:61a4:b0:5c0:465:3fc6 with SMTP id
+ 2adb3069b0e04-5c1709ce71dmr805206e87.4.1794555962280; Thu, 12 Nov 2026
+ 23:46:02 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -70,217 +103,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261113070732.GC3517282@shredder>
+References: <20261112-sun8i-emac-mux-uaf-v1-1-308ae7e6fcf2@gmail.com> <e526541c-f91a-484b-a677-4c55e4a96a7b@lunn.ch>
+In-Reply-To: <e526541c-f91a-484b-a677-4c55e4a96a7b@lunn.ch>
+From: Arun Iyengar <aiyengar1990@gmail.com>
+Date: Thu, 12 Nov 2026 23:45:50 -0800
+X-Gm-Features: AclHuK-IYiE1aDGEHibGFo-Q3L4DjiCYZIfUZ-5mDw69KYbW_QlhkXjxqGYSAjo
+Message-ID: <CAEy9hNX_E0riGS-TdDogDWMv3-fpAVFLAjx8F0cvq4Q_rH3REA@mail.gmail.com>
+Subject: Re: [PATCH net] net: stmmac: dwmac-sun8i: Fix use-after-free in the
+ MDIO mux error path
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Philipp Zabel <p.zabel@pengutronix.de>, netdev@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Ido,
-On Fri, Nov 13, 2026 at 09:07:32AM +0200, Ido Schimmel wrote:
-> On Fri, Nov 13, 2026 at 10:24:46AM +0800, Hangbin Liu wrote:
-> > Hi Ido,
-> > On Wed, Nov 11, 2026 at 07:19:47PM +0200, Ido Schimmel wrote:
-> > > Test that with coupled control disabled, a port in COLLECTING state
-> > > receives packets.
-> > > 
-> > > In this mode, a port only transitions from COLLECTING to DISTRIBUTING
-> > > state if its partner sets the Collecting bit in its LACPDUs. Therefore,
-> > > keep the port in COLLECTING state by clearing the Collecting bit in
-> > > received LACPDUs.
-> > > 
-> > > Also test that ping works once the port moves to DISTRIBUTING state.
-> > > 
-> > > Use VRFs rather than network namespaces so that the test could be run
-> > > with a veth pair or a pair of physically connected ports.
-> > > 
-> > > Output without "bonding: 3ad: Receive packets in COLLECTING state":
-> > > 
-> > >  # ./bond_lacp_independent_control.sh
-> > >  TEST: Receive in COLLECTING state                                   [FAIL]
-> > >          Packets not received in COLLECTING state
-> > >  TEST: Ping in DISTRIBUTING state                                    [ OK ]
-> > > 
-> > > Output with the fix:
-> > > 
-> > >  # ./bond_lacp_independent_control.sh
-> > >  TEST: Receive in COLLECTING state                                   [ OK ]
-> > >  TEST: Ping in DISTRIBUTING state                                    [ OK ]
-> > > 
-> > > Reviewed-by: Petr Machata <petrm@nvidia.com>
-> > > Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-> > > ---
-> > >  .../selftests/drivers/net/bonding/Makefile    |   1 +
-> > >  .../bonding/bond_lacp_independent_control.sh  | 144 ++++++++++++++++++
-> > >  .../selftests/drivers/net/bonding/config      |   6 +
-> > >  3 files changed, 151 insertions(+)
-> > >  create mode 100755 tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
-> > > 
-> > > diff --git a/tools/testing/selftests/drivers/net/bonding/Makefile b/tools/testing/selftests/drivers/net/bonding/Makefile
-> > > index e337c099fb40..46d9fede5918 100644
-> > > --- a/tools/testing/selftests/drivers/net/bonding/Makefile
-> > > +++ b/tools/testing/selftests/drivers/net/bonding/Makefile
-> > > @@ -7,6 +7,7 @@ TEST_PROGS := \
-> > >  	bond-eth-type-change.sh \
-> > >  	bond-lladdr-target.sh \
-> > >  	bond_ipsec_offload.sh \
-> > > +	bond_lacp_independent_control.sh \
-> > >  	bond_lacp_prio.sh \
-> > >  	bond_lacp_strict.sh \
-> > >  	bond_macvlan_ipvlan.sh \
-> > > diff --git a/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
-> > > new file mode 100755
-> > > index 000000000000..c29712e01e49
-> > > --- /dev/null
-> > > +++ b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
-> > > @@ -0,0 +1,144 @@
-> > > +#!/bin/bash
-> > > +# SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +# +-------------------------+ +-------------------------+
-> > > +# | H1 (vrf)                | | H2 (vrf)                |
-> > > +# |  + bond1 (802.3ad)      | |  + bond2 (802.3ad)      |
-> > > +# |  | coupled_control off  | |  |                      |
-> > > +# |  | 192.0.2.1/28         | |  | 192.0.2.2/28         |
-> > > +# |  |                      | |  |                      |
-> > > +# |  + $h1                  | |  + $h2                  |
-> > > +# +--|----------------------+ +--|----------------------+
-> > > +#    |                           |
-> > > +#    +---------------------------+
-> > > +
-> > > +# shellcheck disable=SC2034,SC2329
-> > > +ALL_TESTS="
-> > > +	collecting
-> > > +	distributing
-> > > +"
-> > > +NUM_NETIFS=2
-> > > +REQUIRE_MZ=no
-> > > +lib_dir=$(dirname "$0")
-> > > +# shellcheck disable=SC1091
-> > > +source "$lib_dir"/../../../net/forwarding/lib.sh
-> > > +
-> > > +lacp_state_get()
-> > > +{
-> > > +	local dev=$1; shift
-> > > +
-> > > +	ip -d -j link show dev "$dev" | \
-> > > +		jq '.[].linkinfo.info_slave_data.ad_actor_oper_port_state'
-> > > +}
-> > > +
-> > > +# The actor state of a port in ATTACHED state is 0x0f: Activity (0x01),
-> > > +# Timeout (0x02), Aggregation (0x04) and Synchronization (0x08). The
-> > > +# Collecting (0x10) bit is added in COLLECTING state (0x1f) and the
-> > > +# Distributing (0x20) bit in DISTRIBUTING state (0x3f).
-> > > +lacp_state_wait()
-> > > +{
-> > > +	local dev=$1; shift
-> > > +	local state=$1; shift
-> > > +
-> > > +	slowwait "$WAIT_TIMEOUT" until_counter_is "== $state" \
-> > > +		lacp_state_get "$dev" > /dev/null
-> > > +}
-> > > +
-> > > +partner_state_clear()
-> > > +{
-> > > +	local bits=$1; shift
-> > > +
-> > > +	tc filter replace dev "$h1" ingress pref 1 handle 101 protocol 0x8809 \
-> > > +		flower skip_hw action pedit munge offset 18 u8 set 0 \
-> > > +		retain "$bits"
-> > > +}
-> > > +
-> > > +h1_create()
-> > > +{
-> > > +	adf_ip_link_add bond1 type bond mode 802.3ad lacp_rate fast \
-> > > +		coupled_control off
-> > > +	adf_ip_link_set_master "$h1" bond1
-> > > +	adf_simple_if_init bond1 192.0.2.1/28
-> > > +
-> > > +	tc qdisc add dev "$h1" clsact
-> > > +	defer tc qdisc del dev "$h1" clsact
-> > > +
-> > > +	tc qdisc add dev bond1 clsact
-> > > +	defer tc qdisc del dev bond1 clsact
-> > > +
-> > > +	tc filter add dev bond1 ingress pref 1 handle 101 proto ip \
-> > > +		flower skip_hw src_ip 192.0.2.2 dst_ip 192.0.2.1 \
-> > > +		ip_proto icmp type 8 action pass
-> > > +	defer tc filter del dev bond1 ingress pref 1 handle 101 flower
-> > > +}
-> > > +
-> > > +h2_create()
-> > > +{
-> > > +	adf_ip_link_add bond2 type bond mode 802.3ad lacp_rate fast
-> > > +	adf_ip_link_set_master "$h2" bond2
-> > > +	adf_simple_if_init bond2 192.0.2.2/28
-> > > +}
-> > > +
-> > > +setup_prepare()
-> > > +{
-> > > +	h1=${NETIFS[p1]}
-> > > +	h2=${NETIFS[p2]}
-> > > +
-> > > +	adf_vrf_prepare
-> > 
-> > Nit: why we need the vrf prepare? The h1/h2 should be veth interface, no?
-> 
-> No. The VRF usage is intentional. From the commit message:
-> 
-> "Use VRFs rather than network namespaces so that the test could be run
-> with a veth pair or a pair of physically connected ports."
-> 
+> Does this bother anybody? Seems more like this should be for net-next.
 
-Oh, I wrote too few VRF tests. I just noticed that we use `adf_simple_if_init`
-to create the VRF interfaces.
+No user report. Sashiko found it while reviewing another patch of
+mine to this driver, and I have no board with the internal PHY to hit
+the error path. I'll resend it for net-next without the stable Cc.
 
-For a pair of physically connected ports, do you mean two ports connected
-back-to-back on the *same* host? Otherwise I’m not sure how to run the test
-using two physical ports across two different hosts.
-
-> > 
-> > > diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
-> > > index b62c70715293..71c6d69d98a1 100644
-> > > --- a/tools/testing/selftests/drivers/net/bonding/config
-> > > +++ b/tools/testing/selftests/drivers/net/bonding/config
-> > > @@ -1,13 +1,17 @@
-> > >  CONFIG_BONDING=y
-> > > +CONFIG_BPF_SYSCALL=y
-> > >  CONFIG_BRIDGE=y
-> > > +CONFIG_CGROUP_BPF=y
-> > >  CONFIG_CONFIGFS_FS=y
-> > >  CONFIG_DUMMY=y
-> > >  CONFIG_INET_ESP=y
-> > >  CONFIG_INET_ESP_OFFLOAD=y
-> > >  CONFIG_IPV6=y
-> > > +CONFIG_IPV6_MULTIPLE_TABLES=y
-> > 
-> > Do we need this config ?
-> 
-> Yes. CONFIG_NET_VRF depends on it when IPv6 is enabled and it's not
-> enabled by default. Other config files that enable CONFIG_NET_VRF list
-> it as well.
-> 
-> > 
-> > >  CONFIG_IPVLAN=y
-> > >  CONFIG_MACVLAN=y
-> > >  CONFIG_NET_ACT_GACT=y
-> > > +CONFIG_NET_ACT_PEDIT=m
-> > >  CONFIG_NET_CLS_FLOWER=y
-> > >  CONFIG_NET_CLS_MATCHALL=m
-> > >  CONFIG_NETCONSOLE=m
-> > > @@ -15,7 +19,9 @@ CONFIG_NETCONSOLE_DYNAMIC=y
-> > >  CONFIG_NETCONSOLE_EXTENDED_LOG=y
-> > >  CONFIG_NETDEVSIM=m
-> > >  CONFIG_NET_IPGRE=y
-> > > +CONFIG_NET_L3_MASTER_DEV=y
-> > >  CONFIG_NET_SCH_INGRESS=y
-> > > +CONFIG_NET_VRF=y
-> > 
-> > If yes, this config could be removed. And the H1 (vrf) description in the
-> > chart.
-> 
-> See above. VRF is needed.
-
-Thanks for the explanation.
-
-Regards
-Hangbin
+Arun
