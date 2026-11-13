@@ -1,102 +1,153 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.175
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794574624;
-	b=lpwIEcwptaF750KsOISDOTjWwByKJG1u/l8T0eO2sxPAZK8HEvxqkcSG9kaaPg3mRZdu
-	 JeK7NbBKkmjmSJOgV8qcXeN0T7d1jRUSVoUh2RbFXcsS44vAbkyFSufjbB7jb2A1TPVaA
-	 kaG32k3QVpAuKrAmCFyrRdTefaFdFSzACze7iO5O5LOJB+HSh1Gy2aV0Eie/f25S8qx4y
-	 HHHXqmQCCTWGHMYycUfVIilssam1fFNwODo5OwIcRNWZUG6WtIqLeoeAzJChKEHbwD2Sf
-	 FBfFbtiDWQZ4otrNUVQ+T5w9ZahfIMF7Yhhv/SP5OZEroPjZHsy0vvqnI4t1ESUIwjg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794574624;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=UFW11CE2+fUhenv8lk9VuUbA+Kdqs1KCmSCPY5Hz71g=;
-	b=tgS9LwNUxJa6XdX89XforEwJzpvdkZw2SITUdwme/bvO4BlVVCtq7rRKNIpIf5wNMB+K
-	 RS/ILmiCDQO9TuXL1B7m6Vr6qnOyoyvB6VTr7LvjAPQc3lgYJ88sts3LloQIbPmQ79en+
-	 jIFPbPLOXUFAis7a3TsQHh7N4hXyc3yzte9mAGMV9WMWTmAX4IpJOJaOyQC991NjHLQKT
-	 083xRfTWu1ZpGAY2P5Wd3bsWd11tOPkld+77jJ4b77Kenphd+rS1+398+R8gL6+pSDALg
-	 h0d3oVvZe0dGWPng5Sf9+9dQ38XNJk0uZgFvk/TJfIu4N8u0tBnhlxgNjI+B5qlCkzg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Nk9UrQAA;
-	arc=none smtp.remote-ip=209.85.214.175
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.189.3
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794574697;
+	b=0kW45/YfCYlyMHY2ZYQpWeTWv4UXU4v/2Mg0okrpbUljsUt8LfdT1HMu9w8wErrpBspG
+	 IbU/chpIy0g1/H6EJZIrSriv9h7mg1Thz3YVLj3jY7zuqCOmCTY9YXnGMasvi0T++3baY
+	 aPWMNjkqKptMwrYL+c0Pv9kJY3FfkrcMJ4GpVYf1ZxDtBu14Gq8hMil/geTXfTr4MIXhu
+	 bDBsjukgnTzTbvqOU+UGSv7DqUG1rCEWT6LcYPI2hjPCRomzDPuXT1bC5fxqyv6H7xdh4
+	 iz7n3o/BJFSxAUafwgKN5WHT70tbyVIwuYoBzpLCo3fJ2fiIXM0WEqvXPN3lQvhplVw==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794574697;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:CC:Subject:
+	 Thread-Topic:Thread-Index:Date:Message-ID:References:In-Reply-To:
+	 Accept-Language:Content-Language:X-MS-Has-Attach:X-MS-TNEF-Correlator:
+	 msip_labels:x-ms-publictraffictype:x-ms-traffictypediagnostic:
+	 x-ms-office365-filtering-correlation-id:x-ms-exchange-senderadcheck:
+	 x-ms-exchange-antispam-relay:x-microsoft-antispam:
+	 x-microsoft-antispam-message-info:x-forefront-antispam-report:
+	 x-ms-exchange-antispam-messagedata-chunkcount:
+	 x-ms-exchange-antispam-messagedata-0:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-originalarrivaltime:
+	 X-MS-Exchange-CrossTenant-fromentityheader:
+	 X-MS-Exchange-CrossTenant-id:X-MS-Exchange-CrossTenant-mailboxtype:
+	 X-MS-Exchange-CrossTenant-userprincipalname:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=SYPsHxXUR2K1Bi3CrHhuWFTntd0roZMVuRy8YKYAi8g=;
+	b=YulsgCe1qn4mTzfMDZKCIi1KFV/XaLbvyMpLFZ+kLLn7/P+5GY+Ks9bYT3+wpmaLoBRM
+	 iSI7mswmP46BE4w/yuJFOTZnFIYjjmFG15jpGRyA/Ms0AB3G/RqtYtTKNe2mlo0LnkHxh
+	 ggG5+WMr7kyMrXtm4iriN5LRst8GwvLH9iFhAqwSebEjqEl/8QCEOATPr9Le+06jF5W0H
+	 6/ysCOGa+gjZG3kcxSictaCVxV970Zs6t0Hkr7LGrBfPRDW8Qw1JptZLC/TbAWiLORTrt
+	 5ufuy7IzAW1FpzWPQZz67pfg/p8xjlZF1lbW4O+WD2j4FVxsq97Zs5CLaEArzQl6Xog==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=hydroquebec.com;
+	spf=pass smtp.mailfrom=hydroquebec.com;
+	dkim=pass header.d=hydroquebec.com header.i=@hydroquebec.com header.a=rsa-sha256 header.s=selector2 header.b=wXptaZy6;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.189.3
+Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazon11010003.outbound.protection.outlook.com [52.101.189.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D415606A327
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:57:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0D415606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C623A606A323;
+	Fri, 13 Nov 2026 12:58:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C623A606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hydroquebec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hydroquebec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Nk9UrQAA
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e99b1e5b4cso5184095ad.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 04:57:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794574623; x=1795179423; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UFW11CE2+fUhenv8lk9VuUbA+Kdqs1KCmSCPY5Hz71g=;
-        b=Nk9UrQAAeFLsnTKMzVvAeSI0D9fVT5PKtZAKDEqUF+zGFyKb3SmRKoso44dE3HHAgU
-         vD5sB4msnfLkk6JeMGxTnp+lWRHZJ9oSlmRayqqSihctqh8rHZ0d9gHQLHCNgsA3+s7Y
-         PBKq5OY75McV+r+FJyKs91BW0gVEmraTuk3H5Om25ORN0woMdtxU3ZPEHzfDPSW84hlU
-         y/dSGTLU8yPSxYzXnvLLa0tOvgqGdyW43TLQnMVhwCdAs/UCbXAtdjntoDRIWQn6S/lS
-         +kupnnOI/PrEANESBoe3CQBxok3RcLkGdUV6DlVi2lV7TwhaPcgObjih1Y0axbDNUNHk
-         gLgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794574623; x=1795179423;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UFW11CE2+fUhenv8lk9VuUbA+Kdqs1KCmSCPY5Hz71g=;
-        b=DKKmNVX64zzXbZtWICaAAOUI7xn/yoWA4d8gLuwVWWeZ1+haHYDNRzaQ3ap/nO8Lts
-         aJtX8YAXy7WPoB0tycqrnLeSVBUif+EtaG4RaSRog2CloP9/s8zM5lVK3ptY0WLwS73F
-         LDT/Vg9UtclgpqjHTYoQGq2McbhyKJGMRTIKnwFnAWfwJXgddo/MZfawvCQtOW0tLkK+
-         SOxlgT7WRPOr6cgtGjibwBJ9K2TVCvqJ0f/4wLoBMwM1Nk+oxO3q79J2p9PcxFED34BZ
-         0Xg1n0ep44qGs6/hvDDfAC0t3MMKa7R4fFkuGCiHVGdoY9h9JZmnCif9bpLuVJTce7r5
-         uYKw==
-X-Forwarded-Encrypted: i=1; AL+hErEGv2Tz9YF9GdL6UIyfeyZtecsVnNJjZZ8i3WtdZI3VtDjv8MH7BLh+hd1/jIXdfslKlnn79pY=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8em3dN2SWowHVW7g+R5aeeMNqyQASsTy1BNbq26VgyQP2848tU
-	gD5+GP83QJFsTWCaBBOLgAIQWBwPFqzxlIyqboEADDf7SH7/TyQQd2Tt
-X-Gm-Gg: AYBFou1MsW4PwNcBN1xmGwyOocPB3QXGVL4d0ENtsQnf/C86YYODfskRX2LuwFCLhGU
-	eQwAmuS3Oaf9o8199tJHE5EKjssGWGxxmx9pmzDQy12S+a9A5T8x8y3HeqREuLdGG4SCkHpnDnS
-	eMXvTEJRIudOdoXc3NwBqZjtLRLRrmRrLJEwwmMmxcsW6sL0VudjJnsQmv1Viyf/c+jgUXZfntP
-	HAhyjE02xNHW3u9HMWKoft74mzCgDPBcACw8PCH3sciHaBCNXKw6vzK+FtjqVqW6ypyDrDSyRbS
-	PqM4KcOsSkSHxCDN6J7QBec1NT7s1JuBVNS6O2MENujXtmbrmJD1pmZC8gvssqSiBxYfPeSublU
-	WTKsJWwBZluXTWgc63QH2DM8VuG54IqhvciQapNXtYsKL9eoLsgKaieZS+86zpMml9xsHhsq9uO
-	hTSutTeS0Zkd7QGTssYG6VfFiCKfa7XFQkPA7BpS8SeLXL2rX1iHLSGunbEMXZ9LdAKbNOa4CHe
-	BYprFPVKDJOnpkZfhht5g/lotcs7fOo7AlbJQ7JFChEhw8aMqCmRBzgbIUhIh9wqlHM6R2WybRZ
-	uKgfugjBbUszZHQxFSHmYTkWBG0qL59yN1X2Nn01aVkszD2c4dkAtjA=
-X-Received: by 2002:a17:903:1844:b0:2ed:2104:9a6f with SMTP id d9443c01a7336-2ee0dac323cmr24731165ad.22.1794574623291;
-        Fri, 13 Nov 2026 04:57:03 -0800 (PST)
-Received: from localhost.localdomain ([223.167.122.23])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f4acd77sm9593215ad.3.2026.11.13.04.56.55
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 13 Nov 2026 04:57:02 -0800 (PST)
-From: Chuang Wang <nashuiliang@gmail.com>
-To: 
-Cc: Chuang Wang <nashuiliang@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v13] net: reduce ARFS flow updates by checking LLC affinity
-Date: Fri, 13 Nov 2026 20:56:34 +0800
-Message-ID: <20261113125643.2255-1-nashuiliang@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key, unprotected) header.d=hydroquebec.com header.i=@hydroquebec.com header.a=rsa-sha256 header.s=selector2 header.b=wXptaZy6
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X+xuy6sQ0873orQVd/ZdzfCrdGi6tO6aIoUxQ+fTuCqCDZvnb3cYt1kDGDDVQuQVJDyA1l2dpSNttfY+t6n2NOe47Ck4DYv+xZz/gKI+tdEe6wFr1RQR+4eFAqLb/+XlkqmOYxpIOim+9WIBLcq6HXAMT1kCNC15X6KZnr4cLj4I162sox5R5Q3q6dkOEKznQlfI5uuZuy19o89EyKNA/y5RhHZX/93tU13RgOnIIDrxIPM8z2YYNoyyTYE+Cdkyy9uGppXAi901YLhxbdIZqtDfyzimNsHM3Iix0oBgVpvgiovQxAK5/Za+a2jO2P1gcR0MyKHklgibIsgXZhYLgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SYPsHxXUR2K1Bi3CrHhuWFTntd0roZMVuRy8YKYAi8g=;
+ b=x9Hnmf68KeadEq98CtwwoXpE28LyKMNp7BMvCslZR3evFthWB0XmXXrPWOYndd5PfNtLtIGgjkO8BoR3Lp6UbED95wXzHV/rJRsXBC6fRcqzSsSUkAaXzf/QZ5ldfu6za1B9zDOipsxeqb+MY4AcPoCjQLeiIle3ueS3Iy0u8c/unD+jo35mTTQqz4Ny5l/ugOHv+tmSyyGicXKA0DxPL0xb/s1wP+DpcBol78UtI1gfXBYflzEc2suiFultENYtqF3otp7JTt07KOYFKatgRgFJhlAFaWsY+2ge6I4YMueCfEQoqKaOBCkkTtwsOHaTjuqrOaJ7kKKvnBCmWZ8KiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hydroquebec.com; dmarc=pass action=none
+ header.from=hydroquebec.com; dkim=pass header.d=hydroquebec.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hydroquebec.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SYPsHxXUR2K1Bi3CrHhuWFTntd0roZMVuRy8YKYAi8g=;
+ b=wXptaZy6x6Y80uv6p0VIw74EHIrMoMfbdYiAr6l83zJc6hMeI5uNS3hxHGyvFNJg5pUrdhoUv18H85LXgB5s1fENgVcxaeTMAqS8baxOXkRHRFRKQMmbbJgh59wuIAzUYxFq+3H797bVDuQOulQ0bwP/7uXqQGMSifZ/+d1sSZOAHZ6YlSBm7M891GY3VbtXj4s5Z+VG8bqps1/OEz2ZbxpWFrH97ME2VTzLB/Zlv8dDkvLo+qSL8aFvk3ylkyABRfohPG/D1nmfnV2gMmINRneQcQePAf6uFzJdVO09/63q1SdCFQerGMscbjE3Gyh1WcTVDyrVkw4ZadL6M52paQ==
+Received: from YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:18d::8) by YT4PR01MB815215.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:18e::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Fri, 13 Nov
+ 2026 12:58:11 +0000
+Received: from YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::aae3:5d66:3923:ae40]) by YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+ ([fe80::aae3:5d66:3923:ae40%6]) with mapi id 15.21.0615.008; Fri, 13 Nov 2026
+ 12:58:11 +0000
+From: =?iso-8859-1?Q?Choini=E8re=2C_Vincent?=
+	<choiniere.vincent@hydroquebec.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "anthony.l.nguyen@intel.com" <anthony.l.nguyen@intel.com>,
+	"przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"aleksandr.loktionov@intel.com" <aleksandr.loktionov@intel.com>,
+	"wojciech.drewek@intel.com" <wojciech.drewek@intel.com>,
+	"pmenzel@molgen.mpg.de" <pmenzel@molgen.mpg.de>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@kernel.org" <edumazet@kernel.org>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net v3] ice: fix Tx hang dump using stale tx_buf[0].skb
+Thread-Topic: [PATCH net v3] ice: fix Tx hang dump using stale tx_buf[0].skb
+Thread-Index: AQHdbsU0WKK0X92ek0mtB6hZZY0TXrckPzeAgAe+9rk=
+Date: Fri, 13 Nov 2026 12:58:11 +0000
+Message-ID:
+ <YT4PR01MB647290B9E40B791D7EC2A7501EE37F2@YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM>
+References: <20261107-ice-tx-hang-dump-v3-1-8f22109d1aad@hydroquebec.com>
+ <179414851949.994134.15149868204650152541@kernel.org>
+In-Reply-To: <179414851949.994134.15149868204650152541@kernel.org>
+Accept-Language: fr-CA, en-US
+Content-Language: fr-CA
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=hydroquebec.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: YT4PR01MB647290:EE_|YT4PR01MB815215:EE_
+x-ms-office365-filtering-correlation-id: 73ac1de8-1a11-431b-57ad-08df4185c5d4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|38070700021|10067099003|11063799006|4143699003|56012099006|261022075727099003|261026121527099003|261026140227099003|261022105027099003|261021121427099003|261102130727099003|261028144727099003|261102123227099003|261009223027099003|22082099003|18002099003|6133799003;
+x-microsoft-antispam-message-info:
+ GZdIQ1lriZ20qYILUAYlUwCq/Biivnlr6Ow8QolNVnO+JvLaGWWjwOYwV4aBS93IE0fQ5C2eb8WW37A5DS3ryP5cFM5CQkmUVCsL9K2TM72R2m/Uxb5uMYx2bRLQ3lTyAAAQGMYLQJZjHJK7tR1tcnp6L5/ncTYZYdJ7Ek5rW8L21D9w8h1w96BO3oVKS2l9yHgD478F3Iu9TT4nYClpn5Nk0HAkXum9KFWCsX5sibKMKNbfvz/sIJmUc5QMM5ZjZMOGqAVmRnnqZtyZ+1UCNAe/3bkHO0ZQ5S6pL7v0K8Wvlk43jayJmQztUalAftiOfVgyu9nwfOGDEt2e/KMh/BRltG4kRBJZYuhZ23K5YgT0P44rNUuHPEPsYroqZGnrEtJVWmiQRsohCPQyZap2COqLjjY8m0U2AghiFORucnNMVA1+OqTNhkZPTaB2vLqvG7gDxhwtWur3nnMvc1wQx5sAOdoqbHrmdmuuJmqwSjq70M10Nss7pxaNrT9hPsUfRwEKrqAoXW8fO68JRwbmEj17EPvPpC+9QjdCcC3Hv/pfyoNnvCNEJTvIKoTVrktpfTnOyYMOlXFna//znGPRGoYjahEDwo6Mgc/6sUfF12q/InItHbrQ6rCHFFJUyxW+1r7Cdo2+djYDQl+wYpKRzRoPXO1Vo/Lu4uiiUOMNXkw=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(38070700021)(10067099003)(11063799006)(4143699003)(56012099006)(261022075727099003)(261026121527099003)(261026140227099003)(261022105027099003)(261021121427099003)(261102130727099003)(261028144727099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?bIaZKpAIFTGXUXrK1Y3OC/KgZ2naypscCta4k0YoP40olPFU6oUSAdTDGu?=
+ =?iso-8859-1?Q?gGVNQcbmSSNznOuzH22qmsxO9NP0BtQP7x4mWWwSa1oEUY3lfH6duNkw4U?=
+ =?iso-8859-1?Q?Mg1TnT5+EFKa2RR2z3rEhKTW9+ikv6h8cS9hSK/EsatwVntDlqeV0JwPdY?=
+ =?iso-8859-1?Q?1s9c5fDpt5vHjM1MYuJgHaDWelqjR5G06ALLfr+BOWckvLiU2twVg6iuhf?=
+ =?iso-8859-1?Q?kcFR4GrJzd6RMsm7EmahJ1IXtyPaaOpV6Ht1TGnJGPDd1gHfLNEOKDm3Ic?=
+ =?iso-8859-1?Q?HJ7994/eAq54RB5Mo0oMELceouDE8f7NtzuenwygktbBFbpcl2AKNjbB46?=
+ =?iso-8859-1?Q?IQCZItF5TiYSyoNEoFsJ1LaZe0RBQmpL3tRzsjvdo2jpgRqFhrSIuoCwvU?=
+ =?iso-8859-1?Q?Jq/vF+5Pd52bDSMdpu525KkXQ7OyWox1IbAygNu+Mod2LsenPl0lPECXs2?=
+ =?iso-8859-1?Q?ys9/2VtzAwZQ03jzBeoQ4X4Eem13icFfHihcQaltNg8N5bQmVVsMXHx5kA?=
+ =?iso-8859-1?Q?gX9XIIB6KM2qi02JQsLOMyB8IhJ0xVP3PCqSLCxTb7mGX14HpNEexZnBWc?=
+ =?iso-8859-1?Q?m7jTLL66i1A68yO5tyjUn77F2k4weOY0H2uiQ0dWtDjMV2FGlPR3mKBXjL?=
+ =?iso-8859-1?Q?paJIwnD9ohb1KV6UED+suYnPJx/YMvZxj5kJabLWWXADWUAyPKI9sSTlgg?=
+ =?iso-8859-1?Q?+PBYfZCP5MHy6zJlEdpguLSjkb70ggJ7kXHBxFG5W8XVbh9U/Z38BvWejm?=
+ =?iso-8859-1?Q?r4ZWncveqEDJr5NB7WzQHYoo+j7Ysxoi/Tieg8rOJaqoN9Ct1eVxRu+MOG?=
+ =?iso-8859-1?Q?7oLL6ki+qotOkSQevAH7SS4INofvToitJYqGiGBlUJY1WA52UlCnV+kp6H?=
+ =?iso-8859-1?Q?xfHX1f8ijsmP+G+Nw174tuHQcBHmywc4q3xE40E79eQ2c0lsxNCqjP9QJh?=
+ =?iso-8859-1?Q?RP7ijdV7feMbvJ0YM0CCgSmEsOAtizArZCQ81dRW5BaNIYG18Hp2Z2rHfH?=
+ =?iso-8859-1?Q?pHRYbZn19Gs1Wpkw4Yoxk8cLBJe1EX4o3rGPvFiEF9lIbGWEIWihMsGl7L?=
+ =?iso-8859-1?Q?J5jE2TTvC6GXs2nwouGxVa8CcwwzPKW8Nf9ExZsCCwG49NhhIp0Ftxp+ck?=
+ =?iso-8859-1?Q?EftStfhv77LVRAS7gcUtO0VpZ/whCcrWj4CBZGqTpa6r+l14WxsQjerxfr?=
+ =?iso-8859-1?Q?h+44tHX+UAaN5mNulyKNFe2teT+xQkqjPtTXRWbQCI6ZPL6NTk7UtVAf2z?=
+ =?iso-8859-1?Q?sqRQ5oVyhvJoorNAiI3zk9sJ6fHKPfrXO7etAsCn42neMdFhWstBjae+cK?=
+ =?iso-8859-1?Q?RQYFZehqwNTIWgzJaaQA0uVO38JWbG78ByLkNqFi7X3/AoBMjs3GcfB2/i?=
+ =?iso-8859-1?Q?2kk6kQs5AM/GM4V6YAWNwHYl9eyskR12zbFUMyP7UZXKCvAJS9J31nCRix?=
+ =?iso-8859-1?Q?PjuQ3vwSieJ9Z+HIefhrz/ZX4hgVm/HEtne/kGoR3smtOJSUPcT+Isobmr?=
+ =?iso-8859-1?Q?73x2D9huiVioqJEP8wiT9Ai52Dvhu64RbQOe4dwDFkhCwaLmXi/wX//XYF?=
+ =?iso-8859-1?Q?vFGXxbmCaZgezqhVOFDEY7Q5wh3+zeNxPqe2VvGnQjnoyzuoxaaKVThyac?=
+ =?iso-8859-1?Q?Ia7YK5hRa0WvtK45Zp0d/UpQnP1Wvkk6vTxqxGETVvPA9yVfG9RadOZh9B?=
+ =?iso-8859-1?Q?UIj8NJoU/RrZszo/1wXcWWy7qd/J+iaxb1ZfDLeeSAOX0skwFVi31i4Usa?=
+ =?iso-8859-1?Q?OFjmhYlkJePsNB01omq562q9ir0DywFg6FXhDLPQ1taTZqK94SZnWCQrXv?=
+ =?iso-8859-1?Q?CpKcwf9K4jLkdw6tp4hiuoEmlcuCGtY=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,197 +157,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: hydroquebec.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: YT4PR01MB647290.CANPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73ac1de8-1a11-431b-57ad-08df4185c5d4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Nov 2026 12:58:11.5247
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f40a10f0-50ee-4880-9a37-6e1dd4ac2ff3
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 00rL0V23iVJiQbTrGZjXd48EyQ/nCtPa6AQeieoJ3tmYw44zReLuyz7u3yXYLTMmjJtwJO3u94Hht4SWumXqTbiu+/gqZ1R3gx8S5z4536dY4lUGRwEHRLs7+IP50G1o
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT4PR01MB815215
 
-When an application migrates to a different CPU, RFS records the new
-CPU in the global rps_sock_flow_table via rps_record_sock_flow().  On
-the next packet of a flow, get_rps_cpu() notices the change and calls
-set_rps_cpu() to update the per-queue flow entry.  With Accelerated
-RFS (ARFS), set_rps_cpu() also invokes the driver's ndo_rx_flow_steer()
-callback so that the NIC steers the flow to a queue close to the new
-CPU.
-
-Threads that migrate frequently trigger this on every migration.  For
-drivers like mlx5, each steering call serialises on an internal lock
-(arfs_lock), and under heavy load the contention on that lock can
-outweigh the benefit of the steering update itself.
-
-This patch introduces a cache-aware update strategy: the hardware
-steering update is skipped when the flow's previous target CPU and the
-new one share the same Last Level Cache (LLC), as cache locality for
-the application is preserved either way. The per-queue flow bookkeeping
-(rflow->cpu) is still updated, so RFS keeps steering packets to the CPU
-the application is running on. A new sysctl, net.core.arfs_llc_affinity,
-is added to toggle this feature (default: off).
-
-Performance Test Results:
-The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
-with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
-
-rpc_press Commands:
-
-  for i in {1..8}; do
-    ./rpc_press -proto=./echo.proto -method=example.EchoService.Echo
-    -server=<IP>:8000 -input='{"message":"hello"}'
-    -qps=0 -thread_num=512 -connection_type=pooled &
-  done
-
-Monitor mlx5e_rx_flow_steer frequency:
-
-  /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
-
-Frequency of mlx5e_rx_flow_steer (via funccount[2]):
-
-  Before: ~200,000 counts/sec
-  After:       ~10 counts/sec (reduced by ~99%)
-
-[1] https://github.com/apache/brpc/
-[2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
-
-Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
----
-v13 -> v12:
-- add rflow->filter != RPS_NO_FILTER check in set_rps_cpu, per Simon Horman
-v11 -> v12:
-- drop the comment block above the LLC check, per Jakub Kicinski
-- guard the arfs_llc_affinity declaration, definition and sysctl entry
-  with CONFIG_RFS_ACCEL
-- document the sysctl in Documentation/networking/scaling.rst, per Jakub Kicinski
-v10 -> v11:
-- rename the sysctl from net.core.rps_feat_llc_affinity to
-  net.core.arfs_llc_affinity, per Neal Cardwell
-v9 -> v10:
-- move the LLC check from rps_record_sock_flow() into set_rps_cpu(),
-  so that only the ARFS hardware steering is skipped while rflow->cpu
-  is still updated, per Eric Dumazet
-- drop the sock_rps_record_flow_hash()/sock_rps_record_flow() exports,
-  which are no longer needed
-v6 -> v9:
-- simplify code and fix errors in AI submissions, per Simon Horman
-v5 -> v6:
-- remove the multi-check 'old_val == new_val', per Xuan Zhuo
-- fix 'modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko]
-  undefined!', per kernel test robot
-- fix 'tcp.c:(.text+0x3e90): undefined reference to
-  `sock_rps_record_flow'', per kernel test robot
-v4 -> v5:
-- fix 'modpost: "rps_llc_check" [net/sctp/sctp.ko] undefined!', per
-  kernel test robot
-v3 -> v4:
-- add rps_llc_check, per Eric Dumazet
-v2 -> v3:
-- patch net -> net-next, per Jakub Kicinski
-v1 -> v2:
-- add rps_feat_llc_affinity; add brpc tests
- Documentation/networking/scaling.rst |  9 +++++++++
- include/net/rps.h                    |  4 ++++
- net/core/dev.c                       | 15 +++++++++++++--
- net/core/sysctl_net_core.c           |  9 +++++++++
- 4 files changed, 35 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/networking/scaling.rst b/Documentation/networking/scaling.rst
-index 6c9836000a8d..d85fe7a9e9bf 100644
---- a/Documentation/networking/scaling.rst
-+++ b/Documentation/networking/scaling.rst
-@@ -468,6 +468,15 @@ of CPU to queues is automatically deduced from the IRQ affinities
- configured for each receive queue by the driver, so no additional
- configuration should be necessary.
- 
-+When the flow's previous target CPU and the new target CPU share the
-+last level cache (LLC), the hardware steering update can be skipped,
-+since the application's cache locality is preserved either way. This
-+reduces contention on driver-internal locks when application threads
-+migrate frequently between CPUs sharing an LLC. The functionality
-+remains disabled until explicitly enabled through::
-+
-+  /proc/sys/net/core/arfs_llc_affinity
-+
- 
- Suggested Configuration
- ~~~~~~~~~~~~~~~~~~~~~~~
-diff --git a/include/net/rps.h b/include/net/rps.h
-index e33c6a2fa8bb..ff2f490a4e9a 100644
---- a/include/net/rps.h
-+++ b/include/net/rps.h
-@@ -13,6 +13,10 @@
- extern struct static_key_false rps_needed;
- extern struct static_key_false rfs_needed;
- 
-+#ifdef CONFIG_RFS_ACCEL
-+extern struct static_key_false arfs_llc_affinity;
-+#endif
-+
- /*
-  * This structure holds an RPS map which can be of variable length.  The
-  * map is an array of CPUs.
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 3b60b15e2175..6d3dd2d9ae82 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5217,6 +5217,10 @@ EXPORT_SYMBOL(rps_needed);
- struct static_key_false rfs_needed __read_mostly;
- EXPORT_SYMBOL(rfs_needed);
- 
-+#ifdef CONFIG_RFS_ACCEL
-+struct static_key_false arfs_llc_affinity __read_mostly;
-+#endif
-+
- static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
- {
- 	return hash_32(hash, rps_tag_to_log(tag_ptr));
-@@ -5254,7 +5258,7 @@ static bool rps_flow_is_active(struct rps_dev_flow *rflow,
- 
- static struct rps_dev_flow *
- set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
--	    struct rps_dev_flow *rflow, u16 next_cpu, u32 hash)
-+	    struct rps_dev_flow *rflow, u16 old_cpu, u16 next_cpu, u32 hash)
- {
- 	if (next_cpu < nr_cpu_ids) {
- 		u32 head;
-@@ -5273,6 +5277,13 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 		if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
- 		    !(dev->features & NETIF_F_NTUPLE))
- 			goto out;
-+
-+		if (static_branch_unlikely(&arfs_llc_affinity) &&
-+		    old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
-+		    cpus_share_cache(old_cpu, next_cpu) &&
-+		    READ_ONCE(rflow->filter) != RPS_NO_FILTER)
-+			goto out;
-+
- 		rxq_index = cpu_rmap_lookup_index(dev->rx_cpu_rmap, next_cpu);
- 		if (rxq_index == skb_get_rx_queue(skb))
- 			goto out;
-@@ -5402,8 +5413,8 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 		    (tcpu >= nr_cpu_ids || !cpu_online(tcpu) ||
- 		     ((int)(READ_ONCE(per_cpu(softnet_data, tcpu).input_queue_head) -
- 		      rflow->last_qtail)) >= 0)) {
-+			rflow = set_rps_cpu(dev, skb, rflow, tcpu, next_cpu, hash);
- 			tcpu = next_cpu;
--			rflow = set_rps_cpu(dev, skb, rflow, next_cpu, hash);
- 		}
- 
- 		if (tcpu < nr_cpu_ids && cpu_online(tcpu)) {
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 9226b96f2e89..64ae4c07f1b1 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -562,6 +562,15 @@ static struct ctl_table net_core_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= rps_sock_flow_sysctl
- 	},
-+#ifdef CONFIG_RFS_ACCEL
-+	{
-+		.procname	= "arfs_llc_affinity",
-+		.data		= &arfs_llc_affinity.key,
-+		.maxlen		= sizeof(arfs_llc_affinity.key),
-+		.mode		= 0644,
-+		.proc_handler	= proc_do_static_key
-+	},
-+#endif
- #endif
- #ifdef CONFIG_NET_FLOW_LIMIT
- 	{
--- 
-2.47.3
-
+=0A=
+Hi,=0A=
+=0A=
+I posted v4 here:=0A=
+=0A=
+https://lore.kernel.org/all/20261112-ice-tx-hang-dump-v4-1-9125f687669b@hyd=
+roquebec.com/=0A=
+=0A=
+> Is pointer equality enough to show that this is still the hung ring?=0A=
+=0A=
+Pointer equality alone is not sufficient. In v4, the saved ring is used=0A=
+only if the timeout was on the PF VSI, that VSI is up, and=0A=
+vsi->tx_rings[queue] is the saved ring, with the queue recorded at timeout=
+=0A=
+time. PF VSI rings have q_index =3D=3D i, so a freed ring reused for anothe=
+r=0A=
+queue after ethtool -L is rejected and the dump falls back to the=0A=
+timeout-time values.=0A=
+=0A=
+A reset of the same queue in place is still not detected: ethtool -G=0A=
+replaces the ring contents, and ice_down() on an MTU change clears the=0A=
+descriptors and indices without changing desc. Comparing desc would=0A=
+miss the second case and is subject to address reuse. As before this=0A=
+patch, a successful snapshot shows the queue's ring when the report is=0A=
+generated. The v4 commit message and kernel-doc say so and no longer=0A=
+imply that ring replacement is detected.=0A=
+=0A=
+> Could the success path of ice_tx_hang_snapshot() at least set=0A=
+> ev->queue =3D tx_ring->q_index, the same way it updates next_to_clean=0A=
+> and next_to_use?=0A=
+=0A=
+With the check above, a successful snapshot comes from=0A=
+vsi->tx_rings[ev->queue], so there is no need to update ev->queue on the=0A=
+success path.=0A=
+=0A=
+In v4, I also read the saved ring pointer before taking RTNL,=0A=
+alongside queue, head and intr. This avoids reading the ring pointer=0A=
+after waiting for RTNL while using event values read before the wait.=0A=
+It does not make the event snapshot atomic; the handoff remains=0A=
+unsynchronized.=0A=
+=0A=
+> Could the commit message say whether removing the unused export is=0A=
+> planned as a net-next follow-up?=0A=
+=0A=
+Yes. The v4 commit message says so. I plan to send the removal of=0A=
+devlink_fmsg_dump_skb() to net-next once this fix is applied.=0A=
+=0A=
+> [High] This problem wasn't introduced by this patch, but the service=0A=
+> task can still run ice_report_tx_hang() during driver removal=0A=
+=0A=
+> [High] This problem wasn't introduced by this patch, but devlink reload=
+=0A=
+> with DRIVER_REINIT can deadlock=0A=
+=0A=
+Both issues predate this patch and are documented under Limitations=0A=
+in the v4 notes. =0A=
+I suggest addressing them in separate fixes to keep this patch focused. If =
+=0A=
+someone more familiar with these lifecycle and locking paths would like =0A=
+to take them on, that would be welcome.=0A=
+=0A=
+Thanks,=0A=
+Vincent=0A=
+=0A=
+pw-bot: cr=0A=
