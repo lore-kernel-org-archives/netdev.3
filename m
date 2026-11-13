@@ -1,93 +1,92 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794602499;
-	b=3YiQHl+noQWofXFJcp1Q3yVYZc/nyxsu7OmY/NQzsPdLeQDZ4daK9KtyuTpZX5FLqgsx
-	 MpkCSYIxoBySxH4dGuFn80RIliMIXmi1lA64G8AX3ZTPtEZB9yJ/WyTnYPLFpmwz6uVma
-	 4rsbEUG4VqbYqR/aq9eQmIF/bHWWQc974/cWa8K5rExxSXHcJQ/BfqOpurSKLSvLtGSnw
-	 SIe7mwtI8DixLhRvvD28fh99eGXFaudKGXQan/uqQSDjOSgYI82RXvrBPYUNrh8ZOfIQA
-	 ZXF1L8UoolwWkAzU8CNH6ujvsT0OEABzmN9iEaDtVprSFwWkB74/CXnG/JjTrHg98qw==
+	t=1794602508;
+	b=4S2Eur+5ixowjj7v8sq5YDFTq851ivMpY1tut89o1ueL6fSiR8KWDLzLZACHK7IZGuBS
+	 ZbQdza3WZY17wZ4ygJux3Zs0v+g2HOUAfynKmjxKF/GvlKhNL1t7qA8aFeTl4tH3GFIb3
+	 Ezf5aGnbEr+6KduemD7yd59va9yjQP9XuKJyhpYtfst2P0kc8GlIvqceJJI5qQ3SswU1m
+	 FR8dpguB2SsvKzYvKtTLlVoDMezZvHuSybshlaTUXIvCXOyeSAmtkZwtISN5CHr9on+2j
+	 3yyIbZ+C67iQNW86Gt9a5FdbNKJwtudA6uHjd9xjJEx6O7yjMhC28M3hHdLXiOaQi0A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794602499;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794602508;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
 	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=0W8Q/2IDohjcscLdGdiEyomgYN1e2OSBtMs8vChF6Gc=;
-	b=ewFtQh0Kb95fBT0oRaRBxIVHaelDtIK6VC8vgVTcxGD+C1vKhNJ1rDk93dMc1rLwsIzh
-	 ch6P4vQuytScLjdk68i9gic4kgx4Bri1pvENbr3utgAzrptJR7R5aduCjlkgZKtkgTlpm
-	 z4bnjqOFiWoSI17Kw+BuVSdjoMubXaot5TDfo5oQ5BKPZC43sL6o8G97TfrG/seBGrYOO
-	 jDTEuyw7ar1iDU12IHTVBE4HmA/wn0mEOViH0afsPQn246k0zrXbGCbG6KV9iNWRtQj82
-	 CQxsS71kIOtsNfCQ6Pjpy+SjO8bM5C1/zCa/knNDnbi/6mV7q+Qf1XHF7ArYH79r5Ow==
+	bh=XFYKcNYAKxl786+CJvE8W6uCAcdD35HszmgAQI+Ryxg=;
+	b=Ez8MJm4r8HhLLh41I9JsL5yPJaXP4hxAGaNZTrF2uE0fILuaJiZAbn0Q7/pnhAaeUVgd
+	 GMFobxkCC+u+OrrHHwcSgYDPP8jjcDGDP3d3eAFuvToR6ZSdK6tOCDjcX/6aVFPXGmmaw
+	 FXUVp5kGBOzQgdn6HR5SP1mCgxQr1AIR60R88jcya6NoOzFH5NSXinxOQxYBCRhmMOUD1
+	 GWBnS2OTUv8hAcoGtitEaoV8ReBLSprXG19BZevxdbIPxFp2V57wtdO4vYrl0GLx/Y7Gb
+	 +NMUNT4fE5jlubM7rAcmhho2iH7z4G2tTDrcbqfwrcehJhHveIqGnFtji+Fw4WgJT1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZMihUsck;
-	arc=none smtp.remote-ip=209.85.214.179
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=svAmgVSK;
+	arc=none smtp.remote-ip=209.85.214.174
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369EE606A885
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:41:39 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 369EE606A885
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1FF606A33E
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:41:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA1FF606A33E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ZMihUsck
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ee2072d1e7so2593755ad.2
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:41:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=svAmgVSK
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ed1b9e8f43so9401055ad.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:41:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794602498; x=1795207298; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794602507; x=1795207307; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=0W8Q/2IDohjcscLdGdiEyomgYN1e2OSBtMs8vChF6Gc=;
-        b=ZMihUsckkYarx2xIyxH7ofsGTlC7lPF30aKI+p5C9mNHO4tvnkyN5Q/UvAqWE6Ax+C
-         0A3//sdKK1MN2ezBuvahcZAOqQF1n8XP//Ilup3ITilDTQVp/5/LiZ8+l2dHUiPU8sGv
-         qT/Rd/af7ARAqPely0krCSpuL/k+p1a6oSVz7yCgNE57cw9sfmfm9TwpKrTR4ikmB9Qs
-         SxFFMyy6zrAFyKRCLF5Nrcuh2uqvn9P1NbU2m2mVuFScjelQZjwxOcRK1cPw9fxrbvXX
-         Y5q/HyZQzMM7QaFgxRGphcVQsWLlZ9K5yeHT0DYPuIQi5v1DSfqRvebc4Ou1F0u37cH9
-         LIEQ==
+        bh=XFYKcNYAKxl786+CJvE8W6uCAcdD35HszmgAQI+Ryxg=;
+        b=svAmgVSKDYPTjJNOcSImjNaIFivBvYoE6U8oTIOWfUzwN7w8ccH4aLQLr6xiS0cazs
+         IEN0zN599WeSmYxsm+I7EaaeHpVCB9Zr1IyrhmDqidA9peAU4D8DydDSV45DYGjY1UZR
+         yK84DP+WRBkamukqmO5IooA9YOny5LGidoBqOO2IDYEB17dnbx/ffNZmkBx+J9vxzyVy
+         zKy0opDCCAi57tIqu9Be+jq+MjNFzxXGZK1QEdhUNsas+48j5o1QkGUDO7LOPv0PC7t0
+         YoxXC0NvRTj2gs4X0XGLEKET5l7PK8UmkZUI5GM/4TMtB/zNePS6T/kWGvf+x+QK2dr7
+         2KVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794602498; x=1795207298;
+        d=1e100.net; s=20260707; t=1794602507; x=1795207307;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0W8Q/2IDohjcscLdGdiEyomgYN1e2OSBtMs8vChF6Gc=;
-        b=vxBeNMM8AH3XoUkoO4qpYMVladtG0rE0mobz9sT3vNpxfMXmufkXR/nsVJ9C7stBwL
-         wY44uIDoPpx5B42pcD2NTp8W2EAIaM0C0ZK2WIc33Y+dvghYJLXg7ykHpyzM+cMdBlRV
-         eOuL18Tp6oU8MVNSLX/5smkG7xj4xtmaHXMrHV6drzWJRLA7iW1URlgLZIPsdy1Oq1RH
-         hEy7xZ1GNSZPVZgyNz7WLfec3wm/kDNkWqSSNptc+qNtXBrz2GwmBnb+hzrH2ERig4yH
-         exnzErSD06Lj8bJEqFanFvwc6z0pFCfLNL8wEH4fG/11q2omqggk/x7dP3Q61YCZnxyP
-         VADw==
-X-Gm-Message-State: APuU4Z8om6Uipb1+ih16/U8S4uV3PUDQFgY9kxdrPCXernljqyIhig8A
-	we94/jdJwABXj6V2vyfRSd+YtTPjKY/G7XQ8HeAsD63NGRaRa5WHSOVa
-X-Gm-Gg: AYBFou13VcPnudVUB62xR+GXzKtQ6zQxMcS4HvRLwNTrgXooZkefyslaM6KNuq1E5dV
-	UjcVzR61YeuU5/0nqkXIlflhPkTA2DJi9UaS1oTkHpB/1YSrgBbHwo3uaHvsWMzYWhsVFn/UvB+
-	XbDjnHXLJd+EfmaZ/RPaZrxBmb+5kLz2h09Qd0Ioa0GYWynarjr7gSqYd4g7BFN2Ev94xL5n89+
-	VOzhKMV6L0k2g8XaDs8dkANuVoi9RZZvy4HLK4g4RsR2oCVkX17KDvtgxFPIYMGip9EHaEgRTq2
-	q2IsVh0n08EKxNCd1ubWk0c3lUgYaBdhxJkL4he4hoFV1JI6egncmrQQYpXxB8oh3kyxvMflbg9
-	0O91rk2a1Qxa57VH4zEAfiGxZiGa7MzYg1D8O/IV589DhC8V2e2bfx2BvFrt3iWTbM6se1/zojJ
-	kwGsZpVVOkln/m/NkDZw7dIY3hrBHwc/FHeQgXvpcH4lYeX7eITW0UqNNI9IVEoQGda2kOQnna1
-	QQzTMedMkdy4nY6L9jvkalJDOWbtsKAG62dZ6XvvW8OFS1CtwVq/3WOaUYdFMYUSU+fVvoG/ukI
-	vLHXmqSUKIQwiBhdRS31r8V+HmXTBMpflAbpTrNvUVM6ae3KiuYDF2IbROJfArp8Wr6kkLPY6RQ
-	fdbf/pSDqwY/d1lxYxoyau7XmX132t0Db6urdcZmSTSUv5A==
-X-Received: by 2002:a17:90b:1d4c:b0:3aa:fc22:8aad with SMTP id 98e67ed59e1d1-3b1b0ba4b47mr3453007a91.54.1794602498446;
-        Fri, 13 Nov 2026 12:41:38 -0800 (PST)
+        bh=XFYKcNYAKxl786+CJvE8W6uCAcdD35HszmgAQI+Ryxg=;
+        b=rPLqNBVl29YUmYHrsi40OzrSokaPBTNGXoe+iCHDITXU6appRYp3zhLYAKk4C5SdrA
+         de9Ryu+b5P5UJOpfzTLSdxf8CmuPdVWL6RpHp1htkVHoROshjfDfepTmGcR5GedSWXrx
+         tZCcoWDArrNo4f+s6FeI+Tp4Ko2udgwmmBIIlpwIqK1DppoakpRQUK2OzzV17Ib0qqHt
+         KNrXLBoMjkjb6xF1T2n5lnIncBJpYAwyUZjIzhHdMIi0zxv1F3ncw0xjSKn5juYuP47o
+         M2iAIyfYKRfRUQ1a4pWX2MSUA6dyfkiQsxKStxIznENqI6AWq5sXzFbHZNWYSKbaDnoL
+         k96Q==
+X-Gm-Message-State: APuU4Z8UORwovhIBtXQfBiu5nnm/xTiOzazsdTi8TJBVXRap62PNWsGF
+	Du2YxTawLzvcmxjIsQsz9F16Ao5Gwf6iqQcggHFB3NCd2Z1B6vLsiFjW
+X-Gm-Gg: AYBFou2UnIGhwYbd1VaZHn2we9u87JXm9GiVMFXJb4mU6n4U/rDz2zVQnys5OkZKiIw
+	zitRJkFaTNT51kjMBqm43YVecY8mqAEjXHEiti/GKY1tyblOZeduqYrJlErmNy8G3vp/X8aQ7Cf
+	wZhOyFgsjVCWd9b8kJiqIXBlhpvLoElA9QpVJ/wmq3CmnODYimrJC0+hU+RIC9rDeNewnVvfViu
+	yrKd9vq9rVTMEompdLhsIznSLoAEyk299gHpz7bRXm81nYp795ZzsgJRea5qeIji+955vA9C68g
+	8oWRrLC2tz+Nr5nVSlIBynp/TDOz/JJg9djD3pwekwzMAwDYWH5DEqam9rhnFVKBzvMhB7a3OQt
+	LKbcsLSHxuydm9WFC8JVUKP4/dLVTtLuZHbR56EL8IGeZmQRy5e15g/wypWZuhJVW9TudPu7l6L
+	0t1KADXRof8pV5PHL4d4GT0KTqb29PA/fu2xtjsLcDxLE2J1wRp39N1cdWVb1KZ3OG0m/AQ4sWe
+	XpyxCJrlS1bFbjxMovuodlkXLrwlf5IB+cq6RJTNgypTAnL5o8c0xCFRchR1LSMx/awXScms/FY
+	FJO0uSb8rvr7VMDTYRynoTP4h5Mf1Le7pZHI84r0uOJtLJV/mqFF5uio8xDe6yyw/IKX68hDNCO
+	MGpIKmrFImvLKAUY3jEBizwZHUlpodoDTBa7s/4PRhiHojg==
+X-Received: by 2002:a17:902:db05:b0:2ed:18cc:d3b3 with SMTP id d9443c01a7336-2ee0da33623mr34132975ad.6.1794602506870;
+        Fri, 13 Nov 2026 12:41:46 -0800 (PST)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0fa3df69sm14893365ad.74.2026.11.13.12.41.34
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f4ad50dsm15109905ad.7.2026.11.13.12.41.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 12:41:37 -0800 (PST)
-Subject: [net PATCH 2/6] fbnic: Do not accumulate HW stats from failed
- register reads
+        Fri, 13 Nov 2026 12:41:45 -0800 (PST)
+Subject: [net PATCH 3/6] fbnic: Cover all of the HW stats with the stats lock
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Fri, 13 Nov 2026 12:41:33 -0800
+Date: Fri, 13 Nov 2026 12:41:43 -0800
 Message-ID: 
- <179460249371.8819.4646491882671802455.stgit@ahduyck-xeon-server.home.arpa>
+ <179460250360.8819.2203630667210523871.stgit@ahduyck-xeon-server.home.arpa>
 In-Reply-To: 
  <179460241885.8819.7179935130629202331.stgit@ahduyck-xeon-server.home.arpa>
 References: 
@@ -107,86 +106,160 @@ Content-Transfer-Encoding: 7bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-The HW stats are kept as a running total that the driver advances by the
-difference between the current counter value and the value it last read,
-and the fbnic_reset_hw_stats function only rebases that last value after
-a reset so the totals carry over.
+The hw_stats lock covers the PHY, TMI, TTI, RPC, RXB, queue and PCIe
+stats, but the MAC stats are left to RTNL: the fbnic_reset_hw_stats
+function resets them outside the lock and asserts RTNL, on the grounds
+that the ethtool API is their only other user and holds RTNL. That is no
+longer the case. ethtool only takes RTNL on the Netlink path for the
+operations a driver lists in op_needs_rtnl, and fbnic lists only the
+pause getter among the stats ones, so the eth-mac, eth-ctrl and rmon
+getters update the MAC stats with only the netdev instance lock held,
+racing each other and the reset.
 
-When a register read fails, as it does for every read once a DPC
-containment event takes the link down, the fbnic_rd32 function returns
-all ones and disables CSR access, so every later read also returns all
-ones until the device is recovered. A stats read in that window adds the
-difference between all ones and the last value to the total, which
-subtracts the counter's whole value since the last rebase. Hardware
-testing with forced AER recovery while reading the stats showed the
-64-bit PCIe counters wrapping below zero on the first recovery and
-dropping again on every one after it.
+Take the stats lock around the MAC stats updates in those getters and in
+the reset, and drop the RTNL assertion. Take it in the pause getter as
+well: it still runs under RTNL, but that no longer serializes it against
+the reset once the reset does not rely on RTNL. The PCIe stats debugfs
+read never needed RTNL, as the fbnic_get_hw_stats function updates those
+stats under the stats lock, so drop it there too. The values are printed
+from their 64-bit fields without the lock, as the counters keep changing
+during the read anyway.
 
-Skip the update when CSR access has been disabled by the time the read
-returns, which covers the read that failed as well as any after it. The
-last value is left alone, so the next good read after recovery, once the
-fbnic_reset_hw_stats function has rebased it, picks up where the total
-left off.
+The issue was found by code review.
 
-Fixes: 25ba596d137d ("eth: fbnic: add PCIe hardware statistics")
-Fixes: 4eb7f20bcf06 ("eth: fbnic: Add support to fetch group stats")
+Fixes: 45079e00133e ("net: ethtool: optionally skip rtnl_lock on Netlink path for GET ops")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c |    8 ++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c      |    8 ++++++++
- 2 files changed, 16 insertions(+)
+ drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c  |    3 ---
+ drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c  |    8 ++++++++
+ drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c |   13 +------------
+ 3 files changed, 9 insertions(+), 15 deletions(-)
 
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c b/drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c
+index f9e879be254d..65bea571c0cc 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c
+@@ -3,7 +3,6 @@
+ 
+ #include <linux/debugfs.h>
+ #include <linux/pci.h>
+-#include <linux/rtnetlink.h>
+ #include <linux/seq_file.h>
+ 
+ #include "fbnic.h"
+@@ -607,7 +606,6 @@ static int fbnic_dbg_pcie_stats_show(struct seq_file *s, void *v)
+ {
+ 	struct fbnic_dev *fbd = s->private;
+ 
+-	rtnl_lock();
+ 	fbnic_get_hw_stats(fbd);
+ 
+ 	seq_printf(s, "ob_rd_tlp: %llu\n", fbd->hw_stats.pcie.ob_rd_tlp.value);
+@@ -626,7 +624,6 @@ static int fbnic_dbg_pcie_stats_show(struct seq_file *s, void *v)
+ 		   fbd->hw_stats.pcie.ob_rd_no_cpl_cred.value);
+ 	seq_printf(s, "ob_rd_no_np_cred: %llu\n",
+ 		   fbd->hw_stats.pcie.ob_rd_no_np_cred.value);
+-	rtnl_unlock();
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+index e774740fcb5d..b300017b53d4 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+@@ -1867,12 +1867,14 @@ fbnic_get_pause_stats(struct net_device *netdev,
+ 
+ 	mac_stats = &fbd->hw_stats.mac;
+ 
++	spin_lock(&fbd->hw_stats.lock);
+ 	fbd->mac->get_pause_stats(fbd, false, &mac_stats->pause);
+ 
+ 	pause_stats->tx_pause_frames = mac_stats->pause.tx_pause_frames.value;
+ 	pause_stats->rx_pause_frames = mac_stats->pause.rx_pause_frames.value;
+ 	tx_ps_events = mac_stats->pause.tx_pause_storm_events.value;
+ 	pause_stats->tx_pause_storm_events = tx_ps_events;
++	spin_unlock(&fbd->hw_stats.lock);
+ }
+ 
+ static void
+@@ -1928,6 +1930,7 @@ fbnic_get_eth_mac_stats(struct net_device *netdev,
+ 	mac_stats = &fbd->hw_stats.mac;
+ 	mac = fbd->mac;
+ 
++	spin_lock(&fbd->hw_stats.lock);
+ 	mac->get_eth_mac_stats(fbd, false, &mac_stats->eth_mac);
+ 
+ 	fbnic_set_counter(&eth_mac_stats->FramesTransmittedOK,
+@@ -1956,6 +1959,7 @@ fbnic_get_eth_mac_stats(struct net_device *netdev,
+ 			  &mac_stats->eth_mac.BroadcastFramesReceivedOK);
+ 	fbnic_set_counter(&eth_mac_stats->FrameTooLongErrors,
+ 			  &mac_stats->eth_mac.FrameTooLongErrors);
++	spin_unlock(&fbd->hw_stats.lock);
+ }
+ 
+ static void
+@@ -1968,12 +1972,14 @@ fbnic_get_eth_ctrl_stats(struct net_device *netdev,
+ 
+ 	mac_stats = &fbd->hw_stats.mac;
+ 
++	spin_lock(&fbd->hw_stats.lock);
+ 	fbd->mac->get_eth_ctrl_stats(fbd, false, &mac_stats->eth_ctrl);
+ 
+ 	eth_ctrl_stats->MACControlFramesReceived =
+ 		mac_stats->eth_ctrl.MACControlFramesReceived.value;
+ 	eth_ctrl_stats->MACControlFramesTransmitted =
+ 		mac_stats->eth_ctrl.MACControlFramesTransmitted.value;
++	spin_unlock(&fbd->hw_stats.lock);
+ }
+ 
+ static const struct ethtool_rmon_hist_range fbnic_rmon_ranges[] = {
+@@ -2003,6 +2009,7 @@ fbnic_get_rmon_stats(struct net_device *netdev,
+ 
+ 	mac_stats = &fbd->hw_stats.mac;
+ 
++	spin_lock(&fbd->hw_stats.lock);
+ 	fbd->mac->get_rmon_stats(fbd, false, &mac_stats->rmon);
+ 
+ 	rmon_stats->undersize_pkts =
+@@ -2018,6 +2025,7 @@ fbnic_get_rmon_stats(struct net_device *netdev,
+ 		rmon_stats->hist[i] = mac_stats->rmon.hist[i].value;
+ 		rmon_stats->hist_tx[i] = mac_stats->rmon.hist_tx[i].value;
+ 	}
++	spin_unlock(&fbd->hw_stats.lock);
+ 
+ 	*ranges = fbnic_rmon_ranges;
+ }
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-index 8b9b2076beec..8084a63dd807 100644
+index 8084a63dd807..307d5e737848 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-@@ -22,6 +22,10 @@ static void fbnic_hw_stat_rd32(struct fbnic_dev *fbd, u32 reg,
- 	u32 new_reg_value;
+@@ -1,8 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright (c) Meta Platforms, Inc. and affiliates. */
  
- 	new_reg_value = rd32(fbd, reg);
-+	/* A failed read disables CSR access and returns all ones */
-+	if (!fbnic_present(fbd))
-+		return;
-+
- 	stat->value += new_reg_value - stat->u.old_reg_value_32;
- 	stat->u.old_reg_value_32 = new_reg_value;
+-#include <linux/rtnetlink.h>
+-
+ #include "fbnic.h"
+ 
+ static void fbnic_hw_stat_rst32(struct fbnic_dev *fbd, u32 reg,
+@@ -559,17 +557,8 @@ void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
+ 	fbnic_reset_rxb_stats(fbd, &fbd->hw_stats.rxb);
+ 	fbnic_reset_hw_rxq_stats(fbd, fbd->hw_stats.hw_q);
+ 	fbnic_reset_pcie_stats_asic(fbd, &fbd->hw_stats.pcie);
+-	spin_unlock(&fbd->hw_stats.lock);
+-
+-	/* Once registered, the only other access to MAC stats is via the
+-	 * ethtool API which is protected by the rtnl_lock. The call to
+-	 * fbnic_reset_hw_stats() during PCI recovery is also protected
+-	 * by the rtnl_lock hence, we don't need the spinlock to access
+-	 * the MAC stats.
+-	 */
+-	if (fbd->netdev)
+-		ASSERT_RTNL();
+ 	fbnic_reset_hw_mac_stats(fbd, &fbd->hw_stats.mac);
++	spin_unlock(&fbd->hw_stats.lock);
  }
-@@ -68,6 +72,10 @@ static void fbnic_hw_stat_rd64(struct fbnic_dev *fbd, u32 reg, s32 offset,
- 	u64 new_reg_value;
  
- 	new_reg_value = fbnic_stat_rd64(fbd, reg, offset);
-+	/* A failed read disables CSR access and returns all ones */
-+	if (!fbnic_present(fbd))
-+		return;
-+
- 	stat->value += new_reg_value - stat->u.old_reg_value_64;
- 	stat->u.old_reg_value_64 = new_reg_value;
- }
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-index 16271c717a5a..2aacbf0a6af4 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-@@ -405,6 +405,10 @@ static void __fbnic_mac_stat_rd64(struct fbnic_dev *fbd, bool reset, u32 reg,
- 	u64 new_reg_value;
- 
- 	new_reg_value = fbnic_stat_rd64(fbd, reg, 1);
-+	/* A failed read disables CSR access and returns all ones */
-+	if (!fbnic_present(fbd))
-+		return;
-+
- 	if (!reset)
- 		stat->value += new_reg_value - stat->u.old_reg_value_64;
- 	stat->u.old_reg_value_64 = new_reg_value;
-@@ -417,6 +421,10 @@ static void fbnic_mac_stat_rd32(struct fbnic_dev *fbd, bool reset, u32 reg,
- 	u32 new_reg_value;
- 
- 	new_reg_value = rd32(fbd, reg);
-+	/* A failed read disables CSR access and returns all ones */
-+	if (!fbnic_present(fbd))
-+		return;
-+
- 	if (!reset)
- 		stat->value += new_reg_value - stat->u.old_reg_value_32;
- 	stat->u.old_reg_value_32 = new_reg_value;
+ void fbnic_init_hw_stats(struct fbnic_dev *fbd)
 
 
