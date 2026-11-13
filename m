@@ -1,79 +1,78 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794589175;
-	b=eF40OM+E+68/KdsLQ6ygB5CkfPFuFGog0r5bk/wWZvurpSEQ4uvkJCMlEf6/FrFN0cFy
-	 zyPpsb+I5ze/2wToZSOd1k5XauIptEUYyWHn3exFzETnNwN/AA3LsQ3+QPDm0n/4Kd1DL
-	 KE0sLD8xrBkwPh+ypLr4LzmLlmRVge5jawoeL/5q/j3NBH+hIxUaJeFvyGExt25NlUMZH
-	 +iXQ4hBBVkuQOcsV9Rbvv5dAoqiQOfuWRZpBXb7KKfXRpw692QUS9fhUru5oka3iSbl9I
-	 en6832sVBN/hpJmZorE0unIymfLYPVZhYyxagvgnOXKRDhKVqTLYWcWlBRSheZuNbuQ==
+	t=1794589170;
+	b=UYsyZ+CtKnhi9xbYcGeQ6P5OxO/KEkkNlNKMCGusvOVtNz72HlDeSwW9E0jM+qCi4kSI
+	 f8kzS/aatDBN/slp97T+v7ytG7sEPVsll8qAEg4iCDAWyOrZ6crgEoGlQ2mEMqIH7OPxt
+	 q9eiYZZLEx998SJLLY3XRQtTy8BpqPxN8p/1bYSNy1SkXJ3HtS+4NmYl5UcSQjfm6JY+r
+	 Yy318ZbyMSCgKowkug97xyddxsBWdfDnGC45WIibnXGbJqnGE603sM7qPpKAj7tKEH0zx
+	 gShodCBoerJDH4+vLpgxo8IHA1Wcr44OXrUc4VGZu26+vFW2cKhocKMo2FZ9BdUDmJg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794589175;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794589170;
 	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
 	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=N5FjP6qFS8vWNxen7FGBlFAKlf6oPL+CJz9kJP9ur2k=;
-	b=ANfnPfQrfxf4O7kFgm3UjtfsjFENYfmvGjreK8QzyR2R2LiAwpaMo1Rnqcvp4AZ90kSs
-	 6kYG9tjk2AcdSBlbepAKLP9W6rhKxBX+xB0wAXfVrpjZnAJXf1sDy6wbNUl3QC/QrZcas
-	 bwLJmfBeQ5nzgv61bXJvyTZ0o50b+GOR2aFnGUOMD87Zi8lX0jQamuOcz1tuHkhqgZDpv
-	 AsezxIS2eTMAkO9Zha35QkZhmWOxXw4v7Rq0P25vP+9lQv1pPV8RZtWQwJd1APNSgtqJp
-	 +BL34sD7v9zSPrC91WfuZ7/wJ2BIelq1mU2jwtFl8yIXtPrLFjOc6SbmRrQfQkD52/w==
+	bh=KnWkvUMYFp0pJ5aAC9Vy89LT8XicYuU9hu1yqcU4TSM=;
+	b=JbePtu9KH2g16Jlr/aPP+BKOIxxneyOS7Lc9NHDOk2EzY/oZXjQpwS+yzDA9P6/EhWyF
+	 yj82UCAkItj7Qq8e6jutpsc9PzFOeQgkDe1iOrB5IWs11inmRqkPlIfDUiaBEldisNFyU
+	 BihbZd082Pr0ig/ktKlMTDh1/1LXcixvZWqV9bjDs5mSwVLfi6jeslaP6Zi6Q6b8J4Hqz
+	 u/SPQ1/gvkj5iXlViyLovMyjQypyA8LnvOwZJQkv0jxtw5Gi0bNuykDEGJuwqnykctTMv
+	 Or+5cFrCtc5BDettEG/MwIdh7rRmlODqp3FkVhBk//97VGobDzyJrO5de4TdsyHSPKQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=McSt0UrF;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZxDV2m0Z;
 	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF86E60A5BE7;
-	Fri, 13 Nov 2026 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB468606A327;
+	Fri, 13 Nov 2026 16:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=McSt0UrF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZxDV2m0Z
 Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794589175;
-	b=k3l2e172Iiwv9RXotdR64cwDIfjlX0Q8HvVYxKqLL3jR5H7CenGu5Ju0CuaKIJT46CGj
-	 VwPQ3Anvc1CMN1DJPG/dAhIYsSxjML8Yjz/umdgbUvn4bWDaCqKMac/4vvFLrZw/Oi9mv
-	 XxxY89xhpau2Q5sEPmbbRJ7/VK6Gw+6OwJxC1SP3hqSFSJrzpe9Q4C4mO7fTIEw0hEhdC
-	 NnykKi2ybiFkye84IAc67eKs1UAwsQI/V5KY7N5t8WKKP+JQnc3lBiI6pfgHN+EXq5nLx
-	 XUvp7HwRzlLIt/JSpNjAicI7DannBQ3kfqtrTh1Q8N1m3h2fP6gC7CullFv/37hbAZw==
+	t=1794589170;
+	b=MW9FxhfkZwlkVPHg90tipohUQuTYmDCZ/xbG4afdQ20T5yX5brl5PRlyl9GvmT3/Tg6i
+	 fierMNZMNwN9cRL28GSVRiYflQThyBAKhOWYZmaDuJ6srXYyTg3gFFT14auS3nXCbiawe
+	 7obXRyqYyzGpg6YfCb91X9Jtl00t5wZgOUvc4nPlWlS94z9BozFFPV3gBFm1Z4zMR4ZvL
+	 3JLwZrPnwISdkY4f50enNc+czczvrdihdoyYbTRRT2cS0q77MHsvlT2w5CI7NNYJjTQSr
+	 hl565x3WlkxeS86sN4gidlkTIIYHtKFutkJFK4fyp4hPJPpWuCRtwzjEARSkZN357xg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794589175;
+	c=relaxed/relaxed; t=1794589170;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=N5FjP6qFS8vWNxen7FGBlFAKlf6oPL+CJz9kJP9ur2k=;
-	b=sRZoR+RIZbssQCoR+UMpOJ+myhUvxlwF3dYhRC+bubz8V11f9Pqh6Md3F2YGb0Y+j6Fw
-	 J6mxwwnkrp/B2uyNZO/KP2CdP+FV/jRqlHsYX0g13cHaNfz+CNDNJwDGUmDiWkiU6Krvz
-	 tIlDfAXONnvt4dlJmCaeisz79KY26bkIMprW8HDQKY5vl8iYjh3lgEOXNpMeNUJi4wSLc
-	 SbC8O4/HMjSiAawee7IXTxpd7fMs798NnkwxJEwC6c14hcX6mT/wU9DnCjZ8GJxbTiKQ9
-	 BdXh+x4iz3MIxJqXKp8hI1VW+fTQYf8WkBeZNmocdflcrzuJo7b+FxL+vNxw6v7YkFg==
+	bh=KnWkvUMYFp0pJ5aAC9Vy89LT8XicYuU9hu1yqcU4TSM=;
+	b=3ViBD9DjgMde3tNyvats/TA0OaSQ+ExMWa2hpEVNejjvtfcoX37dWQMF7FWbLz+RLx90
+	 e+3nC5UCdontrGz3987M3JJTb8Y4ebGmztUka5T5ret4SxRLlRoQOotS5Mc3qTGfgVj/t
+	 rHt3OQXRuh2DGYRYJa3ciJYtT4+ARpro13f0jFyxC+4n7JVEdU15LRvuIJSCOwCulCc2o
+	 C0XZLEcd6c+C9Y1KhGUrFfsOqcefGed0UTLb1dNfgo/Bt67lh76mM5dvVGcZsBqMmv3i2
+	 M9eC4dD2kiXeJRRxqKpiLJ/YBHl9lCCpfeH/rGTS7RVaXHtIJUSOa6UlF+yc0hlgftg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 338001F000CF;
-	Fri, 13 Nov 2026 16:59:31 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 91B771F000C6;
+	Fri, 13 Nov 2026 16:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794589175;
-	bh=N5FjP6qFS8vWNxen7FGBlFAKlf6oPL+CJz9kJP9ur2k=;
+	s=k20260515; t=1794589170;
+	bh=KnWkvUMYFp0pJ5aAC9Vy89LT8XicYuU9hu1yqcU4TSM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=McSt0UrFgAzoQKLYKKD7sM/d9V2y7XR7m6daDk//JxtlVZBp7Zk95PoAHv8844xxj
-	 I1ZrjboKLkou6IqvxnUonxUyXTcLHxkfyHDeE7+cyvBevUHrX3A92bWZuH4DX/WMCa
-	 VLqpqL+7kClf5MGwcUVhK9blOLafFogux5d8Twn4LK0Yb6b9BZs48HzYt1ZY/dUDZU
-	 XfJ4iB5MT3KHgzL+HQXTpgs/usNsLGmpDY8BbwMsQpzoFt4DCcimDHyzl3gbYh3wZS
-	 8hEFxL6F5aX9N9fFYm/zROyo2SM0YQd7xxCYdVGFXK9zoq0fGdV8OvjTuEJQn3GpD1
-	 AyVB2/+bwWpXQ==
+	b=ZxDV2m0ZlCEp5n4MdUqpn4tHeA/vHv5uA9uCrdbv3F7BIbhyckh/HQ1xGeFp5WiMF
+	 bxswqNHeN7htGPRSC1gr8Ul7+3k4fCfEDQqeNWMLKMg5BbJBzAMco/+qHUlju9RVwk
+	 7STQ0D77E1OWQs+1MPy2Kt+U0YoPwKZwHEQ5oUrvbAn2x4/1LvNX7jspG9ZTf8Iwk3
+	 x8+PITSXfLT1IP4o8pmdOj6MMYhyEWDWOKzT1mZT5KOOeQUWSHocbmPKI34y/jVMQh
+	 KoQoXck0+zRjd14mrZtcC8GzeYb+qJNs2dWKXKempPKgikX/JHV4Cpw8iQE920wnON
+	 ZJdptFPxVbQ3g==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8775A49A27;
+	by lkml.kernel.org (Postfix) with ESMTP id 05DB649A0E;
 	Fri, 13 Nov 2026 16:59:29 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Fri, 13 Nov 2026 08:59:26 -0800
-Subject: [PATCH net-next v11 07/14] net: ethernet: oa_tc6: Support for
- hardware timestamp
+Date: Fri, 13 Nov 2026 08:59:20 -0800
+Subject: [PATCH net-next v11 01/14] dt-bindings: net: add onsemi's S2500
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -84,7 +83,7 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-s2500-mac-phy-support-v11-7-7a186141952c@onsemi.com>
+Message-Id: <20261113-s2500-mac-phy-support-v11-1-7a186141952c@onsemi.com>
 References: <20261113-s2500-mac-phy-support-v11-0-7a186141952c@onsemi.com>
 In-Reply-To: <20261113-s2500-mac-phy-support-v11-0-7a186141952c@onsemi.com>
 To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
@@ -106,1169 +105,162 @@ Cc: Selva Rajagopal <Selvamani.Rajagopal@onsemi.com>,
  netdev@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  Jerry Ray <jerry.ray@microchip.com>, 
- Ciprian Regus <ciprian.regus@analog.com>
+ Ciprian Regus <ciprian.regus@analog.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794589162; l=37714;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794589162; l=4324;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=/HdRrJmglTiFMfxX0go0cmLNl5y9HOm8qINxDQ7Rj9o=;
- b=BzGl39zrlc110FSfxzgu2o6xxxgtWSRmE+S94Bk90DJ8xiuKKjDCKCaNf0iiMsGjivfgvZfM9
- nup459168m4ConqggfRxt+Lib4NMDS663FV1L6FwrrKoqfAYqa5uV9J
+ bh=ydl5QiaaznD+gOcse6AuYZUijr3nYJb8olhfZemEaIw=;
+ b=85QxYvRD1NilPv+Yuy8gY7rhiXRvHCPbUnzuUez98NgyJkHBE8JEiAct/AtmRWDDRo2/q1nlg
+ n/Dv02mm+MCAd1JxpA7sZWr+D2FlAlxs18A4ObU2glymP6WqXS+74jS
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
  Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
 X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 Reply-To: Selvamani.Rajagopal@onsemi.com
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-PTP register/unregister calls are implemented in oa_tc6_ptp.c.
-The APIs that work with the hardware for timestamp are provided
-by vendor code as it may be vendor dependent.
+Add device tree binding for the onsemi S2500 IEEE 802.3cg
+compliant Ethernet transceiver device.
 
-Export helpers for the vendor driver's ndo_hwtstamp_set/get and
-ethtool get_ts_info/get_ts_stats callbacks to support the hardware
-timestamp feature.
+S2500 has both Media Access Controller (MAC) and 10BASE-T1S
+Ethernet PHY. MAC implements 10 Mbps half duplex Ethernet
+MAC. Communication between the host and MAC-PHY is defined in
+OPEN Alliance 10BASE-T1x MACPHY Serial Interface document.
 
-Hardware timestamp functions that handle the traffic are generally
-placed in oa_tc6_main.c. Rest of the timestamp functionalities,
-mostly helper functions are in oa_tc6_tstamp.c.
-
-When all the three timestamp capture registers are busy and not
-available, driver drops the incoming TX skb, if it comes with the
-request for hardware timestamping. Normal traffic without timestamp
-request is not affected.
-
-Practically, an application using hardware timestamp is not
-expected to hit this scenario as three timestamp capture registers
-are plenty considering the amount of traffic expected in such
-applications.
-
-When timestamping is enabled, the MAC-PHY prepends an 8-byte timestamp
-to received frames. The RX skb is now OA_TC6_TSTAMP_SZ bytes larger,
-so a full-MTU frame is not dropped for lack of tailroom. RX frame
-shorter than ETH_HLEN (plus 8 bytes when timestamp is present) is
-dropped now and counted in rx_length_errors and rx_dropped.
-
-TX timestamps are reported to the stack with skb_tstamp_tx() once the
-MAC-PHY signals the capture. For RX, the prepended timestamp is parsed
-into the skb's hardware timestamp.
-
-With timestamp support, the OA_TC6 framework depends on
-PTP_1588_CLOCK_OPTIONAL. Drivers selecting OA_TC6 must add this
-dependency to avoid a link failure when PTP_1588_CLOCK is built as a
-module.
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
 ---
 changes in v11
-  - Changed oa_tc6.c to oa_tc6_main.c in commit message. Also
-    added skb size change in the commit message.
-  - Fixed the issue of accidentally enabling software timestamping
-    when PTP clock is not registered in oa_tc6_get_ts_info callback
-  - Reference to ioctl in commit message is dropped as the helper is
-    removed
+  - No change
 changes in v10
-  - Added protection to skb queue handling when timestamp
-    feature is enabled/disabled.
+  - No change
 changes in v9
-  - Moved the vend1_mms initialization to the correct patch
-  - Fixed the confusing goto statements to return true or false
-  - Changed the magic number offset to index into array of names.
-  - Checking valid tsc instead of relying on SKBTX_IN_PROGRESS
-    as life of this flag may not be 100% internal to the driver
+  - No changes
 changes in v8
-  - Moved few timestamp definitions to header file from source file.
-  - Improved logic in handling timestamp capture register events.
-  - timestamp skb queue is protected inside spinlock
-  - Removed unnecessary ioctl callback
+  - Changed the interrupt type to level triggered
+  - Added reset-gpios entry that was recently supported.
 changes in v7
-  - Fixed the parameter name mismatch in function prototype and
-    definition
-  - CONFIG0 is set with 64 bit timestamp support by default.
-  - Added information about return value for API documentation.
+  - Added the missing review tag
+  - Removed the word YAML from the commit message
 changes in v6
-  - Fixed the issue of function parameter in oa_tc6_get_ts_stats
-    not described in comments section for documentation.
-  - Avoided typecasting __be32 as u32
+  - Moved the signed off information to the right place.
 changes in v5
-  - As subtracting skb len by FCS size is considered bug, changes
-    are removed. Will be fixed in stable branch (net repo)
-changes in v4
-  - Fixed the condition check for subtracting the FCS size
-    from skb len.
+  - no changes
+changes in v4:
+  - added spi-max-frequency as suggested by AI review
+  - changed interrupt to IRQ_TYPE_EDGE_FALLING as it is
+    being taken care in net (stable) branch
 changes in v3
-  - Replaced warning printk with ratelimited printk
-  - Checking the hardware register before enabling hardware
-    timestamp
+  - Removed URL link that failed verification
+changes in v2
+  - removed spi-max-frequency entry
+  - changed the compatible string to s2500
 changes in v1
-  - Added hardware timestamp support to the OA TC6 framework.
+  - Added the first version of YAML file for onsemi MAC-PHY
 ---
- MAINTAINERS                                  |   1 +
- drivers/net/ethernet/oa_tc6/Kconfig          |   1 +
- drivers/net/ethernet/oa_tc6/Makefile         |   2 +-
- drivers/net/ethernet/oa_tc6/oa_tc6_main.c    | 325 +++++++++++++++++++++++++--
- drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c     |  68 ++++++
- drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h |  53 ++++-
- drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c  | 224 ++++++++++++++++++
- include/linux/oa_tc6.h                       |  25 +++
- 8 files changed, 679 insertions(+), 20 deletions(-)
+ .../devicetree/bindings/net/onnn,s2500.yaml        | 71 ++++++++++++++++++++++
+ MAINTAINERS                                        |  6 ++
+ 2 files changed, 77 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/net/onnn,s2500.yaml b/Documentation/devicetree/bindings/net/onnn,s2500.yaml
+new file mode 100644
+index 000000000000..e1df674c0f1e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/onnn,s2500.yaml
+@@ -0,0 +1,71 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/onnn,s2500.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: onsemi S2500 10BASE-T1S MACPHY Ethernet Controllers
++
++maintainers:
++  - Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
++
++description:
++  The S2500 combines a Media Access Controller (MAC) and an
++  Ethernet PHY to enable 10BASE-T1S networks. The Ethernet Media Access
++  Controller (MAC) module implements a 10 Mbps half duplex Ethernet MAC,
++  compatible with the IEEE 802.3 standard and a 10BASE-T1S physical layer
++  transceiver integrated into the S2500. The communication between
++  the host and the MAC-PHY is specified in the OPEN Alliance 10BASE-T1x
++  MACPHY Serial Interface (TC6).
++
++allOf:
++  - $ref: /schemas/net/ethernet-controller.yaml#
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    const: onnn,s2500
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    description:
++      Interrupt from MAC-PHY asserted in the event of Receive Chunks
++      Available, Transmit Chunk Credits Available and Extended Status
++      Event.
++    maxItems: 1
++
++  reset-gpios:
++    description:
++      GPIO connected to the active-low RST_N pin of the MAC-PHY.
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 25000000
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - spi-max-frequency
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      ethernet@0 {
++        compatible = "onnn,s2500";
++        reg = <0>;
++        pinctrl-names = "default";
++        pinctrl-0 = <&eth0_pins>;
++        interrupt-parent = <&gpio>;
++        interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
++        spi-max-frequency = <15000000>;
++      };
++    };
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 028fa967674e..415d02d59681 100644
+index c583367c88bc..4a4c26694ba7 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -21040,6 +21040,7 @@ F:	drivers/rtc/rtc-optee.c
+@@ -21013,6 +21013,12 @@ S:	Supported
+ W:	http://www.onsemi.com
+ F:	drivers/net/phy/ncn*
  
- OPEN ALLIANCE 10BASE-T1S MACPHY SERIAL INTERFACE FRAMEWORK
- M:	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-+M:	Selvamani Rajagopal <selvamani.rajagopal@onsemi.com> (timestamp support)
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/networking/oa-tc6-framework.rst
-diff --git a/drivers/net/ethernet/oa_tc6/Kconfig b/drivers/net/ethernet/oa_tc6/Kconfig
-index ec2787eae4b1..904366a5c339 100644
---- a/drivers/net/ethernet/oa_tc6/Kconfig
-+++ b/drivers/net/ethernet/oa_tc6/Kconfig
-@@ -6,6 +6,7 @@
- config OA_TC6
- 	tristate "OPEN Alliance TC6 10BASE-T1x MAC-PHY support" if COMPILE_TEST
- 	depends on SPI
-+	depends on PTP_1588_CLOCK_OPTIONAL
- 	select PHYLIB
- 	help
- 	  This library implements OPEN Alliance TC6 10BASE-T1x MAC-PHY
-diff --git a/drivers/net/ethernet/oa_tc6/Makefile b/drivers/net/ethernet/oa_tc6/Makefile
-index c51621fae8be..a645584bdca0 100644
---- a/drivers/net/ethernet/oa_tc6/Makefile
-+++ b/drivers/net/ethernet/oa_tc6/Makefile
-@@ -4,4 +4,4 @@
- #
- 
- obj-$(CONFIG_OA_TC6) += oa_tc6.o
--oa_tc6-objs := oa_tc6_main.o
-+oa_tc6-objs := oa_tc6_main.o oa_tc6_ptp.o oa_tc6_tstamp.o
-diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_main.c b/drivers/net/ethernet/oa_tc6/oa_tc6_main.c
-index 341d13c97f91..2b31370da2d2 100644
---- a/drivers/net/ethernet/oa_tc6/oa_tc6_main.c
-+++ b/drivers/net/ethernet/oa_tc6/oa_tc6_main.c
-@@ -8,6 +8,7 @@
- #include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/bitops.h>
- #include <linux/iopoll.h>
- #include <linux/interrupt.h>
- #include <linux/mdio.h>
-@@ -15,6 +16,16 @@
- 
- #include "oa_tc6_std_def.h"
- 
-+struct oa_tc6_ts_info_rx {
-+	bool rtsa;
-+	bool rtsp;
-+};
-+
-+struct oa_tc6_ts_info_tx {
-+	ktime_t hwtstamp;
-+	u8 tsc;
-+};
-+
- static int oa_tc6_spi_transfer(struct oa_tc6 *tc6,
- 			       enum oa_tc6_header_type header_type, u16 length)
- {
-@@ -49,6 +60,212 @@ static int oa_tc6_get_parity(u32 p)
- 	return !((p >> 28) & 1);
- }
- 
-+static struct oa_tc6_ts_info_tx *oa_tc6_tsinfo_tx(struct sk_buff *skb)
-+{
-+	return (struct oa_tc6_ts_info_tx *)(skb->cb);
-+}
-+
-+static struct oa_tc6_ts_info_rx *oa_tc6_tsinfo_rx(struct sk_buff *skb)
-+{
-+	return (struct oa_tc6_ts_info_rx *)(skb->cb);
-+}
-+
-+static u8 oa_tc6_next_tsc(u8 tsc)
-+{
-+	return tsc < OA_TC6_TTSCC_REG_ID ? tsc + 1 : OA_TC6_TTSCA_REG_ID;
-+}
-+
-+static bool oa_tc6_req_tx_hwtstamp(struct oa_tc6 *tc6, struct sk_buff *skb)
-+{
-+	u8 tsc;
-+	u8 i;
-+
-+	lockdep_assert_held(&tc6->tx_skb_lock);
-+
-+	if (!skb || !(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP))
-+		return false;
-+
-+	if (!tc6->hw_tstamp_enabled ||
-+	    tc6->ts_config.tx_type != HWTSTAMP_TX_ON)
-+		return false;
-+
-+	tsc = tc6->ttsc_current_id;
-+	for (i = 0; i < OA_TC6_TTSCC_REG_ID; i++) {
-+		if (!(tc6->ts_ttsc_pending &
-+		      BIT(tsc - OA_TC6_TTSCA_REG_ID)))
-+			goto slot_found;
-+		tsc = oa_tc6_next_tsc(tsc);
-+	}
-+
-+	/* All the three slots are waiting for their event. This skb
-+	 * can't request timestamp. Marking it to be dropped.
-+	 */
-+	tc6->tx_hwtstamp_err++;
-+	return true;
-+
-+slot_found:
-+	tc6->ts_ttsc_pending |= BIT(tsc - OA_TC6_TTSCA_REG_ID);
-+	tc6->ttsc_current_id = oa_tc6_next_tsc(tsc);
-+	oa_tc6_tsinfo_tx(skb)->tsc = tsc;
-+	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
-+	return false;
-+}
-+
-+/* Hand a fully sent frame over to wait for its timestamp event. */
-+static void oa_tc6_queue_tx_tstamp_skb(struct oa_tc6 *tc6,
-+				       struct sk_buff *skb)
-+{
-+	u8 tsc = oa_tc6_tsinfo_tx(skb)->tsc;
-+
-+	spin_lock_bh(&tc6->tx_skb_lock);
-+
-+	/* Clear if oa_tc6_cleanup_tx_tstamp_skbs() abandoned this frame's
-+	 * slot while the frame was being sent.
-+	 */
-+	if (tc6->ts_ttsc_pending & BIT(tsc - OA_TC6_TTSCA_REG_ID)) {
-+		list_add_tail(&skb->list, &tc6->tx_ts_skb_q);
-+		spin_unlock_bh(&tc6->tx_skb_lock);
-+		return;
-+	}
-+
-+	tc6->tx_hwtstamp_lost++;
-+	spin_unlock_bh(&tc6->tx_skb_lock);
-+	dev_kfree_skb(skb);
-+}
-+
-+static void oa_tc6_events_handle(struct oa_tc6 *tc6, u32 val, const u32 *ts)
-+{
-+	struct skb_shared_hwtstamps tstamp;
-+	struct oa_tc6_ts_info_tx *ski;
-+	struct sk_buff *skb, *tmp;
-+	LIST_HEAD(deliver);
-+	LIST_HEAD(drop);
-+	u8 tsc, bit_num;
-+	u32 handled = 0;
-+	u32 event;
-+
-+	spin_lock_bh(&tc6->tx_skb_lock);
-+	list_for_each_entry_safe(skb, tmp, &tc6->tx_ts_skb_q, list) {
-+		ski = oa_tc6_tsinfo_tx(skb);
-+		tsc = ski->tsc;
-+		bit_num = tsc - OA_TC6_TTSCA_REG_ID;
-+		event = OA_TC6_STATUS0_TTSCAA << bit_num;
-+		if (!(val & event))
-+			continue;
-+		if (handled & event) {
-+			dev_warn_ratelimited(&tc6->spi->dev,
-+					     "Multiple skbs\n");
-+			tc6->tx_hwtstamp_err++;
-+			list_move_tail(&skb->list, &drop);
-+			continue;
-+		}
-+
-+		handled |= event;
-+		tc6->ts_ttsc_pending &= ~BIT(bit_num);
-+
-+		ski->hwtstamp = ktime_set(ts[2 * bit_num],
-+					  ts[2 * bit_num + 1]);
-+		tc6->tx_hwtstamp_pkts++;
-+		list_move_tail(&skb->list, &deliver);
-+	}
-+	spin_unlock_bh(&tc6->tx_skb_lock);
-+
-+	/* skb_tstamp_tx() clones the skb and wakes the owning socket, so keep
-+	 * it out of the lock that oa_tc6_start_xmit() takes.
-+	 */
-+	list_for_each_entry_safe(skb, tmp, &deliver, list) {
-+		list_del(&skb->list);
-+		memset(&tstamp, 0, sizeof(tstamp));
-+		tstamp.hwtstamp = oa_tc6_tsinfo_tx(skb)->hwtstamp;
-+		skb_tstamp_tx(skb, &tstamp);
-+		dev_kfree_skb(skb);
-+	}
-+
-+	list_for_each_entry_safe(skb, tmp, &drop, list) {
-+		list_del(&skb->list);
-+		dev_kfree_skb(skb);
-+	}
-+
-+	if (val & ~handled) {
-+		tc6->tx_hwtstamp_err += hweight32(val & ~handled);
-+		dev_warn_ratelimited(&tc6->spi->dev,
-+				     "Unexpected event: 0x%x\n",
-+				     val & ~handled);
-+	}
-+}
-+
-+void oa_tc6_cleanup_tx_tstamp_skbs(struct oa_tc6 *tc6)
-+{
-+	struct sk_buff *skb, *tmp;
-+
-+	spin_lock_bh(&tc6->tx_skb_lock);
-+	list_for_each_entry_safe(skb, tmp, &tc6->tx_ts_skb_q, list) {
-+		list_del(&skb->list);
-+		dev_kfree_skb(skb);
-+
-+		/* The frame was transmitted, only its timestamp is lost. */
-+		tc6->tx_hwtstamp_lost++;
-+	}
-+
-+	/* Also abandons the slot of a frame still being sent. */
-+	tc6->ts_ttsc_pending = 0;
-+	spin_unlock_bh(&tc6->tx_skb_lock);
-+}
-+
-+static int oa_tc6_update_ts_in_rx_skb(struct oa_tc6 *tc6)
-+{
-+	unsigned int expected_len = ETH_HLEN;
-+	struct sk_buff *skb = tc6->rx_skb;
-+	struct oa_tc6_ts_info_rx *ski;
-+	__be32 ts_val[2];
-+	u32 ts[2];
-+
-+	ski = oa_tc6_tsinfo_rx(skb);
-+	if (ski->rtsa)
-+		expected_len += OA_TC6_TSTAMP_SZ;
-+
-+	if (skb->len < expected_len) {
-+		tc6->netdev->stats.rx_length_errors++;
-+		return -EINVAL;
-+	}
-+
-+	if (!ski->rtsa)
-+		return 0;
-+
-+	memcpy(&ts_val[0], skb->data, 4);
-+	memcpy(&ts_val[1], (u32 *)skb->data + 1, 4);
-+
-+	ts[0] = be32_to_cpu(ts_val[0]);
-+	ts[1] = be32_to_cpu(ts_val[1]);
-+
-+	/* Check parity */
-+	if ((oa_tc6_get_parity(ts[0]) ^ oa_tc6_get_parity(ts[1])) ==
-+	    !ski->rtsp) {
-+		struct skb_shared_hwtstamps *hw_ts;
-+
-+		/* Report timestamp to the upper layers */
-+		hw_ts = skb_hwtstamps(skb);
-+		memset(hw_ts, 0, sizeof(*hw_ts));
-+		hw_ts->hwtstamp = ktime_set(ts[0], ts[1]);
-+	}
-+	skb_pull(skb, sizeof(ts));
-+
-+	return 0;
-+}
-+
-+static int oa_tc6_update_standard_capability(struct oa_tc6 *tc6)
-+{
-+	u32 regval = 0;
-+	int ret;
-+
-+	ret = oa_tc6_read_register(tc6, OA_TC6_REG_STDCAP, &regval);
-+	if (ret)
-+		return ret;
-+	if (regval & OA_TC6_STDCAP_FTSC_CAPABILITY) /* Timestamp */
-+		tc6->ftsc_capable = true;
-+	return 0;
-+}
-+
- static __be32 oa_tc6_prepare_ctrl_header(u32 addr, u8 length,
- 					 enum oa_tc6_register_op reg_op)
- {
-@@ -624,6 +841,16 @@ static void oa_tc6_cleanup_ongoing_rx_skb(struct oa_tc6 *tc6)
- 
- static void oa_tc6_cleanup_ongoing_tx_skb(struct oa_tc6 *tc6)
- {
-+	if (tc6->ongoing_tx_skb &&
-+	    oa_tc6_tsinfo_tx(tc6->ongoing_tx_skb)->tsc) {
-+		u8 tsc = oa_tc6_tsinfo_tx(tc6->ongoing_tx_skb)->tsc;
-+
-+		spin_lock_bh(&tc6->tx_skb_lock);
-+		tc6->ts_ttsc_pending &= ~BIT(tsc - OA_TC6_TTSCA_REG_ID);
-+		spin_unlock_bh(&tc6->tx_skb_lock);
-+	}
-+
-+	tc6->tx_skb_offset = 0;
- 	oa_tc6_drop_tx_skb(tc6, tc6->ongoing_tx_skb);
- 	tc6->ongoing_tx_skb = NULL;
- }
-@@ -649,6 +876,7 @@ static void oa_tc6_free_pending_skbs(struct oa_tc6 *tc6)
- {
- 	oa_tc6_free_ongoing_skbs(tc6);
- 	oa_tc6_cleanup_waiting_tx_skb(tc6);
-+	oa_tc6_cleanup_tx_tstamp_skbs(tc6);
- }
- 
- static void oa_tc6_look_for_new_frame(struct oa_tc6 *tc6)
-@@ -677,6 +905,8 @@ static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
- 	netif_tx_disable(tc6->netdev);
- 	oa_tc6_drop_tx_skb(tc6, skb);
- 	oa_tc6_free_ongoing_skbs(tc6);
-+	oa_tc6_cleanup_tx_tstamp_skbs(tc6);
-+
- 	oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
- 	oa_tc6_read_register(tc6, OA_TC6_REG_STATUS0, &regval);
- 	oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, regval);
-@@ -685,15 +915,25 @@ static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
- 
- static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
- {
-+	u32 regs[OA_TC6_STATUS0_TTSC_REG_COUNT];
-+	bool ts_valid = !!tc6->ptp_clock;
- 	u32 value;
- 	int ret;
- 
--	ret = oa_tc6_read_register(tc6, OA_TC6_REG_STATUS0, &value);
-+	/* Only STATUS0 is read without a PTP clock. With a PTP clock, the
-+	 * registers up to TTSCC_LOW are read in the same transaction. That
-+	 * is cheaper than a second SPI transaction when a capture is pending,
-+	 * and costs extra register reads otherwise.
-+	 */
-+	ret = oa_tc6_read_registers(tc6, OA_TC6_REG_STATUS0, regs,
-+				    ts_valid ?
-+				    OA_TC6_STATUS0_TTSC_REG_COUNT : 1);
- 	if (ret) {
- 		netdev_err(tc6->netdev, "STATUS0 register read failed: %d\n",
- 			   ret);
- 		return ret;
- 	}
-+	value = regs[0];
- 
- 	/* This function is called for each chunk received in a given SPI
- 	 * transaction. In case, extended status bit is set in more than
-@@ -702,6 +942,12 @@ static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
- 	if (!value)
- 		return 0;
- 
-+	/* Without ts_valid the TTSC registers were not read. */
-+	if (ts_valid && (value & OA_TC6_STATUS0_TTSCA_MASK) != 0)
-+		oa_tc6_events_handle(tc6, value &
-+				     OA_TC6_STATUS0_TTSCA_MASK,
-+				     &regs[OA_TC6_TTSC_REG_OFFSET]);
-+
- 	/* Clear the error interrupts status */
- 	ret = oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, value);
- 	if (ret) {
-@@ -787,6 +1033,13 @@ static void oa_tc6_submit_rx_skb(struct oa_tc6 *tc6)
- 	    tc6->rx_skb->len > ETH_FCS_LEN)
- 		skb_trim(tc6->rx_skb, tc6->rx_skb->len - ETH_FCS_LEN);
- 
-+	if (oa_tc6_update_ts_in_rx_skb(tc6)) {
-+		tc6->netdev->stats.rx_dropped++;
-+		dev_kfree_skb_any(tc6->rx_skb);
-+		tc6->rx_skb = NULL;
-+		return;
-+	}
-+
- 	tc6->rx_skb->protocol = eth_type_trans(tc6->rx_skb, tc6->netdev);
- 	tc6->netdev->stats.rx_packets++;
- 	tc6->netdev->stats.rx_bytes += tc6->rx_skb->len;
-@@ -822,25 +1075,32 @@ static int oa_tc6_update_rx_skb(struct oa_tc6 *tc6, u8 *payload, u8 length)
-  * buffer pointer. We should release, if a valid pointer is found before
-  * allocating a new one.
-  */
--static int oa_tc6_allocate_rx_skb(struct oa_tc6 *tc6)
-+static int oa_tc6_allocate_rx_skb(struct oa_tc6 *tc6, u32 footer)
- {
-+	struct oa_tc6_ts_info_rx *ski;
-+
- 	oa_tc6_cleanup_ongoing_rx_skb(tc6);
--	tc6->rx_skb = netdev_alloc_skb_ip_align(tc6->netdev, tc6->netdev->mtu +
--						ETH_HLEN + ETH_FCS_LEN);
-+	tc6->rx_skb = netdev_alloc_skb_ip_align(tc6->netdev,
-+						tc6->netdev->mtu +
-+						ETH_HLEN + ETH_FCS_LEN +
-+						OA_TC6_TSTAMP_SZ);
- 	if (!tc6->rx_skb) {
- 		tc6->netdev->stats.rx_dropped++;
- 		return -ENOMEM;
- 	}
- 
-+	ski = oa_tc6_tsinfo_rx(tc6->rx_skb);
-+	ski->rtsa = FIELD_GET(OA_TC6_DATA_FOOTER_RTSA_VALID, footer);
-+	ski->rtsp = FIELD_GET(OA_TC6_DATA_FOOTER_RTSP_VALID, footer);
- 	return 0;
- }
- 
- static int oa_tc6_prcs_complete_rx_frame(struct oa_tc6 *tc6, u8 *payload,
--					 u16 size)
-+					 u16 size, u32 footer)
- {
- 	int ret;
- 
--	ret = oa_tc6_allocate_rx_skb(tc6);
-+	ret = oa_tc6_allocate_rx_skb(tc6, footer);
- 	if (ret)
- 		return ret;
- 
-@@ -853,11 +1113,11 @@ static int oa_tc6_prcs_complete_rx_frame(struct oa_tc6 *tc6, u8 *payload,
- 	return 0;
- }
- 
--static int oa_tc6_prcs_rx_frame_start(struct oa_tc6 *tc6, u8 *payload, u16 size)
-+static int oa_tc6_prcs_rx_frame_start(struct oa_tc6 *tc6, u8 *payload, u16 size, u32 footer)
- {
- 	int ret;
- 
--	ret = oa_tc6_allocate_rx_skb(tc6);
-+	ret = oa_tc6_allocate_rx_skb(tc6, footer);
- 	if (ret)
- 		return ret;
- 
-@@ -904,7 +1164,7 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
- 		size = end_byte_offset + 1 - start_byte_offset;
- 		return oa_tc6_prcs_complete_rx_frame(tc6,
- 						     &data[start_byte_offset],
--						     size);
-+						     size, footer);
- 	}
- 
- 	/* Process the chunk with only rx frame start */
-@@ -912,7 +1172,7 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
- 		size = OA_TC6_CHUNK_PAYLOAD_SIZE - start_byte_offset;
- 		return oa_tc6_prcs_rx_frame_start(tc6,
- 						  &data[start_byte_offset],
--						  size);
-+						  size, footer);
- 	}
- 
- 	/* Process the chunk with only rx frame end */
-@@ -945,7 +1205,7 @@ static int oa_tc6_prcs_rx_chunk_payload(struct oa_tc6 *tc6, u8 *data,
- 		size = OA_TC6_CHUNK_PAYLOAD_SIZE - start_byte_offset;
- 		return oa_tc6_prcs_rx_frame_start(tc6,
- 						  &data[start_byte_offset],
--						  size);
-+						  size, footer);
- 	}
- 
- 	/* Process the chunk with ongoing rx frame data */
-@@ -1024,13 +1284,15 @@ static int oa_tc6_process_spi_data_rx_buf(struct oa_tc6 *tc6, u16 length)
- }
- 
- static __be32 oa_tc6_prepare_data_header(bool data_valid, bool start_valid,
--					 bool end_valid, u8 end_byte_offset)
-+					 bool end_valid, u8 end_byte_offset,
-+					 u8 tsc)
- {
- 	u32 header = FIELD_PREP(OA_TC6_DATA_HEADER_DATA_NOT_CTRL,
- 				OA_TC6_DATA_HEADER) |
- 		     FIELD_PREP(OA_TC6_DATA_HEADER_DATA_VALID, data_valid) |
- 		     FIELD_PREP(OA_TC6_DATA_HEADER_START_VALID, start_valid) |
- 		     FIELD_PREP(OA_TC6_DATA_HEADER_END_VALID, end_valid) |
-+		     FIELD_PREP(OA_TC6_DATA_HEADER_TSC_OFFSET, tsc) |
- 		     FIELD_PREP(OA_TC6_DATA_HEADER_END_BYTE_OFFSET,
- 				end_byte_offset);
- 
-@@ -1049,6 +1311,7 @@ static void oa_tc6_add_tx_skb_to_spi_buf(struct oa_tc6 *tc6)
- 	enum oa_tc6_data_start_valid_info start_valid;
- 	u8 end_byte_offset = 0;
- 	u16 length_to_copy;
-+	u8 tsc = 0;
- 
- 	/* Initial value is assigned here to avoid more than 80 characters in
- 	 * the declaration place.
-@@ -1058,8 +1321,10 @@ static void oa_tc6_add_tx_skb_to_spi_buf(struct oa_tc6 *tc6)
- 	/* Set start valid if the current tx chunk contains the start of the tx
- 	 * ethernet frame.
- 	 */
--	if (!tc6->tx_skb_offset)
-+	if (!tc6->tx_skb_offset) {
- 		start_valid = OA_TC6_DATA_START_VALID;
-+		tsc = oa_tc6_tsinfo_tx(tc6->ongoing_tx_skb)->tsc;
-+	}
- 
- 	/* If the remaining tx skb length is more than the chunk payload size of
- 	 * 64 bytes then copy only 64 bytes and leave the ongoing tx skb for
-@@ -1080,17 +1345,25 @@ static void oa_tc6_add_tx_skb_to_spi_buf(struct oa_tc6 *tc6)
- 		tc6->tx_skb_offset = 0;
- 		tc6->netdev->stats.tx_bytes += tc6->ongoing_tx_skb->len;
- 		tc6->netdev->stats.tx_packets++;
--		kfree_skb(tc6->ongoing_tx_skb);
-+
-+		/* Free the ones that are not saved for later processing,
-+		 * like timestamping.
-+		 */
-+		if (!oa_tc6_tsinfo_tx(tc6->ongoing_tx_skb)->tsc)
-+			kfree_skb(tc6->ongoing_tx_skb);
-+		else
-+			oa_tc6_queue_tx_tstamp_skb(tc6, tc6->ongoing_tx_skb);
- 		tc6->ongoing_tx_skb = NULL;
- 	}
- 
- 	*tx_buf = oa_tc6_prepare_data_header(OA_TC6_DATA_VALID, start_valid,
--					     end_valid, end_byte_offset);
-+					     end_valid, end_byte_offset, tsc);
- 	tc6->spi_data_tx_buf_offset += OA_TC6_CHUNK_SIZE;
- }
- 
- static u16 oa_tc6_prepare_spi_tx_buf_for_tx_skbs(struct oa_tc6 *tc6)
- {
-+	struct sk_buff *drop_skb;
- 	u16 used_tx_credits;
- 
- 	/* Get tx skbs and convert them into tx chunks based on the tx credits
-@@ -1099,10 +1372,21 @@ static u16 oa_tc6_prepare_spi_tx_buf_for_tx_skbs(struct oa_tc6 *tc6)
- 	for (used_tx_credits = 0; used_tx_credits < tc6->tx_credits;
- 	     used_tx_credits++) {
- 		if (!tc6->ongoing_tx_skb) {
-+			drop_skb = NULL;
- 			spin_lock_bh(&tc6->tx_skb_lock);
- 			tc6->ongoing_tx_skb = tc6->waiting_tx_skb;
- 			tc6->waiting_tx_skb = NULL;
-+			if (oa_tc6_req_tx_hwtstamp(tc6,
-+						   tc6->ongoing_tx_skb)) {
-+				drop_skb = tc6->ongoing_tx_skb;
-+				tc6->ongoing_tx_skb = NULL;
-+				if (!tc6->disable_traffic &&
-+				    netif_running(tc6->netdev) &&
-+				    netif_queue_stopped(tc6->netdev))
-+					netif_wake_queue(tc6->netdev);
-+			}
- 			spin_unlock_bh(&tc6->tx_skb_lock);
-+			oa_tc6_drop_tx_skb(tc6, drop_skb);
- 		}
- 		if (!tc6->ongoing_tx_skb)
- 			break;
-@@ -1119,7 +1403,7 @@ static void oa_tc6_add_empty_chunks_to_spi_buf(struct oa_tc6 *tc6,
- 
- 	header = oa_tc6_prepare_data_header(OA_TC6_DATA_INVALID,
- 					    OA_TC6_DATA_START_INVALID,
--					    OA_TC6_DATA_END_INVALID, 0);
-+					    OA_TC6_DATA_END_INVALID, 0, 0);
- 
- 	while (needed_empty_chunks--) {
- 		__be32 *tx_buf = tc6->spi_data_tx_buf +
-@@ -1311,6 +1595,7 @@ netdev_tx_t oa_tc6_start_xmit(struct oa_tc6 *tc6, struct sk_buff *skb)
- 		return NETDEV_TX_OK;
- 	}
- 
-+	oa_tc6_tsinfo_tx(skb)->tsc = 0;
- 	spin_lock_bh(&tc6->tx_skb_lock);
- 	if (tc6->waiting_tx_skb) {
- 		netif_stop_queue(tc6->netdev);
-@@ -1370,6 +1655,8 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
- 	SET_NETDEV_DEV(netdev, &spi->dev);
- 	mutex_init(&tc6->spi_ctrl_lock);
- 	spin_lock_init(&tc6->tx_skb_lock);
-+	tc6->ttsc_current_id = OA_TC6_TTSCA_REG_ID;
-+	INIT_LIST_HEAD(&tc6->tx_ts_skb_q);
- 
- 	if (quirks)
- 		tc6->quirk_flags = quirks->quirk_flags;
-@@ -1435,6 +1722,12 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
- 		return ERR_PTR(ret);
- 	}
- 
-+	ret = oa_tc6_update_standard_capability(tc6);
-+	if (ret) {
-+		dev_err(&tc6->spi->dev, "Failed to read capability\n");
-+		return ERR_PTR(ret);
-+	}
-+
- 	ret = oa_tc6_unmask_macphy_error_interrupts(tc6);
- 	if (ret) {
- 		dev_err(&tc6->spi->dev,
-diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c b/drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c
-new file mode 100644
-index 000000000000..07ce0a750fcf
---- /dev/null
-+++ b/drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c
-@@ -0,0 +1,68 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Support for hardware timestamping feature for OPEN Alliance
-+ * 10BASE-T1x MAC-PHY Serial Interface framework
-+ *
-+ * Author: Selvamani Rajagopal <selvamani.rajagopal@onsemi.com>
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/spi/spi.h>
-+#include <linux/ptp_clock_kernel.h>
-+#include <linux/ethtool.h>
-+#include <linux/phy.h>
-+#include <linux/oa_tc6.h>
-+
-+#include "oa_tc6_std_def.h"
-+
-+/**
-+ * oa_tc6_ptp_register - Registers the PTP clock
-+ * @tc6: oa_tc6 struct.
-+ * @info: Describes a PTP hardware clock
-+ *
-+ * Description: Vendors are expected to set the PTP clock operations
-+ * in @info before calling this function. This function returns
-+ * immediately if the MAC-PHY does not support hardware timestamp.
-+ * Otherwise it sets @info->name and registers the clock.
-+ *
-+ * Return: 0 on success or when hardware timestamp is not supported,
-+ * otherwise a negative error code.
-+ *
-+ */
-+int oa_tc6_ptp_register(struct oa_tc6 *tc6, struct ptp_clock_info *info)
-+{
-+	int ret = 0;
-+
-+	/* Not supporting hardware timestamp isn't an error */
-+	if (!tc6->ftsc_capable)
-+		return ret;
-+
-+	snprintf(info->name, sizeof(info->name), "OA TC6 PTP %s",
-+		 dev_name(&tc6->spi->dev));
-+	tc6->ptp_clock = ptp_clock_register(info, &tc6->spi->dev);
-+	if (IS_ERR(tc6->ptp_clock)) {
-+		ret = PTR_ERR(tc6->ptp_clock);
-+		tc6->ptp_clock = NULL;
-+		dev_err(&tc6->spi->dev, "Registration of %s failed\n",
-+			info->name);
-+	}
-+
-+	if (tc6->ptp_clock)
-+		dev_info(&tc6->spi->dev, "%s registered. index %d\n",
-+			 info->name, ptp_clock_index(tc6->ptp_clock));
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_ptp_register);
-+
-+/**
-+ * oa_tc6_ptp_unregister - Unregisters the PTP clock
-+ * @tc6: oa_tc6 struct.
-+ */
-+void oa_tc6_ptp_unregister(struct oa_tc6 *tc6)
-+{
-+	if (tc6->ptp_clock) {
-+		ptp_clock_unregister(tc6->ptp_clock);
-+		tc6->ptp_clock = NULL;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_ptp_unregister);
-diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-index c2c120ddcc07..98d815f8f0b4 100644
---- a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-+++ b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-@@ -1,9 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0+ */
- /*
-  * Register and driver related definitions to support
-- * OPEN Alliance 10BASE‑T1x MAC‑PHY Serial Interface framework.
-- *
-- * Author: Selva Rajagopal <selvamani.rajagopal@onsemi.com>
-+ * OPEN Alliance 10BASE-T1x MAC-PHY Serial Interface framework.
-  */
- 
- #ifndef OA_TC6_STD_DEF_H
-@@ -12,6 +10,7 @@
- #include <linux/bits.h>
- #include <linux/ptp_clock_kernel.h>
- #include <linux/net_tstamp.h>
-+#include <linux/ethtool.h>
- #include <linux/netdevice.h>
- #include <linux/spi/spi.h>
- #include <linux/skbuff.h>
-@@ -19,6 +18,9 @@
- #include <linux/wait.h>
- #include <linux/oa_tc6.h>
- 
-+/* Tx timestamp capture register A (high) */
-+#define OA_TC6_REG_TTSCA_HIGH			(0x10)
-+
- /* Control command header */
- #define OA_TC6_CTRL_HEADER_DATA_NOT_CTRL	BIT(31)
- #define OA_TC6_CTRL_HEADER_WRITE_NOT_READ	BIT(29)
-@@ -34,6 +36,7 @@
- #define OA_TC6_DATA_HEADER_START_WORD_OFFSET	GENMASK(19, 16)
- #define OA_TC6_DATA_HEADER_END_VALID		BIT(14)
- #define OA_TC6_DATA_HEADER_END_BYTE_OFFSET	GENMASK(13, 8)
-+#define OA_TC6_DATA_HEADER_TSC_OFFSET		GENMASK(7, 6)
- #define OA_TC6_DATA_HEADER_PARITY		BIT(0)
- 
- /* Data footer */
-@@ -44,7 +47,10 @@
- #define OA_TC6_DATA_FOOTER_DATA_VALID		BIT(21)
- #define OA_TC6_DATA_FOOTER_START_VALID		BIT(20)
- #define OA_TC6_DATA_FOOTER_START_WORD_OFFSET	GENMASK(19, 16)
-+#define OA_TC6_DATA_FOOTER_FRAME_DROP		BIT(15)
- #define OA_TC6_DATA_FOOTER_END_VALID		BIT(14)
-+#define OA_TC6_DATA_FOOTER_RTSA_VALID		BIT(7)
-+#define OA_TC6_DATA_FOOTER_RTSP_VALID		BIT(6)
- #define OA_TC6_DATA_FOOTER_END_BYTE_OFFSET	GENMASK(13, 8)
- #define OA_TC6_DATA_FOOTER_TX_CREDITS		GENMASK(5, 1)
- 
-@@ -71,6 +77,34 @@
- 
- #define OA_TC6_REG_MMS_MASK		GENMASK(19, 16)
- 
-+#define OA_TC6_TSTAMP_SZ			8
-+
-+#define OA_TC6_TTSCA_REG_ID			1
-+#define OA_TC6_TTSCB_REG_ID			2
-+#define OA_TC6_TTSCC_REG_ID			3
-+
-+/* OA TC6 register addresses count 32-bit registers, not bytes. The difference
-+ * of two addresses is therefore the index into a u32 array that was read
-+ * starting at the first address, so the OFFSET macros below are array
-+ * indices.
-+ */
-+#define OA_TC6_TTSC_REG_OFFSET		(OA_TC6_REG_TTSCA_HIGH - \
-+					 OA_TC6_REG_STATUS0)
-+#define OA_TC6_TTSC_REG_COUNT		(2 * OA_TC6_TTSCC_REG_ID)
-+#define OA_TC6_STATUS0_TTSC_REG_COUNT	(OA_TC6_TTSC_REG_OFFSET + \
-+					 OA_TC6_TTSC_REG_COUNT)
-+
-+/* Useful for reading all the registers between CONFIG0 and INT_MASK0
-+ * in a single SPI transaction
-+ */
-+#define CFG0_TO_IMASK0_REG_COUNT	(OA_TC6_REG_INT_MASK0 - \
-+					 OA_TC6_REG_CONFIG0 + 1)
-+#define CFG0_VAL_OFFSET			(0)
-+#define STATUS0_VAL_OFFSET		(OA_TC6_REG_STATUS0 - \
-+					 OA_TC6_REG_CONFIG0)
-+#define IRQM_VAL_OFFSET			(OA_TC6_REG_INT_MASK0 - \
-+					 OA_TC6_REG_CONFIG0)
-+
- /* Internal structure for MAC-PHY drivers */
- struct oa_tc6 {
- 	struct net_device *netdev;
-@@ -96,6 +130,16 @@ struct oa_tc6 {
- 	bool prot_ctrl;
- 	enum oa_tc6_quirk_flag quirk_flags;
- 	struct gpio_desc *reset_gpio;
-+	struct hwtstamp_config ts_config;
-+	struct list_head tx_ts_skb_q;
-+	struct ptp_clock *ptp_clock;
-+	bool ftsc_capable; /* Timestamp capability */
-+	bool hw_tstamp_enabled;
-+	u64 tx_hwtstamp_pkts;
-+	u64 tx_hwtstamp_lost;
-+	u64 tx_hwtstamp_err;
-+	u8 ts_ttsc_pending;
-+	u8 ttsc_current_id;
- };
- 
- enum oa_tc6_header_type {
-@@ -122,4 +166,7 @@ enum oa_tc6_data_end_valid_info {
- 	OA_TC6_DATA_END_INVALID,
- 	OA_TC6_DATA_END_VALID,
- };
-+
-+void oa_tc6_cleanup_tx_tstamp_skbs(struct oa_tc6 *tc6);
-+
- #endif /* OA_TC6_STD_DEF_H */
-diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c b/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c
-new file mode 100644
-index 000000000000..b3cc032311a9
---- /dev/null
-+++ b/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c
-@@ -0,0 +1,224 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * OPEN Alliance 10BASE-T1x MAC-PHY Serial Interface framework
-+ *
-+ * Author: Selvamani Rajagopal <selvamani.rajagopal@onsemi.com>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/iopoll.h>
-+#include <linux/mdio.h>
-+#include <linux/phy.h>
-+#include <linux/oa_tc6.h>
-+
-+#include "oa_tc6_std_def.h"
-+
-+static int oa_tc6_set_hwtstamp_settings(struct oa_tc6 *tc6,
-+					const struct hwtstamp_config *ts_cfg)
-+{
-+	u32 regs[CFG0_TO_IMASK0_REG_COUNT];
-+	u32 cfg0, irqm, status0;
-+	bool disabled;
-+	int ret;
-+
-+	if (tc6->ts_config.flags == ts_cfg->flags &&
-+	    tc6->ts_config.tx_type == ts_cfg->tx_type &&
-+	    tc6->ts_config.rx_filter == ts_cfg->rx_filter)
-+		return 0;
-+
-+	spin_lock_bh(&tc6->tx_skb_lock);
-+	disabled = tc6->disable_traffic;
-+	spin_unlock_bh(&tc6->tx_skb_lock);
-+	if (disabled)
-+		return -EIO;
-+
-+	/* CONFIG0, STATUS0 and INT_MASK0 span one register block, so a
-+	 * single control transaction covers all three.
-+	 */
-+	ret = oa_tc6_read_registers(tc6, OA_TC6_REG_CONFIG0, regs,
-+				    ARRAY_SIZE(regs));
-+	if (ret) {
-+		dev_err(&tc6->spi->dev, "Failed to read CFG0 block\n");
-+		goto out;
-+	}
-+
-+	cfg0 = regs[CFG0_VAL_OFFSET];
-+	status0 = regs[STATUS0_VAL_OFFSET];
-+	irqm = regs[IRQM_VAL_OFFSET];
-+
-+	/* Hardware timestamp feature supports 64-bit timestamp only */
-+	if (ts_cfg->tx_type == HWTSTAMP_TX_ON ||
-+	    ts_cfg->rx_filter == HWTSTAMP_FILTER_ALL)
-+		cfg0 |= (OA_TC6_CONFIG0_FTSE_ENABLE |
-+			 OA_TC6_CONFIG0_FTSS_64BIT_TSTAMP);
-+	else
-+		cfg0 &= ~OA_TC6_CONFIG0_FTSE_ENABLE;
-+
-+	if (ts_cfg->tx_type == HWTSTAMP_TX_ON)
-+		irqm &= ~OA_TC6_INT_MASK0_TTSCA_MASK;
-+	else
-+		irqm |= OA_TC6_INT_MASK0_TTSCA_MASK;
-+
-+	/* STATUS0 is write-one-to-clear, so this acknowledges a capture
-+	 * without delivering its timestamp. Skip it while TX timestamping
-+	 * stays enabled, where a capture may still be outstanding.
-+	 */
-+	status0 &= OA_TC6_STATUS0_TTSCA_MASK;
-+	if (status0 && (tc6->ts_config.tx_type != HWTSTAMP_TX_ON ||
-+			ts_cfg->tx_type != HWTSTAMP_TX_ON)) {
-+		ret = oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0,
-+					    status0);
-+		if (ret) {
-+			dev_err(&tc6->spi->dev,
-+				"failed to write STATUS0 register\n");
-+			goto out;
-+		}
-+	}
-+
-+	ret = oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, irqm);
-+	if (ret) {
-+		dev_err(&tc6->spi->dev, "failed to write IRQM register\n");
-+		goto out;
-+	}
-+
-+	ret = oa_tc6_write_register(tc6, OA_TC6_REG_CONFIG0, cfg0);
-+	if (ret) {
-+		dev_err(&tc6->spi->dev, "failed to write CFG0 register\n");
-+		goto out;
-+	}
-+	spin_lock_bh(&tc6->tx_skb_lock);
-+	tc6->ts_config = *ts_cfg;
-+	if (cfg0 & OA_TC6_CONFIG0_FTSE_ENABLE)
-+		tc6->hw_tstamp_enabled = true;
-+	else
-+		tc6->hw_tstamp_enabled = false;
-+	spin_unlock_bh(&tc6->tx_skb_lock);
-+
-+	/* The TX timestamp completion interrupt is masked now. Time
-+	 * to release the queued skbs.
-+	 */
-+	if (ts_cfg->tx_type != HWTSTAMP_TX_ON)
-+		oa_tc6_cleanup_tx_tstamp_skbs(tc6);
-+out:
-+	return ret;
-+}
-+
-+/**
-+ * oa_tc6_hwtstamp_get - gets hardware timestamp config
-+ * @tc6: oa_tc6 struct.
-+ * @cfg: kernel copy of hardware timestamp config
-+ */
-+void oa_tc6_hwtstamp_get(struct oa_tc6 *tc6,
-+			 struct kernel_hwtstamp_config *cfg)
-+{
-+	hwtstamp_config_to_kernel(cfg, &tc6->ts_config);
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_hwtstamp_get);
-+
-+/**
-+ * oa_tc6_hwtstamp_set - sets hardware timestamp config
-+ * @tc6: oa_tc6 struct.
-+ * @cfg: kernel copy of hardware timestamp config
-+ *
-+ * Return: 0 on success otherwise failed.
-+ */
-+int oa_tc6_hwtstamp_set(struct oa_tc6 *tc6,
-+			struct kernel_hwtstamp_config *cfg)
-+{
-+	struct hwtstamp_config ts_cfg;
-+	int ret;
-+
-+	if (!netif_running(tc6->netdev))
-+		return -EIO;
-+
-+	/* Set only when STDCAP advertised the capability and the PHC
-+	 * registered, which is what ethtool -T reports.
-+	 */
-+	if (!tc6->ptp_clock)
-+		return -EOPNOTSUPP;
-+
-+	switch (cfg->tx_type) {
-+	case HWTSTAMP_TX_OFF:
-+	case HWTSTAMP_TX_ON:
-+		break;
-+	default:
-+		return -ERANGE;
-+	}
-+
-+	switch (cfg->rx_filter) {
-+	case HWTSTAMP_FILTER_NONE:
-+	case HWTSTAMP_FILTER_ALL:
-+	case HWTSTAMP_FILTER_SOME:
-+	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
-+	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
-+	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
-+	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
-+	case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
-+	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
-+	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
-+	case HWTSTAMP_FILTER_PTP_V2_L2_SYNC:
-+	case HWTSTAMP_FILTER_PTP_V2_L2_DELAY_REQ:
-+	case HWTSTAMP_FILTER_PTP_V2_EVENT:
-+	case HWTSTAMP_FILTER_PTP_V2_SYNC:
-+	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
-+	case HWTSTAMP_FILTER_NTP_ALL:
-+		break;
-+	default:
-+		return -ERANGE;
-+	}
-+
-+	hwtstamp_config_from_kernel(&ts_cfg, cfg);
-+
-+	/* Supports timestamping all traffic */
-+	if (cfg->rx_filter != HWTSTAMP_FILTER_NONE ||
-+	    cfg->tx_type == HWTSTAMP_TX_ON)
-+		ts_cfg.rx_filter = HWTSTAMP_FILTER_ALL;
-+
-+	ret = oa_tc6_set_hwtstamp_settings(tc6, &ts_cfg);
-+	if (ret)
-+		return ret;
-+
-+	/* Report what was programmed, not what was requested */
-+	cfg->rx_filter = ts_cfg.rx_filter;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_hwtstamp_set);
-+
-+/**
-+ * oa_tc6_get_ts_stats - Provides timestamping stats
-+ * @tc6: oa_tc6 struct.
-+ * @stats: ethtool data structure to fill in
-+ */
-+void oa_tc6_get_ts_stats(struct oa_tc6 *tc6,
-+			 struct ethtool_ts_stats *stats)
-+{
-+	stats->pkts = tc6->tx_hwtstamp_pkts;
-+	stats->err = tc6->tx_hwtstamp_err;
-+	stats->lost = tc6->tx_hwtstamp_lost;
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_get_ts_stats);
-+
-+/**
-+ * oa_tc6_get_ts_info - Provides timestamp info for ethtool
-+ * @tc6: oa_tc6 struct.
-+ * @info: ethtool timestamping info structure
-+ *
-+ * Return: 0 on success otherwise failed.
-+ */
-+int oa_tc6_get_ts_info(struct oa_tc6 *tc6,
-+		       struct kernel_ethtool_ts_info *info)
-+{
-+	if (!tc6->ptp_clock)
-+		return 0;
-+
-+	info->so_timestamping = SOF_TIMESTAMPING_RAW_HARDWARE |
-+				SOF_TIMESTAMPING_TX_HARDWARE |
-+				SOF_TIMESTAMPING_RX_HARDWARE;
-+	info->phc_index = ptp_clock_index(tc6->ptp_clock);
-+	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
-+	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
-+			   BIT(HWTSTAMP_FILTER_ALL);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(oa_tc6_get_ts_info);
-diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index 27f652d4920b..32c25b5e2aa3 100644
---- a/include/linux/oa_tc6.h
-+++ b/include/linux/oa_tc6.h
-@@ -7,13 +7,20 @@
-  * Author: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-  */
- 
-+#ifndef _LINUX_OA_TC6_H
-+#define _LINUX_OA_TC6_H
-+
- #include <linux/etherdevice.h>
- #include <linux/spi/spi.h>
-+#include <linux/ethtool.h>
-+#include <linux/phy.h>
-+#include <linux/ptp_clock_kernel.h>
- 
- /* OPEN Alliance TC6 registers */
- /* Standard Capabilities Register */
- #define OA_TC6_REG_STDCAP			0x0002
- #define OA_TC6_STDCAP_DIRECT_PHY_REG_ACCESS	BIT(8)
-+#define OA_TC6_STDCAP_FTSC_CAPABILITY		BIT(6)
- 
- /* Reset Control and Status Register */
- #define OA_TC6_REG_RESET			0x0003
-@@ -23,6 +30,8 @@
- #define OA_TC6_REG_CONFIG0			0x0004
- #define OA_TC6_CONFIG0_SYNC			BIT(15)
- #define OA_TC6_CONFIG0_ZARFE_ENABLE		BIT(12)
-+#define OA_TC6_CONFIG0_FTSE_ENABLE		BIT(7)
-+#define OA_TC6_CONFIG0_FTSS_64BIT_TSTAMP	BIT(6)
- #define OA_TC6_CONFIG0_PROTE			BIT(5)
- 
- /* Configuration Register #2 */
-@@ -30,6 +39,10 @@
- 
- /* Status Register #0 */
- #define OA_TC6_REG_STATUS0			0x0008
-+#define OA_TC6_STATUS0_TTSCAC			BIT(10)
-+#define OA_TC6_STATUS0_TTSCAB			BIT(9)
-+#define OA_TC6_STATUS0_TTSCAA			BIT(8)
-+#define OA_TC6_STATUS0_TTSCA_MASK		GENMASK(10, 8)
- #define OA_TC6_STATUS0_RESETC			BIT(6)	/* Reset Complete */
- #define OA_TC6_STATUS0_HEADER_ERROR		BIT(5)
- #define OA_TC6_STATUS0_LOSS_OF_FRAME_ERROR	BIT(4)
-@@ -43,6 +56,7 @@
- 
- /* Interrupt Mask Register #0 */
- #define OA_TC6_REG_INT_MASK0				0x000C
-+#define OA_TC6_INT_MASK0_TTSCA_MASK			GENMASK(10, 8)
- #define OA_TC6_INT_MASK0_HEADER_ERR_MASK		BIT(5)
- #define OA_TC6_INT_MASK0_LOSS_OF_FRAME_ERR_MASK		BIT(4)
- #define OA_TC6_INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK	BIT(3)
-@@ -93,3 +107,14 @@ int oa_tc6_mdiobus_read_c45(struct mii_bus *bus, int addr, int devnum,
- 			    int regnum);
- int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
- 			     int regnum, u16 val);
-+int oa_tc6_ptp_register(struct oa_tc6 *tc6, struct ptp_clock_info *info);
-+int oa_tc6_get_ts_info(struct oa_tc6 *tc6,
-+		       struct kernel_ethtool_ts_info *info);
-+void oa_tc6_hwtstamp_get(struct oa_tc6 *tc6,
-+			 struct kernel_hwtstamp_config *cfg);
-+void oa_tc6_get_ts_stats(struct oa_tc6 *tc6,
-+			 struct ethtool_ts_stats *stats);
-+int oa_tc6_hwtstamp_set(struct oa_tc6 *tc6,
-+			struct kernel_hwtstamp_config *cfg);
-+void oa_tc6_ptp_unregister(struct oa_tc6 *tc6);
-+#endif /* _LINUX_OA_TC6_H */
++ONSEMI S2500 10BASE-T1S MACPHY ETHERNET DRIVER
++M:	Selvamani Rajagopal <selvamani.rajagopal@onsemi.com>
++L:	netdev@vger.kernel.org
++S:	Supported
++F:	Documentation/devicetree/bindings/net/onnn,s2500.yaml
++
+ OP-TEE DRIVER
+ M:	Jens Wiklander <jenswi@kernel.org>
+ L:	op-tee@lists.trustedfirmware.org (moderated for non-subscribers)
 
 -- 
 2.43.0
