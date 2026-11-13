@@ -1,100 +1,139 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=209.85.208.49
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
-	t=1794596072;
-	b=BeWMz2x9AfQBF23qhaaSzrWCKqSWa8AWYiTSvx4/NFbB1eq+b73FjPdjErejAgEjD1e/
-	 RkDBfnOYHTQGUYYdgg4fiFqlh6NnYrV3bshQCGKTEms9WJofvn5AA5FU+T4K6341gEkaq
-	 tDpvOKrw26BjtuVjjw2Hvy2QXUoPQoWDM6TouGQxFSBJFOvw2HKscV4TbYhBHg3OExi32
-	 agOYQyALK+qqFId1T8F9EZ1jYbBcxvgvES8pPI1WzDcmGQ1AmB1yMsbtzHLuKPTF8nwrS
-	 TEee6UsX0jAfUW6JrkUnUjdFw2jpn1fpmQnZg2NazwN3XRRmRHuyB/WOz6bY01iBtfw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794596072;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=7R1hXZXnbTwKM70quTRieOgRc26BuTodcH8VZYBkreU=;
-	b=ypIjnpH0rT1t7zOkYhKApeGpunltvmaMLdOUxlOH8nIcigWMhlDGZggj57cyWzsgaZCB
-	 RLFQVBRb+N6eeuWSQq/DmsB2UaVDcDmEBYGy8/65/Tg+AmsHdJa9eblcI3GjIAVj1/tUF
-	 m1W2zRGDGidMXkrx9nV7PwiVAcTitgrrZMWy3VDe2Txk/3pia43tUzhkjr1H++NiDeniL
-	 QTj5dIyuXhysioSMZ2GD7tcW6ebXrPJMI6fj+M/gFv5IUUjtqyGSc79XgoaHyLjDijS4r
-	 Y3YhJEWcENsPcJ/I3x3GG+e6SRGhZrV3gaKvgZEjrqBxXGnircpAc4NK/IGk4nj5B0w==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=google.com;
-	spf=pass smtp.mailfrom=google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eisEEVVM;
-	arc=fail smtp.remote-ip=209.85.208.49
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.168.131
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794596084;
+	b=Y/jqdMrfKOpgaWInaU9Tq9lSXi7FvZCB1jp+FV8OhpEmo9g6u7tJrZ//qw+wUcCspM4p
+	 lX7le0yx6c2+LbFPyBzVf+Xd7V4s1JhtPt3V6eb3bURR3pibUW+1MUZkIgbRNlYNlrUe5
+	 1xj1OyZaXDzspoTJ1ds/GFx5z4iPeqmjw9I7UDofOhDd8vtWMAvhtFi8i/ls6kTgSb96g
+	 Aai1Pb2c/CRrtnVWDF2oYoUnW4CGrLomIo+D9Ta7TZlpzSiQsEdzcKlwuOpAdrCNrjCZD
+	 jzhVEa6b+UCVTmvA/GURuG7QgUH95ejkOmG5t0PqzEQlcc9zakmsStVGAPs7GgU+bmQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794596084;
+	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
+	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
+	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-Virus-Version:
+	 X-Proofpoint-Spam-Details;
+	bh=sFBq9fRHwG6vJeIthGk0I4jMp83as5rl6WW7bRc8g/s=;
+	b=vUI5wPs5vCqEoIiBlZ3nWiOyXXoyBravo3H+3Bh0rcSLSO4dRpXTHFsQkOX5rxbumXtY
+	 rTKaUdzDv5SnzaAeJyyXmG8PWIqRiXNwo1EHo+vQeJplBcLZp34igvRqI6Ta9vdfGp0nI
+	 A4dTmTAwUIinUksd3bbvo99JORsPCMhMpu0KgEinI6N+EtDbZSq5tI6XYHMPYu6S3cZOh
+	 GLf3K6lttL8B/PamyPWgwZdSBdpkRULs5YRccyyr9y0Uvz4MdH0esBM4UQyw662Z+27JP
+	 qb9/XMNaLa4doLxgiXlMqPO5r1qSb1+69c9Ge2wKwUj90O6EOY1r9Zu+LoGm+HpIqFA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=oss.qualcomm.com;
+	spf=pass smtp.mailfrom=oss.qualcomm.com;
+	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=fURUUT0X;
+	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Xr7eWkSP;
+	arc=none smtp.remote-ip=205.220.168.131
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C55B606A881
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:54:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0C55B606A881
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E411C606B34F
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:54:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E411C606B34F
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=eisEEVVM
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6b791a4b732so643a12.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:54:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794596070; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MikqRGoN4X67L9CSz09steaHYfTYOZT/RRUvA7cgaW2IVq9bql9XHQzVezAc6KB6ib
-         mRsSLjPgCxJigQnAxtFGVCSvjjr2FECYt5BkWPs/0sffDcEEUYjGC+xdWxVzB2riFi7E
-         bcq9ENdqlHbk6ppMoMn21sPSrVbCJ5shT6dzlUGck5C/36DHQvrMhcYgfN30uWvicD+s
-         OrAU2kpH3Pnhkg6Q1ayJL4wiCoQPuHFz/qKIupy2muwvsk7x+SyaOdaM9PXWbczk6/AZ
-         2MiMEFPsw8XrllQZeAZW7GRJPwylNNbXnqvfeJKu1yGrVqL1gOI76uP4A9sTLv5k9kay
-         RTfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7R1hXZXnbTwKM70quTRieOgRc26BuTodcH8VZYBkreU=;
-        fh=EPc7AMc13GhD09rfxPBgeUsXDPl0QnTCW+j65aYONUo=;
-        b=aSNsvr/gJs8Nyz3Rfwx/2hxOEvHQx1AfAqeYDbpG0b6Ej9T7OqMqHNuGRVleNqLNmJ
-         QPs07CfzZBUJg+H/CNrLRu41lX3Mm1nWbtuRPksxcTcpjIJJZaCfE+bJihgl5zBnwDHI
-         OqlVhXHA9ho72qY+TExeUnZpraDtBk46c0AkpT/iEbIC3ft4CTGsitIQMS2LNQWYXLcq
-         r6QPV+1Tt74vYQvjU1LGS/evg4KgEB95jq0VijxCKXbqgsdVZuEk5m+DVvhodByP8lVz
-         WmiZ6usF46Cd970Zpn3FVRd2Xu5RoaZ8Gsj4MwS4XxhwZkzeaAymhWg5+06wnEVSkk0e
-         PA2Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=fURUUT0X;
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=Xr7eWkSP
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFR0dt074893
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:54:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=sFBq9fRHwG6
+	vJeIthGk0I4jMp83as5rl6WW7bRc8g/s=; b=fURUUT0XleKiE1C/Vux+befwt+/
+	dPsCZuHNQAShw3zqmbbPvnkWmciAMOJmcPPjX/Ypz5i8xGx5igroHMccVx+b153T
+	uIpQ7885fRsHjkWRYpoBVsESepqQQcYBw2TwRc+AQxQQzBPmipPxvz2QTuBrcg/U
+	fxflhQRaD9AWLlT0VkEyW8xmO8xeOm7gg0EuYPIqqxROMDx8T0RNRi2GJT+72Zzf
+	BRyN7VhBSQrTqV5w2Gbr8XxWutaOeSSTe4uIT86yAJhpD14B7KdLcqKJBttPaHBk
+	Nu7PpBDZGbwJEUEyWxW2WkQw3GHZ29zfEI+9kF/mEEv+0sfWto/DrsKryPg==
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hwu2mu45g-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:54:43 +0000 (GMT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-341eff9e381so1940918eec.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:54:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794596070; x=1795200870; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7R1hXZXnbTwKM70quTRieOgRc26BuTodcH8VZYBkreU=;
-        b=eisEEVVM8PCaj/Wxux+iAJmBT1k8bHNU35jNjvPdKn5A1HLZOH5LQ1EY3BcJG6WJSd
-         zQJHCca5ZSW272RR8ZqEnxlJfsFyhdrMZusl8QaA4c9HP+xH6avVjT/oc3dDYcv5aBdd
-         PX2GBBsx7FbYnffDffV/A8+nFo7zh1u9hueKZ40B79RrQ6sNRvq4xDRAPGyAjZ7E+JEP
-         dHQD/L3wxxC2OFdsSm7Io+s1kd8AHRbV0NiLsOq1oDTCRUWH6uhuvzES4DspcfRe/mVS
-         XpFUSQpVCuB+A/wp38W4sFKkIzI7LAQear5+guYAQ2EbAMwuzP8+PeaJ1TbqOdpbCAyr
-         OtWg==
+        d=oss.qualcomm.com; s=google; t=1794596083; x=1795200883; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sFBq9fRHwG6vJeIthGk0I4jMp83as5rl6WW7bRc8g/s=;
+        b=Xr7eWkSPhxjVpIYSoHEqbWrQpLZ3DxUBabQj491dqLflisNnb4VJb+8xE/GfYaI98E
+         JmHgrqvK1yeJXibJ323mWl9WpL9eeQB0re8BhQmdCZPs8z4EVQtsdlJsy+PHYmfjDMai
+         IsCl2GVWoJZm/xdEikQPKubSbcTxmMk0+VH70mK6DW0tvyRDVbs5+r5OZhlcNmDDXx7N
+         1eoYMZ+Cy6nXHqGzcnOkpIv/YOars2hflxYxh+ACr/+XnT9dzwv6lGwi7HENM4yHetTu
+         VQWVVQYwpYRIG4JvzUAhzQ0f2fUWgKIllXu46Ar3DIe8TnbmK+KCtEAyC8e7So+VJd5C
+         Sdyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794596070; x=1795200870;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7R1hXZXnbTwKM70quTRieOgRc26BuTodcH8VZYBkreU=;
-        b=S0NAh6ZZbGR9eDmUNLBWVuqmGuJQ4/z97iJ5mZ2wjF/GYV9zGep/pC/QBeEnB2jWwu
-         ocVKVpZHsB7uzpoOizf0xqv7fPJx+roDXjPJ/myGHIuQvm+1ok2c6v02qrE+QtLE/udF
-         Efod+gX4qYkeOpB5djSroSiums8OEoJFJBTzqjG0/+Jm1rE5z+uLLJm+YVx8kbhPz/wd
-         2LAiJbt5v5kVcUrZ7xmYn9XUoXcoP8hOPuuhMWWX60v8AZsq3xoFvBEVwoaxir7bixBz
-         r0bsbTWoMP5U9ERgREOCYbyYXn8Om8CT7rU7OSK7j0Ri6FjAC/KVYvyC2eHvZ6vU08hY
-         VIVw==
-X-Forwarded-Encrypted: i=1; AL+hErEGO4V4icGlD1Tggw+AHXahqppaBzAbL0uBsXZN5CHD4xt+BWZlLpI2X70+NmObxKLpu9JZe5g=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9inBtRAujY1zd03mXZphcGa6DNFjAc/u+tKuUdaKj1YKqfYS8K
-	XcpmYGvJUZFwsPyBecIFCNXtNGbVFDMcM5mdTmVgEg2reIekDLDghOiBklKuOSK3a9Zsd1nhkBr
-	UBDPF+IPrMdPMNRo5a3F6oZP97BvidkDu4dMh2BEA
-X-Gm-Gg: AYBFou2uzdWQnEwb9dzpUbIbXC13dNqlCNcHTcNLb12+WWxc27lEf03+d6uTRFCWewB
-	6xwIukfxi6qY8wrnjXzAdN7wNiIuvOsOA1uzhZ8LnzQlJ4lL5BT59lnuIrJAQ4BNn5j5NJd5CIp
-	YKVkSWoQrvQ3a0ucLUbTIVdBzUIf4n9eFhvaCkhMoWBNnug4K9D47pM/DuqSAURAX2bz7Qm9Pzj
-	PjJzreH+ytYdtLTB0B2RNQDKhU0KLjHcmvzO2w5kKgE8m8/4gg94ym8vFAPsouO6lS6fmYYgnJx
-	WKRurk06conAxF7ZWLZsOQ3XmIBqHXKaStdAFNuk8U45tjApDIxSrNBBA2K1UFB+geCehRbeIlP
-	lbfIUXpRB1+fg8jWblbKvvVkhFY19RF1PUh2ACYegZfjqc9QWziQv/0brno3ewZD173g=
-X-Received: by 2002:a05:6402:a512:20b0:6b5:76b2:5e18 with SMTP id
- 4fb4d7f45d1cf-6b7e0367708mr7837a12.2.1794596070008; Fri, 13 Nov 2026 10:54:30
- -0800 (PST)
+        d=1e100.net; s=20260707; t=1794596083; x=1795200883;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sFBq9fRHwG6vJeIthGk0I4jMp83as5rl6WW7bRc8g/s=;
+        b=QFAo6h5EV2ajvzgQY9kclXzwjbCoASlEAt56XxwwunhVBn3t41YPRyGTlo52Tidx9O
+         C9IHevBBTxJCY9fTP5FQd6Gx1bQ3Waju2KFb4HMPkEd0XcHNkuam+1WXvvh1Qbs08yMU
+         dQMX0wdp4j/p5gYdz6DctPbWyWURx3Oc0sivhAG7tzq+dl4xjV6SdVZTlhbFbd331U2H
+         V2XvYrn1mRa2Lf4aaxeU4/zkD1JvCrBVBG1iJOvrsHT8/csEhUVlNLBBCmajlV/YoaKN
+         rUCvGWLVM4F/QQQ3oymXm8rnMWXqHeOGFHVwLvfGUiWjmF5B5k+7RDW0CU3NoFWUJY16
+         l9Xw==
+X-Forwarded-Encrypted: i=1; AL+hErFeX7aICxyphw9oIUKGm5Rpz3g0qrFxalPuPehgdPU67ghDwhwXP+6PSG50IHwIRfdgGCuzNns=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9H9lWEie13c4DWRA77p6Vx9RRDjOtSpIuEKqKrP6Ka/Tj742+4
+	liEFifwIp9aHEaDi+gEVSrVz1v/VGVjv05IDw9pgeghs/lCB+1ByKUqIHbYYuQSvrW7sxZhky8n
+	Z32QyFOK547xabKQvGsWqNu4b6nGI4jNmpIhjJUQV+tUW6168kyTAb6XJs+0=
+X-Gm-Gg: AYBFou1nkJ2oUB975D6e9Yt1q8hedsE4/jB+cifMkk0t78OaiOfjHkrih92rFKHOgB7
+	qKRBcdAjBTKJN2RowAHVyPUexL/3CMJ5YqdCOTvf2vU1BIzFOfeWz8R3YAGST8e0zlQijpiVGbA
+	PZ3itno9c93iHQBC3GdG7AzDoIleIWOxGQ8nbNOQ46t3ORh43xaARaSjqesBNeEHRglZMJ+qkO9
+	/uqF7CgzJqPb/scH4bDPZjC3mpoLPmKDpbGdDqwnTJm0lTcfFcEdSm/maZF4YVVDCSZmt2f8YvC
+	naGAj4ChT/9C+EJIeJ7Kbpf3ooiGmikSQAa/fJuvhLgxG9wxwAVBwMHPrdrlhjKkLQZGHNLc6HJ
+	DEKPOAP/t3w/LQo8smqWGcGQDXlHdsTVEbmcTsS2RbOr1PEsSFyh6OOX2anbcisQsG99Spa5Dae
+	Q=
+X-Received: by 2002:a05:7300:c7c3:b0:377:ee18:c290 with SMTP id 5a478bee46e88-3796676b12amr2938736eec.21.1794596082061;
+        Fri, 13 Nov 2026 10:54:42 -0800 (PST)
+X-Received: by 2002:a05:7300:c7c3:b0:377:ee18:c290 with SMTP id 5a478bee46e88-3796676b12amr2938703eec.21.1794596081228;
+        Fri, 13 Nov 2026 10:54:41 -0800 (PST)
+Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-379563e6b6dsm15547667eec.21.2026.11.13.10.54.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2026 10:54:40 -0800 (PST)
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+To: Sumit Garg <sumit.garg@oss.qualcomm.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Rob Clark <robin.clark@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>, David Airlie <airlied@gmail.com>,
+        Simona Vetter <simona@ffwll.ch>,
+        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+        "Bryan O'Donoghue" <bod@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Jeff Johnson <jjohnson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Abel Vesa <abelvesa@kernel.org>, Sean Paul <sean@poorly.run>,
+        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-media@vger.kernel.org, netdev@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
+        linux-remoteproc@vger.kernel.org,
+        Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Subject: [PATCH v2 9/9] firmware: qcom: pas: remove qcom_pas_auth_and_reset()
+Date: Sat, 14 Nov 2026 00:20:09 +0530
+Message-ID: <20261113185009.157893-10-mukesh.ojha@oss.qualcomm.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261113185009.157893-1-mukesh.ojha@oss.qualcomm.com>
+References: <20261113185009.157893-1-mukesh.ojha@oss.qualcomm.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,64 +143,176 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261110102039.1002605-1-bjorn@kernel.org> <20261110102039.1002605-4-bjorn@kernel.org>
-In-Reply-To: <20261110102039.1002605-4-bjorn@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 13 Nov 2026 10:54:18 -0800
-X-Gm-Features: AclHuK8hJZjvI7zpL7vkOt-X_2SsoIeZHCGx6Ao6kGKYFChdzs729uK5-y6t5Js
-Message-ID: <CAHS8izMhFEMu+v4zAm6VqjU=Lz=vMn58Ft6HKya1L-uNY0hL-A@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 03/11] xdp: Copy buffers with restricted lifetime
-To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org, io-uring@vger.kernel.org, 
-	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi <bestswngs@gmail.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Stuart Clark <stuclar@meta.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: X9DfLBSoAH1XbvoB5A4qiUW0VYLm_wf_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX3A7YhN2amtiZ
+ Lgdeiqw+q0wb2BrxzGh1sdt+0s5hmOhbMarQu8C3xyoooKksjyPvOLKbJYjQP+A08aO72ARR+WU
+ qH8cZA6Z13075YMUmm612xCvRnNmotadVuYRgEnOvnnMKAQf0o7Ok1RgsnkgqircO16C3+742Xj
+ JmzUe901UHNlBJHqO+bGCLDjnsvgTLQ2o7DrGx7vZ2fHDb8ArIV88QfCy7SfGV2M3yPDyfyY9FY
+ FAWOE2AHxZlS+Ca9W9MAaw+Jt3uatp6EMcoQxfkBdSQP3iDr0bQCQDu3up+u8HfXOEEMYBln/l9
+ 8Qppzvi8ZNirpyUq32lba3mF+TSYo6+WmpMsODoS3EKw3HRUNcdzJlgkiwnfYCh9uuED1xIPtPm
+ 58SgUhH59/g8Idd5aCg3m4vNK+sDYZddTv3ls1KMDrC9uyJvZrjjJhZca13wIjcK+YyI1Z7ktmQ
+ STeXXLeOWeiPAHHVl6A==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX+hQGyX3eusBG
+ uwznOgjqll2oUVP7gIh4qlIAQclLD6rs/p7Y0U4XtzDGFlguaz7izsBUReScXQuriEM9MQTs+nG
+ Y6Nec0CCCMG5inZkedkVqgcRTHuZjsM=
+X-Authority-Analysis: v=2.4 cv=ddQVTnXe c=1 sm=1 tr=0 ts=6af75cf3 cx=c_pps
+ a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=EUspDBNiAAAA:8
+ a=sV0Ut8U-cAKt8JUqj3YA:9 a=bBxd6f-gb0O0v-kibOvt:22
+X-Proofpoint-GUID: X9DfLBSoAH1XbvoB5A4qiUW0VYLm_wf_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
+ definitions=2026-11-13_05,2026-11-11_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611130075
 
-On Tue, Nov 10, 2026 at 2:21=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kernel=
-.org> wrote:
->
-> UMEM stays mapped writable in userspace, and it has a fixed number of
-> chunks. The stack must not keep its chunks in an skb or an xdp_frame.
-> Mark the providers whose buffers the stack may keep with
-> MP_CAP_RETAIN, and copy packets of the others on XDP_PASS, on
-> conversion to a frame, and on redirects other than XSKMAP.
->
+All callers have been migrated to qcom_pas_prepare_and_auth_reset(),
+which additionally sets up a shmbridge over firmware memory before
+TrustZone authentication.  Remove the bare pas_id-only wrapper, its
+EXPORT_SYMBOL_GPL, the header declaration, the auth_and_reset ops slot
+from struct qcom_pas_ops and both backend implementations.
 
-I'm not understanding why that needs special handling. Devmem stays
-mapped and writeable and did not need MP_CAP_RETAIN. Also, today the
-stack can keep any pp page in the socket's receive queue for arbitrary
-time without _RETAIN. I'm espcially confused you're not adding _RETAIN
-as a cap to existing providers, but their netmems can be retained.
+The internal helper functions (__qcom_scm_pas_auth_and_reset,
+__qcom_pas_tee_auth_and_reset) remain as they are called directly by
+their respective prepare_and_auth_reset implementations.
 
-> The head chunk is writable by userspace, so it cannot hold
-> skb_shared_info, and virt_to_netmem() cannot find a net_iov head.
-> Drivers pass kernel memory for both to xdp_init_buff_netmem().
->
-> A static key keeps the check off while no such page pool exists. A
-> frame copy is linear, so a multi-buffer packet of such a provider
-> cannot go to a device or CPU map.
->
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+---
+ drivers/firmware/qcom/qcom_pas.c       | 16 ----------------
+ drivers/firmware/qcom/qcom_pas.h       |  3 ---
+ drivers/firmware/qcom/qcom_pas_tee.c   |  6 ------
+ drivers/firmware/qcom/qcom_scm.c       |  7 +++----
+ include/linux/firmware/qcom/qcom_pas.h |  1 -
+ 5 files changed, 3 insertions(+), 30 deletions(-)
 
-Did this actually improve perf? I recall that when I benchmarked the
-performance improvement, it was questionable.
+diff --git a/drivers/firmware/qcom/qcom_pas.c b/drivers/firmware/qcom/qcom_pas.c
+index fdf62003fbf1..08bf3a8d3bf6 100644
+--- a/drivers/firmware/qcom/qcom_pas.c
++++ b/drivers/firmware/qcom/qcom_pas.c
+@@ -184,22 +184,6 @@ struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
+ }
+ EXPORT_SYMBOL_GPL(qcom_pas_get_rsc_table);
+ 
+-/**
+- * qcom_pas_auth_and_reset() - Authenticate the given peripheral firmware
+- *			       and reset the remote processor
+- * @pas_id:	peripheral authentication service id
+- *
+- * Return: 0 on success.
+- */
+-int qcom_pas_auth_and_reset(u32 pas_id)
+-{
+-	if (!ops_ptr)
+-		return -ENODEV;
+-
+-	return ops_ptr->auth_and_reset(ops_ptr->dev, pas_id);
+-}
+-EXPORT_SYMBOL_GPL(qcom_pas_auth_and_reset);
+-
+ /**
+  * qcom_pas_prepare_and_auth_reset() - Prepare, authenticate, and reset the
+  *				       remote processor
+diff --git a/drivers/firmware/qcom/qcom_pas.h b/drivers/firmware/qcom/qcom_pas.h
+index 8643e2760602..a296be2be8c0 100644
+--- a/drivers/firmware/qcom/qcom_pas.h
++++ b/drivers/firmware/qcom/qcom_pas.h
+@@ -18,8 +18,6 @@ struct device;
+  * @get_rsc_table:		Peripheral get resource table callback.
+  * @prepare_and_auth_reset:	Peripheral prepare firmware authentication and
+  *				reset callback.
+- * @auth_and_reset:		Peripheral firmware authentication and reset
+- *				callback.
+  * @set_remote_state:		Peripheral set remote state callback.
+  * @shutdown:			Peripheral shutdown callback.
+  * @metadata_release:		Image metadata release callback.
+@@ -37,7 +35,6 @@ struct qcom_pas_ops {
+ 			       size_t *output_rt_size);
+ 	int (*prepare_and_auth_reset)(struct device *dev,
+ 				      struct qcom_pas_context *ctx);
+-	int (*auth_and_reset)(struct device *dev, u32 pas_id);
+ 	int (*set_remote_state)(struct device *dev, u32 state, u32 pas_id);
+ 	int (*shutdown)(struct device *dev, u32 pas_id);
+ 	void (*metadata_release)(struct device *dev,
+diff --git a/drivers/firmware/qcom/qcom_pas_tee.c b/drivers/firmware/qcom/qcom_pas_tee.c
+index 1fca2712d791..525b8a02ae82 100644
+--- a/drivers/firmware/qcom/qcom_pas_tee.c
++++ b/drivers/firmware/qcom/qcom_pas_tee.c
+@@ -331,11 +331,6 @@ static int __qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id,
+ 	return ret;
+ }
+ 
+-static int qcom_pas_tee_auth_and_reset(struct device *dev, u32 pas_id)
+-{
+-	return __qcom_pas_tee_auth_and_reset(dev, pas_id, 0, 0);
+-}
+-
+ static int qcom_pas_tee_prepare_and_auth_reset(struct device *dev,
+ 					       struct qcom_pas_context *ctx)
+ {
+@@ -412,7 +407,6 @@ static struct qcom_pas_ops qcom_pas_ops_tee = {
+ 	.init_image		= qcom_pas_tee_init_image,
+ 	.mem_setup		= qcom_pas_tee_mem_setup,
+ 	.get_rsc_table		= qcom_pas_tee_get_rsc_table,
+-	.auth_and_reset		= qcom_pas_tee_auth_and_reset,
+ 	.prepare_and_auth_reset	= qcom_pas_tee_prepare_and_auth_reset,
+ 	.set_remote_state	= qcom_pas_tee_set_remote_state,
+ 	.shutdown		= qcom_pas_tee_shutdown,
+diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
+index 030e4ba90812..b0f96e751167 100644
+--- a/drivers/firmware/qcom/qcom_scm.c
++++ b/drivers/firmware/qcom/qcom_scm.c
+@@ -855,7 +855,7 @@ static void *qcom_scm_pas_get_rsc_table(struct device *dev,
+ 	return ret ? ERR_PTR(ret) : tbl_ptr;
+ }
+ 
+-static int qcom_scm_pas_auth_and_reset(struct device *dev, u32 pas_id)
++static int __qcom_scm_pas_auth_and_reset(struct device *dev, u32 pas_id)
+ {
+ 	int ret;
+ 	struct qcom_scm_desc desc = {
+@@ -896,7 +896,7 @@ static int qcom_scm_pas_prepare_and_auth_reset(struct device *dev,
+ 	 * memory region and then invokes a call to TrustZone to authenticate.
+ 	 */
+ 	if (!ctx->use_tzmem)
+-		return qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
++		return __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
+ 
+ 	/*
+ 	 * When Linux runs @ EL2 Linux must create the shmbridge itself and then
+@@ -906,7 +906,7 @@ static int qcom_scm_pas_prepare_and_auth_reset(struct device *dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
++	ret = __qcom_scm_pas_auth_and_reset(dev, ctx->pas_id);
+ 	qcom_tzmem_shm_bridge_delete(handle);
+ 
+ 	return ret;
+@@ -987,7 +987,6 @@ static struct qcom_pas_ops qcom_pas_ops_scm = {
+ 	.init_image		= qcom_scm_pas_init_image,
+ 	.mem_setup		= qcom_scm_pas_mem_setup,
+ 	.get_rsc_table		= qcom_scm_pas_get_rsc_table,
+-	.auth_and_reset		= qcom_scm_pas_auth_and_reset,
+ 	.prepare_and_auth_reset	= qcom_scm_pas_prepare_and_auth_reset,
+ 	.set_remote_state	= qcom_scm_pas_set_remote_state,
+ 	.shutdown		= qcom_scm_pas_shutdown,
+diff --git a/include/linux/firmware/qcom/qcom_pas.h b/include/linux/firmware/qcom/qcom_pas.h
+index 458075868bf5..53b8d9631f22 100644
+--- a/include/linux/firmware/qcom/qcom_pas.h
++++ b/include/linux/firmware/qcom/qcom_pas.h
+@@ -48,7 +48,6 @@ struct resource_table *qcom_pas_get_rsc_table(struct qcom_pas_context *ctx,
+ 					      void *input_rt, size_t input_rt_size,
+ 					      size_t *output_rt_size);
+ int qcom_pas_mem_setup(u32 pas_id, phys_addr_t addr, phys_addr_t size);
+-int qcom_pas_auth_and_reset(u32 pas_id);
+ int qcom_pas_prepare_and_auth_reset(struct qcom_pas_context *ctx);
+ int qcom_pas_set_remote_state(u32 state, u32 pas_id);
+ int qcom_pas_shutdown(u32 pas_id);
+-- 
+2.55.0
 
---=20
-Thanks,
-Mina
