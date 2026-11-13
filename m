@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794565320;
-	b=YS9wscmXn2tERKwXauFGoNre5hAt8hUvDvveYec85i+ogC5G08DA34rckkr6eUA8v5CA
-	 enFFox+Hfzh5nxg9eufGhPF+i2V6nLPDWo2rlnyEyjnRfq2vsodvp2x5836v/H+nDpBl2
-	 BNyPYSyqzhokzpmt0YipcPWRwL3/WiZqvVUB0qHq3WsFcyTocUXVibvPFB8RuFC8p4Cgb
-	 Og8zxpdgPYwGMONfWPwsWfyevwRFRjAMVZKbbQSp23fGOfJ8O0j/uadXkiLOHucd3Qbut
-	 W1+IODP6a7ltCEbQ1TLTaI8xXbv4QWLyUUlCWNPRRBDpU4p0chocPbJ+A0K485d8MyQ==
+	t=1794565321;
+	b=Ji2xlZOF7FBMJ402bvP17UH0dPAXqER7+tlZQhQrkgHNLyQMcfuXRpz4cMqMClwO7d6j
+	 qEmx+2r2+FntoRLdyK6G14o96RGyVLH15ryGUEIKO4Ho7n9ZHFgJGvne7Cv+336K7vHQf
+	 cbQTcX/i0IpW8n3HbAPX1RYf/WMOFOufgcKEOgw+uBOIBAf4cQuABCU3rSbsgRnw9CSxF
+	 RkzSaSx88lAAXkE4vQRw+XD7QY0xwDf3wGwgTefi75tmqQMpTdX/m5qwWuw6IUbfAA8Vn
+	 0vY2G9DGLh9sL8zJqoRZgPi0Blqbufa92SFlF+3WzHSbhzCFx4nvgFLWXDuJN4WrCMA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794565320;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794565321;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=zxzEdBeY63DTXC51lPS/dShr0mdq/ohbGMQhsyL/SBY=;
-	b=iij0GGY0yrUOygiA3y38rQTjzTPrCMvfYDJm7y96eELbqzOzms+HFXSJNAe6zVMO/rwC
-	 +QiF/TJes1H6RmN+kL+B9G8WwdJMqMP1EpH4zdtMl2tYsWAHJa+WgzZPIL7/H7ik/2Uq0
-	 O7Bl9/cyKZFANEEyDUkCDkDf+ceZ4wWz/QOv+gWJOKym99850jis5Zu4O5CInW/WBwXL1
-	 h0Ddgt5Siy2CZOns2d8yL+RWbJaYhZy/VeJjskDnQankMfJP5SXLyz1nKyEhqAr1vdQT3
-	 0lmmnO7Fyjl4hxZyMkFuyCJL2T2TUZF9exRbNXUJ1Zs9ToAWkRfZFC6pmFBpaYoWEOA==
+	bh=qsAv4W/a9CMihA8VWalhXUkWjd1Sp954ubrBgvkWZX0=;
+	b=Arq3BX2k2BDGMDtePghFtDyHU5mdbc0b2Y/qdnoaOol2J0IpT0OHcySUNNqDX+tblInT
+	 Y96x1lJvlZuzTseJ46QXpjNmYMeOJp5rSh7tia84Yzqjk6Ngf4Ns1naiFTo7PPjZjR9Wj
+	 sFw5CNfufClcWJCCLObbjf6x4iOXUjtSbW/nfQxD/mWZWha+q7Z1Qtb7uKKvuPOLSb9Cb
+	 wFpVCZMw+Den09nKuI3NK9z9XNPw/cNbCRG0h7y0p27ehiTJyvDwxi0ek2z8RuFfYfR4T
+	 0drMIu0SJjXlr5DCvjfQtQbmBjviGFrFzQdRoQRq1CClMP01lqGapQC2JqhyO0gNpjw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T6fAo8Pt;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qzqn3OtE;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31942606A31C;
-	Fri, 13 Nov 2026 10:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F150606A32E;
+	Fri, 13 Nov 2026 10:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T6fAo8Pt
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21421F000C7;
-	Fri, 13 Nov 2026 10:21:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qzqn3OtE
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566DC1F000C4;
+	Fri, 13 Nov 2026 10:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794565319;
-	bh=zxzEdBeY63DTXC51lPS/dShr0mdq/ohbGMQhsyL/SBY=;
+	s=k20260515; t=1794565321;
+	bh=qsAv4W/a9CMihA8VWalhXUkWjd1Sp954ubrBgvkWZX0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=T6fAo8PtK4rkJZfNv5ZKNLtl2rxvFu/Ljsju3+ow1D43oeqI53NF61ubm75dZBvem
-	 cQuGU8uBKmcXXV0Go7hMPN/TTI0yKsF9HFgs0LAGTNe3RKvePkl8oX2+BqOLGo/zFC
-	 Pe+ff7OD9I/1gYKeoN0Z6Xvc0GffgpNtCLZWr0ayQAQ5w1MmNOjcTcja0M93k9ITH9
-	 zpdGADVsZftv8pIK2MpKvD1JKhh4qxH2RzbqxwZTS6cGWw9w9061y6nZUyMJWzDhsR
-	 P8yzNVlJbms/3k3u4cEZQiLojbF6WgMSiMqwAyUDtLo+/4bwl+NqLhSGYqpy7gRh51
-	 aCW5WFiqEBxPg==
-Subject: Re: [PATCH net-next 1/3] i2c: xiic: allow platforms to require 32-bit
- register accesses
+	b=Qzqn3OtEuFB36mhbVip0jOD5GEo0AclBeDs32rCbWtuFNDvsAC+LMlXOBLboji0j4
+	 oqX2qjFDR4hHBbr+1L0QdmebkMk3qFavlEWG8H8xfDHCMYT5cnGfXvIc107XS2l7N+
+	 nL4xCGa9m7Vy8KC3FwGMVi20Mk4ngh5YBmXbE36boyvD897T0FNw9s67kazEVQ/9hT
+	 GMIFtZVh5oCgbTlwDYhf2+JtwisbjcxUg+167radi/2IvJcrYO4LVGEXpkd9mAnx/3
+	 QjsugTK7BqZBFHHiCQD4qJa88xnBnNOdRjk4KWWl3hcCwWIbI0TyLKwURVZSYey2Q2
+	 0GuXCj9xK+1Gg==
+Subject: Re: [PATCH net-next 2/3] i2c: xiic: add KUnit coverage for register
+ access modes
 From: netdev-bot+sashiko@kernel.org
 To: ahmadexp@gmail.com
 Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev, andi.shyti@kernel.org,
@@ -50,11 +50,11 @@ Cc: netdev@vger.kernel.org, vadim.fedorenko@linux.dev, andi.shyti@kernel.org,
  corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
  richardcochran@gmail.com, andrew+netdev@lunn.ch, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Fri, 13 Nov 2026 10:21:58 +0000
-Message-ID: <179456531820.2199510.7014507677375597007@kernel.org>
-In-Reply-To: <20261111041904.48916-2-ahmadexp@gmail.com>
-References: <20261111041904.48916-2-ahmadexp@gmail.com>
-X-sashiko-severity: Low
+Date: Fri, 13 Nov 2026 10:21:59 +0000
+Message-ID: <179456531993.2199510.13650241681573931424@kernel.org>
+In-Reply-To: <20261111041904.48916-3-ahmadexp@gmail.com>
+References: <20261111041904.48916-3-ahmadexp@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -67,63 +67,128 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] Commit "i2c: xiic: allow platforms to require 32-bit register
-  accesses" adds xiic_i2c_platform_data::force_32bit_access and the…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The new KUnit test xiic_register_access() in
+  drivers/i2c/busses/tests/i2c_xiic_kunit.c takes a kunit_kmalloc() RAM…
 
 --
 
-i2c: xiic: allow platforms to require 32-bit register accesses
+i2c: xiic: add KUnit coverage for register access modes
 
-This commit adds a force_32bit_access flag to xiic_i2c_platform_data.
-When the flag is set, xiic_setreg8(), xiic_getreg8() and xiic_setreg16()
-perform aligned 32-bit accesses in the detected endianness. The target is
-the LitePCIe bridge on the WiWi Time Card, which cannot handle subword
-MMIO accesses.
+This adds a KUnit suite that is included in the i2c-xiic.c translation
+unit. It drives the private xiic_setreg*() and xiic_getreg*() accessors
+against a kmalloc'd buffer that stands in for MMIO. It covers native and
+forced 32-bit accesses in both byte orders across 22 register offsets. The
+new I2C_XILINX_KUNIT_TEST symbol enables it and defaults to
+KUNIT_ALL_TESTS.
 
-> diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-> index ba560462d4513..d13cfb0127a20 100644
-> --- a/drivers/i2c/busses/i2c-xiic.c
-> +++ b/drivers/i2c/busses/i2c-xiic.c
+> diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+> index 275aaa7f35833..014281fa2be5c 100644
+> --- a/drivers/i2c/busses/Kconfig
+> +++ b/drivers/i2c/busses/Kconfig
+> @@ -1322,6 +1322,20 @@ config I2C_XILINX
+>  	  This driver can also be built as a module.  If so, the module
+>  	  will be called xilinx_i2c.
+>  
+> +config I2C_XILINX_KUNIT_TEST
+> +	bool "KUnit tests for Xilinx I2C register accesses" if !KUNIT_ALL_TESTS
+> +	depends on I2C_XILINX && KUNIT=y
+> +	default KUNIT_ALL_TESTS
+> +	help
+> +	  Test the Xilinx I2C driver's register accessors with both byte orders
+> +	  and with native-width or forced 32-bit accesses. KUnit is a kernel
+> +	  unit testing framework. These tests use memory-backed registers and
+> +	  do not require an I2C controller.
 
 [ ... ]
 
-> @@ -1480,6 +1498,8 @@ static int xiic_i2c_probe(struct platform_device *pdev)
->  		return irq;
->  
->  	pdata = dev_get_platdata(dev);
-> +	if (pdata)
-> +		i2c->force_32bit_access = pdata->force_32bit_access;
+> diff --git a/drivers/i2c/busses/tests/i2c_xiic_kunit.c b/drivers/i2c/busses/tests/i2c_xiic_kunit.c
+> new file mode 100644
+> index 0000000000000..f8df88ca65124
+> --- /dev/null
+> +++ b/drivers/i2c/busses/tests/i2c_xiic_kunit.c
+> @@ -0,0 +1,88 @@
 
-[Severity: Low]
-This isn't a bug, but nothing in the tree sets force_32bit_access at this
-commit. The ptp_ocp xiic tables and timberdale both leave it false, so the
-new paths in xiic_setreg8(), xiic_getreg8() and xiic_setreg16() can't be
-reached yet.
+[ ... ]
 
-The later patch in this series, "ptp: ocp: add WiWi Time Card production
-image support", adds the user in ptp_ocp_i2c_bus():
+> +	i2c = kunit_kzalloc(test, sizeof(*i2c), GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_NULL(test, i2c);
+> +	mem = kunit_kmalloc(test, 0x200, GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_NULL(test, mem);
+> +	/* Aligned RAM stands in for MMIO. No hardware is accessed. */
+> +	i2c->base = (void __force __iomem *)(mem + sizeof(u32));
 
-    if (bp->wiwi) {
-        wiwi_data = *(struct xiic_i2c_platform_data *)info->data;
-        wiwi_data.force_32bit_access = true;
-        data = &wiwi_data;
-    }
+[Severity: Medium]
+Is it safe to pass a kmalloc'd buffer to ioread*() and iowrite*() on every
+architecture that can build this test?
 
-That copy is then passed to platform_device_register_resndata(), so the
-flag has an in-tree user once the series is applied.
+This works where the MMIO accessors are plain loads and stores to the
+virtual address, as on the x86-64 setup the changelog says was tested.
 
-Could the commit message say that the user of this flag comes in that
-follow-up patch?
+However, I2C_XILINX_KUNIT_TEST only has "depends on I2C_XILINX && KUNIT=y"
+with "default KUNIT_ALL_TESTS". I2C_XILINX only needs HAS_IOMEM. That means
+the suite is built and run automatically on architectures where those
+accessors don't touch RAM.
 
->  
->  	/* hook up driver to tree */
->  	platform_set_drvdata(pdev, i2c);
+On sparc64, arch/sparc/include/asm/io_64.h implements readb()/readl()/
+writeb()/writel(), and __raw_readl()/__raw_writel() for the be variants,
+with lduba/lduwa/stba/stwa and ASI_PHYS_BYPASS_EC_E_L:
+
+    __asm__ __volatile__("lduwa\t[%1] %2, %0\t/* pci_readl */" ...
+
+That uses the slab virtual address as a physical address. Could this trap?
+Could it instead write 0xc0, 0x03ff, 0x12345678 and 0x89abcdef to an
+unrelated physical location?
+
+On s390 with CONFIG_PCI, __raw_readl() and friends map to zpci_read_u32()
+and the other zpci helpers. On the non-MIO path, zpci_load_fh() and
+zpci_store_fh() do:
+
+    struct zpci_iomap_entry *entry = &zpci_iomap_start[ZPCI_IDX(addr)];
+
+using bits from the fake address. They then issue a real PCI load or store
+with whatever function handle and BAR they find there. On the MIO path,
+PCI load/store instructions are issued against a RAM address.
+
+On UML with INDIRECT_IOMEM, the chain is KUNIT_UML_PCI -> UML_PCI ->
+UML_IOMEM_EMULATION -> INDIRECT_IOMEM. The default
+tools/testing/kunit/configs/arch_uml.config sets CONFIG_KUNIT_UML_PCI=y.
+For a slab address, get_area() in lib/logic_iomem.c hits:
+
+    if (WARN_ON((a & IOREMAP_MASK) != IOREMAP_BIAS))
+        return NULL;
+
+Nothing selects INDIRECT_IOMEM_FALLBACK. So the fallback path WARNs again,
+reads return ~0 and writes are dropped.
+
+Wouldn't that give two WARN splats per access, across all 4 parameters and
+22 offsets? It would also fail every expectation, and panic if
+panic_on_warn is set.
+
+These three statements don't hold on those architectures:
+
+  - the Kconfig help: "These tests use memory-backed registers and do not
+    require an I2C controller"
+  - the comment above: "No hardware is accessed."
+  - the changelog: "memory-backed registers instead of physical hardware"
+
+Should I2C_XILINX_KUNIT_TEST get an architecture restriction, for example
+excluding SPARC64, S390 and INDIRECT_IOMEM, or using an allow-list? Or
+could the test go through an indirection it can mock, rather than passing
+RAM to the MMIO accessors?
+
+> +	i2c->endianness = param->endianness;
+> +	i2c->force_32bit_access = param->force_32bit_access;
 
 [ ... ]
 
