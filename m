@@ -1,105 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794563806;
-	b=UQBgcEVS6E6ox66sh24pjlrQyrOxKV7XRNgeJviYgfyB3eLOBeLu82VBj7nTW0m94R7T
-	 mmoTyGRA6rMCN4763IhCbGzSca/PKG9h00VmgtPFLZ+9iE0x6etJFA+KXbGhcjf+WouRu
-	 Y8Fb0D1R9a5Wux83ecGCNFXX4Co0Umw3OUMwmyNkYTqMkuQKSW8CuYXooEBVSfqUREdqC
-	 XB58jEIEemBgzVQlgWkLwkmGw2TQWS6EXG2eH4H8HwcVMrncOd2LgoSDgglEFDoAVsnCC
-	 zyIVVqOhcIYYqzfO4uxz+IemJJ3xJR7m6echlxNobvQblHrBCmVM3jr1xfAtfQJa4WQ==
+	t=1794564013;
+	b=f3tTfGnmrXLfnggYgxmNZbgrEb0ix4PZ/bwZ7AZ5QOM6i0QDvAOk0dTEWTxek85NW9lN
+	 3hFYV+ERZxiu2lle25XWEf8b34xAB/lJ7dg1kjH19k5Gx0dkSwmSf7p/CPliVwbXb6nEd
+	 gKc/4WTLNRbPiA1S2NXiJU7yn6AmHAvRkXqXFXH3daeQLJ9AY0BZnsLw2KyQypDdLfzDk
+	 ZCULXvWXNl0uFV+4g01SWJgh11vBXfMmGKmIXJE8TlUFS2A3wEIoL1Iw7mXlx2HMRIZxU
+	 KzmlPbfr0ioQw1chZKH5hGEi5IM9QTx6XS2XXtSOZRG6v0B4JnOu/ipWIBHY2ha6s9g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794563806;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=kluHAf30lOQTvYGq+YH2c2fBsSTyc5d5qn0rYtZKUsw=;
-	b=VRPeU1o0bE8C80Q4xYVBUxe20GyZlIZQdySUaEpp/8eHBwqYRZ+5pN+LpgcMr7zcQj/T
-	 zoaGBS5fbz9Jg6xCsgGBzie3Dl8/5ywf2T4UGy3HzfVQtYWEqxNPgGYBxYSWBip5PdBbb
-	 XH4kEbr0aSf1X00f/H2DbFKLi/Tkk/vYXCUGRzX/ZQIMdPy/T355g2iBEkDV2xaoVFv8c
-	 jb1NlsX3UetfremB89QnjKYWXNH7JBD7WVtu8t2CINmFTu4QSrXFAkrE1BvtdAw5UP86t
-	 8RTnohDnpBFIgTGyqJy2XeQUz8iGl4ynS6JnmoWmUM2XG466LlSXGTGZSJovk4AOPZA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794564013;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=CZEQVZ6TVB8PXZyirm0oWvsQKQ+yV93wdSIBjZmPOVw=;
+	b=g7qzc+yTROi725US3HFRyDcq2IsgmyrGKRKgvXT/PnjCuUzxCH8vub0jEtyoeSdkUada
+	 3qwyCnCUpzO7GLX2qWgRXv4mUjqbkSCRCtf2+Hdxj+j2hZCF+PbMFmilSN5rDu4hQ/Yaf
+	 i23OMG4xsdZOyyYpr6kwAgvLqHeYCU3ZWj1rMy+aL2/EHWshUa+bzHy3sAs6THau9xOFw
+	 Rz8vKBpmtNA7AfHUN1LDd/7tjTY3VgugR+MYnEYJW8HkP2JZFWolV4Syc8drU8b0a2x3h
+	 Wc2g8bGPaGeWH04Fr9opaBmRR4JM8MuP+fKCxwCpzBJlxa0KdkqvxJWkONrqVeMdgRA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p7wzYuMY;
-	arc=none smtp.remote-ip=209.85.128.49
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ioh3c7+L;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E497D606A333
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:56:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E497D606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1232606A337;
+	Fri, 13 Nov 2026 10:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p7wzYuMY
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso4011925e9.2
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:56:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794563804; x=1795168604; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kluHAf30lOQTvYGq+YH2c2fBsSTyc5d5qn0rYtZKUsw=;
-        b=p7wzYuMYn7brPyloBx7mav2Z9jHCXjOnldCsKhPHo8MSBai+ow1PAU0djODR5o38dJ
-         x74xWoL2nYvNOhHW9Ep9BJ4gEw733A/AWPy+Yx6UCXA5GcXMLP/kVyMoAxoEfkj3MX/l
-         sB6cKjkU48UH2zhF2ob95aKfByOQVKAENq7BF0jj8U2HAHyXqWrFNsitIBApShyesq34
-         P83vj6qH0eecVK7TXgVgZnhrZ1Rp0e8GNY+plEUZFK72hDhMSeHKiGGC+0aREJax8LEt
-         wSFCxlZ399jgRaACJZGG+NAHtDlL7KeKeUYpeO6c13pCDh+NCX288O21ifmemvFI0Vdn
-         RqIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794563804; x=1795168604;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kluHAf30lOQTvYGq+YH2c2fBsSTyc5d5qn0rYtZKUsw=;
-        b=0c5gSI6p1+zyKvdPOzj8LQoGfRg1y9nxyfeoPzv/4nK6W0oGw5By7XyINDd/iT98fv
-         q8E9hVOwnxfp+N9lRF3acNK5PipMy0Rb+BOzrQsp/cWHgU4GedmRMS0OawP0gXrX6OMK
-         HpQ/Qy+hogZodTMQG0vpXVaetb9VAXguU8u9feiTcgx8+O3OoA/JXT2mQPas9TBWPNOe
-         67EVJrWrSdgbqyKhOASxy17SkKf2lhmWMlmedYZXtmpHLzncot6m2xb4KnXV0dOT7hKB
-         a/HTsMSjwSyPKgPmgBhBURdbOQY+o54ON8xxgzonHdt5SRPX7HfPlwFR9ECEB/7aCs6m
-         gTBQ==
-X-Forwarded-Encrypted: i=1; AL+hErFBvUClxBP1Pma7lMbGfKchMkeCTBmwTk+Pu0ymNh9SU/bqVB40pOJJKUgSsjGDVNMWZcH9q40=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8Bly2M3iI/M0DtuBA2QNEf3mi+eP+zJ0Ips3cJo0gqWZUYQeJE
-	hqwuay1Cq+GgcuuiML4P5eX6FrKeIhNu2T0Yajlg2haSEdlbYs8uKbAv
-X-Gm-Gg: AYBFou2Xt/UDQ3W7+EOAlBQ6ascUHxkFcCPCSsh6hBQONKbuEu2gKpw7mLfYmte3nlw
-	fUThEROjT2eJaCfs/xLkRf4QkmCa7ix2Ca8Q9/Wk/jKl6PWNQmnnzoaEl4nwVBUVRzmLse2HcGn
-	tnFIzfk/yXktlG4X67oyU2rJaYSjLiWdztCgKeMI6KsbKfMZrX9n+eiH3T3svPkQnUsb1zqhOAA
-	6vxgMVSGasppv+jLstK1fOajlkz7H0yE00OWNmevsqsNDpRTGhCdDHG9O1VR4vMuUzCByVVKN3R
-	Ye83tIIR+dJN69FxteyEH62ShCfNXYcgbPEhq2H10heeL2zCZnje1bX5nCKwUWMZT0AMk/+MQ70
-	wXcT1foxEHHeOpMFwaDAO6m5+25vHw/E6XDBUoQKIOvqqpFHbF12wZHAGA7s3BEIemRhHiMo3Sc
-	DXtkjXylXa/2e0de4Y2JQCJEuAnFp0ccnt+h1/C1v9HE8QmHqWYwYTxuqMxNcyDQ8mdlqQlw2Tj
-	vcoFuKI0esMX6jFBqO9Ckxoj6+4Dttnx83EvApg2oJ1NZN8PdOYOl2LcXw+f/wpZsiU5PlS9ohX
-	qdEJMRwLMjcQaEVbFqTV4fD0Ov2BgexXH/FJz308PKl814Rd6o9F/l2qxP/5FOMRO0c/YvI2dJ/
-	1v1pgEtQFxemrGmtM2/nN2yEG71IE4jnXePkDsP/ip8LyGvaC7MP+JHWdGpbtIE2SKO+0NXA8uS
-	52ODb5F9PB3yclqAgs
-X-Received: by 2002:a05:600c:6286:b0:4a1:7e77:c382 with SMTP id 5b1f17b1804b1-4bb55a5d634mr37035575e9.5.1794563804181;
-        Fri, 13 Nov 2026 01:56:44 -0800 (PST)
-Received: from navid-pc ([2a01:4b00:a856:6220::a11])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb571d7e87sm28500015e9.3.2026.11.13.01.56.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 01:56:43 -0800 (PST)
-From: Navid Ghahremani <ghahramani.navid@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: linux-arm-kernel@lists.infradead.org,
-	arnd@arndb.de,
-	stefandoesinger@gmail.com,
-	krzk@kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ioh3c7+L
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA301F000C4;
+	Fri, 13 Nov 2026 10:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794564012;
+	bh=CZEQVZ6TVB8PXZyirm0oWvsQKQ+yV93wdSIBjZmPOVw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ioh3c7+Li4hBvBjUiWmNiOBUipdlGq9BrKY1Gllg/1pwHe4dGrEqLu5Eib4iKE9vs
+	 UA9832q26rizKLXxFqb3g3RKIQUGWCCTjt+/s+xFwcTjDEEg3KR9dCESBg3O3OPw6R
+	 C6ADhMfinEJvPopECOflU3BqH+WfjYGOqM3GKZ9Mb39gFdGTLUx+dYJljEcRcYp2hn
+	 5f8AW0yrwbSj1r832w81nTXfJfKBtgE24MDxl5w1cLa3mmbQUJYbPgU+Jo1lrJ18m2
+	 ghFcegLfOjleLF6tlNqaFnaN7YTQgvJceIomLGKtoE2Y6u2WKM19qo40jfINrRbA3E
+	 ynOw0pUK1sf8g==
+Date: Fri, 13 Nov 2026 10:00:07 +0000
+From: Simon Horman <horms@kernel.org>
+To: Xia Yan <yanxia@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev,
+	David Heidelberg <david@ixit.cz>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 16/24] net: phy: Add Sanechips ZX5201 PHY support
-Date: Fri, 13 Nov 2026 09:56:39 +0000
-Message-ID: <20261113095639.1667143-1-ghahramani.navid@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <95e7fc97-2bd1-4b68-a9ef-246302ed9ec7@lunn.ch>
-References: <20261014072109.1759502-1-ghahramani.navid@gmail.com> <20261014072109.1759502-17-ghahramani.navid@gmail.com> <788c9b01-473e-4c45-b6f0-b2ba054da8e9@lunn.ch> <20261113003655.3665572-1-ghahramani.navid@gmail.com> <95e7fc97-2bd1-4b68-a9ef-246302ed9ec7@lunn.ch>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Thierry Escande <thierry.escande@linux.intel.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Samuel Ortiz <sameo@rivosinc.com>, linux-kernel@vger.kernel.org,
+	yana06070@163.com
+Subject: Re: [PATCH net-next] NFC: digital: fix target leak after Type 1 Tag
+ discovery
+Message-ID: <20261113100007.GI18859@horms.kernel.org>
+References: <20261109031832.37642-1-yanxia@cmss.chinamobile.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -109,26 +64,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109031832.37642-1-yanxia@cmss.chinamobile.com>
 
-Hi Andrew,
+On Mon, Nov 09, 2026 at 03:18:32AM +0000, Xia Yan wrote:
+> digital_in_recv_sens_res() allocates a target for an NFC-A response.
+> For a Type 1 Tag, it calls digital_target_found() synchronously.
+> nfc_targets_found() copies the target into dev->targets.
+> 
+> On success, rc is zero and the callback skips kfree(target).
+> The original allocation is lost when the callback returns.
+> Each completed Type 1 Tag discovery leaks one struct nfc_target.
+> 
+> Free the target after digital_target_found() returns. Clear the pointer
+> to avoid freeing it again on the error path. Keep the target for other
+> tag types, whose discovery continues asynchronously.
+> 
+> Found during a code review of NFC-A target ownership.
+> 
+> Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
+> Signed-off-by: Xia Yan <yanxia@cmss.chinamobile.com>
+> ---
+>  net/nfc/digital_technology.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
+> index ae6487c10a25..2d52e390cc67 100644
+> --- a/net/nfc/digital_technology.c
+> +++ b/net/nfc/digital_technology.c
+> @@ -510,10 +510,13 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
+>  		goto exit;
+>  	}
+>  
+> -	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res))
+> +	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res)) {
+>  		rc = digital_target_found(ddev, target, NFC_PROTO_JEWEL);
+> -	else
+> +		kfree(target);
+> +		target = NULL;
+> +	} else {
+>  		rc = digital_in_send_sdd_req(ddev, target);
+> +	}
+>  
+>  exit:
+>  	dev_kfree_skb(resp);
 
-Andrew Lunn wrote:
-> https://www.sanechips.com.cn/en/Products/WiredEn/fixedNetworkTerminalEn/1558027080778723330.html
->
-> This says it is RGMII.
+Thanks Yan,
 
-Thanks for the links, that settles it. I will treat the link to the
-ZX5201 as RGMII.
+I agree this is a bug and that you patch correctly addresses it.
+However, I wonder if it would be cleaner to confine cleanup to
+the exit path, centralising the kfree logic.
 
-> So picking SERDES is probably causing some of this confusion. SERDES
-> implies there is a PCS, and the PCS is doing signalling for SGMII or
-> 1000BaseX. With RGMII, none of that exists. The registers might be
-> controlling clocks, or regulators etc.
+Something like this (compile tested only!):
 
-Makes sense. I will drop the SerDes name for those registers, work out
-what they really control and where the RGMII delays are set, before
-the networking patches go out again.
-
-Best regards,
-Navid
+diff --git a/net/nfc/digital_technology.c b/net/nfc/digital_technology.c
+index ae6487c10a25..94880172f016 100644
+--- a/net/nfc/digital_technology.c
++++ b/net/nfc/digital_technology.c
+@@ -483,6 +483,7 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
+ 				     struct sk_buff *resp)
+ {
+ 	struct nfc_target *target = NULL;
++	bool res_is_t1t = false;
+ 	int rc;
+ 
+ 	if (IS_ERR(resp)) {
+@@ -510,7 +511,8 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
+ 		goto exit;
+ 	}
+ 
+-	if (DIGITAL_SENS_RES_IS_T1T(target->sens_res))
++	res_is_t1t = DIGITAL_SENS_RES_IS_T1T(target->sens_res);
++	if (res_is_t1t)
+ 		rc = digital_target_found(ddev, target, NFC_PROTO_JEWEL);
+ 	else
+ 		rc = digital_in_send_sdd_req(ddev, target);
+@@ -518,10 +520,11 @@ static void digital_in_recv_sens_res(struct nfc_digital_dev *ddev, void *arg,
+ exit:
+ 	dev_kfree_skb(resp);
+ 
+-	if (rc) {
++	if (rc || res_is_t1t)
+ 		kfree(target);
++
++	if (rc)
+ 		digital_poll_next_tech(ddev);
+-	}
+ }
+ 
+ int digital_in_send_sens_req(struct nfc_digital_dev *ddev, u8 rf_tech)
