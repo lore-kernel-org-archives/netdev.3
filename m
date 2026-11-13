@@ -1,122 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794577796;
-	b=PWzTKe++Wt0uJSg9J9zQGF/zcQhDEGYAP7IIxmAqxXvwymkdN7VUWiPJZfJbEOJkY0Ce
-	 4be9G7IyTA0Nzd8bXOEJtOBqdm4iYlAKT1LVURXyChpY1/2kDZhM6HnINseGAw6Zr2rlE
-	 KSoe8ukzFebPh9yOsroKxzK0j9xM0h3XaCFc4HMSaMOL9tGYK1G78a8zJDao9w/yGSVMV
-	 N8OWAKD0zKqqZI3NMYms2bDzceUfQN0DQJbhGNeRUYapGrJIdk3prpl3E1lu12BxjNqv5
-	 MvW8TlmSQMP4wbiKS7XpGzrySN07YoFeFxpfw0/r7M7jEwxm9p86/vuP0gqGtqhNrww==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577796;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:From:In-Reply-To:References:MIME-Version:Date:
-	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
-	bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
-	b=d785xSFq207SWZjGB6WDr9A2AHv+V+5fAMF3buVrMukVBFUztp5CrxsErBUoB1p8rE2J
-	 UrOxFlF2M8KA16kkOm3Zvj8xXwspwrrP8ItYqhPEwpzNBLJhI+9H68txgmfckUUV6rtKV
-	 6qi+uJouh/SXvuXGOnVtYXGiTsKn7hWKgvuS5It13gpZfB0IEWqXh6QzVJyUuJWwTShH7
-	 QFhN6O72mB/73kzMq1c05zBX9mtNoB6Nx9cFkJNldwUM1T3QPs4v3C4ELV9aPlLBKJAHB
-	 leBDXNbMPu1IwxRM6EJyH6m0ApjfRw5Ycc8be2AS8abaizDITHrFVatJlIDdwczHj3A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dnr4bWaa;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Ga5oluTv;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=156.67.10.101
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794577877;
+	b=3o4YJdzKcKxKZOF0RMRO8oNCCyi3Y+e8yv2hosKyDhR8WGkL9/VNWSrQpYGJiQAoqSOs
+	 0GkH84sRVjuiCgoBU7+3g0D8M5caOPRDLpP6whqdH35RBEgzQLlvPw1C/WiNVVPk7TiAp
+	 w9TiuNfcVftqc2+ClykWpZsxoQL+A2kxS4HeccE6dgAByn6xXgCjq5cTq7Ueml7rGGEMX
+	 dinR0YUG+5c47ekupJperY4vTjfrjYN1eyhg9W2Xlzjw9lJ1/nG+yKr8RWsTEZ2nGGEpi
+	 gRlGxVGBhXX5Z+3LxGsEyQMCTerEZWNSuabFyhYhPqwHiJfD02y0UO+ea6jNoTfTomg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577877;
+	h=DMARC-Filter:DKIM-Signature:Received:Date:From:To:Cc:Subject:
+	 Message-ID:References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To;
+	bh=3tiE8wCVjWqKiSQHj9hDK/7ujfubXxT9LOiydm/3ZXE=;
+	b=Cz6J6B6iFoyyiWhyBjFoolZvaWe6vy1h+GNCtLLsKOGx04PS0nAwa6rDhL0Cb6vxTyY3
+	 2ht1RxThvSua5FSCRxbz4tLBA2xae2/kOjD+RvOAFJCagz490YGNrcM0AshfxUAeOsCPC
+	 4nZ+Sk/hYRhvb63zsRR8KTKVs4PXPGrc9kZzIHtsdps25/Mwou9U4FT/N5xR8scbUhr7w
+	 R7m8JlLH1spAr2wImhPf7dRW0XFNgeI2w+9Twm4PaNdjCJo52M/AbM5BfP6wKkvhM2ZFV
+	 Qq0oAUmqkHG2wtCXnhqJK0DSqLQ/5gyLT7e/s1N/L3rjpFB6cgRSRZ+LaOQsulMeRcA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=lunn.ch;
+	spf=pass smtp.mailfrom=lunn.ch;
+	dkim=pass header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KaGmI2fz;
+	arc=none smtp.remote-ip=156.67.10.101
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3647760A3834
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 13:49:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3647760A3834
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB94606B1A1;
+	Fri, 13 Nov 2026 13:51:17 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4EB94606B1A1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dnr4bWaa;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Ga5oluTv
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794577795;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
-	b=dnr4bWaah9/wySNrHe71UxG7yxYO1hP4OJsDO4UuONplGfOBRiaQICVPWXH0a5xAfClVPc
-	t+VpNg58eHK3YP5XWW59CAcUzV5E/GfH9p/c18EmHQRz6zpg7GqxOWWu1kW44oqkX5txvm
-	zu2Lk64sIPPATltWgXHym6Mxatxh5HU=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-i3984RHvNXyMYD7T9ww8qw-1; Fri, 13 Nov 2026 08:49:54 -0500
-X-MC-Unique: i3984RHvNXyMYD7T9ww8qw-1
-X-Mimecast-MFC-AGG-ID: i3984RHvNXyMYD7T9ww8qw_1794577793
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-91edde88d16so12636516d6.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:49:53 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794577793; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iyDmpS8kdk8x7QCyPbYrDAdRR9LvzlYMobjGflPFIElWUmoDNwcsVT9g9oAk5GL9+f
-         Se61z+W97QT4WqRFSbi9Iq0BXKsya95MsFRavTX5V0lCsOTap5YDv3eEIVTuBQ3owyb5
-         wsKZ/ye1UXOesq+smX85cLY+DKIgZKJ7jw6VoHlFycYCB+DrYv1doE/YUPlPi/gSi51u
-         ZzHt262EgWomL3kCCrTxO6q128HjPddNPmYBzvsRaoBwiIJceQV4xJeGcIdMM4fPF541
-         ZL8UmUxm225mMvRY2N/q0pOys+McTRFOO8pDtkjkF/MTdadk5ETDUIqg+kF7DRFLSiL4
-         ljMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
-        fh=lMRBbP+vfhtYMXscdNuOsvUHW+X1WMH1WohFm5ZPALI=;
-        b=oS21Kcd9EdW3MPg/jSuVsRi8hFnGELjFlUpa7m1HchXiSk/+R3UrdfE85LZ5EY4C7O
-         5V7ngerufidv8FHXDAaDcKcW9eOoBieXSx8a1sLUesAV6aQB8p3M7dVqLgbjHvFM6Wat
-         8LBAEipYmJzu2k9GT5/4VokHd/n+gKra+k85U++u5ktdxf59xuNrAA+dH3aiVPCtNf/f
-         y/9xDhxCzvmtM9fzpCAJ+K94cYyhavruxMM8pYOXwlAQIIPFDajMrTxF+eJHJA9qBrW5
-         L9zOtKqBTNx8ZbODQ30zRGn5NiCU8hW7IYoBx/ue5OHDrRv46tHxJyDoJXeHeK/lAwK3
-         mBiA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794577793; x=1795182593; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
-        b=Ga5oluTv2VoCAk4tJJMwd4DcHxnzZN8P5RMMfsYuwHSiMT40x247pqXYZppw40aUfp
-         AgXHj7O5P5EGzLh4fIFmrS2LDUH+QEQZYT3NfXESJ7+2AAzl/5iG4ssuum/lz5MnkbiY
-         FEWaupRQi3hJm3DKU1Rj2ZQVesMwID+ZlD3yg4Dcq13ucBIA2y5CuZZ0qDg+hag5pCQ2
-         rQ5GzjunzI61xrZyS6U/SOWzCL5dpAMnK6H42AAF/0so3HDc8I1e5CduBSEcu1Nj+iKT
-         Na7YqNXXzrX2iDdPop6PnLFczlm8s6Y4c3Y6Takf75DT2e9wYXuz0ZE7I3UrxJfbFVUJ
-         fD0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577793; x=1795182593;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
-        b=atu3VDFiM+41pS1xinYhS5QaWcuPcuscMpgREu/EfqqdB5eMR0wSPoQbYqcvBCp6FJ
-         X/IpmsAO29G3Y9obn/R3XwQ8gRBWOuOv3mr1AwdvPaR6ErcdpeOnXol71biWGI2h7n/w
-         EN+mCZjTJATWgVPcCl4tKTaSbttthy0UK43CJOP2h7YMWKSkCXdo5sXTNFX05s5F7PmV
-         jdmo66EerOnmNBgOz4BeYTQlWwXHp/WPqgTiIQv0DIyK+FRw2DhD//kQGn+rwfAtlr92
-         wO+Wo9f+YYw657XuqDVM6ISyauoJMrxonQ5uw6qj6rHV1d9SpZU2bPn4JT+n2RmPf0WK
-         jIHQ==
-X-Forwarded-Encrypted: i=1; AL+hErFIhccVSlUD4gD52uBvjC6MBfq/w94q3RMqrwszG2d8mVvfTKs9pyMJ8n2pddOP7P9qV+s8Tow=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9GaouEHFv7K78euPXrOxYZgnyqmpaDF7qrKlHEcifypGSzy1WF
-	osGP9fpQ35X4vl83am2uLTe5YnBQ8wngzF0lmYJAysUpSl6OMz9KueabPPDteYk1J1YJbLphBVb
-	82siY2q1w3QphI09B+KmravdMtGcj/EYRiaWK+3wT2lfcOyqyf20T+uTf0sApEG+fHLDtRuTy32
-	z2odGfRdofympzIbasjbaoA945KdfeJ6GD
-X-Gm-Gg: AYBFou29xRWI+I7DTgEUwKhIqeralInMGPED/PofDjVgsH0genL5XGmRKOyeiGdQbN8
-	kRrrFrTOvaD7XLK0q1G3i0iqxE2hrkqe4IYT9056Fw6lrF5G0ohFfyzrW2EGSpNRe6Mv6cAHaz1
-	DIHsATYcvfDKlAZ67h3YGLDWRSGiv1KVhNEEwvfXKDVrd5ampdWCl1mXs=
-X-Received: by 2002:a05:6214:85cd:20b0:91e:89d8:a330 with SMTP id 6a1803df08f44-91f241f6d2bmr27649276d6.25.1794577793134;
-        Fri, 13 Nov 2026 05:49:53 -0800 (PST)
-X-Received: by 2002:a05:6214:85cd:20b0:91e:89d8:a330 with SMTP id
- 6a1803df08f44-91f241f6d2bmr27648836d6.25.1794577792581; Fri, 13 Nov 2026
- 05:49:52 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 13 Nov 2026 07:49:50 -0600
-From: Sergio Lopez Pascual <slp@redhat.com>
-In-Reply-To: <20261113080506-mutt-send-email-mst@kernel.org>
-References: <20261113-vsock-dgram-support-v2-0-bacfc85b71ce@redhat.com> <20261113080506-mutt-send-email-mst@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256 header.s=20171124 header.b=KaGmI2fz
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=3tiE8wCVjWqKiSQHj9hDK/7ujfubXxT9LOiydm/3ZXE=; b=KaGmI2fzPhwM+U913Lq9k8ysvi
+	jljRrFge2AhRak87PzNhgHSnDOuVyVHrjIgbTRLu52GGseFhLFZ/Mr6sG3NfeKXdsMWuJDaV2wSDF
+	MS9UFsTqyZ2mV74HZVf4U4OwhSsMdy52Ko8yDV6R1oXz34gSh8l+fQC0ZEK6wLLGUPfY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xRrgA-00GHmY-AD; Fri, 13 Nov 2026 14:50:58 +0100
+Date: Fri, 13 Nov 2026 14:50:58 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Linkui Xiao <xiaolinkui@126.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, rosenp@gmail.com,
+	jacob.e.keller@intel.com, daniel.machon@microchip.com,
+	chunkeey@gmail.com, kees+treewide@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: Re: [PATCH net] net: ibm: emac: attach the fixed-link PHY with
+ of_phy_connect()
+Message-ID: <ef2eb733-4b94-4c2e-9165-0b324733a482@lunn.ch>
+References: <20261112075321.3903875-1-xiaolinkui@126.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -126,63 +66,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Date: Fri, 13 Nov 2026 07:49:50 -0600
-X-Gm-Features: AclHuK9yYj2AE7jCL2Q7aluEqsTHouql9M7zvOo0Tu9GOsA54iFCZqauW8Q06G4
-Message-ID: <CAAiTLFXvuHY=r8FPM7TFNTAO1oyco-brcc6YAc=YN432h87RSw@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 0/8] vsock: add datagram support to virtio and vhost
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Alexei Starovoitov <ast@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261112075321.3903875-1-xiaolinkui@126.com>
 
-"Michael S. Tsirkin" <mst@redhat.com> writes:
+On Thu, Nov 12, 2026 at 03:53:21PM +0800, Linkui Xiao wrote:
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> 
+> emac_init_phy() handles a "fixed-link" property by registering a fixed
+> PHY for the MAC's own OF node and then assigning net_device->phydev to
+> it by hand:
+> 
+> 	res = of_phy_register_fixed_link(np);
+> 	ndev->phydev = of_phy_find_device(np);
+> 	if (res || !ndev->phydev)
+> 		return res ? res : -EINVAL;
+> 	emac_adjust_link(dev->ndev);
+> 	put_device(&ndev->phydev->mdio.dev);
+> 
+> net_device->phydev is meant to be set by phy_attach_direct(), which is
+> what the of_phy_connect() helper reaches. Assigning it by hand skips
+> everything attach does: phydev->attached_dev stays NULL, no link change
+> handler is wired up, the PHY never enters the netdev's phy_link_topology,
+> and the put_device() drops the reference the driver just took, so the
+> phy_device is kept alive afterwards only by the fixed MDIO bus it is
+> registered on.
+> 
+> The missing topology entry is what prompted this. ethnl_req_get_phydev()
+> returns dev->phydev as-is when an ethtool netlink request carries no
+> phy-index, so ETHTOOL_MSG_PHY_GET on an EMAC port with a fixed-link finds
+> a phydev and then looks it up in a link_topo that was never allocated:
+> 
+> 	struct phy_link_topology *topo = reply_data->dev->link_topo;
+> 	pdn = xa_load(&topo->phys, phydev->phyindex);
+> 
+> which dereferences NULL in phy_prepare_data().
+> 
+> Every other phylib driver with fixed-link support registers the fixed PHY
+> and then passes the MAC's own OF node to of_phy_connect(): gianfar, fec,
+> davinci_emac and nixge all do it, and so does emac_dt_phy_connect() for
+> the phy-handle case. Do the same here. of_phy_connect() takes the attach
+> reference and drops the of_phy_find_device() one, so the explicit
+> put_device() goes away. emac_adjust_link() is still called once by hand
+> afterwards and the PHY state machine is still not started, because a
+> fixed link does not change. The rest of the driver already treats
+> dev->phy.address < 0 as "no PHY to poll" and never reaches
+> dev->phy.def->ops, so nothing else changes.
+> 
+> The hand assignment itself dates back to commit 08e39982ef64 ("net: emac:
+> fix fixed-link setup for the RTL8363SB switch"), but it only started
+> affecting the net_device when commit baab9de385a8 ("net: ibm: emac: use
+> netdev's phydev directly") moved the pointer from the driver private
+> dev->phy_dev into ndev->phydev, so that is the commit fixed here.
+> 
+> No in-tree DTS pairs "ibm,emac" with a "fixed-link" property, so this is
+> latent in mainline; it is out-of-tree users such as the Netgear WNDAP620
+> that hit it. There is no such hardware here, so the change is verified by
+> cross compilation and inspection only.
+> 
+> emac_remove() still does not call phy_disconnect(), which the phy-handle
+> path gets wrong today as well. That is left to a separate change.
 
-> On Fri, Nov 13, 2026 at 01:47:33PM +0100, Sergio Lopez wrote:
->> This RFC adds SOCK_DGRAM support to virtio-vsock and vhost-vsock through
->> the existing AF_VSOCK API. It is intended for guest and host services
->> that exchange independent requests, responses, or events and need message
->> boundaries and sender addresses without a stream connection or application
->> framing.
->>
->> VIRTIO_VSOCK_F_DGRAM gates virtio traffic in both directions. Each virtio
->> send carries zero to 64 KiB of payload in one VIRTIO_VSOCK_TYPE_DGRAM
->> packet. On the RX virtqueue, the device may split a datagram across
->> page-sized guest buffers.
->> START and EOM delimit the message; the guest reassembles at most 64
->> fragments and 64 KiB before delivering it to a socket.
->
-> where do these limits come from? how does peer know not to send more?
->
+This commit message is overly verbose and contains a lot of irrelevant
+information. That is typical of LMM generated commit messages.
 
-The 64 KiB limit comes from VIRTIO_VSOCK_MAX_PKT_BUF_SIZE. The number of
-fragments is a reasonable number to prevent the driver from putting too
-much strain on the device.
+Please try writing the commit message by hand. Its O.K. to write it in
+your first language and use a LLM to translate it to English.
 
-Both limits should be part of the spec. This is the relevant part from
-the draft I have put together so far:
+The commit message is about "Why?". And it is there to answer
+questions the reviewer might have. This last sentence about
+phy_disconnect() was one of the things i thought about while looking
+at the change, but because the commit messages was so long, i had
+given up reading it....
 
-+When VIRTIO_VSOCK_F_DGRAM is negotiated, each rx virtqueue buffer supplied
-+by the driver MUST have room for the header and at least 1024 payload bytes.
-+The driver MUST discard a received datagram packet whose \field{dst_cid}
-+differs from the current \field{guest_cid} configuration value.
-+The driver MUST reassemble consecutive fragments with matching address
-+fields and MUST NOT deliver a partial datagram. It MUST discard an orphaned
-+fragment, a fragment with an unsupported flag or operation, and any
-+incomplete datagram interrupted by a new START or an unrelated packet. It
-+MUST discard a datagram if its total length exceeds 65536 bytes or it has
-+more than 64 fragments.
+> Fixes: baab9de385a8 ("net: ibm: emac: use netdev's phydev directly")
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+> ---
+>  drivers/net/ethernet/ibm/emac/core.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ibm/emac/core.c b/drivers/net/ethernet/ibm/emac/core.c
+> index 640618c..6e8b711 100644
+> --- a/drivers/net/ethernet/ibm/emac/core.c
+> +++ b/drivers/net/ethernet/ibm/emac/core.c
+> @@ -2674,11 +2674,14 @@ static int emac_init_phy(struct emac_instance *dev)
+>  				return res;
+>  
+>  			res = of_phy_register_fixed_link(np);
+> -			ndev->phydev = of_phy_find_device(np);
+> -			if (res || !ndev->phydev)
+> -				return res ? res : -EINVAL;
+> -			emac_adjust_link(dev->ndev);
+> -			put_device(&ndev->phydev->mdio.dev);
+> +			if (res)
+> +				return res;
+> +
+> +			if (!of_phy_connect(ndev, np, &emac_adjust_link, 0,
+> +					    dev->phy_mode))
+> +				return -EINVAL;
+> +
+> +			emac_adjust_link(ndev);
 
-Thanks!
-Sergio.
+Why is emacs_adjust_link() still called?
 
+    Andrew
+
+---
+pw-bot: cr
