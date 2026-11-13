@@ -1,70 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.204.34.130
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794577392;
-	b=4eLyepQf4juKM/NLyYLZu+bIHynEbHhdbQ2qAw8XRVcUwZBMZ96fi/Cc50TbFU/gwkxB
-	 9IVsNxRDNznGBSqGMK9ZQWsb8Q3ZlZdcpILM8Kre4n+lQBkXNpZRC+ZSlRu1xB2rpapLr
-	 FJWsoHBogZsBxoczeQSSF37T7Jng29EiGCx/86WfW823I1pwcJUu6oZf/mqgnF1HpHIvD
-	 8Y8pEdFxRaKZ+xX40+cHzQZfXqQtGbVbJjhJPtt9N+wmW22OsXGiNA8K7rdVCYgaCDMy8
-	 qMLqQVEUCvCTnGPPhUL/KVpqZ+wTk32EIi6phrxfQpW8RsULvXPJpDsmZsSJ4M1qW3Q==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577392;
-	h=DMARC-Filter:DKIM-Signature:X-QQ-mid:X-QQ-Originating-IP:Received:
-	 X-QQ-SSF:X-QQ-GoodBg:X-BIZMAIL-ID:EX-QQ-RecipientCnt:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID:X-QQ-XMAILINFO:
-	 X-QQ-XMRINFO:X-QQ-RECHKSPAM;
-	bh=3kcrlVRBobTRT8jOtREfiBLM6vTtQc7X6ndLPnK4qOc=;
-	b=aaecWaCZiiuvsGMjvGcGY8Ejgyxcj7BjzH50sZRgXzyHt3s5zSIYUHACyn/Ew/JJp8yL
-	 5JvI3vWbmyKZCWPs1wekiTfDcNKqbW4SLbwDbeYaW1VGuC6oitik9h4W7FcviUZCNMU6l
-	 OMgU2aK5pcvvlanuoLXDZPFIjKinaImIaHASL3UqXmvkc+0bxQKrJwKbxnhwD4bKwgIFH
-	 UwCtCG2c52r5/QYRjlCu3OfCPJdxEOAaSf0a3aHLFzvQAeBqa2uW9zjWlzwZg4DvqDuBZ
-	 pnmvSPM8SmMLLvNOHKnHi/5WG1ohLzkwdT4FwYOeaeryQLGcFhtrvdGuWoLOrYdmwIw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=uniontech.com;
-	spf=pass smtp.mailfrom=uniontech.com;
-	dkim=pass header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=cKkX2C9T;
-	arc=none smtp.remote-ip=54.204.34.130
-Received: from smtpbguseast2.qq.com (smtpbguseast2.qq.com [54.204.34.130])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.177
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794577741;
+	b=Q+4H/kw+fCmIg6dLxVcXB63vAP9sL83ifPf8W39PMI8p7RgcldP7dBCyvkoQhnP6Pwng
+	 ocIr8q7xxJ8M45C59o+USzCxnPF5Fngr0moG3hvCrBREC4Bn1RLPYCiQAfTk08iXzcw2N
+	 CHbq7MnsJ3m/4yhNWr6SFAEOAbCSuPo1ostXRBCRBuo5RBmQfyJB2w4tRKIF2hTy+FDhW
+	 vEvffJAkZeeW08JwiSHLRQn0CF7AlaVFhDz//toEAmoxubHGd2U71OavDuWM3pV9/eg/X
+	 MSd1qfSxCJvxFb0KQEmHqHpfXpCg7VqLWaeZxQEReE3VZv80lVtWI8rLzyA5GNPxIwg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577741;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=1bhPViXt1pRD/+G0cozJg3X1gM1h4MG3wea7XTuXsrc=;
+	b=R52fuOLhIpw+comtT4BEOMrwP6XbKtwYCBPucQO+gl4yvnq7ZHg80VR5OUYJvs+WygJY
+	 dbdHMd5LTvM7TQIrCZbJCFmi2K/36Inv+LQa1X4HOw7YZeAmwc/X0RcwG3pQf65k6xykd
+	 gyjh1+dqBqQFHXttI6HBOZSA58PtPpKQ8fpKNkE2987LxzepRU7dZM5paH4XgtY2PCSwY
+	 uOjfVb2jCPBaX9hRY5r1oSeqh2SqXL/ZDV078/pww32LU1AqFaYho0XdjYSvVBPHBy1JO
+	 fYa691UELwn8GJMb8xKyvmGsAwHJ+tb6UEh46O8dHCzMwdXOq0za8hFDRfdYeXYcekQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IDaBJi6E;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.177
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69324606A327;
-	Fri, 13 Nov 2026 13:43:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 69324606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230B1606A336
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 13:49:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 230B1606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=uniontech.com header.i=@uniontech.com header.a=rsa-sha256 header.s=onoh2408 header.b=cKkX2C9T
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1794577330;
-	bh=3kcrlVRBobTRT8jOtREfiBLM6vTtQc7X6ndLPnK4qOc=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=cKkX2C9TU/v7CMDu8ugevsUTc5a31S7buh2ror1VZhNiorOX6FXSVjxpppf7JpIOI
-	 grypYAyhUtU72O4aTG+Qe2pGBRWf8GnC3TKYnMe7+QWAWcHXZp5rE9Kox9jMBi6UBD
-	 T7FwdYUsE4487kmxajUaoXmD2tJ4bBMkjvbMoxiw=
-X-QQ-mid: zesmtpgz8t1794577305t88a9c797
-X-QQ-Originating-IP: UpGU27M314SgLzhWg8rwr6TRitp95Zs5/+Vkkk4Vmrk=
-Received: from uniontech.com ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 13 Nov 2026 21:41:43 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 2692691757360946475
-EX-QQ-RecipientCnt: 10
-From: Yichong Chen <chenyichong@uniontech.com>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-wpan@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhan Jun <zhanjun@uniontech.com>,
-	syzbot+8a8482d4c33cc58babb4@syzkaller.appspotmail.com,
-	stable@vger.kernel.org,
-	Yichong Chen <chenyichong@uniontech.com>
-Subject: [PATCH net] ieee802154: hwsim: free PIB after hardware unregister
-Date: Fri, 13 Nov 2026 21:41:41 +0800
-Message-ID: <0D7C088B45E7283A+20261113134141.2626113-1-chenyichong@uniontech.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IDaBJi6E
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a0673d9bd2so1120872b3a.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:49:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794577739; cv=none;
+        d=google.com; s=arc-20260327;
+        b=P22ifpF4qV3m/CGbqoiCQUAHYEEChg2n1JkpJV8fmY29Ag1qEWSuZMHWVlP9kzyPbD
+         QjLiOcQvqah+uPhrTZkYK4fEsW8EeVvfUy32W4dmGfYqzGCO6MSQ2oZFe/e3nYZKOewE
+         5Rq5O9JAe5Mip4UdfsLaQSmnggruUznU7nz1JkRTyVCCw7ckJBBveyRgYuemy3VP2fi6
+         M3Uh83/vKpCtMhWgpXHoXgLnNdtpql6Grsr6Uhl4uYJfklgmWmitSnHEiG1+yjMV1hmY
+         ki9T3q+SjH4oOC//lieWqBE4+Xet7GABC9SVpX8acPu7pTU/gwBHmi+wkbw4aTARfshC
+         qVNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1bhPViXt1pRD/+G0cozJg3X1gM1h4MG3wea7XTuXsrc=;
+        fh=2gwJAY0GkT5IUI1X6Et2jXWJJQwj2Xi7H2HZBlq5Yvk=;
+        b=hQq7hs5AWnpxSe5PYbvsGhagdE53V8NIATfhDMc6WW+Hg5iBDfpbvJs+fsqk+IDOuv
+         skZq+nnWarVbzMEBppvXBzrl0r96nGUYs+z9vTfULAAz/GNBZiBPPYtXkS+EY4I+vlbb
+         9lelQ4XLvjXMXPFlYqtyqa0CkHWfPGIAGAtwJbM6vTXfHG1R1viOkiYHoDDRDPgQ2YWH
+         Gpe3MmoAflP5iCxnBsT5yV9fZBD1qsJ9+kH5GbS841Pfw+nYI5gP1KT0KBqZaz5lqPN9
+         fOiDlkLbzsvEaDGbBeMi7gNClKtZWxGvTeu9mwdS4YZ0zUkwjWaVe8OMbpngXa9KJbU8
+         r+2A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794577739; x=1795182539; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1bhPViXt1pRD/+G0cozJg3X1gM1h4MG3wea7XTuXsrc=;
+        b=IDaBJi6EnzYWBbfLMiIPr0Hr9fUbFucDOD5m0rjktHtv4g65mORdut5ERKbwL3+WdB
+         Ebh98AmvbnRMDB5UNnyQWh0hqd6x9Lv/vmnaDNCw0JqxFBUeoDpXKz4lTndlo/XHrvpi
+         N/I7ww+bA3R+GVpMMfkFGheCSAaZ/BG1iIfgs8r+xIG0umJ8Q2Mmh1VpTOBS07jjZqTz
+         nAJgyVzCIyaklyNxiek0OKHskIrA+FjsbNJgYwzHgxK7+Wl8x/c1WAVZPZpkcAVL+/sS
+         xZLCb4uuHJ40hxymUgOM3U1c328PfYaV0Nj9Q5mB0ZEffdzBeJ/uyt01pd2SwV5StXSr
+         l6xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794577739; x=1795182539;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1bhPViXt1pRD/+G0cozJg3X1gM1h4MG3wea7XTuXsrc=;
+        b=eeQoNcrZwoiX9PhXRpKicn8brkN3NNQF5MaCm9eGwGNMnI75/zN7OEPVM2kv6R4bso
+         SkmW1WodySUozqu7A9SHP9LyRHrgp+5Orqz72bEPWvYxFB/byedxtnegmkyzOgVjdlVn
+         WrxZlP/72JVF4VG7MjSWhWROpRdWlXwPexoBGUri9jhgfqOXHysH6yxNJpAOEB2ve180
+         t/N2SvUjAcaVyLfNzpOGDd+7spVhJgtZ4TxM+FCuQeY4wWNlOzLyNsmWeOHcmjblU9rP
+         buVd2DhSLw+HqDRzR+i/YtV8J55zuWSggfXlvYpXkdZLPbwbn23qabjAwFWbDELpWskB
+         hLGg==
+X-Forwarded-Encrypted: i=1; AL+hErGeMp2f7Fo0NpoVDc9i8K5Owvar3utDB/IaauWS5ajkz78512xTHPkCaSGQrss9tB6U6K/JLew=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/mOn3eulG+Vw1PmDVV1peQw3+jgTq8+6tlfMRbU5/b/FOs0o51
+	3OzIMPjyYyCvgve9n7I1Qlb6XGFSI4FhuKl0QFjYPawRxJGuD7ckPmP+N1c9KSyYpPQye6e3cDM
+	xxr/CD7xh8M84DYGjjiMXr6uaz7oNVJiUmW0tBrs=
+X-Gm-Gg: AYBFou08vtOlYcw4/y7G7fI0hA8ghpjqjSYb0n3oyYSJYm5oRw5YvVOAALz2eUcXjwM
+	051Zq3aerX6lEt5949Qn02KoMjOXsCxA3vct/m70MDezLrhsem0pkA5ivxxRbPPQ5+CLhDiZDBf
+	n9R5b643KwtO9rNReXtniP9s1kCYZsgJyPKD6odkc0lWOC8POIyEkXkwqsRtTaAhPkXqBdxbKkT
+	Hor4tk+A+Lu05Q8F0WEUwZdG/BcPuZfikJC42E5VB9v527XYHsp4i9PmujyqI7JoHtGS81ese8q
+	Osj+4KNGeoE1dwXG7dkLHOtz9ran4s28EJNPFEuowgX+nOImub4SLW3yFUKpNLM8Ubk+ldpZJOG
+	iyBKO6aWVuT8gvzliWRwa2381bhKyVRwnyZxPtWRpd4W79KNCcpTXmsD7v81eW+u93sXMNXM1OM
+	tfXN9JUmPkLXrq8xjxz/eQ94dXA5847v1jJQNPUITS9XAkALDs1L5ZYEPB
+X-Received: by 2002:a05:6a00:893:b0:8bb:1b05:dd39 with SMTP id
+ d2e1a72fcca58-8beb58bcc45mr2934303b3a.11.1794577739414; Fri, 13 Nov 2026
+ 05:48:59 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -74,76 +105,129 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: OE2B1K8X9uN6TKRJknmgrzQ8Ba+/H4Q/PDI3pM1HiENumoaa+39xeTTP
-	Tb3HtFJN/ArQZA0ll4i+R4WEyv+c6UCgukuAk8Df64MNbytdWPzGcQUPvBwDpNTJbt60dcU
-	III9jEPFMPRX8i4v12nzJVqD45Jm6Orcl/xkko1a7n4LgMWUZ4Lo8I0lLFbnNt/YVk3mE2O
-	s/Acj07aTdfSmSvG3PnJo0gCwzZqJYb3kvLqvzVq6lhh1lV3F/VvddXutOyyb329czZg2hF
-	DJN+mZ28V/r/5lPnfswBad/GsJj9zxcnIXDla9xjHkBe8UHngaXQqZCzRMzNLFMxo1kxMnw
-	5DvXDUV8/wm3LeY/dRlHENfPuafH4BnYpnhsZSl1crSvwbz+P8rxjqSeuH9VZDHQXBHxRXI
-	4btkLfsxiVv4a3P3EfLHFb7Kos/LoA2Z+vPqI0RnJNyryyYCTBD4TVtUA4XTsG0zFfe8hXo
-	G/H7/4CAdxbVNNuVfj5bAPztQwparvcMq3NVfF7dfOaojHQK+C5V5QjsFtZGL9vxlntESpn
-	k8aphZgvGTFzkkq71RzItV5JXWfd6hty1IydJzPxVKHp2hvfE6oS1lD5EdnSkxgFOuQDiZ2
-	PjqV4PJz/lcOr9yHen/GZ4I5zD33mbHggQXBceteF13bS5/s36CQ7W6xp5lNa0Kszq9xOOJ
-	M7ZQCTDq25Ytx1OLx2XToAe4+QGWq44ijSUKincPQNlaQ3eiur+XUR2gD57WSNNOiY4oPkC
-	B49fVqrwqChZcy5iKc5JMFpVHakdMIFinx1pWB1hmpc6uCkKuJ2iZ2wNUFSdyiyGGY5jjFv
-	xyoiHZSEjW5ZuQ3IW7C/AdJVixecrZSH6MQ+UqvaAXpu9+Pw6VNqYZdJojN83QUGOoaB4ok
-	3BdjWjnsDZsNpgRvGRkvFhspAuHMtqLDgoHSq+U+7jdLjRnADdjBTvWVcuDDDs1DC+Hunm7
-	As5Sa7Z7p+Xv+jZ2H/c8hZ39SIgaNwWPzlLChPBne9uzkasqL9XddpgboT9dlTMG8/GI0g+
-	8ay/4x0XWcpbNc/i1Kl7oxzTZKYU+VsOkFvDslHd+IixAL02kg0PNKb6PXLASpmUlLcSpET
-	hM5gWN1QmPCddPvaq90oic=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
+References: <20261112172149.27355-1-yves.bieri@theori.io>
+In-Reply-To: <20261112172149.27355-1-yves.bieri@theori.io>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 13 Nov 2026 08:48:47 -0500
+X-Gm-Features: AclHuK8PfN4ou0sIEU-hFGhRyxEEh94jLa5NJ3yVhQe-fdSo_K9CA5s6bPZ98fo
+Message-ID: <CADvbK_cetnuX7=VDEh9hE4db3BdYWr9es28jVorMXOQsTfrxGQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] sctp: do not free a new asoc peeled off while
+ sendmsg slept
+To: Yves Bieri <yves.bieri@theori.io>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Zhan Jun <zhanjun@uniontech.com>
+On Thu, Nov 12, 2026 at 12:21=E2=80=AFPM Yves Bieri <yves.bieri@theori.io> =
+wrote:
+>
+> When sctp_sendmsg() creates a new association and sending on it fails
+> with anything but -ESRCH, it frees the association. The send can
+> sleep in sctp_wait_for_sndbuf(), which releases the socket lock, and
+> meanwhile another thread can peel the new association off to a new
+> socket. The wait then returns -EPIPE, and sctp_sendmsg() frees an
+> association that now belongs to the peeled-off socket, without holding
+> that socket's lock.
+>
+> If the peeled-off socket frees the association first, e.g. on close(),
+> sctp_sendmsg() frees it a second time. Otherwise a syscall running
+> concurrently on the peeled-off socket can use it after sctp_sendmsg()
+> freed it. Both are reachable by an unprivileged user. The double free
+> on net with KASAN:
+>
+>   BUG: KASAN: double-free in sctp_tsnmap_free+0x5c/0x80
+>    sctp_association_free+0x1eb/0x750
+>    sctp_sendmsg+0x15ff/0x2020
+>   Freed by task 836:
+>    sctp_association_free+0x1eb/0x750
+>    sctp_primitive_ABORT+0x85/0xe0
+>    sctp_close+0x22a/0x8d0
+>
+> Commit dfcb9f4f99f1 ("sctp: deny peeloff operation on asocs with threads
+> sleeping on it") fixed this double free by denying the peeloff.
+> Commit cea0cc80a677 ("sctp: use the right sk after waking up from
+> wait_buf sleep") replaced that check, and commit a0ff660058b8 ("sctp:
+> return error if the asoc has been peeled off in sctp_wait_for_sndbuf")
+> reverted it to return -EPIPE, without restoring the check.
+>
+> Fix this by holding a reference on the new association while sending
+> on it, and by freeing it on error only if this socket still owns it.
+> asoc->base.sk only changes in sctp_sock_migrate(), which runs with this
+> socket locked, so the ownership check is stable. The reference keeps
+> the check safe if the new owner frees the association meanwhile.
+> Userspace still gets -EPIPE, and the association stays with the socket
+> it was peeled off to.
+>
+> This was found by Xint Code, an AI code review agent, and reproduced as
+> an unprivileged user on net with KASAN (trace above), without modifying
+> the kernel or using error injection. With this patch the sender gets
+> -EPIPE and the association keeps working on the peeled-off socket.
+> Without a peeloff, a failed send that created the association (EAGAIN,
+> EINTR) still frees it, and a peer ABORT while the sender sleeps still
+> frees it exactly once. The SCTP selftest sctp_vrf.sh passes. The
+> reproducer is available on request.
+>
+> Fixes: a0ff660058b8 ("sctp: return error if the asoc has been peeled off =
+in sctp_wait_for_sndbuf")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yves Bieri <yves.bieri@theori.io>
+> ---
+> v2:
+>   - move the hold to right after the association is created (Xin Long)
+> v1: https://lore.kernel.org/netdev/20261110224233.82977-1-yves.bieri@theo=
+ri.io/
+>
+> Tested on net at b71c101bbb98.
+>
+> The fix and this message were drafted with Claude, and reviewed and
+> tested by me.
+>
+>  net/sctp/socket.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> index b5a57f6..6ed184e 100644
+> --- a/net/sctp/socket.c
+> +++ b/net/sctp/socket.c
+> @@ -2063,6 +2063,11 @@ static int sctp_sendmsg(struct sock *sk, struct ms=
+ghdr *msg, size_t msg_len)
+>
+>                         asoc =3D transport->asoc;
+>                         new =3D true;
+> +                       /* sctp_sendmsg_to_asoc() may release the socket =
+lock,
+> +                        * and the new asoc can be peeled off meanwhile. =
+ Hold
+> +                        * it, and free it on error only if sk still owns=
+ it.
+> +                        */
+> +                       sctp_association_hold(asoc);
+>                 }
+>
+>                 if (!sctp_style(sk, TCP) && !(sflags & SCTP_ADDR_OVER))
+> @@ -2084,8 +2089,11 @@ static int sctp_sendmsg(struct sock *sk, struct ms=
+ghdr *msg, size_t msg_len)
+>
+>         /* Send msg to the asoc */
+>         err =3D sctp_sendmsg_to_asoc(asoc, msg, msg_len, transport, sinfo=
+);
+> -       if (err < 0 && err !=3D -ESRCH && new)
+> -               sctp_association_free(asoc);
+> +       if (new) {
+> +               if (err < 0 && err !=3D -ESRCH && asoc->base.sk =3D=3D sk=
+)
+> +                       sctp_association_free(asoc);
+> +               sctp_association_put(asoc);
+> +       }
+>
+>  out_unlock:
+>         release_sock(sk);
+>
+> base-commit: b71c101bbb9814d163c00234d43c41f0a17907d4
+> --
+> 2.43.0
 
-hwsim_del() queued the current PIB for RCU freeing before calling
-ieee802154_unregister_hw(). Unregistering the hardware closes its
-interfaces and aborts an in-progress scan; scan cleanup calls
-set_channel(), which replaces the same phy->pib and queues the old object
-for RCU freeing again. KASAN then reports an invalid free in
-hwsim_update_pib().
-
-Unregister the hardware first, then atomically detach the final PIB under
-pib_lock and queue only that current object for RCU freeing. This lets all
-driver callbacks finish before the PIB is reclaimed and avoids freeing a
-PIB that was already replaced during teardown.
-
-Reported-by: syzbot+8a8482d4c33cc58babb4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6af5f575.b350cda4.2b6a63.0000.GAE@google.com/T/
-Fixes: f25da51fdc38 ("ieee802154: hwsim: add replacement for fakelb")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhan Jun <zhanjun@uniontech.com>
-Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
----
- drivers/net/ieee802154/mac802154_hwsim.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ieee802154/mac802154_hwsim.c b/drivers/net/ieee802154/mac802154_hwsim.c
-index a9bd1555d2dc..a65ae2afb789 100644
---- a/drivers/net/ieee802154/mac802154_hwsim.c
-+++ b/drivers/net/ieee802154/mac802154_hwsim.c
-@@ -1008,12 +1008,16 @@ static void hwsim_del(struct hwsim_phy *phy)
- 		list_del_rcu(&e->list);
- 		hwsim_free_edge(e);
- 	}
--	pib = rcu_dereference(phy->pib);
- 	rcu_read_unlock();
- 
-+	ieee802154_unregister_hw(phy->hw);
-+
-+	spin_lock_bh(&phy->pib_lock);
-+	pib = rcu_replace_pointer(phy->pib, NULL,
-+				  lockdep_is_held(&phy->pib_lock));
-+	spin_unlock_bh(&phy->pib_lock);
- 	kfree_rcu(pib, rcu);
- 
--	ieee802154_unregister_hw(phy->hw);
- 	ieee802154_free_hw(phy->hw);
- }
- 
--- 
-2.51.0
-
+Acked-by: Xin Long <lucien.xin@gmail.com>
