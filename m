@@ -1,79 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794587931;
-	b=pazmFgvhk5wTh11JRm23JplpBCKDy7PRSAVyFdolQJthyI9yJtowKDrIekLGEgG8xP9i
-	 f4a2T+0TN2acpbtFuPwHKH2TPAnx19VbLNrL6ehl7CmwrEdRrnbwEiqSfZ8YmMtj1EVW5
-	 C26eGuKP/MhIwc5hwT308+MGDbQCY4WZpMDLOo016pMXB3yMJPtyfrKOb/71Veu+FG94j
-	 JvS3wq5fl97MxKxyA5BYmwZ7sZb1AVBYkH/ZDp/Nh1iWQVbD6dtOrlVKf5qlUnIk6rhCi
-	 9QBXicDlbLPQomHqOSYC1wa1b0RdQwo6L4Lv772si8qbHtvCTXegO40LiyAb0P9/h6A==
+	t=1794587973;
+	b=XHQoixl5gRdJroXjysA740unqm3duwCfZHXpT6bYKs9Bjtkzv3XsnYw94oT8oZctNkwO
+	 7r2wjdfIaQn3+kul83KJQbHWHnIXgN+GcA3Io/ZQbzVGB/PYi4lm1xzkPxBexvaWy0wPE
+	 3GVYK9wH8Jeb0QNPk/oIcWMXXE7Wt8Ij5SLITRJ+8sU3xsf9KdQ4I6nvmM6Ofs346FVS/
+	 +5z1nVMEOMLZ7SjliS9euKlZvQltmhB7T36FB0cuw51dfclZdqrIoeT4kxfSoiyg+m4wL
+	 RIHwi4IAWpigJkDWXm8MP06Rr8gOAScgJch7B08JYNLsvA40CXVc2EOMiz98nlCzyJw==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794587931;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=PQ5rr/hpZSQ/KPxkRa+9ZQKdPBroKd+jKyNTmfxT2cA=;
-	b=4JgmFG8ASiPjuWF/ZB2fXkN/KL/TRWg1qx3ktRchUaIYgIy876CZPLwsp5sO4AyhYcG/
-	 dpad0M4RItrBhICO9AxFTITTyegAYBCuNNmAlGbUfbdFfNnbDKTBFgo97hpS6bF/NRruT
-	 OTlasdYurS+Ag4+iwdhj53L8uhS0SLjGRstlEexx3EzsXOE6s6NQ35aCB9VB7OqjWL44z
-	 cgP3REGqkm5TFHAVrIKvsvYClVIIs1SAwBi41fPJsMVUi6OL00NOg4iyLVvsEn0EIiNGR
-	 zXGuEuqYDNxI5KDioOTlkJ3U8REEJWbqDf6uwOsoVGKX9Kszi3ju8AzhwbD1aiUZiUw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794587973;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=rw2+Wu07AzcSg0TC6g7lPJt693i+bJC0ptoRBW6zeXA=;
+	b=Y/ZayP2sbJbnRRQLYbvsEMdr3tsHcIP9+dhfycAqHwtK2NMD7AaiCEb8hJXjdKz+cmlJ
+	 wyReBDdabtt4bV0RXCsv8QpJqnMxaFOKkSSH3lpzUSFa+Xhqd2Lf/qDvp/ffu7J2ylXED
+	 /QryImVvJ5YqKWH/3F39jKTQy8hWucmBQ3aNDOSDBUSz6ncEjMjIaOkbxDCCIuvkmT4Ny
+	 +yxb3WoV67ZHCIidYdnY0SE6Mx2yKMsRicwA90DMbf0t8+gLP6h3aTz3ZNm21sG5BsLxu
+	 GJ/RL8RcI2c/e2FQbVhfEAS2CZy/qcpWJi1GtSNbnbKyer7eBwj3EhHEKfvUQAuDCSw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LDSS8HSJ;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6350E60A261A;
-	Fri, 13 Nov 2026 16:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LDSS8HSJ
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794587931;
-	b=Mm/RxHLaKXq/ZyPix7LkIIqcf9IOTlPeVjod1L+vrBKQrAmtQCwyChdK1geuJ/LrcOul
-	 2PqvoiHoAjor8HUeorfjObUruCA/fDgfEDpdeZ/hBp7cmrndwIEepw1Uo4gCzAGss2EwL
-	 Z4c9k9F+mK0paRb8hNogyLRaM9X5XwthrGgGR8cr2V5PF07wW5iEz8eTeI4cYjVNjirOj
-	 gs3Kih0YLquUJy9BR0yq9yjqlRCBaSWb8OWnqvTScmo5mNxY+18j6BccggFExuPF7VJDT
-	 jo7r0f80VGpdEM0n4fFNDsLGu5BJg5X/pc8yvWFf6On8eR+1w5tlWRiaEPdpKmugeMA==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794587931;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=PQ5rr/hpZSQ/KPxkRa+9ZQKdPBroKd+jKyNTmfxT2cA=;
-	b=aDcQDVZRGJ3/6TE8W5OprEy8RusYctwt4ZZU/FhjtzM2kMEVm4pTGlLEF3R8N183XBSZ
-	 n2Ttp5cZqiv6lWzQnKDe9jtXJfWhZGPdl1kRfDJPtAmE5Ey4YWW1vpPmfZN/wWL7UM63M
-	 KiUq4RcdZwUPw2GUtq3XzcRQ8f7tKQm8SMaTsv4P/ig6CAGZUnvgW+p173aEoTH/k79MI
-	 6JPY8AVQmUyHGoQqsTl+WPdbLISN4IJWWPozg8C2Ly12oWgbVUO36LQy6SIKGmTsThQs0
-	 lTDgFnAICdiQhs1JtdSv/Ci8v+7ph+4jEkWrtgWZG6+HFtOqHICYRzZdo4eP1nGcK9A==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PJxwPzei;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.52
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 079E91F000C9;
-	Fri, 13 Nov 2026 16:38:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794587931;
-	bh=PQ5rr/hpZSQ/KPxkRa+9ZQKdPBroKd+jKyNTmfxT2cA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=LDSS8HSJesTmjLCE9b2dIHrwzGhR/1WJNMOznt6TwisRESR59NzY+GOOK7xTLEhuF
-	 6Z7ct11xPCgbOmyOo0AUnDvMGY1Vcxo2VHApgxJP5NcXqGQsO6VUcGEiJGeQYEjY9R
-	 R7pmn6l+b4+63Z+8HFjJnKtsDSA/YEH/GwKhrmxIuwIeSSkhrSHZg3NixFK5LVqDkF
-	 LlFwwQsYcVJ0x4hvXPQsnURTD+CGZw2a7T3ikOqYLcmt7B+kTiybn2y1AoPRfkYTFi
-	 osaVy8ydqoimZmfOvy46OSDnVhi7h1BCRPkDvExDbYBiWm18loYLGn6y6OJolfCkGd
-	 xtoD3wWSNUjQg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id D5F52499A6;
-	Fri, 13 Nov 2026 16:38:48 +0000 (UTC)
-From: Arun Iyengar via B4 Relay <devnull+aiyengar1990.gmail.com@kernel.org>
-Date: Fri, 13 Nov 2026 16:38:52 +0000
-Subject: [PATCH 6/9] soc: rockchip: grf: Restore the RK3588 PHP StreamIDs
- after system suspend
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687A4606A8B5
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 16:39:33 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 687A4606A8B5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PJxwPzei
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b757029223so1792384a12.0
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:39:33 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794587972; cv=none;
+        d=google.com; s=arc-20260327;
+        b=m4Ucj78cJK1nW1TVyumG2oqhosE9LWrR47mDCOYgh/zjxx4H9Y4J3BqoFU0kl92bJ2
+         gCSuP5VoJE741rUSM/pKZLs8DZEZDFx/cx2OA901m9sh+IH/JnTwk0jEs5kedxQyxIvg
+         5raVomQyR815iO/mm2X8ImaObjdj59RXdRaoGCGe8eKl+Bo0yGyqiHRutDyPfzAfqW41
+         M6dhsBrzaT+guuIN/sQXVd7yN9xIicHtApL09bvYEZ30kBewwWlUWryMebt09JAwhcDm
+         5pQ5UWty3vGNymAt9Lss/eOAVu/3REelEWhRBScwozAVWlLkB/mPaAvDO2gXW0xN6fHF
+         LXrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rw2+Wu07AzcSg0TC6g7lPJt693i+bJC0ptoRBW6zeXA=;
+        fh=G8zx+hNr6rp3yhIroxRoucrIE0t2Rh/BzmaRK/LNP2s=;
+        b=cglrxrQsPA+XjQiQ3H+b3LFD8iNLvpj7Afp8yS6nVpbP2aRyIQAd+a6A7U1sn/m2Gy
+         BrabuRuuiGP2+BHDcDrAhp6Wop8nnhHgokxcwnRtcUx9uhOWBvn5yUiA51xmmvrtrcRh
+         o1qGvjcRkplLar08GLQgg6w+lh3XCu7zoXNHe25545ufg3CoY53MaYNoUcn8v+XdGpCR
+         y7iroWsPAMTNpYkVWg7ZjMADaPVHd7CPOtvSnJLvkbJgJXrb4CqvTibSYtCL7aHs/Y17
+         K1owGIdlq2NISLp37QvetS3U+VNgfZ83CAJRYgf4JMrS6MMrn3K1bO+ZSTncRtSblElc
+         Xgzw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794587972; x=1795192772; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rw2+Wu07AzcSg0TC6g7lPJt693i+bJC0ptoRBW6zeXA=;
+        b=PJxwPzeiqzZUHmNi4ZpZ3CE/irx8leO5P+PLZjT9cYIqt1Ihc6LYUfmTeLM9OHRujM
+         kiWqrg2HHxQbBnNW/0ZYloJ6IDoXIZ5b9R5QGqxqnzf2e3q8PoqIRymnhNLOpJphwcPY
+         ZYLi1TAawjgIbAZUINRghR/Z80Q7GkS4PrlIQOGUjx1UaZMFDVmzhTOpvEisrBM7yNt6
+         l4BqKOWLY7FoDYpD+O0m3K1cMG6r27O3NEhNdrPS6gBIYjxao0+YHpCbRdIDxxyllrgY
+         AazhY6bBo6qoiveyrTxbK1OnA/duerPVRxa5O83ugyxoBT1IhEUpiHRvebJRe+uTUqPZ
+         hXaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794587972; x=1795192772;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rw2+Wu07AzcSg0TC6g7lPJt693i+bJC0ptoRBW6zeXA=;
+        b=2v3noJSnjEdpCjq+5CaTdy62un/2HxkZsqSldAGgNhBirczemitnby7+xwT+6iM3xv
+         c9tcfGly9RQz6NSAiC/sMwlhdS4EAg1MPkQf6yKVA+qxZ/IRNxVyydOBZnKFOqTVd/wb
+         ixIonhXyPDgIOLT0VeBsmWAmjYIRlokc9Hqf/XhpfxDL5tiwj+7TvfyD16Vrv5wh59zr
+         CbKTlpsYulRkaZ9kpUaM0V4K7iqa7bYt9XZGUXTXRMlo1BvGt8DZoaQlPQ1H6DOYhKZD
+         8xYPRyrB7QaFbpylp6vS5X0Ll1KkNuVKAMd2f5Isu/oE81tLBc8rPbVWfy2R35yX+KUy
+         GA7Q==
+X-Forwarded-Encrypted: i=1; AL+hErFHjBRCV/z4Ebz3EWRdMl2xEyPIXVQ+4+7KRYly9UYKuGYdeneiImUFgV+eAci3tTpS/8bxo6Y=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9tepcqXb/V2EydWA7xcRfKvVTieCYZnsVUmqelIQvQcr7BmU/c
+	IUTIzMy9o0DSvWGmHkSKdIONo4msoxPpsnpBJhE2eS0HCxMZOIusF32SZi5NfkUfKXMTiXuLzAP
+	rVAn9yffcSIC94CUaU6jh575d4ZQsi/k=
+X-Gm-Gg: AYBFou2+p5hwqoeWY9IB0MUdSsqrtoUaMFUocLcis2GsRxqwPkPbGrWzUebZyrOPQDV
+	fCFN6by8ToubiWg5aanBzf759jKUkWeiAc8Qb22WKmNibLGLLCNxjxq+PLujmHZaIYyrLi1VxzD
+	RdpHg1jdIfqG/7QU4LF2nlrKHYh7Q6hw2xxF9YgbnRjSmjgQqmAytzzpOcEsCFVz0kGyYxwaV57
+	PwtyAP2ERoLJx8Sn7hJYAbwA36er0iq8uX9AAYC2uatzLruTZAEYGE2gasC/u9cJym5rr0jJJC+
+	MWAwjg/VM3YWTMT4XrYOWTRq/F4aOhlB12j64A0qcHSm7VF6kay1Rm9RuM/N4LqawB09soMMDH3
+	KywwakDNah0mqgNPgJ2MiZAFKwHr3KiK4rjsT2MOMAF5rPUORdXl3vDMLeyGi7wF12FztTg85l2
+	B0QAY9rhgDirRgcelFB9HVxxFpcGUk7zqKt/vMj2gnDajVVKecGbWzj50o0PTsCpsUdMqm/7/7C
+	dtI8P6MMnf6BonHmltNbyBVwdSWIgY=
+X-Received: by 2002:a05:6402:90a:b0:6b7:b872:27c0 with SMTP id
+ 4fb4d7f45d1cf-6b7c0c86ac7mr2641866a12.44.1794587971407; Fri, 13 Nov 2026
+ 08:39:31 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,173 +106,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-mmu600-php-v1-6-231196049a3b@gmail.com>
-References: <20261113-mmu600-php-v1-0-231196049a3b@gmail.com>
-In-Reply-To: <20261113-mmu600-php-v1-0-231196049a3b@gmail.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- David Wu <david.wu@rock-chips.com>, Damien Le Moal <dlemoal@kernel.org>, 
- Niklas Cassel <cassel@kernel.org>, Serge Semin <fancer.lancer@gmail.com>, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, 
- Pranjal Shrivastava <praan@google.com>, Will Deacon <will@kernel.org>, 
- Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, 
- Shawn Lin <shawn.lin@rock-chips.com>, 
- Sebastian Reichel <sebastian.reichel@collabora.com>, 
- Arun Iyengar <aiyengar1990@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794587927; l=4304;
- i=aiyengar1990@gmail.com; s=20261110; h=from:subject:message-id;
- bh=8DHxrdJD0UZC+IKdgFQ4M91V4d4tnm4LzFVvQpurqQ8=;
- b=GzdbBcBqkmweKHxzPMHYCQmzb/0EhrQfQeUy7omA/fOWzOpjrySHDiBSJZ5bKGW+RMYdB5mh4
- sVBH3JfCdxsDg4tUJW2JgSC3e8R+FVlidea/9CWZhPjofvxhrNIe8D/
-X-Developer-Key: i=aiyengar1990@gmail.com; a=ed25519;
- pk=zXpRgUTrhaFe6jLyPqbBy3ccfkj04w0g2690Wv3mg+0=
-X-Endpoint-Received: by B4 Relay for aiyengar1990@gmail.com/20261110 with
- auth_id=1480
-X-Original-From: Arun Iyengar <aiyengar1990@gmail.com>
-Reply-To: aiyengar1990@gmail.com
-Content-Transfer-Encoding: 7bit
+References: <20261113-submit-phy-mii-reset-v1-v1-0-02a55f352a91@gmail.com> <11acd5b1-3099-4e3f-9fdf-a3c5c6f098c4@lunn.ch>
+In-Reply-To: <11acd5b1-3099-4e3f-9fdf-a3c5c6f098c4@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Fri, 13 Nov 2026 09:39:17 -0700
+X-Gm-Features: AclHuK-0ytg4Lbmg2sk7INYSUK5YlLS26Oz4Ge_M8WOZ7bj0w_qDEbjGo4B5KuQ
+Message-ID: <CADvTj4oPugtaeAXPvjJ10nhfKGDWTKbtALfuyF1+wUsHu2e90A@mail.gmail.com>
+Subject: Re: [PATCH net 0/4] net: phy: restore driver state after userspace
+ MII resets
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Michael Chan <michael.chan@broadcom.com>, Hauke Mehrtens <hauke@hauke-m.de>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Arun Iyengar <aiyengar1990@gmail.com>
+On Fri, Nov 13, 2026 at 6:33=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Fri, Nov 13, 2026 at 01:48:39AM -0700, James Hilliard wrote:
+> > An MII ioctl reset needs to restore the PHY driver's configuration and
+> > software state before the PHY worker can access the device again.
+>
+> The MII ioctl is a footgun. If you use it for writing registers, don't
+> be surprised if bad things happen. Even reading registers can cause
+> bad side effects, like missed interrupts.
+>
+> The whole design is broken, there is no fixing it, so we don't try to
+> fix it.
 
-The PHP GRF is in PD_PHP, which firmware may power off in system
-suspend. The SMMU aborts a master whose StreamID was lost.
+Would it make sense to submit patches 1 and 2 as standalone fixes,
+separate from the reset recovery changes?
 
-Write the StreamIDs again from a syscore resume op, before devices
-resume. Register it only when the node has a clock, as the access hangs
-without it.
+The b44 patch removes a spinlock held across sleeping phylib/MDIO
+operations, including ordinary register reads. The write-error patch
+propagates MDIO failures and avoids updating cached settings or running
+follow-up operations after a failed write.
 
-Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
----
- drivers/soc/rockchip/grf.c | 70 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 68 insertions(+), 2 deletions(-)
+These fixes are independent of each other and neither adds reset
+recovery or attempts to make arbitrary register access safe.
 
-diff --git a/drivers/soc/rockchip/grf.c b/drivers/soc/rockchip/grf.c
-index 3f0f82a2119f..8f318ebc14e9 100644
---- a/drivers/soc/rockchip/grf.c
-+++ b/drivers/soc/rockchip/grf.c
-@@ -11,6 +11,8 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
-+#include <linux/slab.h>
-+#include <linux/syscore_ops.h>
- 
- 
- struct rockchip_grf_value {
-@@ -22,6 +24,14 @@ struct rockchip_grf_value {
- struct rockchip_grf_info {
- 	const struct rockchip_grf_value *values;
- 	int num_values;
-+	/* Rewrite the values on resume; such tables must not be __initconst */
-+	bool restore_on_resume;
-+};
-+
-+struct rockchip_grf_restore {
-+	struct syscore syscore;
-+	struct regmap *grf;
-+	const struct rockchip_grf_info *info;
- };
- 
- #define RK3036_GRF_SOC_CON0		0x140
-@@ -182,7 +192,7 @@ static const struct rockchip_grf_info rk3588_sysgrf __initconst = {
- #define RK3588_PHP_GRF_USB3OTG2_SID_AR	0x00c4
- #define RK3588_PHP_GRF_USB3OTG2_SID_AW	0x00cc
- 
--static const struct rockchip_grf_value rk3588_defaults_php_grf[] __initconst = {
-+static const struct rockchip_grf_value rk3588_defaults_php_grf[] = {
- 	{ "gmac0 write streamid", RK3588_PHP_GRF_GMAC0_SID_AW, 1 },
- 	{ "gmac0 read streamid", RK3588_PHP_GRF_GMAC0_SID_AR, 1 },
- 	{ "gmac1 write streamid", RK3588_PHP_GRF_GMAC1_SID_AW, 2 },
-@@ -197,9 +207,10 @@ static const struct rockchip_grf_value rk3588_defaults_php_grf[] __initconst = {
- 	{ "usb3otg2 read streamid", RK3588_PHP_GRF_USB3OTG2_SID_AR, 6 },
- };
- 
--static const struct rockchip_grf_info rk3588_phpgrf __initconst = {
-+static const struct rockchip_grf_info rk3588_phpgrf = {
- 	.values = rk3588_defaults_php_grf,
- 	.num_values = ARRAY_SIZE(rk3588_defaults_php_grf),
-+	.restore_on_resume = true,
- };
- 
- static const struct of_device_id rockchip_grf_dt_match[] __initconst = {
-@@ -246,6 +257,59 @@ static const struct of_device_id rockchip_grf_dt_match[] __initconst = {
- 	{ /* sentinel */ },
- };
- 
-+/* Syscore op: runs before the SMMU and its masters resume */
-+static void rockchip_grf_resume(void *data)
-+{
-+	struct rockchip_grf_restore *restore = data;
-+	const struct rockchip_grf_info *info = restore->info;
-+	unsigned int cur;
-+	int i, lost = 0;
-+
-+	for (i = 0; i < info->num_values; i++) {
-+		const struct rockchip_grf_value *val = &info->values[i];
-+
-+		if (!regmap_read(restore->grf, val->reg, &cur) && cur == val->val)
-+			continue;
-+
-+		lost++;
-+		if (regmap_write(restore->grf, val->reg, val->val))
-+			pr_err("%s: restoring %s in %#6x failed\n", __func__,
-+			       val->desc, val->reg);
-+	}
-+
-+	if (lost)
-+		pr_info("%s: restored %d of %d values lost in suspend\n",
-+			__func__, lost, info->num_values);
-+}
-+
-+static const struct syscore_ops rockchip_grf_syscore_ops = {
-+	.resume = rockchip_grf_resume,
-+};
-+
-+static void __init rockchip_grf_register_restore(struct device_node *np,
-+						 struct regmap *grf,
-+						 const struct rockchip_grf_info *info)
-+{
-+	struct rockchip_grf_restore *restore;
-+
-+	if (!IS_ENABLED(CONFIG_PM_SLEEP) || !info->restore_on_resume)
-+		return;
-+
-+	/* Without its bus clock the GRF is not accessible in syscore resume */
-+	if (!of_property_present(np, "clocks"))
-+		return;
-+
-+	restore = kzalloc_obj(*restore);
-+	if (!restore)
-+		return;
-+
-+	restore->grf = grf;
-+	restore->info = info;
-+	restore->syscore.ops = &rockchip_grf_syscore_ops;
-+	restore->syscore.data = restore;
-+	register_syscore(&restore->syscore);
-+}
-+
- static int __init rockchip_grf_init(void)
- {
- 	const struct rockchip_grf_info *grf_info;
-@@ -282,6 +346,8 @@ static int __init rockchip_grf_init(void)
- 				pr_err("%s: write to %#6x failed with %d\n",
- 					__func__, val->reg, ret);
- 		}
-+
-+		rockchip_grf_register_restore(np, grf, grf_info);
- 	}
- 
- 	return 0;
-
--- 
-2.55.0
-
-
+>
+> Sorry, but NACK.
+>
+>        Andrew
