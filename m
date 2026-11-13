@@ -1,54 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=81.19.149.119
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794603576;
-	b=a6FqfZsXSB/SJecTeZsS8xSMvKVtg/RRQDKi6sFCNbyLN+GL8ZzSZQ6D0pa6NxLrvW6m
-	 zk0/xROmvoqbIzWfdz7T2BrCSvniLbCOfCAbLaUcKeW0DW3+pjkL9A1W0zaUnoVuqZEDi
-	 3M2EDTbn9SKtz3bINxXtORu0FabGj0ghIJmpyKO6f3gYi7n6RycCn6vV6CgrvF6KpsWS4
-	 IHXYNj1ge1ClgeRwTcHxsuhq/bEUstXPX7huyxPd3cQS5ttE5oiGuyG81YFNlQ1UUj8fY
-	 ZQScPud1KsE87JY653yfald/1cPlG7Ko+WIweVgYb8yrO5Apqe2Ik6d9ASeSFw8XV0A==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794603576;
-	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-AV-Do-Run;
-	bh=EJBj5wqDDAB9+pHKPL6VCCp1UXeWowXlq/LPUcUSsu4=;
-	b=smLrE9PUrEHD79L9jBsRFTewXHmA8L5A7G6St1wMvAZTCPmVPayW/1POlsuN67Cq7eUe
-	 xnjmDvoB0BF7PUc4zUGh0oI+OrLDdaQlpUWylPxRzrTpqheAon8a5s1rI8zZRnp0NCljS
-	 HEaMLPSx/aTEy2TxboYlACBmPvbayXDlCuNPY+XRNw4H+P1Ntql5hSlw1ItYOy3oA1Tk6
-	 wBK80eiiBeiwOiyLLZT9oyj4CesW6O+zBN5npCoxtEWeXbzWV2WAoQNzYVhTeu8T2KSco
-	 Z6B0VKdOdq8j8RIImgSpugfwTtys2DLVMgnNmhbmk/SHhS13jwekSfeRkgiHLHi8sJw==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=engleder-embedded.com;
-	spf=pass smtp.mailfrom=engleder-embedded.com;
-	dkim=pass header.d=engleder-embedded.com header.i=@engleder-embedded.com header.a=rsa-sha256 header.s=dkim11 header.b=dHn8cJbq;
-	arc=none smtp.remote-ip=81.19.149.119
-Received: from mx09lb.world4you.com (mx09lb.world4you.com [81.19.149.119])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794603588;
+	b=JtW9MELcmvAj8QNp2nx2RvzUWpuT3vDW6t5FGLe8/7hgIlwcCd4lzVEOgy6N/rGtrTxX
+	 bRJCJN7CWM+lZGOj1Hz7oFsrtko8quJWc7AbL35dS9akRT2MV+583f5jCZuITq7OExfcX
+	 OAaxr5SIb38hboaClzXBA3v/9fMy0YQmcW7WqEocg51E1qzMU3+tDZcEIjuxfOfXCPY9P
+	 EqG/49jT4aBZACQOpN1NqEJctXbIgVtH1374xIafw7j5hmdV7jT5WkbhZhKy/2rgxe7tM
+	 5sP4VmvB3vnO7GcVseAC7N5+/iH2RG8SYsO+ZmkszoY4aPtJRRJCIVkCENm1cv1GH1A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794603588;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=PVwzuTDO0V0WU4xCPVDAbIib6qSF19SkXsHbfwUAYmM=;
+	b=L3cVhz2U9LQx9VF81KVV9ZdvxLH0GM1cw5XdA/t06K9iZia2lt8JcUkeWFYeas5hX2na
+	 k6OznyIEt1aTuqjwUUMQd67XdTZmifeCJ9W7mbi0+KHzdZzYvst5hWIhVUfmjIHsKlFeS
+	 6IQ+JK5yuRGUj4qlU34YfLqr29xMWYw1F28Ftno3bfsJ/Wa/ggylQ08n3r7TLvvPDN3zl
+	 GC6+BMHvT8Kiqc3c9eWO+zEhqk4I9y/deh/M+hZFw182sCvUtwyXQ5pdgzuIfB1WHiWMr
+	 PTMr/VyFZzrMSf9PMeO1kLFZZODuiPsXkDU3O8AqK1ENG156dWgGduv4lIAO6o3fk/Q==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hOHmc9+K;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.48
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D1C606A323;
-	Fri, 13 Nov 2026 20:59:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 75D1C606A323
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A613C606A884
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:59:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A613C606A884
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.a=rsa-sha256 header.s=dkim11 header.b=dHn8cJbq
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EJBj5wqDDAB9+pHKPL6VCCp1UXeWowXlq/LPUcUSsu4=; b=dHn8cJbqKQ+Jj9d6vLb1sY/nWc
-	B6e+o0CtxAqo/uiUQxLgcOvzG5rwHmG6mUVvysHwv/8Q4vyIoeHlj6zWXFc8wyQnOiyUlJhJ1aT+r
-	GPFq/WKMzMFmbnaScuB7+7mfZJlPcKE59hOuMdOXFHcO2apJFdVvRKSwbj/yAd1dGhWY=;
-Received: from [80.121.72.134] (helo=[10.0.0.160])
-	by mx09lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1xRyMi-000000004vO-2IYe;
-	Fri, 13 Nov 2026 21:59:20 +0100
-Message-ID: <1ab53072-b9ee-464b-b5b3-cbb578059b49@engleder-embedded.com>
-Date: Fri, 13 Nov 2026 21:59:17 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hOHmc9+K
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b56c90b38eso313a12.0
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:59:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794603586; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GG0+IussmMJrPmZLpSAXUISms1T2VI5ExVbjfxQFlOGl2WMM6AMmbr7zkJFT/h/Qa6
+         KuA6fU+6dGCmnrDE4yQIAg4EpymPUIRaHWYfrBI0d8KrEGEQMxs4XioJjC79Fl1ISc/W
+         bDmI9SPqQJXi+a18TPVeSzhxH5i7Zx2i9q5nRvnsPByPRNGLuJGBMj2rn9vjvuBngpKo
+         GOQ+nhR54+Qa59/HcBeLpzFBB6+Ywzla1jfEgDPvpFRqSEDm7QepVVxnKpHazV/hWVH9
+         xKlo3GOeNt/qNoh40KH1JrwaamAAJ/qU+LgsucosHfG/zLfhHiRwaJ1OJmwpjDCVgS5k
+         V2qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PVwzuTDO0V0WU4xCPVDAbIib6qSF19SkXsHbfwUAYmM=;
+        fh=E4bugEy3xpS2NkiBSOgwLWxQXVlouGwofDJ9vg5sgtI=;
+        b=TNqwxIuL8NXl/af4iDILA/ssPuWiE0QIwaJOrU4CnIEvwde1EBb+pM10g4btVM32g/
+         BpWtA1IPWc2/8zVDVHRDl+aPIE9V8W5cU3L71+kk+Ra5bZMVJaKBB/5DTAiukWiQkGa4
+         V7l/NOyaEpdKygyhQKVx/idprMz91GAvUqoCr654TlEaPbcCUVpJGF/JvFxVKvsuryJ9
+         qxXgy69Cssxcf//S/sdWisQb8QLLT1aE74f3JwcbSsmV4fJGWo0bx72UcQ4E95Mmxppj
+         5pJTg2KvGrEgHZhCXsQXQVd5uOpSLfYgQMP7Kjd8tiJDylTelHpXos+Wl0SWjXx8ZSjC
+         CfOw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794603586; x=1795208386; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PVwzuTDO0V0WU4xCPVDAbIib6qSF19SkXsHbfwUAYmM=;
+        b=hOHmc9+KqPvBvnJdzC/LRFJah8sA7xdxNc8h8aP+VpumV1tSIp+CrQkmF/B3ENgKqT
+         xqA8FZCKCxhZVE3144qByWZmwp4c9sZD4pz3fnAPj+B/NX3XdhTX5m1e2BL2bBw18K8O
+         kIcW4nDplJInC3Wdj+jWDTvUhBa5AiVJK7dGrVx0O1aXvW1X0aO9do7o5rMcAo/ilQ1H
+         TiB6OYxRQUj/XS4nz145PP9Y3Z9Hqjg4WqFirv0SoTCxSpE9e/ARdy3zKdeOkaJpxrUJ
+         uhSiEls3TlYRkLP7l5x/S888JM695ZzodpQJBMoEuVhQcbJ+lMF/xNC8H24ij7YXxH+G
+         Na7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794603586; x=1795208386;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PVwzuTDO0V0WU4xCPVDAbIib6qSF19SkXsHbfwUAYmM=;
+        b=pm/E0IfoxopCnPnXIm2iyxDq+rTd3JOWenzpWDNIuyzGNJQpYkQ3JiCuL/tcqbws+T
+         vpWOTdudtdQ/b5ZmDdAhP60Nf88qZEkVRdYFmAtM3UcK1nkdhWlVGjWt+fsAknzoRJ/V
+         R0TdczuYXnZt2y8jNb8AL7Rrm/LnnHzwZMuRi0UP5jrRk01TQMxqYFGiyB5ucFJH0Yn4
+         h0MMugpXyTTHklUSFoa5IB4dexg3DZFssnnBKvWxX77OB59cyl0hoLec2VrHUCcEOvCp
+         1PdvhBz56k3UtV+mc2U3AYFrbLsg1Eth/MdRlCEOqVsSTFh3r0/FOiw6dpkmpjMRFala
+         pirQ==
+X-Forwarded-Encrypted: i=1; AL+hErFxh4f6DnzWGZrTbXwLeoeN5y8e4Mwbq7I70f9R4+CxL4UIAcR9t9lo/HBdZ/HPFumsYPisLbo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/1PENPpWIPMvsj3IoqiJ2Akq6Xjah55pHI0dXqHx6YGtLVNhY4
+	ZchD9qzTwfB1LwllC1z3xzIMiAP/+OWLErJ7DAlmt3Lqlv3m2HIdNPYYtPOmWpDpMkA7bMl+1+3
+	zo0OYa+M0tWnOXHTchsaXsV2u0QU5gYLdpJhNddXv
+X-Gm-Gg: AYBFou2Cczjmd3Zo+dwJpr1mgZ558sV9AInICrKRo9+/Vt7c5GWSFXKE96EgnuQCwtq
+	ZdfXDrPfQ2rOCaHcHGj6B7832HLfSLwz9sNZgl75bnJ8Qs9AJ55c3afU/szuosf4PH4JZkioAaQ
+	daoN1m1y5sCC+D6mMJLWMkEKcPip0VTKLfj4zZ8hKEYYreLxJ7V2QB8LJIERgC6KYauf/dfa7ZC
+	lO6+b1WsBuGBd1sYkgdVRoU/FDdDSQDjJSjJzDWLV2dvU688wJ8nAdMPDx9NhB171GyUTd+I9gw
+	Jo9NiiDzNz9iR1gQIfArNKZoSPs3PvdqwcElhwEGeCpGdUPlgz3vvpl0TAoHCjt6TBn7NeXhskk
+	Jq/SEhIbBpgbBmKT0h0ycmyNmDevuRhCAviEl9Ma6banNNQFlIGkrtq7CzEOCDK50Fbw=
+X-Received: by 2002:a05:6402:a209:20b0:6b5:70a4:c77c with SMTP id
+ 4fb4d7f45d1cf-6b7e4cf7859mr4733a12.11.1794603585731; Fri, 13 Nov 2026
+ 12:59:45 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -58,70 +104,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: mark skb NAPI IDs independently of busy polling
-To: Paul Moses <p@1g4.org>, Ding Meng <meng.ding@siemens.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Tony Nguyen
- <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>, florian.bezdeka@siemens.com,
- jan.kiszka@siemens.com, wq.wang@siemens.com,
- Jason Xing <kerneljasonxing@gmail.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org
-References: <20261105071706.7043-1-meng.ding@siemens.com>
- <20261110134539.12d860ef@kernel.org>
- <4pqljild2fp6eotiicvwbwu2wfw66fzd4qamwt6utirdjxlaok@iiu2f3k7azrp>
- <Fhn2gT70aJ-2_eak73NBZYuXuKtVb64PoD8VQ9jwm-S-K0RhZilAg9iwSBJ0RlaiSrRvM1vPw1aHvGPjcktu9GmdBuvFk9244-q2IVOrFu0=@1g4.org>
-Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <Fhn2gT70aJ-2_eak73NBZYuXuKtVb64PoD8VQ9jwm-S-K0RhZilAg9iwSBJ0RlaiSrRvM1vPw1aHvGPjcktu9GmdBuvFk9244-q2IVOrFu0=@1g4.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+References: <20261113101109.3227815-1-arnd@kernel.org>
+In-Reply-To: <20261113101109.3227815-1-arnd@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 13 Nov 2026 12:59:34 -0800
+X-Gm-Features: AclHuK_bY7C_IwYzZFeSLAm6EvkuqLy8iUU-z8m05Hb5atej3z-uqwQYYqikjoc
+Message-ID: <CAHS8izMEpOGj4bZYPHJW+WTnSYwimw6oZAK+B7JVPkrmf75a2g@mail.gmail.com>
+Subject: Re: [PATCH] net: kunit: move struct net_devmem_dmabuf_binding off stack
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Arnd Bergmann <arnd@arndb.de>, Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, 
+	Josef Bacik <josef@toxicpanda.com>, Wang Zhan <wang.zhan@smartx.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 13.11.26 09:29, Paul Moses wrote:
-> 
->>
->> Then, drivers that use deferred timestamp conversion (e.g. igc, engleder) must
->> specify a busy poll dependency if they want to obtain the original net
->> device upon consuming the skb. However, this dependency is far from
->> obvious, and annotating it for future features of this kind will be very
->> hard to discover.
-> 
-> The "deferred timestamp conversion" was incomplete is what I'm saying.
-> 
-> This started with 97dc7cd92ac6, 0abb62b68252 and 069b142f5819 were built upon
-> it, so maybe Gerhard should decide the path forward?
+On Fri, Nov 13, 2026 at 2:11=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wro=
+te:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The net_devmem_dmabuf_binding structure is really way too big to
+> live on the stack, and causes warnings on my randconfig build machine
+> with a reasonable per-function limit:
+>
+> net/core/net_test.c: In function 'netmem_ref_test_tcp_devmem_recv':
+> net/core/net_test.c:1720:1: error: the frame size of 1744 bytes is larger=
+ than 1536 bytes [-Werror=3Dframe-larger-than=3D]
+>  1720 | }
+>       | ^
+> net/core/net_test.c: In function 'netmem_ref_test_skb_segment':
+> net/core/net_test.c:1477:1: error: the frame size of 1584 bytes is larger=
+ than 1536 bytes [-Werror=3Dframe-larger-than=3D]
+>
+> Since the binding object is never used concurrently in multiple tests,
+> avoid this by just having a global copy of it and reinitializing it
+> for every user.
+>
+> Fixes: 2285346afc99 ("net: kunit: test netmem, page_pool, and skb frag re=
+fcounting")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> I don't particularly like this workaround, as global variables are
+> always hacky like this. If anyone has a better idea to avoid the
+> last stack structure, let's do that instead.
+>
+> Without the patch, I run into this every few randconfig builds,
+> which did not happen on linux-next before the merge window.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-The deferred timestamp conversion is a niche feature for TSN to solve
-the working clock / global time problem in TSN networks. IMO there is
-no need to make it working as soon as igc or tsnep drivers are enabled.
-It would be ok to fall back to normal vclock behavior like all other
-drivers if CONFIG_NET_RX_BUSY_POLL=n. For me it is ok that NETCONSOLE
-is not possible for PREEMPT_RT in combination with this feature.
 
-There are already so many things to consider to get TSN working. To
-not enable NETCONSOLE on PREEMPT_RT for deferred timestamp conversion
-would be just one of many.
+kunit_kzalloc() may work, but it requires `s/binding\./binding->/`
+across the test cases. Either way is fine by me, this minimal fix
+works well too:
 
-@Ding Meng: Do you actually need the NETCONSOLE in this combination?
-On productive systems likely not these days due to CRA.
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 
-Gerhard
+--=20
+Thanks,
+Mina
