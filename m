@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794553419;
-	b=e0CKiU4IQ6pz6HDDj3PhFw9xxti7LzSCZymvExsl1LJYh3sPs1xoMlwSO6ozHB3d/Z0Y
-	 oFKkeboAMhptiv66ZicHrIhYO0RUbP6oaHWHQxTaYAQMv5OvY1zRZdj+jJs/jufmTSlKI
-	 Ud6chMDyw02SyY4UDGaoMuj7ClUAICc0hlJGLnjoipjrU0Uel7y0QWCavcKL2+fxLKE4X
-	 TuJoW8MkgHv6Q0bsVYB51mltKi6Lv5ErwphP9jnvXVnQGMiCeZJ0PlBvJ0C5wKadNASde
-	 v01fGRXP5VixjAgB2SwElDi0n7WXjdScHUSvYLzhtWEUGyPEKrM9A6d8yFiY897PTYw==
+	t=1794553521;
+	b=CiCA6cy1UGlmleOMSwnF0X3ljVz7hqa2BsEXG8jbUShBRmqq/QVVra4VCtmdiHV1PEek
+	 KA0Eoc+5Jq/jEb5zNcmm/XdHvlezihUV3fSVc9Pnq88TB7pRPXWfw3tADaS0pIyp1pDP6
+	 lQCyGpborXYVPqtx7l7SUJ3Yb2+0fHwVFBzHGuSok5HudSEA8cu+Ht038AyW0rIC4QOAt
+	 8KX2hXS+1hS68WLLChgvklDWxZi3BVVCCz4fHRCKd8Bmxg9WKMgGFpBBDerlufn4XP/R/
+	 9tY79QHpSzPNBNung7qTmgGFDUjWKE/eGvq6wp0ytiP+3NNxTBe36NY2Ocdy/L4XUjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794553419;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794553521;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=VPOK7kX1ObHoz/VqLCSAnjInW4wUgoK0aAhR/RviB0k=;
-	b=043DbFw1Vi+izpFJ9QM+mXGAUxd0AcQFuSdE6vmuWEKKNbULM+rj+pKED5iJ9NYB+DYR
-	 qHczMhnIlGcfwNLm3htWmv8gUU3amch7OQHfE+6I0g5D3kVjW8Omhn3qJWnNIP7QUHcwo
-	 8nOpWLcg7XVjm0GGBYsgSf2ImlgGMHCwSlTjQ1JkK4jnw460bWOX7tufp6WpnPsHYZRkT
-	 Cunh/DpSEm6DdtwrU4Ob849lUMNwqVMjXmIMXlVmj5jvorGK7xttPSAFwYI3P8DKtpcmv
-	 mw+ERqpAbH4QnC0QaB2pwmGTJuZPzHLYvdZJHOIAG5Zs62FXVohBysWpoCUnCESPL1A==
+	bh=ZGwvow9q146QrQxGFF94/REs6kziVPudCIH7akxXQI4=;
+	b=iyNP3A7dCjKmkRS6xQ11DYmPJO9JhWPhKyOgGqZOMe4r0Ymcam0VsJ59R4MuWWWeNndT
+	 cKvNbDvQAAczTbOmeSJoiGZRqWyBeqfG6SEuTMWrJg7mjRH/h/2+jotvXLNQxBU45zVSr
+	 z7lmGlRlz0aAccYuO4waxY32hdLpzzdEenZ/xdnwpyIY/guyJGnrGcL0xdJa71xtysUV9
+	 VREqlvmt+OHsA+wJMwLzpDYADXhnHYot/F2A121QP/Br5zR3eO9LcJcIyidDbGeQv2Lna
+	 mV13i4Iy295ZVcyYpe7FWMwrrLTAkzY6VPIgzdznBW1Cb4ryqXUMGj663WYasdyogDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtvJOwGA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d4BwR1eJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55220606A31C;
-	Fri, 13 Nov 2026 07:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5BF606A31C;
+	Fri, 13 Nov 2026 07:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WtvJOwGA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74081F000C4;
-	Fri, 13 Nov 2026 07:03:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d4BwR1eJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866BD1F000C4;
+	Fri, 13 Nov 2026 07:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794553418;
-	bh=VPOK7kX1ObHoz/VqLCSAnjInW4wUgoK0aAhR/RviB0k=;
+	s=k20260515; t=1794553520;
+	bh=ZGwvow9q146QrQxGFF94/REs6kziVPudCIH7akxXQI4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WtvJOwGAtzAklSRELG54o32eP8je5vQlr46jXkX8K/GFaTXC+BanjPFO6yH7aKfGb
-	 zZJOLcwJkvF9uvW/AvvEO62MGVmYOwaIc+kcQB/MhislEmKV2NnvNb8qljwsem8YFl
-	 XnKxofXc5lOYIvuqCG6IYlSE410u3Vr7LdIPKuwIuIGQjVugh97xoruTIu8PPh0FWs
-	 yeiKMpUk4MGaA6V1mLBa/KI0ylWPbGzTWMGeLAFhZf6wZUO6D3YSDErkZGA2+rJCFP
-	 PrtWkq7gNwr74yDMl5EvI4fHioVl1+wW0M7qOa8QydwM60JrcBQLagn/SNAxyEuGM/
-	 FqBiIeemfLtww==
-Message-ID: <2cd4da54-1dd2-424d-a9ba-e3e4fdad502e@kernel.org>
-Date: Fri, 13 Nov 2026 08:03:30 +0100
+	b=d4BwR1eJMxvjighF77x7JTzhqoiGQPUF6FHHIBbPR5WbbAx2Kcvkznoy9Hrfv0sxa
+	 K0/l4ro4GD6S5i0ZuAkz9PfQ6lqnIMMfwcS8Kpo1ugc3DO0+ksLv/3WaN43HrfySwn
+	 uStrR/O7yMCeNOxJITbkuJR+q0grxoSjwNoyMfIIfJv0D1eQIr7W2jnY++ZXmOkt+4
+	 zXm5xGXok4yOEUoU3k2o1Oo6aoiX7/sQc0x8OwPucfeFRfm1V8diLRCvqKrUhqgfPc
+	 AR5mhoti5hcVIBjN772j1MTzKEDihkmdflFxyiup1TVqEt2950witCJYYnys4O+MD1
+	 Zk9cqmPhuVVxA==
+Message-ID: <c068e21a-6dcc-4080-a35c-8f604646aef8@kernel.org>
+Date: Fri, 13 Nov 2026 08:05:13 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -52,8 +52,8 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/10] dt-bindings: ptp: Document the TSCSS on Qualcomm
- SA8775P and QCS8300 SoCs
+Subject: Re: [PATCH v2 02/10] dt-bindings: ptp: Document TSCSS hardware on
+ Qualcomm QDU1000 SoC
 To: Imran Shaik <imran.shaik@oss.qualcomm.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>,
@@ -68,9 +68,9 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 References: <20261108-tscss-v2-0-d5f575010427@oss.qualcomm.com>
- <20261108-tscss-v2-1-d5f575010427@oss.qualcomm.com>
- <20261109-qualified-pristine-newt-ba1c0c@quoll>
- <f2b119c7-ba01-46fd-96c4-10b918f98d53@oss.qualcomm.com>
+ <20261108-tscss-v2-2-d5f575010427@oss.qualcomm.com>
+ <20261109-sticky-caiman-of-research-65e9a4@quoll>
+ <28202f96-f234-4c7c-be6b-3019e119bb0a@oss.qualcomm.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -116,45 +116,37 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <f2b119c7-ba01-46fd-96c4-10b918f98d53@oss.qualcomm.com>
+In-Reply-To: <28202f96-f234-4c7c-be6b-3019e119bb0a@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/11/2026 10:31, Imran Shaik wrote:
->>> +allOf:
->>> +  - if:
->>> +      properties:
->>> +        reg-names:
->>> +          contains:
->>> +            const: etu
+On 12/11/2026 10:32, Imran Shaik wrote:
+>>> +  The TSC block is a timestamp generator that maintains a running counter used
+>>> +  for system timekeeping, and is functional with just the AHB and counter
+>>> +  clocks.
+>>> +  The ETU block captures TSC timestamps for external hardware events. Each
+>>> +  ETU slice binds a slice number to an external event selector, and
+>>> +  generates its own interrupt when that event is triggered.
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    const: qcom,qdu1000-tscss
 >>
->> Reason for same devices with different address space details should be
->> provided somewhere, preferrably in description. Assuming in the first
->> place, that this stays because how two devices can be basically
->> identical (same compatible) if they have different programming
->> interface?
+>> I failed to spot the difference against your binding at patch #1. How do
+>> they differ?
 >>
 > 
-> TSCSS is a single hardware device, split into two sub-blocks - TSC and
-> ETU, each with its own register address. Every SoC with this compatible
-> has both blocks in hardware.
-
-This is not what the binding said.
-
+> The ETU interrupt wiring between the QDU1000 and SA8775P/QCS8300 is
+> different.
+> The SA8775P/QCS8300 share one summary interrupt across all ETU slices,
+> and the QDU1000 has each slice with its own interrupt line. Due to this,
+> kept them as separate bindings.
 > 
-> What changes is whether the vendor/board actually wires up the ETU's
-> external event. The ETU block captures a timestamp from the TSC block
-> when an external event fires one of the ETU slices, which are driven
-> through board-level GPIO/IRQs. If a board doesn't wire any slice,
-> there's nothing in the ETU region for Linux to use.
+> Can add them into one file with an if/then on compatible if you'd
+> prefer. Please let me know.
 
-This is not what the binding said. The binding said there are different
-types of devices, one with etu and one without. Look, easy to spot:
-
-+  reg:
-+    minItems: 1
-+    maxItems: 2
-
+I see, it's fine to keep them separate, but you need common schema to
+define common vendor properties.
 
 Best regards,
 Krzysztof
