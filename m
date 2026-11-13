@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794532498;
-	b=a7X5VvSDCqC7HwP3o43w8tKoxlnPPl+orCogrmrT6yEMRhdrANBnb4a2hjMSriRaTSFo
-	 v6hncFc71NLmuzbgOwJwwRdTJ2rmH3WBxLgq66hONO1EBfANw6DaKtAbWC6ZiePOm46ob
-	 vjnyq+gu0BBJKXNt6ih8a3j2QJsatghSIcTE5bh8sOlnYTnxPGuCOGOPL9phUnjMaTnPr
-	 3ZncZ0Z1PSYn+rt3fpewGX4GS3+7BYWcJ4LvTVdn4l99YmlOpQLAy2NpY5VZ+DLTZLLKD
-	 r0akIuOuisstgvfSsm38VD8JEmxfduq3jA5zNJ3eA/P64N3iNgL+ujGjq68+6VHflQA==
+	t=1794532504;
+	b=MLniwntZdc/M5/+0fpdg1+AwSbwx77E23ivCXyO5DBmaJDsmlXZoyqfEiFoGlU+obwm0
+	 QSjxSqPIU6awYW6aWhtxUfoS2bJ9qsaJUSi3EGln1hm4AQ13o11/TunqhANC/775wGYPg
+	 Arsa4rI+PpJ/tTLZMEz8/jfaskviJrCAY31jwCpocxKGH8bIsPstNlz0hXzARL6oQZQUw
+	 LNcqsQxVav2YcbuFY2mtEwtBAim86jRdjFdvh2qY54SfSPzaIsplHEJ3HcZUUVdYc4oE8
+	 eyKdbk3JZobdYg5zDsrRikAA0XsY6zLxbaiqrj9mSSgDDLSOp/K2Vw/SLWpz6MlDkOw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794532498;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794532504;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
-	 X-Spam-Status:X-Spam-Checker-Version;
-	bh=IOhpMrHiqwvzQOFzgMunwEOVkFowBtszwQ+dcMbylmQ=;
-	b=EOLRg+0REDqXOFhAOrmL+Qt4+XiVkPEj6WbWU9KBtpkPzZz9KTCkikvMQVirF4j4sZDL
-	 HmHDumLDYKudCEIA8RpOOQ8Vfa3uXMnfi39XqP1JWtyYrT5tXnm1gDQjDZb6hdDjq/UKf
-	 tDIO5CP6nDRgXCjgcOldwYY9/fINttpJY1q9d2F99WqHjq36b3TRmWesz+xYB6gU7Siuu
-	 /A9NJYbL5j3AHoUDwNv2N6kuxNQWLPD9H/1uG8gr63YnpppYhBRi2zb+DDeUhX0JBEF3n
-	 snyqpoqjVlMJ+vvj4OlUWU30bvLCUJOpjucXCNTK4B90+dX1vjg5nfcKREZFDNvtShg==
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
+	bh=DqYZNzAk0qOqQDAvzyRhmwlg8184xMVw/vNC+P20nIA=;
+	b=E1pmWyLQeOGvh1q+I7Ret6Z1fk+jepnZeQtAyHs4W189KeK64Hpp7Bzunl+Qwb2M/CT4
+	 RIUa9xPVhsEvJCTVTHagjH8g0XJgf1pkySkSXqJLiDV8KwjQ7K31NwHVrqS5a5CGdzSfw
+	 0BstDjeiL2Y128f4hky3Xt5o93Z5l9jBF5+WjEJqcPDvwozW68XW0YH3KCA3QABFo78NL
+	 oxH6TfbU8pTs/pG+LbbeduzmT5RtGm2umSET79XRSRckfXk1aW1bPkKbJZbWFyO63eAKt
+	 3C6h9vpIt7zJEYH08FoOtAXN523wJDXOG9+VJHAOuD/nKOkjDjJ4wGYnN54eTKUWyVg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b="s/ki8f7x";
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=k2LMK0XA;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F0F606A323;
-	Fri, 13 Nov 2026 01:14:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D4F0F606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEECC606A88E;
+	Fri, 13 Nov 2026 01:15:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CEECC606A88E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=s/ki8f7x
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=k2LMK0XA
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1794532495;
-	bh=IOhpMrHiqwvzQOFzgMunwEOVkFowBtszwQ+dcMbylmQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=s/ki8f7xzKIeOGF2yIIQa7fwU7qdGQMMXj2IuApqEo/d3VS7+uOlLg62zO1O+YmOt
-	 jAVUC3vYnx5LW6aZq883zqL+/Jkd4MIsBUT5kCEeHksjiqBU6g95on0cenyi42maIP
-	 cX8wYwMV5JSo/iF8g5aQibSoA42lAESwaKmPSELolGiiitZt5tg1EhwltovC1bP3IC
-	 u6V3cI8erxSbt9C4fBoMu37APfRQJ7Rl/xfr305HfWXTOK9IyXTmjZ2Xn/HVtm0TbX
-	 Qaw5og1ybtsZrcVsIijm7Ktl6kwmNnOT2GxrSVJprdEpY4RLKIs+7cWm4Vv2wmfCKr
-	 sKK7I30T/4/dQ==
+	s=2025; t=1794532502;
+	bh=DqYZNzAk0qOqQDAvzyRhmwlg8184xMVw/vNC+P20nIA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=k2LMK0XAAoZDcDRs2i2TylYA3RxKFJ/h5fZM6zKAfRvHiXzBMgiHn3zd/Mk9MJXTI
+	 vtXSM8xAIOf9Wp5VJlRVTNX0DbDKTFlHwX23rLy7yJaknjPKFwVf0KaQ0zwBHTV/Vw
+	 NmcYFBmGF92Bm8wgv9BYUqL/IejQ9mp+wLuycm6oDNjYwGCH0kdUffOh+HjnHi/Tew
+	 2lrxGBCdT65kiOxC/89JyqwHB6JBOaiZYKZVkchxNAnSjQQfe4sMK9y0xWF4AZxy4d
+	 RqaoAf/Ez2vGu3KwfbxAux2dxAKT2kxqyIbSeHXjVrgI3JTdsvSfVMVlmj99xu6jFV
+	 skiRuXwRsMBag==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 84B3060058;
-	Fri, 13 Nov 2026 02:14:54 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 76E556005F;
+	Fri, 13 Nov 2026 02:15:01 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,10 +56,12 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 00/15] IPVS fixes for net
-Date: Fri, 13 Nov 2026 02:14:32 +0100
-Message-ID: <20261113011447.2357709-1-pablo@netfilter.org>
+Subject: [PATCH net 04/15] ipvs: avoid stack overflow from recursive connection expiration
+Date: Fri, 13 Nov 2026 02:14:36 +0100
+Message-ID: <20261113011447.2357709-5-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261113011447.2357709-1-pablo@netfilter.org>
+References: <20261113011447.2357709-1-pablo@netfilter.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,125 +73,137 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Zihan Xi <zihanx@nebusec.ai>
 
-The following patchset contains IPVS fixes for net:
+When a controlled IPVS connection expires, its controller may be expired
+synchronously if it has no remaining controlled connections. A chain of
+controlled connections can then recurse through ip_vs_conn_expire() and
+exhaust the kernel stack during namespace cleanup.
 
-1)  Avoid out-of-bounds write in ip_vs_nat_icmp_v6() when an ICMPv6
-    error embeds a non-first ESP fragment, from Axel Mierczuk.
+Continue expiration with the controller after the current connection has
+been fully cleaned up instead of calling ip_vs_conn_del() recursively. Keep
+the expiration walk under RCU, preserve the immediate-drop timeout for a
+controller with its own controller, and switch to deletion mode before the
+next iteration.
 
-2)  Update *offset for non-first fragments in ipv6_find_hdr(), so
-    callers no longer use the initial offset as if it had been
-    updated. Also from Axel.
+This keeps controlled-connection cleanup synchronous while using one stack
+frame for the whole chain. The timer callback race during connection
+deletion is handled by the preceding connection-deletion fix.
 
-3)  Rework connection refcounting so the pending and running timer
-    hold a reference. This fixes a use-after-free race between
-    connection deletion and a concurrent timer callback, from
-    Julian Anastasov.
+This patch depends on "ipvs: fix problems during connection deletion" to
+protect the iterative controller cleanup from the timer callback race.
 
-4)  Expire controlled connection chains iteratively instead of
-    recursively to avoid kernel stack exhaustion, from Zihan Xi.
+Fixes: f9200a52eedf ("ipvs: avoid expiring many connections from timer")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Co-developed-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+---
+ net/netfilter/ipvs/ip_vs_conn.c | 40 ++++++++++++++++++++++++---------
+ 1 file changed, 29 insertions(+), 11 deletions(-)
 
-5)  Reject zero and configured FTP control ports as data ports in
-    the FTP helper, from Zihan Xi.
+diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
+index 86c5e6c7b5af..27db8d558a03 100644
+--- a/net/netfilter/ipvs/ip_vs_conn.c
++++ b/net/netfilter/ipvs/ip_vs_conn.c
+@@ -1336,9 +1336,23 @@ static void ip_vs_conn_rcu_free(struct rcu_head *head)
+ 	kmem_cache_free(ip_vs_conn_cachep, cp);
+ }
+ 
+-/* Try to delete connection while not holding reference.
++/* Try to steal the reference from the pending timer.
+  * It can be called concurrently and always under RCU lock
+  * to protect from connection deletion from others.
++ */
++static bool ip_vs_conn_del_reference(struct ip_vs_conn *cp)
++{
++	/* Steal reference from the pending timer */
++	if (!timer_delete(&cp->timer))
++		return false;
++
++	/* Drop cp->control chain too */
++	if (cp->control)
++		cp->timeout = 0;
++	return true;
++}
++
++/* Try to delete connection while not holding reference.
+  * Used when we need to remove the connection immediately
+  * and without overloading the timer processing.
+  * OTOH, we use ip_vs_conn_expire_now() when we prefer to
+@@ -1347,13 +1361,8 @@ static void ip_vs_conn_rcu_free(struct rcu_head *head)
+  */
+ static void ip_vs_conn_del(struct ip_vs_conn *cp)
+ {
+-	/* Steal reference from the pending timer */
+-	if (timer_delete(&cp->timer)) {
+-		/* Drop cp->control chain too */
+-		if (cp->control)
+-			cp->timeout = 0;
++	if (ip_vs_conn_del_reference(cp))
+ 		ip_vs_conn_expire(&cp->timer);
+-	}
+ }
+ 
+ /* Connection is removed in the following steps:
+@@ -1366,6 +1375,9 @@ static void ip_vs_conn_expire(struct timer_list *t)
+ 	struct ip_vs_conn *cp = timer_container_of(cp, t, timer);
+ 	struct netns_ipvs *ipvs = cp->ipvs;
+ 
++	rcu_read_lock();
++
++repeat:
+ 	/*
+ 	 *	do I control anybody?
+ 	 */
+@@ -1375,19 +1387,18 @@ static void ip_vs_conn_expire(struct timer_list *t)
+ 	/* Unlink conn if not referenced anymore */
+ 	if (likely(ip_vs_conn_unlink(cp))) {
+ 		struct ip_vs_conn *ct = cp->control;
++		bool next = false;
+ 
+ 		/* does anybody control me? */
+ 		if (ct) {
+-			rcu_read_lock();
+ 			ip_vs_control_del(cp);
+ 			/* Drop CTL or non-assured TPL if not used anymore */
+ 			if (!cp->timeout && !atomic_read(&ct->n_control) &&
+ 			    (!(ct->flags & IP_VS_CONN_F_TEMPLATE) ||
+ 			     !(ct->state & IP_VS_CTPL_S_ASSURED))) {
+ 				IP_VS_DBG(4, "drop controlling connection\n");
+-				ip_vs_conn_del(ct);
++				next = ip_vs_conn_del_reference(ct);
+ 			}
+-			rcu_read_unlock();
+ 		}
+ 
+ 		if ((cp->flags & IP_VS_CONN_F_NFCT) &&
+@@ -1414,7 +1425,11 @@ static void ip_vs_conn_expire(struct timer_list *t)
+ 		else
+ 			call_rcu(&cp->rcu_head, ip_vs_conn_rcu_free);
+ 		atomic_dec(&ipvs->conn_count);
+-		return;
++		if (next) {
++			cp = ct;
++			goto repeat;
++		}
++		goto out;
+ 	}
+ 
+   expire_later:
+@@ -1429,6 +1444,9 @@ static void ip_vs_conn_expire(struct timer_list *t)
+ 		ip_vs_sync_conn(ipvs, cp, sysctl_sync_threshold(ipvs));
+ 
+ 	__ip_vs_conn_put_timer(cp);
++
++out:
++	rcu_read_unlock();
+ }
+ 
+ /* Modify timer, so that it expires as soon as possible.
+-- 
+2.47.3
 
-6)  Skip conntrack templates in ip_vs_ftp_out() to fix a UAF in the
-    expectation list after the CT rule is removed, from Theodor
-    Arsenij Larionov Trichkine.
-
-7)  Add the seqadj extension before linking the FTP expectation, since
-    krealloc() of ct->ext can otherwise leave the expectation pointing
-    to freed memory. Also from Theodor.
-
-8)  Update conn flags, seqs and related fields in the backup server
-    under cp->lock, from Julian Anastasov.
-
-9)  Read conn flags and seqs atomically in the master when building
-    sync messages, from Julian Anastasov.
-
-10) Fix a race that can leave a destination in the overload state
-    forever. Also make the LBLC/LBLCR schedulers honor the overload
-    state for cached destinations, from Julian Anastasov.
-
-11) Validate cport and IP_VS_CONN_F_NO_CPORT in received sync records.
-    This rejects templates and connections that incoming lookups
-    cannot match, from Axel Mierczuk.
-
-12) Skip cport 0 connections in ip_vs_conn_out_get(), using the same
-    rule as __ip_vs_conn_in_get(). Also from Axel.
-
-13) Do not create connections from packets with client or virtual
-    port 0, which could create a duplicate connection for every
-    packet, from Julian Anastasov.
-
-14) Wait for an RCU grace period before reusing a destination from
-    dest_trash, and before restarting its estimator, from Darong Lu.
-
-15) Pass the netfilter hook's state->sk to the update_pmtu handler,
-    and pass a NULL sk to ip_local_out() when forwarding through an
-    IPVS tunnel, from Julian Anastasov.
-
-Please, pull these changes from:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-11-13
-
-Thanks.
-
-----------------------------------------------------------------
-
-The following changes since commit d1bb235aa409a4e5aeba6c748d953d948625b1e9:
-
-  netfilter: nat: zero newrange before filling it in (2026-11-05 13:31:11 +0100)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-11-13
-
-for you to fetch changes up to 937b060406a547e4d931525e600540726ea26532:
-
-  ipvs: pass correct sk to update_pmtu and on tunneling (2026-11-13 02:08:35 +0100)
-
-----------------------------------------------------------------
-netfilter pull request 26-11-13
-
-----------------------------------------------------------------
-Axel Mierczuk (4):
-      ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6
-      ipv6: update *offset for non-first fragments in ipv6_find_hdr()
-      ipvs: validate cport in received sync records
-      ipvs: skip cport 0 connections in ip_vs_conn_out_get()
-
-Darong Lu (1):
-      ipvs: wait grace period before reusing destinations
-
-Julian Anastasov (6):
-      ipvs: fix problems during connection deletion
-      ipvs: update flags and seqs in backup server under lock
-      ipvs: read flags and seqs in master atomically
-      ipvs: honor the overload state and do not enter it forever
-      ipvs: do not create conns from packets with port 0
-      ipvs: pass correct sk to update_pmtu and on tunneling
-
-Theodor Arsenij Larionov Trichkine (2):
-      ipvs: ftp: skip conntrack templates in ip_vs_ftp_out
-      ipvs: ftp: add seqadj extension before linking the expectation
-
-Zihan Xi (2):
-      ipvs: avoid stack overflow from recursive connection expiration
-      ipvs: reject FTP control ports as data ports
-
- include/net/ip_vs.h                     |  52 ++++++++----
- net/ipv6/exthdrs_core.c                 |   6 +-
- net/netfilter/ipvs/ip_vs_conn.c         | 133 ++++++++++++++++++------------
- net/netfilter/ipvs/ip_vs_core.c         |  58 +++++++++----
- net/netfilter/ipvs/ip_vs_ctl.c          | 140 ++++++++++++++++++++++++--------
- net/netfilter/ipvs/ip_vs_ftp.c          |  39 +++++++--
- net/netfilter/ipvs/ip_vs_lblc.c         |   8 +-
- net/netfilter/ipvs/ip_vs_lblcr.c        |  13 +--
- net/netfilter/ipvs/ip_vs_proto_ah_esp.c |   2 +-
- net/netfilter/ipvs/ip_vs_proto_sctp.c   |  12 ++-
- net/netfilter/ipvs/ip_vs_proto_tcp.c    |  12 ++-
- net/netfilter/ipvs/ip_vs_proto_udp.c    |  11 ++-
- net/netfilter/ipvs/ip_vs_sync.c         |  53 ++++++++++--
- net/netfilter/ipvs/ip_vs_xmit.c         | 114 +++++++++++++++++---------
- 14 files changed, 462 insertions(+), 191 deletions(-)
