@@ -1,111 +1,105 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.49
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794563701;
-	b=sn4BpCYgvz4y2fPcRRJPgyGuGRM330DJpJgWgaM3mGtu2LyB+nX+R5uypOWOMKG/3OzY
-	 Iryac8UfkGEQteaGyWgAUhXwWKFxSBvPNIqFhsOBZBRfSHukX6CeeR2pFn0DBvgY5bcES
-	 acCgEzPYXMUodu5k2lxnbWfP/Apm73NGrU760XrpwRNYJnxe6vG46eshPSjPIt2re7Wby
-	 j33kP+ASBYBr8dRhrM/8vtra+fiV+cNx1NV5uLZ2cfJNjS9TVmlWlmaSIDnmA6+9H3Gjr
-	 hr6vetIZO8YDgHednqh/B2EhwNeWm2dBgXaiRQqntrVjw6IHv7WxWMPHMrHJFExqzGg==
+	t=1794563806;
+	b=UQBgcEVS6E6ox66sh24pjlrQyrOxKV7XRNgeJviYgfyB3eLOBeLu82VBj7nTW0m94R7T
+	 mmoTyGRA6rMCN4763IhCbGzSca/PKG9h00VmgtPFLZ+9iE0x6etJFA+KXbGhcjf+WouRu
+	 Y8Fb0D1R9a5Wux83ecGCNFXX4Co0Umw3OUMwmyNkYTqMkuQKSW8CuYXooEBVSfqUREdqC
+	 XB58jEIEemBgzVQlgWkLwkmGw2TQWS6EXG2eH4H8HwcVMrncOd2LgoSDgglEFDoAVsnCC
+	 zyIVVqOhcIYYqzfO4uxz+IemJJ3xJR7m6echlxNobvQblHrBCmVM3jr1xfAtfQJa4WQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794563701;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794563806;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Content-Transfer-Encoding:User-Agent:MIME-Version;
-	bh=G8DmFU4pJwAPCJlqHBF8SKasEEThxtJNlC1sg/CSkLw=;
-	b=W183WBHJ0n/ppWs/Znnp+iz1+YPlcdc1kH7V94QTBpceZDUg43N30ZDAYdHlhRkb5EP8
-	 pUBmsyLLRR4G5Z7nOJXMi/BSV7qrW1rOdVUbIURO6FW6rxSTFeoR01YsgYpNAahD9HBvL
-	 6v3JwrDm7gNtebfGcqY6+edX+qcf1sDOmdRJQIPydDGm/81KTJOw0odUg/d1wEWxI8Ys+
-	 4ke20LrOrDM5bYFQwNxILb3bSB0oxeNK1OtFNgA5F1CLeu0ByHgzT32tJyhZYpvOxL83N
-	 kOcSR6gcd3drBps42yyf5VYvu+vBGbLApSaN+HmvWhFQsmIu2J44SoXDX6l5hYfN5wQ==
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding;
+	bh=kluHAf30lOQTvYGq+YH2c2fBsSTyc5d5qn0rYtZKUsw=;
+	b=VRPeU1o0bE8C80Q4xYVBUxe20GyZlIZQdySUaEpp/8eHBwqYRZ+5pN+LpgcMr7zcQj/T
+	 zoaGBS5fbz9Jg6xCsgGBzie3Dl8/5ywf2T4UGy3HzfVQtYWEqxNPgGYBxYSWBip5PdBbb
+	 XH4kEbr0aSf1X00f/H2DbFKLi/Tkk/vYXCUGRzX/ZQIMdPy/T355g2iBEkDV2xaoVFv8c
+	 jb1NlsX3UetfremB89QnjKYWXNH7JBD7WVtu8t2CINmFTu4QSrXFAkrE1BvtdAw5UP86t
+	 8RTnohDnpBFIgTGyqJy2XeQUz8iGl4ynS6JnmoWmUM2XG466LlSXGTGZSJovk4AOPZA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=amutable.com;
-	spf=pass smtp.mailfrom=amutable.com;
-	dkim=pass header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=sk58W6sW;
-	arc=none smtp.remote-ip=209.85.208.47
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p7wzYuMY;
+	arc=none smtp.remote-ip=209.85.128.49
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5A060A260E
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:55:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A5A060A260E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amutable.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E497D606A333
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:56:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E497D606A333
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amutable-com.20260707.gappssmtp.com header.i=@amutable-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=sk58W6sW
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b547d6c07bso1415664a12.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:55:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=p7wzYuMY
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso4011925e9.2
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:56:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amutable-com.20260707.gappssmtp.com; s=20260707; t=1794563698; x=1795168498; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=G8DmFU4pJwAPCJlqHBF8SKasEEThxtJNlC1sg/CSkLw=;
-        b=sk58W6sWmN4ERo+6S+koVh/BM/TVuc998Smvb7+dAHAHasLoIxA1PyH7SpTb2sphTs
-         qaL8BceJIK/C5zTluK59TXAg0t7i18MIhSXKzAc74GDtFkVBtJ5XexxofTn2ErTCpEyw
-         wBL0ZIwSoD+QdFLNUYuAtp3uhttIIU+8CcgeY50Q9BuPcdVkRSxffNnvhBi5q+TOT3Z0
-         N0fPVcnw8avDa7R0wdKzwUNoVC/3vPRCD1SmgKjZfrkNv7BBIugYP8aqCryl3mRTzhIm
-         nyzLSOhSkS/Bye+QA00IM2MsjhnUA408QIyungJaHYxvuyXbuTeC6K0dJcKnUnQNsCLo
-         BJGA==
+        d=gmail.com; s=20260707; t=1794563804; x=1795168604; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kluHAf30lOQTvYGq+YH2c2fBsSTyc5d5qn0rYtZKUsw=;
+        b=p7wzYuMYn7brPyloBx7mav2Z9jHCXjOnldCsKhPHo8MSBai+ow1PAU0djODR5o38dJ
+         x74xWoL2nYvNOhHW9Ep9BJ4gEw733A/AWPy+Yx6UCXA5GcXMLP/kVyMoAxoEfkj3MX/l
+         sB6cKjkU48UH2zhF2ob95aKfByOQVKAENq7BF0jj8U2HAHyXqWrFNsitIBApShyesq34
+         P83vj6qH0eecVK7TXgVgZnhrZ1Rp0e8GNY+plEUZFK72hDhMSeHKiGGC+0aREJax8LEt
+         wSFCxlZ399jgRaACJZGG+NAHtDlL7KeKeUYpeO6c13pCDh+NCX288O21ifmemvFI0Vdn
+         RqIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794563698; x=1795168498;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G8DmFU4pJwAPCJlqHBF8SKasEEThxtJNlC1sg/CSkLw=;
-        b=LCHNGCNAM5iLJpNqPLQDyfpc5JYawIATQKM0pGExHKyhvnZsyKzIFaw2YU6CXnCP2J
-         l38GjXFlBixXxEvqXms0iXLe5iM3ckS+ub2RL8xvSmgqRXINeJWbl8wXE9cvqExEY02z
-         fAqvO+y/8nrXRwP4RDlG3ZEN1n8qEW1+RBJL5DViRJ00OISOOhdb/kso38dulH6XYEmA
-         uVocygQRR3C2bczwTxCo/CzICw9hjP7EqrUmJ98QC3HZZbKL1lF14/yQXWm08seDF1J/
-         xR3p6wjYmf8uVDT3mj4hwGMn3sMc0wllwC0LOF7i9atFeTfI2DY69oX4Q0e9KYaJkXfd
-         f1xA==
-X-Forwarded-Encrypted: i=1; AL+hErGW9AA4HDH8z/B39vpxrBzX/JketjRCHmL7HRvr2/A8zM0J4o3Y7IcMtuYAXz6eZGUjAdwYz+A=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9sDjYSXpvJrp/Ozagb8+8X2wMnQf+P4xJGBA6sM2/hCckr3s0K
-	q0JQEDhaWWMR5TeJxsWM4WQasqc9YEJRZs7k/Gc7ZEVzWKAqZ8mMINmy6KdrsZ7E7wrp
-X-Gm-Gg: AYBFou0sbBb22I1JH1ZFDnD7xC8a/BEXXJEbzJJlNzhXZVyiZB4/kkZbVYSZ0wBBlNj
-	RxdkL8ZXnSh1ApFtA8g4qDvO0cjH/1FUGtF+tcZAUn+V+AhbLuiOtZp3xuZIxhNrNzFzg3TsjvB
-	14gMNubjsMFZc5qRVB9hiPy60GbMUUAUKwmloriLaKr1TXDQPmInOyksD8KQbPkLnNMOhgcba2X
-	PW704NX46shdo1t684930U37PQQG8zqMKiRLXSBiYKJ9i7maxAqksCOgjw3b3jlYRKhpOcVHkCA
-	20EK9+Z6bnqVvjH9j5diGCnhuwLxmboh5H4YIXr9NXewch6GvJYhmxrxQblNkLFn1NJzY0JZujD
-	oaXtiGnLZAnEJD4nq/UjCFLH0A37hby+oTasXD4ztulcRs/nvHtBTj9BCf7CjJM2yN5PRtHgbKm
-	kQ5yWLxZbZl/Tl+Ad/JJw2Y96D5WcSdeQJuFY38V7P8UqSkobG7zykIP3RNPFeBv1xhTMzmrwPc
-	Vn2/NKkGhVnGFIQvX4SZy3MiNfoljYxoSnhRtfl/AAaEAYvTBHQVwTqMb6duphR3IIXn5PaRe57
-	f5WnAwmPR0ckV1Z015U4Dtq75YZEpP2ts+ms8tmT/yrmxJp5A+4PmsvuFD+/LkI=
-X-Received: by 2002:a17:907:ea93:b0:c41:4c20:5a80 with SMTP id a640c23a62f3a-c50963bdb9bmr198299566b.44.1794563698514;
-        Fri, 13 Nov 2026 01:54:58 -0800 (PST)
-Received: from [10.0.0.233] (tmo-086-54.customers.d1-online.com. [80.187.86.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c50957c6c1fsm75151566b.0.2026.11.13.01.54.57
+        d=1e100.net; s=20260707; t=1794563804; x=1795168604;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kluHAf30lOQTvYGq+YH2c2fBsSTyc5d5qn0rYtZKUsw=;
+        b=0c5gSI6p1+zyKvdPOzj8LQoGfRg1y9nxyfeoPzv/4nK6W0oGw5By7XyINDd/iT98fv
+         q8E9hVOwnxfp+N9lRF3acNK5PipMy0Rb+BOzrQsp/cWHgU4GedmRMS0OawP0gXrX6OMK
+         HpQ/Qy+hogZodTMQG0vpXVaetb9VAXguU8u9feiTcgx8+O3OoA/JXT2mQPas9TBWPNOe
+         67EVJrWrSdgbqyKhOASxy17SkKf2lhmWMlmedYZXtmpHLzncot6m2xb4KnXV0dOT7hKB
+         a/HTsMSjwSyPKgPmgBhBURdbOQY+o54ON8xxgzonHdt5SRPX7HfPlwFR9ECEB/7aCs6m
+         gTBQ==
+X-Forwarded-Encrypted: i=1; AL+hErFBvUClxBP1Pma7lMbGfKchMkeCTBmwTk+Pu0ymNh9SU/bqVB40pOJJKUgSsjGDVNMWZcH9q40=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8Bly2M3iI/M0DtuBA2QNEf3mi+eP+zJ0Ips3cJo0gqWZUYQeJE
+	hqwuay1Cq+GgcuuiML4P5eX6FrKeIhNu2T0Yajlg2haSEdlbYs8uKbAv
+X-Gm-Gg: AYBFou2Xt/UDQ3W7+EOAlBQ6ascUHxkFcCPCSsh6hBQONKbuEu2gKpw7mLfYmte3nlw
+	fUThEROjT2eJaCfs/xLkRf4QkmCa7ix2Ca8Q9/Wk/jKl6PWNQmnnzoaEl4nwVBUVRzmLse2HcGn
+	tnFIzfk/yXktlG4X67oyU2rJaYSjLiWdztCgKeMI6KsbKfMZrX9n+eiH3T3svPkQnUsb1zqhOAA
+	6vxgMVSGasppv+jLstK1fOajlkz7H0yE00OWNmevsqsNDpRTGhCdDHG9O1VR4vMuUzCByVVKN3R
+	Ye83tIIR+dJN69FxteyEH62ShCfNXYcgbPEhq2H10heeL2zCZnje1bX5nCKwUWMZT0AMk/+MQ70
+	wXcT1foxEHHeOpMFwaDAO6m5+25vHw/E6XDBUoQKIOvqqpFHbF12wZHAGA7s3BEIemRhHiMo3Sc
+	DXtkjXylXa/2e0de4Y2JQCJEuAnFp0ccnt+h1/C1v9HE8QmHqWYwYTxuqMxNcyDQ8mdlqQlw2Tj
+	vcoFuKI0esMX6jFBqO9Ckxoj6+4Dttnx83EvApg2oJ1NZN8PdOYOl2LcXw+f/wpZsiU5PlS9ohX
+	qdEJMRwLMjcQaEVbFqTV4fD0Ov2BgexXH/FJz308PKl814Rd6o9F/l2qxP/5FOMRO0c/YvI2dJ/
+	1v1pgEtQFxemrGmtM2/nN2yEG71IE4jnXePkDsP/ip8LyGvaC7MP+JHWdGpbtIE2SKO+0NXA8uS
+	52ODb5F9PB3yclqAgs
+X-Received: by 2002:a05:600c:6286:b0:4a1:7e77:c382 with SMTP id 5b1f17b1804b1-4bb55a5d634mr37035575e9.5.1794563804181;
+        Fri, 13 Nov 2026 01:56:44 -0800 (PST)
+Received: from navid-pc ([2a01:4b00:a856:6220::a11])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb571d7e87sm28500015e9.3.2026.11.13.01.56.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 01:54:58 -0800 (PST)
-Message-ID: <b42c9f4d29a9cbea66929c95cc8f736f12703c72.camel@amutable.com>
-Subject: Re: [PATCH RFC 01/41] loop: refuse backing files that aren't open
- for reading
-From: Alexander Mikhalitsyn <alex@amutable.com>
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, Josef
- Bacik	 <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
-	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, 	driver-core@lists.linux.dev,
- linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org,
- netdev@vger.kernel.org, 	fuse-devel@lists.linux.dev,
- linux-efi@vger.kernel.org, 	xen-devel@lists.xenproject.org,
- ocfs2-devel@lists.linux.dev, 	linux-s390@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, 	linux-usb@vger.kernel.org, Amir Goldstein
- <amir73il@gmail.com>, 	linux-erofs@lists.ozlabs.org,
- linux-kselftest@vger.kernel.org, 	stable@vger.kernel.org
-Date: Fri, 13 Nov 2026 10:54:56 +0100
-In-Reply-To: <20261110-work-loop-pseudo-v1-1-4c998976c6c7@kernel.org>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
-	 <20261110-work-loop-pseudo-v1-1-4c998976c6c7@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+        Fri, 13 Nov 2026 01:56:43 -0800 (PST)
+From: Navid Ghahremani <ghahramani.navid@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: linux-arm-kernel@lists.infradead.org,
+	arnd@arndb.de,
+	stefandoesinger@gmail.com,
+	krzk@kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2 16/24] net: phy: Add Sanechips ZX5201 PHY support
+Date: Fri, 13 Nov 2026 09:56:39 +0000
+Message-ID: <20261113095639.1667143-1-ghahramani.navid@gmail.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <95e7fc97-2bd1-4b68-a9ef-246302ed9ec7@lunn.ch>
+References: <20261014072109.1759502-1-ghahramani.navid@gmail.com> <20261014072109.1759502-17-ghahramani.navid@gmail.com> <788c9b01-473e-4c45-b6f0-b2ba054da8e9@lunn.ch> <20261113003655.3665572-1-ghahramani.navid@gmail.com> <95e7fc97-2bd1-4b68-a9ef-246302ed9ec7@lunn.ch>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,58 +109,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2026-11-10 at 10:14 +0100, Christian Brauner wrote:
-> loop_configure() takes any file as long as it implements -
-> >read_iter().
-> Loop itself never checked whether the file was actually opened for
-> reading. Buffered I/O went through vfs_iter_read() which refuses
-> files
-> without FMODE_READ. Direct I/O has called ->read_iter() of the
-> backing
-> file directly ever since loop grew support for it.
->=20
-> Since commit f2fed441c69b ("loop: stop using vfs_iter_{read,write}
-> for
-> buffered I/O") buffered I/O calls ->read_iter() directly as well.
-> That
-> commit was about O_DIRECT handling and the FMODE_READ check went away
-> as a side effect.
->=20
-> So whoever can set up a loop device can read a file it was only
-> allowed
-> to open for writing. Open the file O_WRONLY, configure a loop device
-> with it and read the contents through the loop device.
->=20
-> Refuse backing files that aren't open for reading. Loop always reads
-> from its backing file so a write-only backing file never made sense
-> in
-> the first place.
->=20
-> Fixes: bc07c10a3603 ("block: loop: support DIO & AIO")
-> Fixes: f2fed441c69b ("loop: stop using vfs_iter_{read,write} for
-> buffered I/O")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Hi Andrew,
 
-Reviewed-by: Alexander Mikhalitsyn <alex@amutable.com>
+Andrew Lunn wrote:
+> https://www.sanechips.com.cn/en/Products/WiredEn/fixedNetworkTerminalEn/1558027080778723330.html
+>
+> This says it is RGMII.
 
-> ---
-> =C2=A0drivers/block/loop.c | 3 +++
-> =C2=A01 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-> index a3325ceab484..c96e35c3ef42 100644
-> --- a/drivers/block/loop.c
-> +++ b/drivers/block/loop.c
-> @@ -528,6 +528,9 @@ static void loop_assign_backing_file(struct
-> loop_device *lo, struct file *file)
-> =C2=A0
-> =C2=A0static int loop_check_backing_file(struct file *file)
-> =C2=A0{
-> +	if (!(file->f_mode & FMODE_READ))
-> +		return -EBADF;
-> +
-> =C2=A0	if (!file->f_op->read_iter)
-> =C2=A0		return -EINVAL;
-> =C2=A0
+Thanks for the links, that settles it. I will treat the link to the
+ZX5201 as RGMII.
+
+> So picking SERDES is probably causing some of this confusion. SERDES
+> implies there is a PCS, and the PCS is doing signalling for SGMII or
+> 1000BaseX. With RGMII, none of that exists. The registers might be
+> controlling clocks, or regulators etc.
+
+Makes sense. I will drop the SerDes name for those registers, work out
+what they really control and where the RGMII delays are set, before
+the networking patches go out again.
+
+Best regards,
+Navid
