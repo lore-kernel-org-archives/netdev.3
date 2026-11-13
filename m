@@ -1,101 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794598008;
-	b=h7OU3+sSqsHu8dPTeEjwiav4z27wZePferObwV95GH36Xtb79ljnmbzbn/kUfYOP8Qcb
-	 RRs6B9Mo+QkAl+2mqv4HjMfex4mYo/kflep1+AT5v0lfTN2hP4pDvM3yI0/RO3ICT1+HE
-	 9hVNPvVf+XJt/VTdqZhWUj8HQMqvNFzeyneMk9FIlKxtLArhE/XzXn37Ra31hZvyo3iT1
-	 IcwzFkiE8/XMcVQt1itxHEROQr41hnpno30WE6xpuiI9iHaoHsP7booUt3khfFRdQPJq6
-	 +Um8cBGTv3DuIsCG/Ny02KwAOW8DvHs78ZqZwbLQ0cBuCfJry/IwHiQ6LIbC8DU26Ig==
+	t=1794598046;
+	b=GbAg+G7t559dEFuMJdNmyb1I+zI32WbhchXs9/4EHndiBOzE4kiKYJCSmswhRmrjlXc9
+	 tyw6z5nEep51c/HqwtEvRyx7QyFAIdGOFaj/NsAp2uviGfy39UoJ+VVV0ENAO1CuZaWWK
+	 XXiZ1Jd40AjLP5aRLVpi4A+UUyf/FOYcjaq+4cdjAU/zSxtcqCcUALYn0GBlpUiOc1kWq
+	 Tnca5YvZyq8uCIDfS3pvwpqn3P5cjK7KuinuSpFYW9Py+vWzR+Vbt/gh2StnkTONoGGMf
+	 AHcPe3QanG/KP0jZ2U+e36hU5elB2I0IycD0C7QAIbLp/Ll7Fqm7Wtwt9VaP3DqyAxg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794598008;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794598046;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
 	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=PiRuS99+AkTRz0MXcWmZfyNH/KXYZ+AP4DTphBGSVM4=;
-	b=SUyJdnciD7F4TV0KNxCBXuH/ObPl5MXvjFyMxUdpOsd1+IAna7D6GpK89r4Y5Uig4/Kb
-	 dOj0udgRtNrjijWWouT5lZb+M5opdikK70+2ZRJ78s5TYYS0vpCo/K+e5px/ogHkv25md
-	 3i1AvoV2Qt72Ibg8Uux7qpiFpqnZFADAKd5OQ8qdzlzM9ukI6PmAlGIzFZ8slfAy6oLiF
-	 803bCDzkDH/OQVAOxy3Oedvo9xW/Xs9qvVXC5zvNMZqqI7JPwgwqOsChtDof4Aj0wBjx7
-	 P0NjT6JGBk3MC3gwkAkXshqU+8XTcJNIWQVYm+jQ0Oq0gGSDzzPPW3GHMKxR7dm9IzA==
+	bh=rWNSB/aKf2gXUDjDW2lO9uiQwvj+Xxn71g5+dKmym3c=;
+	b=ZRxFl7kcrDx9fa4SR0pYirT5KW6EkNFB6s41FyGSo9MBC9d9E04mqSE/+y6hprjW4tmz
+	 jVuZFT661lgYjVrVsC+OMU9SzGsQ3abgp80ftAoo40LSZS6q85oXvaqSD2c44PQTa++xm
+	 aTEMk4wKnycb6Ob5DxWQbQzjbiEOvNnyzmir8hImKmI2+5hvN/qPoCG0gVEPphc67jUHS
+	 bdtbT/Zm1WvFB/LVZ3AAsLxEHf9fnmlZvVRLsSY04s4o7bI65CDFkzMKTUInp4Oe6S9Nd
+	 AHnxaum5eInMf7oTz1b/UzYiKiOH9WtzNtYQbpFMSZajQcS9zjnyDeoGSjMlLeO2VDw==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=paul-moore.com;
-	spf=pass smtp.mailfrom=paul-moore.com;
-	dkim=pass header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=Nmr0pfLl;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.214.174
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gL8jZDdW;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.208.41
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E936E606A32D
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 19:26:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E936E606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961B5606A330
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 19:27:25 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 961B5606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=Nmr0pfLl
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e96502e447so19422385ad.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 11:26:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794598007; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=gL8jZDdW
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6b791a4b732so1167a12.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 11:27:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794598044; cv=none;
         d=google.com; s=arc-20260327;
-        b=frOGWFYsW66mN+fMB82meg1Wnb2UBvk7nLBo2wiTo80k3Ek2hhsU88Burd9OfcC68P
-         a4XqKZIvHSrSjI4aWvLL/CDzqnnCRlTXFT07j3tJ17RB5B28MuRfmsPtMQC1y6PWiOxN
-         hq4S32GuU3hLJx61/s5D85OyOWoznBydmXcfvJJDlMZvNPn8z1FH/k+5BepF5/LXdE/v
-         5mWEcglHS7a/9xbnNKUPmqTppZn474hsHg5cMfZvui/QyPGT0/MSb8qa5nm1bxxdRaLv
-         KfPBqywztDBwxKiQk9UjbYmspS9QwMqfV0+D9EmRwHihMSD7xrI42dBttTOqBal1Xz1F
-         5bqQ==
+        b=QLw/tS1zSDNOvsGd19kqxOMocFJiGnjyTufi6gbjvybvyiPalr9e00v/efxRZCAQzd
+         74wunefMf0XzH1qlaJW0i4QCB9tfbat4OEuddWsabWkQD1up3hhbpgs8hhVbRyWQKONR
+         9h/PIlhMQga5AVTijI8l97mP+WzaVXFyca/g35DRs3V/axITGd/DOKmJ59p3GE10JUpo
+         xI075XYyaM8BgdJEEXFt2PCubKIiDs/OMrmDxvilGvtsC7i8TYkPWt4qoBYg06yW0a+b
+         WvpbmZfXnc0dphJJHoXPNFILj073+RH/QSv/WTlyk39Cw5k4gHL5SUTFz7/4uYWq/aS3
+         BG6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=PiRuS99+AkTRz0MXcWmZfyNH/KXYZ+AP4DTphBGSVM4=;
-        fh=P34glnjE66MpBk/fF5uJtjwix49bwEM+gyOciSCIApo=;
-        b=WL3g9PpkjYX9MA2Ulx26mm0YCfCpN7ziIhFlBQ4Yei52t0EkheG3sBguqh3k+kFmKt
-         WRip8NKFUO6XoDXYGT4X4DYg2/Tcuc/z+LsgLXN1a7v2wHXXht3iQMaUnN7v/EO9qt3B
-         NcKYxwsbbRUBu9ffXJHlD9QkMQPdIhKPJ5l9sGP7lherzJHzVTQlpxWaEHZSXPFxI78N
-         zpb/7ael7is/HyUxRlplioybFeuFCsgrVtJbXrG2Ev4jetOhWTffB586UinBKfJV7pfu
-         HqYZbfUK5hgtqtN5vC7HnL/N4EdZeDnDBFb8FxiIs5G1rAHbLOKnetAB4UPYvZQGtI9p
-         zRhA==;
+        bh=rWNSB/aKf2gXUDjDW2lO9uiQwvj+Xxn71g5+dKmym3c=;
+        fh=jmGe+SMD5zQTdRLkD8Hj0ZYVwGzBL4gjp3N2daYl7Fk=;
+        b=WxKRbtC0WoUAmkRCcIEzFAYffoIlCHt2kxatSh6SGuTEalfXCWB/Y7H13VSJ8LCpZG
+         JBVJKZcGLkgkaRroz8O8yQh6wdvbHZO/LbmHuTOPFl4LHoIIfsI+onRVXA7r7bynSF+F
+         FaCZD5SarpG8OSKjfm93CrKLnbxTDN0lHvVLCEhGooxv5p2GLM9ySGYgvzGT6zdupmUa
+         TnVpzmhxFEqEqDjgOSoMNj31qh9cnu0+owhNkcGxpIVrmnpUjUS8n4y5LrATy+ZvasfP
+         2BoXfbV1zzp98J3MbrLBXaTYLg9hLl1kWFuX1nKpndzNz0ffIFd+/Zb+m3oNm2zeLzLS
+         Eb8g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1794598007; x=1795202807; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794598044; x=1795202844; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=PiRuS99+AkTRz0MXcWmZfyNH/KXYZ+AP4DTphBGSVM4=;
-        b=Nmr0pfLlJ40O0dJ67qksgs+d9IhuS+a1YdupKLfLZLOx9Yd6Jzc4yMjF/dCnXK+4qD
-         8b7YpJ/zyBjcvWbsM9y+zdcrEzsuPp8c7DNG5WugBpp6+ixKpf/dH2bGwXDG4b8Hy8yM
-         WVbEMWRe71aE5MNO1zKxHaChPkaeRNbHI5NwKiNEvcV0SOTCWq3rICi3NrPwvqGsvmEM
-         FW+ONk2U91vkXqRqq+JW2mFQwdtFQzUpX0T31sOtI8B+OfmxvtmMhwfop9dxCjR1/SIA
-         AtjR3FFDJpbo483/x4burtlVpH/5Z8YVjlsMxSrEs8MYdt7iCdUHCFNNZKX5rvrT7Cb+
-         CcPg==
+        bh=rWNSB/aKf2gXUDjDW2lO9uiQwvj+Xxn71g5+dKmym3c=;
+        b=gL8jZDdWoijYOUqqlj8DOAFvK6zCt6P1zN7hO5bgTFypZZ4sQKlyeApMVL5tn//P0M
+         6kW3UYi9iCdBDhHfk6wKFTzI+2CfsAFBw7Rqv9Vk1nFOxXNXN/aD1X2E3ajfnJ6UGuBm
+         glDsl536MTl2iP4zdDhrwJ/LeGsb/n7BT1C7dJ/ov1VxHcpDm2TAmCZoixEJlYoKVorI
+         ShfqoCaCnn5MgtpAfxRcrwijJhRmF2tjMYr+EO4otzUnXlUcb3HThkZkliJTv9xT5miG
+         cFjd4sB1mm4TKPqC2fzbcGlemMbI6HKTVpEDf72EISt32sXh2M3a08l80d0nxf1IFaH4
+         Jg6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794598007; x=1795202807;
+        d=1e100.net; s=20260707; t=1794598044; x=1795202844;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PiRuS99+AkTRz0MXcWmZfyNH/KXYZ+AP4DTphBGSVM4=;
-        b=UnrRZ1JhiEiHaD2Ce4MvtbHuZy94SW421V+mYWfZ0+Ba/mSxqe6OUkuFfDkEafO2W/
-         EQyypBvZkisMwP3j6gGwP5xpV4uKLPqEZMcT5DweRLIUYIJctCQWkstGJfhrZ/0Z7G8M
-         7Mo3qwNkjrFL09ahCyG8+/8iDpLmOE5V945wvvRM83owdbHH7XZhAGlNtZ92rNABWfV7
-         CucUYHT+pMdwLfZYJQgI1D5aDmRuSpptdjAd2W0EJF49Ara5ADPJqBLAB1Uprw1zdSWx
-         3ulpk8t6MDpzjr6eGNRW5pRNsYhJXUDSWTnf4IVvUaAw9Y2Yx/w5zYmQUgJLnB55ubvb
-         SjQA==
-X-Forwarded-Encrypted: i=1; AL+hErG9i+XbbS0KLM3pO+VzJhXh9sbU5xQgMxoX449dmjeGega2i/MRdARn+aaHdhxVbUZu6MDS1l0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+OpOGh29Yuo4SRccFiqKu2C04WATDQPGrtI3T8tzhT4f8r38Wp
-	wY2K9LjmVLmiqtZUpi7AGTjg0982olCMgn610zLp6bqnXQs8NzVELk6ZQp4q+0ovadfdnxX5EMl
-	2cR79IbVA8dz4cxnlgRUaPO9H69qvRPVq3yym/Xmg
-X-Gm-Gg: AYBFou2D+/AuOtGV+cHK1I4FHxVALYWr3sZpdiq008KMRPN14/7N3yaD0mJVVsDJ+V7
-	smp/Q8a8+Sf6R6hgrDBGuVWpRDaGLtU2PEkH68B2GSWEfUIeiA3sZuAe67NI8G4ZiZ9/Y6dBQnx
-	fO7tPx/2y9q2MofbMd+jMNifxA+miK3hhvjTycexvBB14TbgJDQF/M8YvSoNGA633woD1yCZBk1
-	WP1afEk9NHC6VXu1kMNUSwp1KV0K82TBT0aaINeiIia0HAKAhtlKQz6/z9Xl1uRtTiYxipvoupS
-	mnbajyXk+1tpPsOO01PVFRaq6VxKt6bn9/V3Mme186ssOZWsFml/v8+LTRdH8L+ypfTR/qFvagJ
-	9S9SLoNowb2Wq7Hz1eypr2lOyvJ6SCAY2aiOwJ83h/lEYzXHzoVgrgdDV+AMdOSqjWGn05xqGqr
-	mE9hzEc/9DVrhE8g==
-X-Received: by 2002:a17:903:22c1:b0:2ea:192a:13b8 with SMTP id
- d9443c01a7336-2ee0daa3657mr34970525ad.20.1794598002581; Fri, 13 Nov 2026
- 11:26:42 -0800 (PST)
+        bh=rWNSB/aKf2gXUDjDW2lO9uiQwvj+Xxn71g5+dKmym3c=;
+        b=emCjcqLvDflVOm6XIg/gV9bqbjg3riG8u/dI/Nq7anjXZHJNLuTCyO3V3M2DiZB06C
+         RsoDxK3XlVdzDJJ6ttcJn9Y3G5fg13ucBIthgmODWWoRotMh8qsIW0wTODKedw3QwLdQ
+         +B2CkBXsPE9K0+XflfydORUWnwKdNc+H6iCb4dffhfgh1+6rJCWSyo1zPxUKjbuSUdvK
+         yThvQmTD/4IMUk0lg8Lq+UUQQQiUNUJZUPBvlONaERVjDFInphgr2NZP7TPSuxoVJECh
+         36bTcWqdsjkdyuYS8bB4VRYfTEzbzoSdAXMs+XA4wol+WJUtnZjcGBkm4yDqXYRtkaHe
+         qTiA==
+X-Forwarded-Encrypted: i=1; AL+hErGAjxiENNhwCuyNv+fk6B8hV+Srk7sfopD6FwTOacl9Q6u6mmXOigvyj9//eX7HasZzYA/6zNw=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9nI1TEWCssgtYnATDlcFbNjXsAsmxPvDX743UOZVcEcJF5jUSG
+	ggWkkilvIrU3PXjqHZvv1vJzMH2O19X55GgovJPkQdWjCpWAwqN8ByOKFYf0bfKs7K/ygMu4xn6
+	Kv7yhoS+QGIhf1Hslfn32Zla1QlVGhhEyaXH7YMvA
+X-Gm-Gg: AYBFou1iIBpoqU4ERlo/bMh/eQO58r1/duVmb3g9wKNC6drcY+bxGb1MJmnepfBB6KZ
+	G6JNdReL3Js6kmRtzbM8up05ooXAkLBuvHvbwMNO9BbHTYBhyrIQdxD4okzNbBOY9ezURVX0Oyl
+	m7+bNH5mKj33HCr5gRY1IEN9EbbPiVUnK+RlWVykgyCDapmgfYsvBq7rsUF9tTQghT9UxVzVKAN
+	A/O5VX6lF8DM+3YVUprHZfrPIjrBt+JHVWQy/3GQDAtXu9sLfCw7Yl7uEP3fnHd6DKl6u6HiVP+
+	Qaj0Ff1bL3z+o95j9un5CHraCKrIeyLnNW7zMR/BpZoFHI/RUSJlVhvdj2C3ebb9luRdt2oDxzm
+	5eARNubGzhyr2BBu+cfS8IzhGMjnJ6vtgm8tGZFUOrvkSymitGBZskVqiL5JfNgaGtl8=
+X-Received: by 2002:aa7:c60c:0:b0:6b5:5d24:5d90 with SMTP id
+ 4fb4d7f45d1cf-6b7e064b605mr11515a12.3.1794598043562; Fri, 13 Nov 2026
+ 11:27:23 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,52 +104,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261106-cipso-rcuopts-v1-1-31ae931d7a0f@google.com> <ad935fe9-31c6-4b64-a715-4af428b389b5@schaufler-ca.com>
-In-Reply-To: <ad935fe9-31c6-4b64-a715-4af428b389b5@schaufler-ca.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 13 Nov 2026 14:26:30 -0500
-X-Gm-Features: AclHuK8_VELfOWb6QxDH9msFQuAihFI-MTzoli1CQDJEubxRePim00n173V_ijE
-Message-ID: <CAHC9VhSzdLiJyRfv2+rScvX=6ObQavHvs_UbNKFDabJNzwC0Ew@mail.gmail.com>
-Subject: Re: [PATCH net] cipso: stop modifying live ip_options_rcu
-To: Casey Schaufler <casey@schaufler-ca.com>
-Cc: Jann Horn <jannh@google.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Simon Horman <horms@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
-	netdev@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, selinux@vger.kernel.org, stable@vger.kernel.org
+References: <20261110102039.1002605-1-bjorn@kernel.org> <20261110102039.1002605-10-bjorn@kernel.org>
+In-Reply-To: <20261110102039.1002605-10-bjorn@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 13 Nov 2026 11:27:11 -0800
+X-Gm-Features: AclHuK8F8Y_DVnfmHCZelVEZmvLdtuJXie3zRJu-e7GqKDc7mN1PxeFQiqOooCY
+Message-ID: <CAHS8izNyMM3pSJJXZga+OL6QMHFgnF-gu-+vzk6DO=EC4CLfuQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 09/11] eth: fbnic: Use netmem for RX headers
+ and XDP_TX
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, netdev@vger.kernel.org, 
+	bpf@vger.kernel.org, io-uring@vger.kernel.org, 
+	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi <bestswngs@gmail.com>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Stuart Clark <stuclar@meta.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 13, 2026 at 12:17=E2=80=AFPM Casey Schaufler <casey@schaufler-c=
-a.com> wrote:
-> On 11/6/2026 1:40 PM, Jann Horn wrote:
-> > cipso_v4_delopt() operates on the ip_options_rcu of a socket or a reque=
-st
-> > socket, and tries to remove CIPSO options from the middle by moving all
-> > subsequent options.
-> > That's not allowed - ip_options_rcu can be read locklessly and must alw=
-ays
-> > be consistent. For example, ip_options_undo() reads trusted offsets and
-> > length values from the options buffer.
-> > Fix it by doing the modification in a copy.
-> >
-> > The core change is in cipso_v4_delopt(), the rest is ugly plumbing to
-> > propagate memory allocation failures.
-> >
-> > Triggering this bug requires that the system is configured to use CIPSO=
-.
-> > (Setting up CIPSO requires privileges in init_user_ns.)
-> >
-> > Fixes: f6d8bd051c39 ("inet: add RCU protection to inet->opt")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jann Horn <jannh@google.com>
+On Tue, Nov 10, 2026 at 2:22=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kernel=
+.org> wrote:
 >
-> Sorry for the delay. I have tested the Smack part, and see no issues.
+> fbnic reaches header and XDP_TX buffers through struct page, which a
+> provider net_iov does not have. Use netmem for both, and set up the
+> xdp_buff with xdp_init_buff_netmem(), so XDP_PASS copies heads that
+> must not leave the RX poll.
 >
-> Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+> Signed-off-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
 
-Thanks Casey.
+Acked-by: Mina Almasry <almasrymina@google.com>
 
 --=20
-paul-moore.com
+Thanks,
+Mina
