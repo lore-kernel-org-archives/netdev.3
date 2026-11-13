@@ -1,79 +1,102 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.70
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794580075;
-	b=ioPGVIaXw93vAZOXzbsMPGiHTJTyrpCkyXlR8icvx2oR0nXu7rM/isEnX01m6GPKrOiy
-	 Xif+EVE3AykY4TQGUE+Blr17jCRrzyZneCWpvQGDuU/hDeHc2u5yA5+sc7aQh6KNUPQU1
-	 kqGUDguIAg+YuS6oG910DbhZhxV5qetqAEywdI+wz6wuxIaXSycMDkr64uHuNULNQFbkF
-	 G07Ivou/l1VVShcTMjx3lCvquJSKRshu+C0wzeLnS2k336Ij9VjKS9nlU7arkfItmvX7I
-	 IAACsLQl8qYjUp8e3MFGYgfGXekSpQrGfwkuhXme4WdFK5a3lhrOYgNohbAmXiMooXA==
+	t=1794580160;
+	b=sHIq17QwGFdecr6HmqMNcIcL37Rs1gyGsmO/lweBDBVviGITYmfMB/+LiVsA/a0Mei8q
+	 xvOaqNbi/49DoqtVJ3+4mmqdEZtrrhuzn47MHVauf+htH3APvntrpEUu4WUwCgdjD3qVw
+	 ZvAlHv8w2c+twGb3Inyb7QpwdywDGkuZerfcKmUDL6e1kc2Ckw5VdxTqLv9cyhERpQ0k9
+	 TMCrTONtRFHMPkKv+tTh25V5jf7jlSvffaC1khExoXu/RxLNHiQ+Fpv9fvNy/dFEiM8mg
+	 kVPkq3BxtjxRvAlk0SYj/e4aBq+uzH9suX2Fv4tMzli0lw/JAGUMek+pfj6xgXilKIg==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794580075;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=jzMjuQl8C8L+Em4Znh14MLOEnvwiWcUFEgHaJGwy67Y=;
-	b=Oei5LJx2fTEGyjnCUbLHLsYyE0/Tp6c5xy3HPZTcETzBBw8u3diogN2i7o0HEzo4165q
-	 DmrCGutvHN+Prs7J6GF2QKGU0ZDzbCYytjVilOgqkZvIDgC0F+5H2NAOn1rLJccidqe8P
-	 Rq2Mvvuxx/SzFppgnbgRCP6LlVf09KG2zhCer+Ga9e5d5ykFinxrEIykwQ6mx6tTUa2zt
-	 julFYi155iTNpuTSOAcouRXynXSr2IQFQ2mVhDlf0KORBVDDJTEmf5jUXZh2OwkocyNVD
-	 IPZ8PzIQgQAdbLBzt2i4ZDN+Jn+/iGs7cleOUGOx+TrpwfEdixgVQnvY4exMgqgVwRg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794580160;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
+	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=OICuhvTZflej+WWR7scHPBDRm7v1T31zRnEt87KO+lk=;
+	b=Ww1n5ZicOjGlSpyrhavVg2E0ANIA2aFwITrjcI9j7kgAoDkmBj9OEO/RnakKrFH5pM1V
+	 xzkupSCTcpl/6022eAyUJvsWrT+vGYZ5wEicCf3ESjbNbqoFshTnjuaC/DwZuqKDWLTDB
+	 lQTEo0oWEHgF+8k1/uWTwUNt3SwgitO8km+G5ARMe3e52lAMlPBh0Ru6gpXC5dHsd5rBM
+	 T+37n4J4WHdyFVIo0JyC2fHNnciRadRrR0C5kS6dP8P8dvfjkArmBZxZKPU7cCO47ekw7
+	 BgNC8rTSx2G+ZceJtMV8ETZCiS3aT8skqkhLNm0+50C3y1+MVoL/0ub1zZ9CCD6sR4A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ki5GTd9k;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Dvmg1RR1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.70
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012070.outbound.protection.outlook.com [40.107.209.70])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A315606A33E;
-	Fri, 13 Nov 2026 14:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66987606A335;
+	Fri, 13 Nov 2026 14:29:19 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66987606A335
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ki5GTd9k
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794580074;
-	b=N0alwnz6QfVwG6Mtrn5ARQiLlo0YgbVJCqu+lRqB7kXDXtXYdGU3UrWVye8U7Bvxjak1
-	 1X+GrWIyPN6e9XPHCoEwValj4ooUKUp7mMrya+UUaQdxGkqp2cYwoUpH39qzTtxStmBz/
-	 ZJA3i+SimKpNRmKAQnJvPwdLUPQkQsQhRnmj4+1vq3Qlrap9r4KpskkSzDhcq1z+xpME7
-	 byqCF6VB/9zAOgfbEQrNr5UfkJJKgXX3ZqQ5ZPsKWI2UxFDN+ujWbV2+y5vO62gpsxc65
-	 wND4+g54f0UsJnOtqZ1sVeem/5bfvkzQGEBX97eIGbITDbAXSM6e/EZws/oGOds7qUQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794580074;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=jzMjuQl8C8L+Em4Znh14MLOEnvwiWcUFEgHaJGwy67Y=;
-	b=Q2waibrU/69Xc0RBeM7enCfhx6odNsxGm8iElZOy5MjEF1JryGgX65XLfxrD7KhxMq5V
-	 71S51ZH+LPDE+CaHkCA2Ku0/wZq/qpi8VL5DfcXLMfpHuYozO2Hl8AVz8xOcPu+L77q+L
-	 wdO98Du+QH630JM17U/ThWZ6q/OQAuIWzihF4MOpHj1d94n6XZYkdtVAauANopDHXmU8p
-	 x/AhMEfpys/uopxstTsv2DmEmihDYg0DmR1sH4HaqozYH+JypNiNCxpk2EeozfUvgARTb
-	 viBYHInaETpxyXBw28yjEL2VdVJGEHF+fEHyV8aq6mf/1LtPvX913cGOjNjhO+MIiGA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 0A5DF1F000C5;
-	Fri, 13 Nov 2026 14:27:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794580074;
-	bh=jzMjuQl8C8L+Em4Znh14MLOEnvwiWcUFEgHaJGwy67Y=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=Ki5GTd9kZO1v1YpRYCn9q37lTcSQoq1XQuVQ3TPce5Jm2d89KWb9tuiVln4Rf+GHQ
-	 pvnA78CO1sTOmuN8GNCBuU7iBaVAFaXdjgmUUEsbpLyZV8gwT4cpHhIYKP/hx6LsJt
-	 SifaHqnY6gtP8c0OnTl9tnTmUnVpQ8J/7l5SxWoV4uuJUvDtIPXdtJ/9dzr+l5JWh9
-	 2gbz/bcCZ9ar2VnwoYt4BiLk1uNsw5RHgYGOfC3LF1OhHGLTfzRkHc6Z1WHJBBdziE
-	 pgb/YWZDxC741EPw5WZpuc3Zf2ZdtIECmrObrnSoHIIrM7B8lp9d2tKV3Uu2MM+yjN
-	 PY/VDDOj+L+9Q==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5DFF6477FA;
-	Fri, 13 Nov 2026 14:27:53 +0000 (UTC)
-From: Marcin Knap via B4 Relay <devnull+marcin.knap.vecima.com@kernel.org>
-Date: Fri, 13 Nov 2026 15:27:52 +0100
-Subject: [PATCH net v5] xsk: Do not free ZC Rx buffer when the Rx ring is
- full
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Dvmg1RR1
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iV92TtQHqRbyUawm3iPLhaa5pW7hRDSKHcYET0R1EBzVgTXkspBK1b9NDoxiV1BoLLsQoFz0gPIT62fgVGfjDHpy5cAkgPPxsWBa0whnFVDfIu/Ix6qlA/2ABCH3YZpFeBPLknRx8pQxzR9VcBvvb7i04T9Q/3hBPxM5xkk9IqRWH5hhXeqRUBf2pg4ddhEtj9PBL1U7PAGlXj4r3Y9cO4kGzJDCd3P3jZn4i0dANOKWVIlCDcuSi1m4VLjU4fL2ouefdYVusfrsSvO2UpjjUDaJPPykMcyBiqKgZggQHY6Kt10zullFv5Bil9CeBsnvDuGPJWbtEoHjsF/MEzap5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OICuhvTZflej+WWR7scHPBDRm7v1T31zRnEt87KO+lk=;
+ b=pTF1Yc5kk1WVHIOmS0iSi0vIeYtgqZGP7UgWXIEn34ccGb1eEzbQapcsRHwGDebKyJXwvfYC2MUQW1ibJAS0hbNaW1HWKac5u8nU37NoFB/wq0osrtlcl/tIbDUNrhS3Z2gXUG0HLgDgIhh8up3FqC3raUh9zL49ueCGGjmU3T76qtZuMS7WxBkSM/Y9TcoEmdMCkEhGD/frloXB4waLeUyErM1oQ/kYZa2YIzdQEQDAeAwUWb9uinFqpAYggL1y3NUqri6jzwJf2aFfGY+Wn0PWS7dFDGnD7F+hY+H+pmee/dxErj7Sf8iI3TFhFemEc9yZHQ6KtVw0KSF/TvxqGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OICuhvTZflej+WWR7scHPBDRm7v1T31zRnEt87KO+lk=;
+ b=Dvmg1RR18osuDMghg+uGsUFVRpnN8/O+NDNlk/4lSfJPqjVLcv0AZWQCsWccVt9EXgjtQkd/L5o5ABYum47p3s6EvwcpX9qi7Vymn4Gkw8l3VW37DJ4cYgH8INzP4fhNHvhT2Y6eY3yewaii9zI75x95OcMhpiEQ8N6/SyEnUrqLh3iJQ4tWljm62vEv+UeTxg6LDLo9hh7NdqFhU593HOgBdbEfq1rxBKSz6CJWM915Zsbc9evyVmI8GEyfjwXEQB56FPvRUT7D3DKFHWwyykpvJMxL3/mMq9lv4mwtRyESr7N/awDcOgPunkjNbGdj3SdQPah75E0IWajgfmdpMw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CHAPR12MB999248.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::22) by BN7PPF8FCE094C0.namprd12.prod.outlook.com
+ (2603:10b6:40f:fc02::6d8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Fri, 13 Nov
+ 2026 14:29:08 +0000
+Received: from CHAPR12MB999248.namprd12.prod.outlook.com
+ ([fe80::4972:8062:d74e:b205]) by CHAPR12MB999248.namprd12.prod.outlook.com
+ ([fe80::4972:8062:d74e:b205%6]) with mapi id 15.21.0615.007; Fri, 13 Nov 2026
+ 14:29:08 +0000
+Message-ID: <52cb2c1f-5fe4-4c9d-bb41-3bdc688a6c2b@nvidia.com>
+Date: Fri, 13 Nov 2026 16:28:58 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next V2 06/13] net/mlx5e: Add data direct RX
+ infrastructure
+To: netdev-bot+sashiko@kernel.org, tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ bobbyeshleman@meta.com, cjubran@nvidia.com, cratiu@nvidia.com,
+ daniel@iogearbox.net, dw@davidwei.uk, erfansh@meta.com, gal@nvidia.com,
+ Jacob.e.keller@intel.com, kaifengw@google.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ mfleming@cloudflare.com, almasrymina@google.com, razor@blackwall.org,
+ saeedm@nvidia.com, horms@kernel.org, sdf@fomichev.me, sdf.kernel@gmail.com,
+ witu@nvidia.com
+References: <20261110183826.2927274-7-tariqt@nvidia.com>
+ <179447640550.2199510.9976355768850888899@kernel.org>
+Content-Language: en-US
+From: Dragos Tatulea <dtatulea@nvidia.com>
+In-Reply-To: <179447640550.2199510.9976355768850888899@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR3P281CA0067.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:4b::14) To CHAPR12MB999248.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::22)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,276 +106,229 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-xsk-zc-rx-double-free-v5-1-6ead3af4d131@vecima.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XPwU7DMAwG4FeZcsZTnGQt2Yn3QBxS12EB1qKki
- wpT331pd9jQVHH8Lfv75bNIHAMnsd+cReQcUui7EnZPG0EH170zhLZkoaSqUKKFMX3CL0Ecoe1
- PzReDj8yATjdyZ6k16EW5/Y7sw7i4r6LjQbxdh+nUfDANszivHUIa+viztGdclv8pyggIyjm0v
- qrUs29eMlM4ui31x6UkqztGyzVGFYa8xNY467WvHxh9Y1CaNUYXBtFJqtmjrfUDY+6Z1afM/JR
- hKR0pVbg/zDRNF1JEBNOnAQAA
-X-Change-ID: 20261019-xsk-zc-rx-double-free-1a3b059cd41f
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, jtollet@cisco.com
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
- Jason Xing <kerneljasonxing@gmail.com>, 
- Nitin Shetty J <nshettyj@marvell.com>, Marcin Knap <marcin.knap@vecima.com>, 
- Joshua Washington <joshwash@google.com>, 
- Harshitha Ramamurthy <hramamurthy@google.com>, 
- Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>, 
- Ratheesh Kannoth <rkannoth@marvell.com>, 
- Subbaraya Sundeep <sbhatta@marvell.com>, 
- Bharat Bhushan <bbhushan2@marvell.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794580072; l=9330;
- i=marcin.knap@vecima.com; s=20261019; h=from:subject:message-id;
- bh=AIRvjG754M3Sj+HEOteZxm3m/GpLx/VY0+cKvGXe26g=;
- b=zB3gPzf/0sJ5eXrmEbQ74x47vNq7n1pTvVq58hqDTGLdkK79RCz5FTQhxR/MaGY5aXsI2bj6l
- a+TqHBR2f4BC/sP6QtOeIsNvzsc+YE4wl2W03VomnEx21QsLasFyq7h
-X-Developer-Key: i=marcin.knap@vecima.com; a=ed25519;
- pk=rCvVOuopf4s4BHtLE+FRnv0x83PoFHgBPo9mtNlvzLk=
-X-Endpoint-Received: by B4 Relay for marcin.knap@vecima.com/20261019 with
- auth_id=1237
-X-Original-From: Marcin Knap <marcin.knap@vecima.com>
-Reply-To: marcin.knap@vecima.com
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CHAPR12MB999248:EE_|BN7PPF8FCE094C0:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40c94c30-63ff-4f1d-d933-08df41927a16
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|10067099003|11063799006|4143699003|261021135927099003|261021121427099003|261026121527099003|56012099006|261102123227099003|261009223027099003|261028144727099003|261026140227099003|261022105027099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	rGpvHXia3E8IOgZFPO16R9Q+C9yiTu51C1E4jB/JENpaodeDmjdT5XnnBXV0RSAt0GkKyTYJw/sQfu1WfsTwgZQU2ja/T9SKiFjj0XmtnuKqwFXcTZMpy1dHpq8U7jGIWsV8BYt+xGML+4E8oIfK8yecka6BqHm0j8zzdZvejwibBam3WSnRJL2Hf2i+P7yv6hcySWRse32ngqBa/p8juKdLOJWYaWMUPYTdEyVdLQCa+vCnCRVdqYYttXNsbuKa0BpTaGSRQtHr3kY8OH/z2eQwTZE22Sz492jtFZvaTZEpmuW1Z/JmO+uWPmXNUTb6iaw7J0cPSOMPt2xuVPt2xZT19PP+bXhcfz7eNGs+gpCt30FIu/NsIdassvnR0+x0Ba53ZnBZJyUHMhHG6kzlcxjHZrdVSRvZiUxD5hSe1cVl0L0InxuZD6oeo2DWytCzSIV/eIhSFwm8ab24R9dE/PTn9eDJ2DsRBWHyC7V/2vLtBNxZeRI9IrfF+izrAE1zqW/ic6VF8kMb9RZiQOdIN24U8eqH9urghttPvlFECNUXFTK2T8zNFHMw6ZyTRuT/UUY/oiGqSUhKomFbtATlT7GZ8wFOIJmYT/z3fqTJrj/ae5f2006GKO6kCoKQYsOePPbGp51gTBrUsuvpK8MjF/RYXvF62vekJUVdhmiVtek=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHAPR12MB999248.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(10067099003)(11063799006)(4143699003)(261021135927099003)(261021121427099003)(261026121527099003)(56012099006)(261102123227099003)(261009223027099003)(261028144727099003)(261026140227099003)(261022105027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YkEzMFNRTDJVWkIwS2gwdWs4YmluNmgxaC9udUM2TGg5S0x4dDR1dVlvTTJt?=
+ =?utf-8?B?Vm9DRUd2S1NSV2M2VUFnTnp2aGV1MTlBUnhCaVYzd1BtdWVRMW1vTTE0YXBv?=
+ =?utf-8?B?emhFei9BT2RSRkw2c2RHbmZlblFhc29GOXRYNHAyVW5CRFFyNFdMcDNxZkdq?=
+ =?utf-8?B?dW1Uc2lVMHExdzRxdEtkSDcreTZ5VVhsQThPT2Fva243T0IvcTRBZVl1UXcy?=
+ =?utf-8?B?eDZ2OTNaRlgrUDAyY1o2a2UvYUs1SDVaTVdVTmFNc2JNYzc2NTM4KzhKZlN3?=
+ =?utf-8?B?UUtZakJPRmRzTkQyR0k3YzZwUGtqdkEyRE9sUE1NQ3FLdUN0MzRCMVdyUk1M?=
+ =?utf-8?B?eVJMUFZOWlZkN2VKUTF0YUhiNm1qNnNhN0RnNC9NMmxUV1Z6QU0vVWlteUxZ?=
+ =?utf-8?B?S0tmb2tQblcvRHN5VG9mNENWTFE0M2hqWldBYlBzclZHNlM2elZ3WmlQV1cr?=
+ =?utf-8?B?RmFJVTBxNTRRUjZJaUUrQU9kcGx1bjd3VGh6TW0wN0NRVVJZUGs3a1NWaWUz?=
+ =?utf-8?B?MkJoTW5FV0prRnU2SEhwMSt3R2dkOHROUHFFVzdQTjE0dmZQYTR6QUgxV2Y0?=
+ =?utf-8?B?RmM3Vlo3ME5EN1ZXb3RpdEFENThSMERhaGwxNVc1T0xDR096VXF3ZCswcGhC?=
+ =?utf-8?B?VEM2UzV4L0dDNFAxWUVVTmJUb3ZqdW5OUEM0TWVIR1hJbzhiVjBMcmFTejZi?=
+ =?utf-8?B?R1JHREZtbjN1eERxaGQwVDdaNmwwa1pzYXd5UWU0Y2tBTWZ3M3U0REFrQlRl?=
+ =?utf-8?B?a0NtbmZKQktQaDhOWWFGN3p1UjRnRXdNQnh4NGhHOVR2cm03WVJ1YXJ5WjdW?=
+ =?utf-8?B?VmNnTndocFdseDlCN3UxZ0JzcnZQdGs0YTJsOXBDa20yUkxiY2VBMmRpeUZ0?=
+ =?utf-8?B?ajNKTTM4REI3ZjE5Q2lHM0NNOGNrZlFYcjQ0bnVtYW41V0JUditkQUk2RGsx?=
+ =?utf-8?B?WWQ5WHVqa0JoSmpaUTVncVNuSG1jU1ZGN0Y0alhMYjZkOUVHSWFlVWlsaVFm?=
+ =?utf-8?B?bEI1ckV5TDlxQVlsWkJIcTRvZU1Na0VmOFNlNEpiZ0R1ZGFrcWhpUnVHNjBm?=
+ =?utf-8?B?Y3czdEtmWnNLZG5JSGJFNEo0WHVzZVlHVXNTa2l6VmtPQjU4Y3h1R2RtcHBU?=
+ =?utf-8?B?dnJjUktDUHBwcXorTi9OZEtERjFBODc3TlVESUduaUxqT2VGZ2QxdmU3bzY5?=
+ =?utf-8?B?ZDdIcTNmeFVBQy9XcFBGSGVRd2pWN09jSFBQV2hsajJhck9EVTdRemtTeFJH?=
+ =?utf-8?B?Vjk1blIrTHU0cDFmNWYvK3krSW1EcjNKZjVHV2QzbjRaWXUyTG9RQmpucldp?=
+ =?utf-8?B?ckpacXp5bnQ2a0ZVYkE1YlJZZi91OHNOSEFSNEpVM0h6Snd0TDNZU1o4VVVM?=
+ =?utf-8?B?cXMwMnJ5NCtkUnYzeEhXaTJ6UmlWT0R6SjBmcFlIYnJ5amtJV1ZsamU5bTdF?=
+ =?utf-8?B?aWNTeFhHRGJoY2JmWGtMZUdIRE1rR0ZlcUpkK0R6U21YZWRCVjk3UFZZQmVv?=
+ =?utf-8?B?cndVUS9ZUW1renZPKzVqWW9Sdy81dzlNbGpiWU5QSFhuNzBjNWYrbkFmNUJu?=
+ =?utf-8?B?QmtVOW5Tc2Z6NE1VR1cycHVYZVZ6ZFZ6UnJGMVIyUWN1M05PNXpWTk1xdFds?=
+ =?utf-8?B?ZndwekV6QmJKRlQ3OWtDZXZoYVlLVnZYQURjdzhrZlhFWG5pS2tHVVZyKy8w?=
+ =?utf-8?B?Wms3V1FMQXlnbUtWM3dHVHFBWld1SVlKVE9ldTliem1YZit4OVhmRTcxQWFH?=
+ =?utf-8?B?R1JnWkRwWWNiQVNOWTg4bEM0bU9yWi9FYlJNSllFYnVKVnVWT2Z1WG5tdGcy?=
+ =?utf-8?B?YVpST054T2Exa0NHTHJ1bngvaU5rL3BMd05YWTBIVXhFdmJCdThESWxKdXdp?=
+ =?utf-8?B?WDhsMUx2UlRzMCtjcXpHYkM4bjhHR2NDMmsrK1lSUm83VUZabmtDWmVsNVZj?=
+ =?utf-8?B?NXdITzVmOUU4bTFPKzgwY1orSzZJanpjbElMRHNLOERCc3JMZ2JNYjREemwv?=
+ =?utf-8?B?Njc4cE5YVmUrWlZNN2d2YWxjLzJ6T3FuUUpISGxzNkhsdEk0S0xERi9PUk9r?=
+ =?utf-8?B?NkI4SktwTmRzNjVtaFIxVnNwbTQxMUpyNG5QL0FvYVg3U1lJdkRiNUJ0ZnNq?=
+ =?utf-8?B?Q2tWc0xPNENScmY3akxra09EdkNVUlBWN21uU2VLT0RIVnZURUpUVG41blNF?=
+ =?utf-8?B?dlZQWFcrNVh2SkxNYVU1MXpLZk8xdDl0emNibXEvS2FxSjZXcmVzcXpEbi9E?=
+ =?utf-8?B?Uk0zaW8vN1l1ODVBWXRURUdnY3FYUm5xbVhVdXR6QU9jRUI3c2ZDQTkwNmow?=
+ =?utf-8?B?ZHF0clNONW5neS96TlZWOUY4MjNGbCtnajZGck1JeGtaeXlDQUt4QT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40c94c30-63ff-4f1d-d933-08df41927a16
+X-MS-Exchange-CrossTenant-AuthSource: CHAPR12MB999248.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 14:29:08.1492
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OWj7Ofc4sdt2c1qGO9GXiaOwDEsZi2f0/vDGWoJntdamy0bIPvvuc6ggY7bPhZVxZirsTUl6igYvYVzP6YUQNA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF8FCE094C0
 
-From: Marcin Knap <marcin.knap@vecima.com>
+On 12.11.26 10:40, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 3 · Low: 2
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] A data-direct RQ's KSM UMR mkey has child entries from two
+>   different PDs and DMA domains.
+> - [Medium] mlx5e_alloc_rq() calls mlx5e_rq_alloc_data_direct_mkey() right
+>   after mlx5e_create_rq_umr_mkey().
+> - [Medium] net/mlx5e: SHAMPO header buffer double-sized in
+>   mlx5e_shampo_hd_per_wqe()
+> - [Low] Data-direct RQs are forced into MLX5E_MPWRQ_UMR_MODE_UNALIGNED
+>   (KSM) by mlx5e_mpwrq_umr_mode().
+> - [Low] mlx5e_create_umr_mkey() rejects MLX5E_MPWRQ_UMR_MODE_UNALIGNED
+>   when MLX5_CAP_GEN(mdev, fixed_buffer_size) is missing and logs…
+> 
+> --
+> 
+> net/mlx5e: Add data direct RX infrastructure
+> 
+> This commit adds the RX side infrastructure for data direct in mlx5e. It
+> adds a new RQ state flag and a crossing mkey over the RQ's UMR mkey. It
+> also creates the KSM UMR mkey in the data direct PD and sizes the ICOSQ for
+> the KSM UMR mode. Data direct itself is enabled in a later commit.
+> 
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+>> index 5caf7820a136b..61a77ee77244a 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+>> @@ -62,6 +62,9 @@ mlx5e_mpwrq_umr_mode(struct mlx5_core_dev *mdev,
+>>  	bool unaligned = xsk ? xsk->unaligned : false;
+>>  	bool oversized = false;
+>>  
+>> +	if (rqo && rqo->data_direct)
+>> +		return MLX5E_MPWRQ_UMR_MODE_UNALIGNED;
+>> +
+> 
+> [Severity: Medium]
+> mlx5e_open_channel() only enables data direct together with SHAMPO,
+> so every data-direct RQ also allocates a SHAMPO header buffer.
+> Switching those RQs to UNALIGNED here changes the WQE geometry, but
+> the header buffer sizing doesn't seem to follow.
+>
+This will be improved in v3.
 
-When an XDP program redirects a zero-copy buffer to an XSK and the
-socket's Rx ring is full, xsk_rcv_zc() frees the buffer and returns
--ENOBUFS to xdp_do_redirect().
+> [...]
+> 
+> [Severity: Low]
+> 
+> This puts data-direct RQs under the KSM limits. Is there anything that
+> checks the ring size against those limits, the way mlx5e_mpwrq_validate_xsk()
+> does for XSK?
+> 
+> mlx5e_ethtool_get_ringparam() still computes rx_max_pending from the
+> MLX5E_MPWRQ_UMR_MODE_ALIGNED geometry. Its comment says only XSK RQs may
+> clamp the queue length. mlx5e_mpwqe_get_log_rq_size() makes the same
+> assumption:
+> 
+> 	if (WARN_ON_ONCE(params->log_rq_mtu_frames > log_pkts_per_wqe + max_log_rq_size))
+> 		return max_log_rq_size;
+> 
+> KSM entries are twice the size of MTT entries, and max_num_entries is
+> bounded by 1 << log_max_klm_list_size. Take a device with
+> log_max_klm_list_size <= 15, an MTU around 9000 and an RX ring of 8192.
+> log_pkts_per_wqe would be 3 and max_log_rq_size would be 9, so 3 + 9 < 13.
+> 
+> Would that trigger the WARN_ON_ONCE() and quietly shrink the RX ring below
+> the size ethtool reports? Neither mlx5e_open_channel() nor the later
+> set_pflag_data_direct() appears to check for this. The comments in both
+> places would also no longer match the code.
+> 
+log_max_klm_list_size is not <= 15
 
-A failed xdp_do_redirect() leaves the buffer owned by the caller, so
-the driver releases it as well. That is harmless when the driver frees
-it right away, as i40e, ice, igc, stmmac, idpf and most others do:
-xp_free() ignores a buffer that is already on the pool free list. It
-breaks when the driver releases or uses the buffer later, after it may
-have been reallocated:
+> [ ... ]
+> 
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+>> index 96b521d8bed35..cee73f3b7a997 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+>> @@ -425,7 +425,7 @@ static u8 mlx5e_mpwrq_access_mode(enum mlx5e_mpwrq_umr_mode umr_mode)
+>>  static int mlx5e_create_umr_mkey(struct mlx5_core_dev *mdev,
+>>  				 u32 npages, u8 page_shift, u32 *umr_mkey,
+>>  				 dma_addr_t filler_addr,
+>> -				 enum mlx5e_mpwrq_umr_mode umr_mode,
+>> +				 enum mlx5e_mpwrq_umr_mode umr_mode, u32 pdn,
+>>  				 u32 xsk_chunk_size)
+>>  {
+> 
+> [Severity: Low]
+> 
+> Data-direct RQs now use UNALIGNED mode, so they hit the existing
+> fixed_buffer_size check at the top of this function:
+> 
+> 	if ((umr_mode == MLX5E_MPWRQ_UMR_MODE_UNALIGNED ||
+> 	     umr_mode == MLX5E_MPWRQ_UMR_MODE_TRIPLE) &&
+> 	    !MLX5_CAP_GEN(mdev, fixed_buffer_size)) {
+> 		mlx5_core_warn(mdev, "Unaligned AF_XDP requires fixed_buffer_size capability\n");
+> 		return -EINVAL;
+> 	}
+> 
+> On a device without fixed_buffer_size, opening a data-direct channel would
+> fail with -EINVAL and a warning about AF_XDP, which the user never set up.
+>
+Devices that support data-direct also support fixed_buffer_size.
 
-- mlx5e treats the failure as XDP_DROP and releases the buffer when
-  the Rx WQE is refilled. By then the buffer can be in use for another
-  Rx descriptor, so an in-use buffer goes back on the free list and the
-  same UMEM frame is later handed to user space twice. With striding
-  RQ this also ended in a NULL pointer dereference in
-  mlx5e_post_rx_wqes().
-- ixgbe keeps the buffer in the ring on its need_wakeup -ENOBUFS
-  (XDP_EXIT) path and runs XDP on it again on the next poll.
-- dpaa2 hands the buffer back to its hardware pool while it is also on
-  the pool free list.
-- octeontx2 returns false on a failed redirect, so the caller goes on
-  to build an skb from the freed buffer.
+> 
+> [ ... ]
+> 
+>> @@ -546,13 +548,80 @@ static int mlx5e_create_rq_umr_mkey(struct mlx5_core_dev *mdev, struct mlx5e_rq
+>>  			      __func__, wq_size, rq->mpwqe.mtts_per_wqe,
+>>  			      max_num_entries);
+>>  
+>> +	pdn = dd ? mdev->data_direct->pdn : mdev->mlx5e_res.hw_objs.pdn;
+>>  	err = mlx5e_create_umr_mkey(mdev, num_entries, rq->mpwqe.page_shift,
+>>  				    &umr_mkey, rq->wqe_overflow.addr,
+>> -				    rq->mpwqe.umr_mode, xsk_chunk_size);
+>> +				    rq->mpwqe.umr_mode, pdn,
+>> +				    xsk_chunk_size);
+> 
+> [Severity: Medium]
+> 
+> With dd set, the parent KSM mkey is now created in
+> mdev->data_direct->pdn. However, mlx5e_create_umr_mkey() still fills every
+> UNALIGNED entry with the regular NIC mkey and the filler page:
+> 
+That's how crossed mkeys work for data-direct.
 
-Leave the buffer with the caller on both the single-buffer and the
-multi-buffer -ENOBUFS paths, as xsk_rcv() and xsk_rcv_check() already
-do. Make the drivers that relied on the core freeing the buffer free
-it themselves:
+> 
+> [ ... ]
+> 
+>> @@ -975,10 +1050,14 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
+>>  		if (err)
+>>  			goto err_rq_drop_page;
+>>  
+>> -		err = mlx5e_rq_alloc_mpwqe_info(rq, node);
+>> +		err = mlx5e_rq_alloc_data_direct_mkey(rq);
+>>  		if (err)
+>>  			goto err_rq_mkey;
+> 
+> [Severity: Medium]
+> 
+> This creates the crossing mkey right after mlx5e_create_rq_umr_mkey().
+> At that point the crossed UMR mkey is still in the free state, because
+> mlx5e_create_umr_mkey() sets:
+> 
+> 	MLX5_SET(mkc, mkc, free, 1);
+> 
+> The crossed mkey only becomes valid after the first UMR WQE completes on
+> the ICOSQ, once the channel is activated.
+>
+This is the design for all ethernet string RQs. Not an issue.
 
-- i40e and ice consume the descriptor on XDP_EXIT without freeing it.
-- gve DQO counts the redirect error without freeing the buffer.
-- octeontx2 now frees the buffer and reports it as consumed.
-
-This covers redirects to an XSKMAP. A zero-copy buffer redirected to a
-devmap, a cpumap or an ifindex is copied by
-xdp_convert_zc_to_xdp_frame(), which frees it before
-__xdp_do_redirect_frame() can still fail. The driver then releases it
-a second time, and the copied page leaks. That path is not changed
-here. It can be fixed separately in xdp_do_redirect(): copy the buffer
-without freeing it, free it only once the frame has been queued, and
-free the copy on failure. xdp_convert_zc_to_xdp_frame() itself has to
-keep freeing the buffer, because its XDP_TX users rely on that.
-
-Seen on Mellanox ConnectX-6 DX MT2892 (FW 22.47.1026) with AF_XDP
-zero-copy on 7.3.0-rc6 when the user-space consumer could not keep up
-with the Rx ring. With this change no duplicate frames were seen with
-striding RQ on or off.
-
-Fixes: 269009893146 ("xsk: recycle buffer in case Rx queue was full")
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Nitin Shetty J <nshettyj@marvell.com>
-Tested-by: Jerome Tollet <jtollet@cisco.com>
-Signed-off-by: Marcin Knap <marcin.knap@vecima.com>
----
-Tested on mlx5 (ConnectX-6 DX) in zero-copy single-buffer mode.
-The i40e and ice changes and the multi-buffer path are build-tested
-only, as I don't have that hardware available.
----
-Changes in v5:
-- Commit message only: describe the devmap/cpumap/ifindex redirect path
-  and how it can be fixed separately.
-- Link to v4: https://patch.msgid.link/20261109-xsk-zc-rx-double-free-v4-1-24e00ac221a0@vecima.com
-
-Changes in v4:
-- Commit message only, no code changes (AI review):
-  - Drop igb from the drivers that rerun XDP after XDP_EXIT;
-    igb_run_xdp_zc() turns IGB_XDP_EXIT into IGB_XDP_CONSUMED.
-  - State that the fix covers XSKMAP redirects.
-- Link to v3: https://patch.msgid.link/20261104-xsk-zc-rx-double-free-v3-1-11a0c7ef1973@vecima.com
-
-Changes in v3:
-- Target net instead of bpf (Maciej).
-- Reword the changelog only: drivers that free the buffer right away
-  are not affected; name the ones with a deferred release or reuse
-  after free (AI review). No code changes.
-- Collect Reviewed-by tags.
-- Link to v2: https://patch.msgid.link/20261030-xsk-zc-rx-double-free-v2-1-cf01d4a9f3f7@vecima.com
-
-Changes in v2:
-- Also free the buffer on zero-copy redirect failure in gve DQO and
-  octeontx2, which relied on the core freeing it (AI review).
-- Audited the remaining zero-copy drivers against Björn's table.
-  ixgbe and igb no longer run XDP on a freed buffer after
-  XDP_EXIT; making them drop and consume the descriptor (R2) is
-  left for a follow-up unless you prefer it in this patch.
-- Rebased on current bpf.
-- Link to v1: https://patch.msgid.link/20261019-xsk-zc-rx-double-free-v1-1-2aa19f6628fb@vecima.com
-
-To: Joshua Washington <joshwash@google.com>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: Sunil Goutham <sgoutham@marvell.com>
-To: Geetha sowjanya <gakula@marvell.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-To: Subbaraya Sundeep <sbhatta@marvell.com>
-To: Bharat Bhushan <bbhushan2@marvell.com>
-To: Magnus Karlsson <magnus.karlsson@intel.com>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Stanislav Fomichev <sdf@fomichev.me>
-To: Simon Horman <horms@kernel.org>
-To: Alexei Starovoitov <ast@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org
-Cc: bpf@vger.kernel.org
----
- drivers/net/ethernet/google/gve/gve_rx_dqo.c           |  4 +++-
- drivers/net/ethernet/intel/i40e/i40e_xsk.c             |  1 +
- drivers/net/ethernet/intel/ice/ice_xsk.c               |  1 +
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c |  3 ++-
- net/xdp/xsk.c                                          | 15 +++------------
- 5 files changed, 10 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index 82ed5e48b00a..cc544420df11 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -686,8 +686,10 @@ static void gve_xsk_done_dqo(struct gve_priv *priv, struct gve_rx_ring *rx,
- 			goto err;
- 		break;
- 	case XDP_REDIRECT:
--		if (unlikely(xdp_do_redirect(priv->dev, xdp, xprog)))
-+		if (unlikely(xdp_do_redirect(priv->dev, xdp, xprog))) {
-+			xsk_buff_free(xdp);
- 			goto err;
-+		}
- 		break;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-index 51a05ce4c7ce..a11ee1f3fa38 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-@@ -360,6 +360,7 @@ static void i40e_handle_xdp_result_zc(struct i40e_ring *rx_ring,
- 		return;
- 
- 	if (xdp_res == I40E_XDP_EXIT) {
-+		xsk_buff_free(xdp_buff);
- 		*failure = true;
- 		return;
- 	}
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 0643017541c3..7c1dd4c87a71 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -636,6 +636,7 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring,
- 		if (likely(xdp_res & (ICE_XDP_TX | ICE_XDP_REDIR))) {
- 			xdp_xmit |= xdp_res;
- 		} else if (xdp_res == ICE_XDP_EXIT) {
-+			xsk_buff_free(first);
- 			failure = true;
- 			first = NULL;
- 			break;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 90af9b9044aa..6d10c132f61c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -1555,7 +1555,8 @@ static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
- 				*need_xdp_flush = true;
- 				return true;
- 			}
--			return false;
-+			xsk_buff_free(xsk_buff);
-+			return true;
- 		}
- 
- 		err = xdp_do_redirect(pfvf->netdev, &xdp, prog);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 781ba46eb152..89bac2feeff2 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -224,21 +224,15 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 	struct list_head *xskb_list;
- 	u32 contd = 0;
- 	u32 num_desc;
--	int err;
- 
--	if (likely(!frags)) {
--		err = __xsk_rcv_zc(xs, xskb, len, contd);
--		if (err)
--			goto err;
--		return 0;
--	}
-+	if (likely(!frags))
-+		return __xsk_rcv_zc(xs, xskb, len, contd);
- 
- 	contd = XDP_PKT_CONTD;
- 	num_desc = xdp_get_shared_info_from_buff(xdp)->nr_frags + 1;
- 	if (xskq_prod_nb_free(xs->rx, num_desc) < num_desc) {
- 		xs->rx_queue_full++;
--		err = -ENOBUFS;
--		goto err;
-+		return -ENOBUFS;
- 	}
- 
- 	__xsk_rcv_zc_safe(xs, xskb, len, contd);
-@@ -252,9 +246,6 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 	}
- 
- 	return 0;
--err:
--	xsk_buff_free(xdp);
--	return err;
- }
- 
- static void *xsk_copy_xdp_start(struct xdp_buff *from)
-
----
-base-commit: fb7bd3a2aad70a76232a7168a505386d0a1396af
-change-id: 20261019-xsk-zc-rx-double-free-1a3b059cd41f
-
-Best regards,
---  
-Marcin Knap <marcin.knap@vecima.com>
-
+Thanks,
+Dragos
 
