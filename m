@@ -1,48 +1,49 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794597737;
-	b=AG9C14pODA88JpegJSIw00S6BSRwmFJKDS2k0ukXaeObTh4Uj9bugR05vuCmsqZohZ5y
-	 vBnzZCvJsmGHJ9lKh2XjfJFzI4ihvWB3/YVItDwvt8MCowTDKPmd9nfm7AxXsPiMGSVVq
-	 iJVmDIHXpSELrBLbJH3V/gv2j8x7HxzSpqFsias+fjjtzdrp69TZaraudhYwnzfs21uV0
-	 4nOKmNkuLeJInkIaDRhR4UVQ4kvgypuVrbwjJZQAy/FgoeddcR5xYZ+Fxxw7G6wn2I40M
-	 RCuxZXGSOK5r1l8Yw7IoBY1lwEXAKAjMxmgnt016h3oqNt8dTdjqCXUU7lD4zQrwAKw==
+	t=1794597742;
+	b=SM6tT6P9kETDmsxvrB5/lABOiwse0hO2Pxj5sQ0dg8DAswyPTEkgqgvE+VeMVq3/okPK
+	 vgA3Y/0C8AO8UMixRyb3WtdmgfMTcKsBmkop3LTo0XQAy9zyvuHZ7etko0P5f3H7bjXiZ
+	 Rm37kXE/CQ4Vlqi5wEFY/09M2fUwlKdowgKdUyCQAwjej0TcexfSXx/Tsx8zxoMmi7op1
+	 SELKSLYMJ0Js3+DvC6o6YfAe21Uc/klkuQFbGevQ4NSlSttyB0Q/tJzqprmoQSelrz0P1
+	 DKwBp4eJyuAW5R1SnsznLHiZn6innfVx8FgP7joTkF7KxAHckuafALXb+4dFOqII3UQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794597737;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794597742;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=sDKwtvDhYOPX6pi4pGQNHmHgXEf5Maq6HXMQEqwRLV4=;
-	b=NbbO6sgIiyHsVZUoDD5U7ZREgKClMzoxUmtE65CFylIU8GRFSSDVe/ZkjzumcxX7DH8K
-	 XZrNGOtRMS0zT38lQrbP/Yi610iIMr00c/tHtvk91stuPh2aHEzGeOzVl4cNlK5EEgD3v
-	 e2vKB+rCdrCnIH055Jt0jdta8f7u7zm83f1pMb3XROnIHGx+xlg7PSyERIikgrhyunIKE
-	 4+c4KEbKyZL0izUHAGMLbXbAijwlGPGuWqSdOTwPn9xZNS08i/23PRWeWtw7R1CtdqzH6
-	 xvAS/0MSPRg/OzMGiImhkByRvihM8l1Znhl7Z+It4l5r5mx6r1Ic0tK7zGCiV5wncaA==
+	bh=w9nWleZzlt35y0AB6Peyb5uZmvSNbhq05kf6t/OgLN4=;
+	b=jeUn+gmKUCZWA09lA3qwEkt8NmN7O4aQfDrVxTjn/GtCXptM10dO3YFlPxDeYAtE1OyA
+	 tKf3eq4R9VSvgqQrTE8JMlprh7nVj7/AKPIFIMuiAmmgVntqkGlkgDWL5UGJbXVoRnoLT
+	 Vblw1K4B4AT+RF3ElPUG5jvkaOWDGHOvlbULCv1ai/B7UDnCdsfZ1r9k7y3NhTkSJmfVe
+	 u5HPbDGPlrN0Lk06QqBlameYuoSElEfcHy9hyOdOWXiz/+fW2QCsKrSxRtaGosNbDwQJD
+	 KpeREQs4rocveQlejCwba431jkbVxSpNx4GtNT6V9Xi++bNP0u4uY14bsuAunGmIjDA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E669W1zk;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d3thmonP;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B277606A898;
-	Fri, 13 Nov 2026 19:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9309B60A260D;
+	Fri, 13 Nov 2026 19:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E669W1zk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5561F000C7;
-	Fri, 13 Nov 2026 19:22:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d3thmonP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216941F000C5;
+	Fri, 13 Nov 2026 19:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794597736;
-	bh=sDKwtvDhYOPX6pi4pGQNHmHgXEf5Maq6HXMQEqwRLV4=;
+	s=k20260515; t=1794597742;
+	bh=w9nWleZzlt35y0AB6Peyb5uZmvSNbhq05kf6t/OgLN4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=E669W1zkJlqE7qOthtHnCVIBadx/fCED6/P+ahxoo2jR5cjvueczhz/y5LfaQSl1h
-	 dX6trEROzzPPXGtYXVbD6fxBE3nhVgMFbny4pvcLEyMQpEhKfCfCyDG0cGjrlxZpFd
-	 WAk+kMHe448aQrniD2Oqa2szO84ZQc/jF5vavm0TyPjw7Ol9df+NbxSFDn+vUwibsj
-	 /ATcnEBcIB5hYsCKLlGNw486eWRMLMEVW3/CirAqlp3PTs4COdBfQRdSdqRJ2P9PlG
-	 mUQ5sPO5XuAg3GfHEmnjIhBVTufIsT4HK0b7gYpNUuIZe1Z68rRPObaBWea7gg/1sf
-	 epZSYIeAsMaWA==
+	b=d3thmonPFq1j3T68R94ixKzQPwHKqAfesRHwIL+6Xt5WC2grdqBJk2G3WyD1vply/
+	 NQvzX1IwggKt/FQTl4KONLANV3FvLriNQW1d/SC2C1If71NEgVTT6sa6ySmiibye+7
+	 nOCZnGtvS8zNxPD+YTt28N3yyRfCVXT8VzaWtVaDbyXdBcwIy6em8+aBcLOYlIOyex
+	 4Qczq+BdoesU3AT7hEa/0hyl9B7s6LoWya+dQDS0FTqy2ra83WixHgobRqwsDAH1xJ
+	 10PAXtgJM0J0Q0TtWTt3CJRTnUxnQmmxPfCMsX9KTq6jN5dud7kSE4WEHAeqEDyUxd
+	 Xpd9XqUvdhcUw==
 From: Chuck Lever <cel@kernel.org>
-Date: Fri, 13 Nov 2026 14:22:00 -0500
-Subject: [PATCH net-next v3 02/10] lib: Add a "stringset" data structure
+Date: Fri, 13 Nov 2026 14:22:02 -0500
+Subject: [PATCH net-next v3 04/10] handshake: Add a session-tags argument
+ to the TLS done callback
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -54,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-tls-session-tags-v3-2-91271964cdb0@kernel.org>
+Message-Id: <20261113-tls-session-tags-v3-4-91271964cdb0@kernel.org>
 References: <20261113-tls-session-tags-v3-0-91271964cdb0@kernel.org>
 In-Reply-To: <20261113-tls-session-tags-v3-0-91271964cdb0@kernel.org>
 To: Donald Hunter <donald.hunter@gmail.com>, 
@@ -71,764 +72,183 @@ To: Donald Hunter <donald.hunter@gmail.com>,
 Cc: kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org, 
  linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org
 X-Mailer: b4 0.17-dev-9c833
-X-Developer-Signature: v=1; a=openpgp-sha256; l=23896; i=cel@kernel.org;
- h=from:subject:message-id; bh=DqfX0ELDmrWiEez3bE4sb8YRlvO511dfN/M1uME3ZHY=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq92NfweSZZtQTI2FPhpuolCiDoKDGR6aB3FZcT
- 1XiVoAJY++JAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCavdjXwAKCRAzarMzb2Z/
- l8/3D/9WMPTHPSlchriDl9xjVFQRoOqFHz5DNuldgCyaR0k3B2ecuT9T0Ubf1Vi9Vot8XySBtRl
- rZnQRZFDpJAem3FzP8vC/9Io6CNIQQKxa8P//Bq6fDeQmKBKoF4jckZHaa0SqIkRGvakEaYzP3+
- uTJs1lARQRGpL8+/ZrVRpm/qZ4YNbHj4TYE5zoh5d9CF8xHAA0xKN5ccPfA5dM2p4CcyrD+T04a
- qHeEeYUqGCNWgpuAsMDC3tKWdgaKyBt5cAY0LvD+nLuzPVpF47tYSQiSL7TjqsG7E1cjV22fdnM
- 0D/RpobvPIZVCb7JRPWqTYV5BWQ8ZSvjb9X2fBs9gRc5IbyjR+qA9Gk7S4uZIFvDb9AOWO8Hw5e
- f9aTsh0qFYrg7Et8/UgbQyGAo+ulmQ7wxrom8VwtRW74vOGmi+qhfIfgKzztSBt6wzdEK+TYKr4
- 0DzRRm13Y3+JT4599BGgoHANhrHPXdTG/rgwzeMdCXn1yhG7NJ4pTrSIStMFT/ngsvadj0N4Gsu
- jwi4vFk0z1rinv/YBlfkBh7T6oepxg2PXxDU/77zr66LrY0NLCvUn4FLTvzwzXizN6y6kJZsTlH
- 5vq4Z4egCeYd19vylQlHa8HdLIQzKZRtcb86EG5SOpIu4kmaZYv0W9j8LiwLoLiPZb/pKxv7SmJ
- 1XGmi0vc1Mnaseg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6425; i=cel@kernel.org;
+ h=from:subject:message-id; bh=rhwy0XqO0S/M76i3i9VLH4Bdu/i8zn4NgMolJCM2XZs=;
+ b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBq92NfGdwO9/YIsngSYU0q4cefdI//6VVrhTOEV
+ yoERjGKrouJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCavdjXwAKCRAzarMzb2Z/
+ l/F+D/9tdcGXGO9Iipn6Rny0S5v4EEbfrIWwE4yrr5+832f3/DE1QYlBmX2jMU1HgPW9uRexl3t
+ 2Ep6/ygfuOqtG6w5oMR6l+HS0Eo3ceFHKLnmHyCaVh4aeB9tpTTQN0Uj80h8ygmukMKKHCp03f6
+ VnYSz5jsvgjMebJn2UPGA+u3Gms+/fvADtXUCX72DG9No3Rbmw80hOIi8Tydtlz5YvFEKTOkdMX
+ D3ihuqq6om1pXjfwPk72fm8t/2pQ06tVG/IPVqC7G9/2nXeP8uXg5JJy4OjMXxXQIup5KSR6mVP
+ URs3ul+0KFCEWg0q/dWAbErX+7XGZTXNLVlWbpg6FTyoKfmUj/7OlgPLJfVRRxpnId4nDQPbiy2
+ xyprj9ZWVd1JaVw9DVa44Wm2jJEG5rlYywttQCZwD2ujwvok8hcALMlOjBi6JDSK9ElWdyQku/j
+ YewfzpL8AJr0krEM3iskrFZuiIueI0thQ6pTk5IKvdrnoNhcMN1yhV4PGHpumQTENsC77oc134j
+ v2vEsf/qfhU0oSDOQO21JL+k/I6IcBA2dzNlNDkBxSJZ383fBb8SaqMlxx+MZqde/sF1ynbWBX7
+ tMsA7r90CaZ+5aY3LcnHmJTCtKZmf88pLaiShQNJUnFscQl+niHHI50a9/bLoUsil0vlNStSg4t
+ SR0XPuKJ6VDAOlA==
 X-Developer-Key: i=cel@kernel.org; a=openpgp;
  fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
 
-Access control mechanisms sometimes need to match metadata tags
-between a session and a resource. A stringset provides efficient
-membership testing and set intersection operations for this purpose.
+Session tags arriving in the DONE downcall have to reach handshake
+consumers for authorization decisions. The completion callback is
+the only path to a consumer, so carrying the tags there requires a
+new argument on tls_done_func_t. That signature change ripples
+through every existing TLS handshake consumer in the tree.
 
-Set intersection, not membership, is what motivates a purpose-built
-structure. xarray and rbtree answer a membership query in O(log M),
-so intersecting by probing costs O(N log M). rhashtable probes in
-O(1) expected, but pays a hash per element and gives up the ordering
-a merge relies on. Two sorted arrays instead merge in a single
-O(N + M) pass.
-
-The implementation therefore uses a sorted array of string pointers.
-Beyond the intersection cost, a sorted array needs no per-element
-node allocation. An rbtree does, so it carries more memory overhead
-for the small sets typical of resource tagging.
-
-The API follows a build-then-query pattern: callers initialize,
-allocate capacity, add strings, then finalize before querying. Once
-finalized, the stringset is suitable for concurrent read access.
-
-Build the library only when a consumer selects CONFIG_STRINGSET.
-Consumers of the new APIs arrive in subsequent patches.
+Add the @tags parameter ahead of the functional change. No consumer
+reads it yet and the handshake core passes NULL, so behavior is
+unchanged. Isolating the mechanical signature churn confines the
+tag-collection patch that follows to the handshake core.
 
 Signed-off-by: Chuck Lever <cel@kernel.org>
 ---
- Documentation/core-api/index.rst     |   1 +
- Documentation/core-api/stringset.rst | 243 +++++++++++++++++++++++++++++++++++
- MAINTAINERS                          |   7 +
- include/linux/stringset.h            | 191 +++++++++++++++++++++++++++
- lib/Kconfig                          |  12 ++
- lib/Makefile                         |   1 +
- lib/stringset.c                      | 190 +++++++++++++++++++++++++++
- 7 files changed, 645 insertions(+)
+ Documentation/networking/tls-handshake.rst |  3 ++-
+ drivers/nvme/host/tcp.c                    |  3 ++-
+ drivers/nvme/target/tcp.c                  |  3 ++-
+ include/net/handshake.h                    | 16 +++++++++++++++-
+ net/handshake/tlshd.c                      |  5 +++--
+ net/sunrpc/svcsock.c                       |  4 +++-
+ net/sunrpc/xprtsock.c                      |  4 +++-
+ 7 files changed, 30 insertions(+), 8 deletions(-)
 
-diff --git a/Documentation/core-api/index.rst b/Documentation/core-api/index.rst
-index 92f91c6a0d79..929bf11828c3 100644
---- a/Documentation/core-api/index.rst
-+++ b/Documentation/core-api/index.rst
-@@ -45,6 +45,7 @@ Library functionality that is used throughout the kernel.
-    idr
-    circular-buffers
-    rbtree
-+   stringset
-    generic-radix-tree
-    packing
-    this_cpu_ops
-diff --git a/Documentation/core-api/stringset.rst b/Documentation/core-api/stringset.rst
-new file mode 100644
-index 000000000000..549199ae1fa2
---- /dev/null
-+++ b/Documentation/core-api/stringset.rst
-@@ -0,0 +1,243 @@
-+.. SPDX-License-Identifier: GPL-2.0+
-+
-+=========
-+Stringset
-+=========
-+
-+Overview
-+========
-+
-+A stringset is a set of strings, intended for resource tagging where
-+metadata about a resource is represented simply by a name. The public
-+API can be found in ``<linux/stringset.h>``.
-+
-+
-+Initialization and Destruction
-+==============================
-+
-+A stringset must be initialized before use::
-+
-+    struct stringset set;
-+    stringset_init(&set);
-+
-+``DEFINE_STRINGSET()`` declares a stringset and initializes it in
-+one step::
-+
-+    DEFINE_STRINGSET(set);
-+
-+Before adding strings, allocate capacity::
-+
-+    if (!stringset_alloc(&set, num_strings, GFP_KERNEL))
-+        return -ENOMEM;
-+
-+When finished, release all resources::
-+
-+    stringset_destroy(&set);
-+
-+This frees all strings and the array. The stringset is reinitialized
-+and may be reused by calling ``stringset_alloc()`` again.
-+
-+
-+Adding Strings
-+==============
-+
-+Two functions are provided for adding strings. Both require that
-+sufficient capacity has been allocated via ``stringset_alloc()``.
-+
-+``stringset_add()``
-+    Adds a string that is already in kmalloc'd memory. On success,
-+    the stringset takes ownership of the string and frees it when
-+    the stringset is destroyed, or at ``stringset_finalize()`` if it
-+    is a duplicate::
-+
-+        char *str = kstrdup("example", GFP_KERNEL);
-+        if (!str || !stringset_add(&set, str))
-+            kfree(str);  /* failed, caller must free */
-+
-+``stringset_add_dup()``
-+    Duplicates the string internally. The caller retains ownership
-+    of the original string::
-+
-+        if (!stringset_add_dup(&set, "example", GFP_KERNEL))
-+            return -ENOMEM;
-+
-+Both functions return true on success, false on failure. Strings must
-+not be added after ``stringset_finalize()`` has been called. Pass
-+``GFP_ATOMIC`` to ``stringset_add_dup()`` in atomic context.
-+
-+
-+Finalizing
-+==========
-+
-+After adding all strings, the stringset must be finalized before
-+querying::
-+
-+    stringset_finalize(&set);
-+
-+This sorts the array to enable efficient binary search and removes
-+any duplicate strings. Calling ``stringset_is_member()`` or
-+``stringset_intersection()`` on a non-finalized stringset warns and
-+returns ``false``.
-+
-+
-+Querying Strings
-+================
-+
-+``stringset_is_empty()``
-+    Returns true if the stringset contains no strings.
-+
-+``stringset_count()``
-+    Returns the number of strings in the stringset. Before finalization,
-+    this is the number of strings added; after finalization, this is
-+    the number of unique strings.
-+
-+``stringset_is_member()``
-+    Returns true if a string is present in the stringset. Uses binary
-+    search for O(log N) complexity::
-+
-+        if (stringset_is_member(&set, "example"))
-+            pr_info("string found\n");
-+
-+``stringset_intersection()``
-+    Returns true if two stringsets share at least one common string.
-+    Uses merge-style comparison for O(N+M) complexity::
-+
-+        if (stringset_intersection(&set1, &set2))
-+            pr_info("sets overlap\n");
-+
-+
-+Iteration
-+=========
-+
-+Use ``stringset_for_each()`` to iterate over all strings::
-+
-+    unsigned int index;
-+    char *str;
-+
-+    stringset_for_each(&set, index, str)
-+        pr_info("string: %s\n", str);
-+
-+Callers should not depend on the order in which strings are returned.
-+Modifying the stringset during iteration produces undefined behavior.
-+
-+
-+Copying
-+=======
-+
-+``stringset_copy()`` duplicates all strings from one stringset to
-+another::
-+
-+    struct stringset copy;
-+
-+    stringset_init(&copy);
-+    if (!stringset_copy(&copy, &original, GFP_KERNEL))
-+        pr_err("copy failed\n");
-+
-+The source stringset must be finalized before copying; copying an
-+unfinalized stringset warns and returns failure. The destination
-+stringset is initialized and ready for queries after this function
-+returns (no separate ``stringset_finalize()`` call is needed). Each
-+string is duplicated, so the two stringsets are fully independent after
-+copying.
-+
-+
-+Typical Usage Pattern
-+=====================
-+
-+A typical usage pattern for building a stringset::
-+
-+    struct stringset set;
-+
-+    stringset_init(&set);
-+    if (!stringset_alloc(&set, count, GFP_KERNEL))
-+        return -ENOMEM;
-+
-+    for (i = 0; i < count; i++) {
-+        if (!stringset_add_dup(&set, strings[i], GFP_KERNEL)) {
-+            stringset_destroy(&set);
-+            return -ENOMEM;
-+        }
-+    }
-+    stringset_finalize(&set);
-+
-+    /* Now safe to query */
-+    if (stringset_is_member(&set, "target"))
-+        do_something();
-+
-+    stringset_destroy(&set);
-+
-+
-+Thread Safety
-+=============
-+
-+Stringsets have no internal locking. Callers provide synchronization
-+between writers and readers.
-+
-+The build-and-finalize phase mutates the stringset; the post-finalize
-+query phase reads from it. The two phases must be separated by a
-+publication boundary, because ``stringset_finalize()`` itself carries
-+no memory barrier. A reader that observes the finalized stringset
-+before the writer's stores have propagated may see a stale
-+``ss_count`` or a partially populated ``ss_strings[]`` array.
-+
-+Three publication patterns are sufficient:
-+
-+* Lock release after ``stringset_finalize()``, lock acquire before
-+  each query. The matching unlock/lock pair supplies release and
-+  acquire ordering.
-+
-+* ``rcu_assign_pointer()`` of the stringset pointer after
-+  ``stringset_finalize()``, paired with ``rcu_dereference()`` inside
-+  an RCU read-side critical section on the reader.
-+
-+* ``smp_store_release()`` of the stringset pointer after
-+  ``stringset_finalize()``, paired with ``smp_load_acquire()`` on the
-+  reader.
-+
-+Once published, the stringset must remain immutable until no further
-+readers can observe it. ``stringset_destroy()`` is not safe against
-+concurrent readers, and ``stringset_finalize()`` must not be called
-+more than once. With RCU publication, callers typically defer
-+destruction to a grace period (``synchronize_rcu()`` before
-+``stringset_destroy()``, or ``stringset_destroy()`` from a
-+``call_rcu()`` callback) so that in-flight readers drain before
-+the storage is freed.
-+
-+
-+Implementation
-+==============
-+
-+Each stringset is rooted on the following structure::
-+
-+    struct stringset {
-+            char         **ss_strings;
-+            unsigned int   ss_count;
-+            unsigned int   ss_capacity;
-+            bool           ss_finalized;
-+    };
-+
-+The implementation uses a sorted array of string pointers, providing
-+O(log N) membership testing and O(N+M) intersection operations.
-+
-++----------------------------+-------------+
-+| Operation                  | Complexity  |
-++============================+=============+
-+| stringset_add              | O(1)        |
-++----------------------------+-------------+
-+| stringset_finalize         | O(N log N)  |
-++----------------------------+-------------+
-+| stringset_is_member        | O(log N)    |
-++----------------------------+-------------+
-+| stringset_intersection     | O(N + M)    |
-++----------------------------+-------------+
-+| stringset_copy             | O(N)        |
-++----------------------------+-------------+
-+
-+API Reference
-+=============
-+
-+.. kernel-doc:: include/linux/stringset.h
-+   :internal:
-+
-+.. kernel-doc:: lib/stringset.c
-+   :export:
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c583367c88bc..9b058bb60b0f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -27022,6 +27022,13 @@ S:	Maintained
- F:	Documentation/networking/device_drivers/ethernet/stmicro/
- F:	drivers/net/ethernet/stmicro/stmmac/
+diff --git a/Documentation/networking/tls-handshake.rst b/Documentation/networking/tls-handshake.rst
+index 4f7bc1087df9..7e9f4bd659b4 100644
+--- a/Documentation/networking/tls-handshake.rst
++++ b/Documentation/networking/tls-handshake.rst
+@@ -169,7 +169,8 @@ The synopsis of this function is:
+ .. code-block:: c
  
-+STRINGSET DATA STRUCTURE
-+M:	Chuck Lever <cel@kernel.org>
-+S:	Maintained
-+F:	Documentation/core-api/stringset.rst
-+F:	include/linux/stringset.h
-+F:	lib/stringset.c
-+
- SUN HAPPY MEAL ETHERNET DRIVER
- M:	Sean Anderson <seanga2@gmail.com>
- S:	Maintained
-diff --git a/include/linux/stringset.h b/include/linux/stringset.h
-new file mode 100644
-index 000000000000..7d6c2b8cea17
---- /dev/null
-+++ b/include/linux/stringset.h
-@@ -0,0 +1,191 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Stringsets
-+ *
-+ * Copyright (c) 2025, Oracle and/or its affiliates.
-+ * Author: Chuck Lever <chuck.lever@oracle.com>
-+ *
-+ * A stringset is a set of strings. See
-+ * Documentation/core-api/stringset.rst for how to use stringsets.
-+ *
-+ * Stringsets have no internal locking. Callers synchronize writers
-+ * against readers, publish the finalized set with release/acquire
-+ * ordering, and drain readers before stringset_destroy(). See the
-+ * Thread Safety section of Documentation/core-api/stringset.rst.
-+ */
-+
-+#ifndef _LINUX_STRINGSET_H
-+#define _LINUX_STRINGSET_H
-+
-+#include <linux/bug.h>
-+#include <linux/slab.h>
-+#include <linux/string.h>
-+
-+struct stringset {
-+	char		**ss_strings;
-+	unsigned int	ss_count;
-+	unsigned int	ss_capacity;
-+	bool		ss_finalized;
-+};
-+
-+#define STRINGSET_INIT \
-+	{ .ss_strings = NULL, .ss_count = 0, .ss_capacity = 0, .ss_finalized = false }
-+#define DEFINE_STRINGSET(name) \
-+	struct stringset name = STRINGSET_INIT
-+
-+/**
-+ * stringset_for_each - Iterate over items in a stringset
-+ * @set: An initialized stringset containing zero or more items
-+ * @index: Index counter for the iteration
-+ * @str: String retrieved from the stringset
-+ */
-+#define stringset_for_each(set, index, str) \
-+	for ((index) = 0; (index) < (set)->ss_count && \
-+	     ((str) = (set)->ss_strings[index], true); (index)++)
-+
-+/**
-+ * stringset_init - Initialize an empty stringset
-+ * @set: stringset to be initialized
-+ */
-+static inline void stringset_init(struct stringset *set)
-+{
-+	set->ss_strings = NULL;
-+	set->ss_count = 0;
-+	set->ss_capacity = 0;
-+	set->ss_finalized = false;
-+}
-+
-+/**
-+ * stringset_alloc - Pre-allocate space for strings
-+ * @set: An initialized stringset
-+ * @capacity: Number of strings to allocate space for
-+ * @gfp: Memory allocation flags
-+ *
-+ * This function allocates only once per stringset. Calling it on a
-+ * stringset that is already allocated returns failure. stringset_destroy()
-+ * releases the allocation, after which the stringset may be allocated
-+ * again.
-+ *
-+ * @capacity may be zero. The stringset then represents an empty set, and
-+ * stringset_add() rejects further additions. The same state is produced
-+ * by DEFINE_STRINGSET() and stringset_init() alone, so callers that know
-+ * the set is empty may skip stringset_alloc() entirely. An empty set
-+ * still goes through stringset_finalize() before stringset_is_member()
-+ * or stringset_intersection() can query it. A zero-capacity call allocates
-+ * nothing, so a later stringset_alloc() on the same set still succeeds.
-+ *
-+ * Return:
-+ * * %true: allocation succeeded (or @capacity was zero)
-+ * * %false: allocation failed or stringset already allocated
-+ */
-+static inline __must_check bool
-+stringset_alloc(struct stringset *set, unsigned int capacity, gfp_t gfp)
-+{
-+	if (set->ss_strings)
-+		return false;
-+	if (capacity == 0)
-+		return true;
-+
-+	set->ss_strings = kcalloc(capacity, sizeof(char *), gfp);
-+	if (!set->ss_strings)
-+		return false;
-+	set->ss_capacity = capacity;
-+	return true;
-+}
-+
-+/**
-+ * stringset_is_empty - Determine if a stringset contains any strings
-+ * @set: An initialized stringset to be checked
-+ *
-+ * Return:
-+ * * %true: if @set is empty
-+ * * %false: if @set contains one or more strings
-+ */
-+static inline bool stringset_is_empty(const struct stringset *set)
-+{
-+	return set->ss_count == 0;
-+}
-+
-+/**
-+ * stringset_count - Return the number of strings in a stringset
-+ * @set: An initialized stringset to be checked
-+ *
-+ * If called before stringset_finalize(), returns the number of strings
-+ * added. If called after, returns the number of unique strings.
-+ *
-+ * Return:
-+ *    The number of strings in @set
-+ */
-+static inline unsigned int stringset_count(const struct stringset *set)
-+{
-+	return set->ss_count;
-+}
-+
-+/**
-+ * stringset_add - Add a string to a stringset
-+ * @set: An initialized stringset with available capacity
-+ * @str: non-NULL string to be added to @set, in kmalloc'd memory
-+ *
-+ * On success, @str is now owned by @set and will be freed either
-+ * by stringset_finalize() (if a content duplicate) or stringset_destroy().
-+ * The stringset must have been allocated with sufficient capacity via
-+ * stringset_alloc(). Strings must not be added after stringset_finalize()
-+ * has been called. Callers must not hand the same pointer to stringset_add()
-+ * more than once: ownership has already transferred, and a second add
-+ * produces a double-free at stringset_destroy().
-+ *
-+ * Return:
-+ * * %true: @str is now a member of @set
-+ * * %false: @str could not be added (NULL, no capacity, or @set is
-+ *   already finalized)
-+ */
-+static inline __must_check bool
-+stringset_add(struct stringset *set, char *str)
-+{
-+	if (WARN_ON_ONCE(set->ss_finalized))
-+		return false;
-+	if (!str || set->ss_count >= set->ss_capacity)
-+		return false;
-+	set->ss_strings[set->ss_count++] = str;
-+	return true;
-+}
-+
-+/**
-+ * stringset_add_dup - Add a copy of a string to a stringset
-+ * @set: An initialized stringset with available capacity
-+ * @str: non-NULL string to be copied and added to @set
-+ * @gfp: Memory allocation flags
-+ *
-+ * On success, @str will have been copied into a kmalloc'd
-+ * buffer. The caller can release @str immediately. Strings must not
-+ * be added after stringset_finalize() has been called.
-+ *
-+ * Return:
-+ * * %true: @str is now a member of @set
-+ * * %false: @str could not be added (NULL, no capacity, ENOMEM, or
-+ *   @set is already finalized)
-+ */
-+static inline __must_check bool
-+stringset_add_dup(struct stringset *set, const char *str, gfp_t gfp)
-+{
-+	char *entry;
-+
-+	if (WARN_ON_ONCE(set->ss_finalized))
-+		return false;
-+	if (!str || set->ss_count >= set->ss_capacity)
-+		return false;
-+	entry = kstrdup(str, gfp);
-+	if (!entry)
-+		return false;
-+	set->ss_strings[set->ss_count++] = entry;
-+	return true;
-+}
-+
-+/* Implemented in lib/stringset.c */
-+void stringset_finalize(struct stringset *set);
-+void stringset_destroy(struct stringset *set);
-+bool stringset_is_member(const struct stringset *set, const char *str);
-+bool stringset_copy(struct stringset *dest, const struct stringset *src, gfp_t gfp);
-+bool stringset_intersection(const struct stringset *set1, const struct stringset *set2);
-+
-+#endif /* _LINUX_STRINGSET_H */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 1e42f5167c68..c8ba3f7e13d8 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -363,6 +363,18 @@ config ASSOCIATIVE_ARRAY
+   typedef void	(*tls_done_func_t)(void *data, int status,
+-                                   key_serial_t peerid);
++                                   key_serial_t peerid,
++                                   const struct stringset *tags);
  
- 	  for more information.
+ The consumer provides a cookie in the @ta_data field of the
+ tls_handshake_args structure that is returned in the @data parameter of
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 7ecc6c007f8d..5956b176e936 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1920,7 +1920,8 @@ static void nvme_tcp_set_queue_io_cpu(struct nvme_tcp_queue *queue)
+ 		qid, queue->io_cpu);
+ }
  
-+config STRINGSET
-+	bool
-+	help
-+	  A sorted set of strings, built once and then queried for
-+	  membership and intersection.
-+
-+	  See:
-+
-+		Documentation/core-api/stringset.rst
-+
-+	  for more information.
-+
- config CLOSURES
- 	bool
+-static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
++static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid,
++			      const struct stringset *tags)
+ {
+ 	struct nvme_tcp_queue *queue = data;
+ 	struct nvme_tcp_ctrl *ctrl = queue->ctrl;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 5105317cc61e..40f0cd9d9960 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1871,7 +1871,8 @@ static int nvmet_tcp_tls_key_lookup(struct nvmet_tcp_queue *queue,
+ }
  
-diff --git a/lib/Makefile b/lib/Makefile
-index a2afe954805c..cbed3e2e7cd3 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -61,6 +61,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
- 	 generic-radix-tree.o bitmap-str.o
- obj-y += string_helpers.o
- obj-y += hexdump.o
-+obj-$(CONFIG_STRINGSET) += stringset.o
- obj-$(CONFIG_TEST_HEXDUMP) += test_hexdump.o
- obj-y += kstrtox.o
- obj-$(CONFIG_FIND_BIT_BENCHMARK) += find_bit_benchmark.o
-diff --git a/lib/stringset.c b/lib/stringset.c
-new file mode 100644
-index 000000000000..a7b59836e509
---- /dev/null
-+++ b/lib/stringset.c
-@@ -0,0 +1,190 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Stringsets - a sorted set of strings
-+ *
-+ * Copyright (c) 2025, Oracle and/or its affiliates.
-+ * Author: Chuck Lever <chuck.lever@oracle.com>
-+ */
-+
-+#include <linux/bug.h>
-+#include <linux/export.h>
-+#include <linux/sort.h>
-+#include <linux/string.h>
+ static void nvmet_tcp_tls_handshake_done(void *data, int status,
+-					 key_serial_t peerid)
++					 key_serial_t peerid,
++					 const struct stringset *tags)
+ {
+ 	struct nvmet_tcp_queue *queue = data;
+ 
+diff --git a/include/net/handshake.h b/include/net/handshake.h
+index 8ebd4f9ed26e..c227d42bd767 100644
+--- a/include/net/handshake.h
++++ b/include/net/handshake.h
+@@ -10,6 +10,8 @@
+ #ifndef _NET_HANDSHAKE_H
+ #define _NET_HANDSHAKE_H
+ 
 +#include <linux/stringset.h>
 +
-+static int stringset_cmp(const void *a, const void *b)
-+{
-+	const char * const *sa = a;
-+	const char * const *sb = b;
-+
-+	return strcmp(*sa, *sb);
-+}
-+
+ enum {
+ 	TLS_NO_KEYRING = 0,
+ 	TLS_NO_PEERID = 0,
+@@ -17,8 +19,20 @@ enum {
+ 	TLS_NO_PRIVKEY = 0,
+ };
+ 
 +/**
-+ * stringset_finalize - Sort the stringset and remove duplicates
-+ * @set: An initialized stringset that has been populated
++ * typedef tls_done_func_t - TLS handshake completion callback
++ * @data: opaque context pointer set via tls_handshake_args.ta_data
++ * @status: zero on success, otherwise a negative errno
++ * @peerid: serial number of peer identity key, or TLS_NO_PEERID
++ * @tags: session tags assigned by the handshake agent
 + *
-+ * This must be called after all strings have been added and before
-+ * calling stringset_is_member(), stringset_intersection(), or
-+ * stringset_copy(). Duplicate strings are removed and their memory
-+ * is freed.
++ * The @tags pointer is valid only for the duration of this callback.
++ * A consumer requiring persistent access must copy the set with
++ * stringset_copy().
 + */
-+void stringset_finalize(struct stringset *set)
-+{
-+	unsigned int i, j;
-+
-+	if (WARN_ON_ONCE(set->ss_finalized))
-+		return;
-+	if (set->ss_count > 1) {
-+		sort(set->ss_strings, set->ss_count, sizeof(char *),
-+		     stringset_cmp, NULL);
-+
-+		for (i = 0, j = 1; j < set->ss_count; j++) {
-+			if (strcmp(set->ss_strings[i], set->ss_strings[j]) == 0)
-+				kfree(set->ss_strings[j]);
-+			else
-+				set->ss_strings[++i] = set->ss_strings[j];
-+		}
-+		set->ss_count = i + 1;
-+	}
-+	set->ss_finalized = true;
-+}
-+EXPORT_SYMBOL_GPL(stringset_finalize);
-+
-+/**
-+ * stringset_destroy - Release stringset resources
-+ * @set: stringset to be destroyed
-+ */
-+void stringset_destroy(struct stringset *set)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < set->ss_count; i++)
-+		kfree(set->ss_strings[i]);
-+	kfree(set->ss_strings);
-+	stringset_init(set);
-+}
-+EXPORT_SYMBOL_GPL(stringset_destroy);
-+
-+/**
-+ * stringset_is_member - Check if a string is already a member of a stringset
-+ * @set: An initialized and finalized stringset to be checked
-+ * @str: string to search for
-+ *
-+ * Uses binary search. The stringset must have been finalized first;
-+ * a query on an unfinalized stringset warns and returns %false.
-+ *
-+ * Return:
-+ * * %true: if @str is a member of @set
-+ * * %false: if @str is not a member of @set, or @set is not finalized
-+ */
-+bool stringset_is_member(const struct stringset *set, const char *str)
-+{
-+	unsigned int low = 0, high = set->ss_count;
-+
-+	if (WARN_ON_ONCE(!set->ss_finalized))
-+		return false;
-+	/*
-+	 * Open-coded rather than bsearch() to call strcmp() directly,
-+	 * avoiding an indirect comparator call per search step.
-+	 */
-+	while (low < high) {
-+		unsigned int mid = low + (high - low) / 2;
-+		int cmp = strcmp(str, set->ss_strings[mid]);
-+
-+		if (cmp == 0)
-+			return true;
-+		if (cmp < 0)
-+			high = mid;
-+		else
-+			low = mid + 1;
-+	}
-+	return false;
-+}
-+EXPORT_SYMBOL_GPL(stringset_is_member);
-+
-+/**
-+ * stringset_copy - Duplicate strings to another stringset
-+ * @dest: An unallocated, initialized stringset to be filled
-+ * @src: An initialized, finalized stringset to be copied from
-+ * @gfp: Memory allocation flags
-+ *
-+ * @dest must be initialized -- via STRINGSET_INIT, DEFINE_STRINGSET,
-+ * stringset_init(), or a prior stringset_destroy() -- and must not yet
-+ * have storage allocated. An already-allocated @dest is a caller error:
-+ * the copy warns, frees @dest's storage, and returns failure.
-+ *
-+ * @src must be finalized: a copy reproduces @src's sorted, queryable
-+ * state, so copying an unfinalized stringset warns and returns failure.
-+ *
-+ * On success @dest is populated and ready for use; no call to
-+ * stringset_finalize() is required. On failure @dest is left as an
-+ * empty, finalized stringset, so callers can safely run queries
-+ * against it without first checking the return value.
-+ *
-+ * Return:
-+ * * %true: All strings in @src were copied to @dest
-+ * * %false: A failure occurred; @dest is empty and finalized
-+ */
-+bool stringset_copy(struct stringset *dest, const struct stringset *src, gfp_t gfp)
-+{
-+	unsigned int i;
-+
-+	if (WARN_ON_ONCE(dest->ss_strings))
-+		goto out_fail;
-+	if (WARN_ON_ONCE(!src->ss_finalized))
-+		goto out_fail;
-+	if (src->ss_count && !stringset_alloc(dest, src->ss_count, gfp))
-+		goto out_fail;
-+	for (i = 0; i < src->ss_count; i++) {
-+		char *entry = kstrdup(src->ss_strings[i], gfp);
-+
-+		if (!entry)
-+			goto out_fail;
-+		dest->ss_strings[dest->ss_count++] = entry;
-+	}
-+	/* src is finalized and thus sorted, so dest is too */
-+	dest->ss_finalized = true;
-+	return true;
-+
-+out_fail:
-+	stringset_destroy(dest);
-+	dest->ss_finalized = true;
-+	return false;
-+}
-+EXPORT_SYMBOL_GPL(stringset_copy);
-+
-+/**
-+ * stringset_intersection - Report if there are common strings
-+ * @set1: An initialized and finalized stringset
-+ * @set2: Another initialized and finalized stringset
-+ *
-+ * Uses merge-style comparison of two sorted arrays for O(N+M)
-+ * complexity. Both stringsets must have been finalized first; a
-+ * query on an unfinalized stringset warns and returns %false.
-+ *
-+ * Return:
-+ * * %true: @set1 and @set2 have at least one common string
-+ * * %false: @set1 and @set2 have no strings in common, or either
-+ *   stringset is not finalized
-+ */
-+bool stringset_intersection(const struct stringset *set1, const struct stringset *set2)
-+{
-+	unsigned int i = 0, j = 0;
-+
-+	if (WARN_ON_ONCE(!set1->ss_finalized) ||
-+	    WARN_ON_ONCE(!set2->ss_finalized))
-+		return false;
-+	while (i < set1->ss_count && j < set2->ss_count) {
-+		int cmp = strcmp(set1->ss_strings[i], set2->ss_strings[j]);
-+
-+		if (cmp == 0)
-+			return true;
-+		if (cmp < 0)
-+			i++;
-+		else
-+			j++;
-+	}
-+	return false;
-+}
-+EXPORT_SYMBOL_GPL(stringset_intersection);
+ typedef void	(*tls_done_func_t)(void *data, int status,
+-				   key_serial_t peerid);
++				   key_serial_t peerid,
++				   const struct stringset *tags);
+ 
+ struct tls_handshake_args {
+ 	struct socket		*ta_sock;
+diff --git a/net/handshake/tlshd.c b/net/handshake/tlshd.c
+index 7567150c2a4f..997edc3fe31c 100644
+--- a/net/handshake/tlshd.c
++++ b/net/handshake/tlshd.c
+@@ -26,7 +26,8 @@
+ 
+ struct tls_handshake_req {
+ 	void			(*th_consumer_done)(void *data, int status,
+-						    key_serial_t peerid);
++						    key_serial_t peerid,
++						    const struct stringset *tags);
+ 	void			*th_consumer_data;
+ 
+ 	int			th_type;
+@@ -105,7 +106,7 @@ static void tls_handshake_done(struct handshake_req *req,
+ 		set_bit(HANDSHAKE_F_REQ_SESSION, &req->hr_flags);
+ 
+ 	treq->th_consumer_done(treq->th_consumer_data, status,
+-			       treq->th_peerid[0]);
++			       treq->th_peerid[0], NULL);
+ }
+ 
+ #if IS_ENABLED(CONFIG_KEYS)
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 498c5096eef9..f21522dd51f2 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -414,13 +414,15 @@ static void svc_tcp_kill_temp_xprt(struct svc_xprt *xprt)
+  * @data: address of xprt to wake
+  * @status: status of handshake
+  * @peerid: serial number of key containing the remote peer's identity
++ * @tags: session tags assigned by the handshake agent
+  *
+  * If a security policy is specified as an export option, we don't
+  * have a specific export here to check. So we set a "TLS session
+  * is present" flag on the xprt and let an upper layer enforce local
+  * security policy.
+  */
+-static void svc_tcp_handshake_done(void *data, int status, key_serial_t peerid)
++static void svc_tcp_handshake_done(void *data, int status, key_serial_t peerid,
++				   const struct stringset *tags)
+ {
+ 	struct svc_xprt *xprt = data;
+ 	struct svc_sock *svsk = container_of(xprt, struct svc_sock, sk_xprt);
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 027b37de694b..ade473f1a312 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2593,9 +2593,11 @@ static int xs_tcp_tls_finish_connecting(struct rpc_xprt *lower_xprt,
+  * @data: address of xprt to wake
+  * @status: status of handshake
+  * @peerid: serial number of key containing the remote's identity
++ * @tags: session tags assigned by the handshake agent
+  *
+  */
+-static void xs_tls_handshake_done(void *data, int status, key_serial_t peerid)
++static void xs_tls_handshake_done(void *data, int status, key_serial_t peerid,
++				  const struct stringset *tags)
+ {
+ 	struct rpc_xprt *lower_xprt = data;
+ 	struct sock_xprt *lower_transport =
 
 -- 
 2.56.0
