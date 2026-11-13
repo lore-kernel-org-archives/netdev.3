@@ -1,94 +1,76 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.205.221.205
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794559367;
-	b=4nfq9sqrZR4E3vlKgqRu5n5OzCmDKLhyj+wCj8D6J5r2FtBT74RCEkC9MXcA/SfRPNOp
-	 Ndf3zZJG1l0jHyx7wPNUpzdstpd04HRHtBfVKLOw+3ZW596tuYHJmqKno/+1PThe/v/yu
-	 Lz/0FKvOdfEPJVQJjkKIkHSt58sLOEJfGU1OAuMNZLGQYG1qfwt8ccItyQuXE6BpBfeq3
-	 5XZk8hDyS0gd2BIDUi7BDMQqWYctOEGp0mGRS9UTEh7g919M53HQ3kFIQSYUBmALa6w5i
-	 tKOiZtMiGt9wacjwY5fWP2uuk5ANVysbwB8s6gF6huuckWj2AfebnGBZd7V1EArvlJw==
+	t=1794559456;
+	b=Z69ASC7w4oa28nK1RyunLPFQal0Dma1OB/MkMXV/nwtuBM/F2L90J4rVzeqamsFKroHF
+	 kbkuMKR1tLvtdomN2l1jRT0vry3X4/0VTVFACjBhhjFI1oV2sam7hgf51BS6ibej/bcM3
+	 NGkERF7afBySw5xQBGerMGhSh37HN5TzoUgC/m+jtx6PSlhQqNFjoW2VL1/w3+v3ormgk
+	 IkqTN/Mz8eNubyzsGJ6YyJAcpW6YFFlY4sklr6UP3+fGFZjgv3oEkku6eHoTKNXlyVNAB
+	 s/7Xjv5kOrqcOu9/XhASNYUa2Nb/S3yu3UKxyjgadYaaOaO6ze5LXD+4Di2WNBsI55g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794559367;
-	h=DMARC-Filter:Received:Received:DKIM-Signature:X-ME-Sender:
-	 X-ME-Received:X-ME-Proxy-Cause:X-ME-Proxy:Feedback-ID:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To;
-	bh=EP2SyCkNlTn8EMVIQYAEgqgA2lFhEBo38MvNL5VS+9g=;
-	b=y7X/XAypMcfOmvd0wRKry9KipzldoN6LgzNv9KJHK4FrkpdeLCs/ezbTVaYpzJ2mPLh/
-	 PS9kKguQsYcQYASTo0MsF0wpmeVxT80zPt919Q+eX01nHXur0ZcEz4G9U2BcOlo/eo2q8
-	 J3S2OlhsKi6QLpiOfkafpHUc4ExcSuB7AAXTlvT3LDNdU5g/7r24SdcrBHH7SNMS4nQQ6
-	 RzcRkIJO2B8U+f28kBpH6ditudiadQ34fedibus9V8ZG6h5QAgLPM+afhIoSPS592oT7Q
-	 m+PpF+iPz3Xyi46YPuFGYAJhoX4SZ2LyP0qbgtoZqtxxh3vcik1XDEN6xzFTpYEcuDQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794559456;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:In-Reply-To:
+	 References:X-OQ-MSGID:MIME-Version:Content-Type;
+	bh=W9eIkvDDECsB4Is+yRISbbRYeQyVZMf9actxMz8gkHY=;
+	b=Yr/wOIiV6WsO16/1qq3UX4ItrXL2PV2r5UDcKdje8HdfkXzlB2qmfRdyAOMb1ZWkmmzh
+	 5NqYr2b/P6b0Z20bWhJNrdA3pwZOOMekLIBrRkpiXZnuWNO723/wa8iM1vm3fnD9s86KM
+	 5fetHapSuDkrOq80T0V9FR6ZQDjuIoBDLi3NOYF2affIiwah2vHrtG07nnqC0IbG21yre
+	 eSjA54HQjnQ+nWPLKYEAnkBSow6takm2NH03NXmWkXu7TYf/TR+3HJTXfejspXQYhVVnR
+	 GBKkYqkDeFNlpXCIYyk45rVf5U6ettvXxeBuoBIlvO9i9sQHsmdbhLZ23sfBH6Es1Lw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=idosch.org;
-	spf=none smtp.mailfrom=idosch.org;
-	dkim=pass header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ffzd8GCp;
-	arc=none smtp.remote-ip=202.12.124.153
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=Vkx+3NSj;
+	arc=none smtp.remote-ip=203.205.221.205
+Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90679606A31C
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:42:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 90679606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFAC606A31C
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 08:44:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CDFAC606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ffzd8GCp
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 5E17F7A02DC;
-	Fri, 13 Nov 2026 03:42:45 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 13 Nov 2026 03:42:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1794559365; x=
-	1794645765; bh=EP2SyCkNlTn8EMVIQYAEgqgA2lFhEBo38MvNL5VS+9g=; b=f
-	fzd8GCpjIhf3EfTDnVdBNpRRw3Wn3r7fYYRu0of0fGAhBkwC02tReMVymmJUgsaJ
-	LkjgHH/nzaxqPcMU0UvtHc1TYNFAmHIYKmbuG0SsW0mJn01RILaKOZy2v4/AXcn9
-	QjvleWdNwYMwU6j0Z84S6bwezbmXxQWHHlSQQ2W6BolAL2puN/a4FXgWiEH3fbA4
-	EbXavIUdGyvZNWUt6Xfd36LdryVnqtG9fgjyHP5Mvc7B0h5g+Hojf8O4JM2A5let
-	044q6VKRvVGGLbO+IOLqxFx05Czp5bCisECn/gq5KEciJ5Jl5t+SpcqF00cFcM/E
-	XBoV5nsOpr3CWdLzLx+kw==
-X-ME-Sender: <xms:hM32ah1fDNZu3hVk3NrjI0qN4LZj9fvNKZMysm9Jjg9-dT6ezBubng>
-    <xme:hM32agSe5tdDsEDYDL-PQn3FpijTYWcE3vQ527KTw4dhs10ZYJFIMCllbNNmBiyt_
-    O9qShfxkMFqgcCThYFruPxXd4AM41yiTPF6G96QOZ0D8tOYncM>
-X-ME-Received: <xmr:hM32atehU8xjqZOKeNoIknCQi5mb6AdB3t14LBykUjimVUTTtsMxDQXWB-jLzpDw6WuQewshYX3SoHMBYE92O-4ac6MA7Q>
-X-ME-Proxy-Cause: dmFkZTGKyZELgZy1AVXtUKQfDe+LoPY/aNl94huhGjYCLjWEeEX046Z/nLirETcf4jjBv1
-    AC40+nzKUDkdEPDgHs3Q0uk0JpSkId4j6Stz/1EZqF5/uZUJo9WdP3F9PHu0V5aPI/tvXa
-    6zZ9s3SnvfsM8XGV0Sx+b41vKFEbUYfqljzAAtVeRcOulXEieK3Fdp8fiRYSlCrZQWpYlD
-    oTWGWrXsl39z59m0Dnn1UwfWUYcdXGwjZFqzaTLZcHBIv1jGfX7MKyOtpJBBl5koJdgtjl
-    5RtGyGc2hYZrmfNWvO2fGd7sfMh639ZTplbP5eUyiOYsWugwLFXa5E7j/dhw34Iya8YEVa
-    /Uc3EJLskHaDQq2vq5+xP1M+cXsL5HfVRhqWMM9ok4cFsjNN32XALQUh5BSvlnQcIk69+D
-    oBNmylW16wIxaP1WQcM6VebIxiZNoQdmco1oF8VzEaz+IplRq5jMfN21Rkxe7PWFbNYNiN
-    40X/LLXCiyy0chAwoyyYcmhVILCgIwB00WJWZIGb3cWsdBWX8Q5BsQR+0ELWZ8Fp70t1HZ
-    h6d9/VfRVHsj9Qn35+4M8E8+PAUoZT62JseCrciLFUaSn6EzasB3hPIu/iy9ArcpjL9C4W
-    uKoqFdEz7/HeTcVkcpujQwuCMgPkJv1+uTWZRU4gKpn71iaMRkTv0dFs6p4w
-X-ME-Proxy: <xmx:hM32apeYrylUGOdmoZvS2oGESznbtdrAg7K8LkKgp8dJ8MUJnmcYFQ>
-    <xmx:hM32av3lXRcdoJVK5gdR_427BkdmAoGmVK0ZtItrjbX8utsYcmO5Gg>
-    <xmx:hM32ap8NvbEalaSNgSQYTvTbHFrT99Th-Swwoh9rg1ziFzbG9qNp8w>
-    <xmx:hM32as7BGsgXGlbusq6e0Gm8abtQKs5GCfwgZJzgDC9uQr6wqlSrgA>
-    <xmx:hc32arU-TMNPYfsYResXhBFdt2IU6lSbuz6DhSdUZGipUCrExWS0tpbV>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Nov 2026 03:42:44 -0500 (EST)
-Date: Fri, 13 Nov 2026 10:42:40 +0200
-From: Ido Schimmel <idosch@idosch.org>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org,
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@kernel.org, jv@jvosburgh.net, andrew+netdev@lunn.ch,
-	razor@blackwall.org, aahila@google.com
-Subject: Re: [PATCH net-next 2/2] selftests: bonding: Add a test for 802.3ad
- with coupled control disabled
-Message-ID: <20261113084240.GA3595966@shredder>
-References: <20261111171947.2816258-1-idosch@nvidia.com>
- <20261111171947.2816258-2-idosch@nvidia.com>
- <avZ07oXIXo7xZyCC@fedora>
- <20261113070732.GC3517282@shredder>
- <avbAFdyJowX8CvOB@fedora>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=Vkx+3NSj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1794559452; bh=W9eIkvDDECsB4Is+yRISbbRYeQyVZMf9actxMz8gkHY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Vkx+3NSjIYF71P5RDKjn2szxRx7JC0zX1xDDdpGajc1pEl4FEaPNXrEAT55fqG3DS
+	 be6U+Yl+gLpodk6YKcWKXsnDlz08vyi1ktbz6H4gEpVCUN8/aZx28dIbdDCUjZ/DlT
+	 V38df1JhSOA1kDPVBLr1gGlh/kanty7zY/zwJxzk=
+Received: from [127.0.0.1] ([2409:8d5c:8f0:65e5:e498:8f16:a485:ceef])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id B07180EA; Fri, 13 Nov 2026 16:44:07 +0800
+X-QQ-mid: xmsmtpt1794559447tcgpuq1dl
+Message-ID: <tencent_EBC4654F72487E5F85E9F6656A174BF68108@qq.com>
+X-QQ-XMAILINFO: M2dBUVw0X9hn1bKgHYDXwrRIPkkqRVEbQ9sWMw56Qav/+7z9NO0ztD28lm+KFj
+	 xN4Qo8nzVW3/9jksyUUgzNt77XTKUCcKzPaTt4Cv2ieAkxihQcqOUVQ4u1ra6MT1eWHimbMA/q1w
+	 cuWgrpyuN18nv6ULvJ20ttY6dgETQGtTY/Hy1XB9ARI0S9LJRhvFp855mUzmQOyi4jOoI+ftrPkk
+	 Qqopn0oVDHxrU1yfS0CWxLhlcWSXxEMm40gink2PiOjFW4NLflnJVaWMs8kD2p9FwUrrQdvgqw08
+	 8NO4L/gS3+LyCS8Lhe3xPLPVdHSxmEV4KR4Kgk4vyAAg9noEuf1J3lWcM7FRzXB/3RGzM2qIdDk4
+	 KCcVJ+SLzB71ymjUBrPxLdvsSj8Sjkx07lHrWFj4da4Yv+Ke/shfoEfhibIUJdxkyaKfIlGGQ/I7
+	 tx6Kh/j39GfL0gfXNiqXbM67Stxu61eyE30dH27gQ0+T1OTc6dBUZn4Ofz42Qd5g05N0atxqGLmI
+	 fntgEkydiczy/OPbDn87NGsESGp4GXspK7G82tFtP0kG2rj3EBZI6NPMXqbsS2d0NhNQn+phQqeW
+	 LJpjg+82G9jGi/xYJn2gXpJ6ysS7N94cAtDnuhWLn8sETUr5yhQzdppHHnN82GGRSril6qlRFQTp
+	 DC5Z2QsC+YlJw62/g8AlYIP8O/cOJmUyPulVqR5G2f9mEgZm4964lhuF8EFngZbO9EiGYL85laUS
+	 gAzspE3Bx/WO3WgLIhGuMckuxLD/68UuvFZre4YWpiwz3d2e4bFOuM0MovsICNBczjc+4LAFNYyR
+	 E47SjEeJsv6MXf0Jrr4h9dTtdu2Yyc6r55IxydFvlgfHoee/+4YzguIR7gNqTQmWtKM0voRCuPY0
+	 D2wSPUugK+kTytfgv/A2M36tEtgb6vjh1PNntPNi5Umlb0T5JOp84sqboiIUkTBWwBBY/MmDoHvg
+	 oWHosvkB31cHhehYqEICpzMn6c0zO+KDLf6ePlDdWMGWWF57oOafKj0ZJqAJSYEv+/3OrjNVVWMW
+	 B/vr2x2OtEQ7ODPvz9yKtojARTNz6hwmNAvoZmQiRnpGZY0X2UHihHnFgMkVS8Vk60rHkAI1FNRN
+	 g8gyXg+qulpSqLylFqIVLU0rEFW7VU593niOpk+j3LCWUi2QkqN21K6eZyzmuz6oG2gAsR
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: Hang Nan <2122295973@qq.com>
+To: netdev@vger.kernel.org
+Cc: mptcp@lists.linux.dev, matttbe@kernel.org, martineau@kernel.org,
+ geliang@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
+ linux-kernel@vger.kernel.org, 2122295973@qq.com
+Subject: Re: [PATCH net 0/2] net: restore acquire ordering for two remaining
+Date: Fri, 13 Nov 2026 16:44:06 +0800
+In-Reply-To: <179448794830.196117.14284634941387773647@qq.com>
+References: <179448794830.196117.14284634941387773647@qq.com>
+X-OQ-MSGID: <179455944699.466184.11601062358584953491@qq.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -98,16 +80,162 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <avbAFdyJowX8CvOB@fedora>
+Content-Type: multipart/mixed; boundary="===============1344242358540054460=="
 
-On Fri, Nov 13, 2026 at 03:45:25PM +0800, Hangbin Liu wrote:
-> For a pair of physically connected ports, do you mean two ports connected
-> back-to-back on the *same* host? Otherwise I’m not sure how to run the test
-> using two physical ports across two different hosts.
+--===============1344242358540054460==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Yes, on the same host. That way we can test both the hardware data path
-and the software data path (with veth pairs). See
-tools/testing/selftests/net/forwarding/README 
+Hi,
+
+Thanks for the automated review.  Here is the missing information for the
+series, plus the instruction-level evidence that was asked for.
+
+How it was found: manual code inspection, not a runtime report.  While
+looking at net/ lockless lookups right after 5b5d8f351dd9 landed, I
+enumerated every refcount_inc_not_zero() call site in net/ (102 of them
+today) and classified each one by whether the reference is taken only to
+keep the object alive, or whether object state is re-validated after the
+acquisition.  mptcp_token_get_sock() and mptcp_token_iter_next() are in
+the second group: they re-read msk->token and sock_net(sk) after the
+increment, and mptcp_token_destroy() unlinks the socket and then does
+WRITE_ONCE(msk->token, 0), so the re-validation is the only thing that
+rejects a socket whose token has already been cleared.
+reuseport_migrate_sock() in 2/2 is the only other site with that shape
+in net/.  The enumeration of the call sites was tool-assisted; the
+classification and both changes were checked by hand against the
+callers and against the teardown paths.
+
+Instruction-level evidence (new): the two helpers do compile differently
+on a weakly ordered CPU.  Built from this series' base (7.4.0-rc2) with
+aarch64-linux-gnu-gcc 14.2 and arm64 defconfig, which enables
+CONFIG_ARM64_USE_LSE_ATOMICS, net/core/sock_reuseport.o disassembles as:
+
+  before 2/2 applied:
+        fc4:  88a37c02        cas     w3, w2, [x0]     <!-- relaxed CAS -->
+        fc8:  6b03003f        cmp     w1, w3
+        fcc:  54000981        b.ne    ...
+
+  with 2/2 applied:
+        fd4:  88e17c43        casa    w1, w3, [x2]     <!-- acquire CAS -->
+        fd8:  6b01001f        cmp     w0, w1
+
+  i.e. CAS -> CASA.  For builds without LSE the same change turns the
+  ldxr/stxr loop into ldaxr/stlxr, and refcount_set_release() turns the
+  plain str into stlr.
+
+On x86-64 both variants compile to the same "lock cmpxchg", so the
+series is a no-op there, which is why the ordering violation is not
+observable on the machine I tested on.
+
+Reproduce:
+  make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- net/core/sock_reuseport.o
+  aarch64-linux-gnu-objdump -d net/core/sock_reuseport.o \
+        --disassemble=reuseport_migrate_sock
+
+Whether it was triggered: no.  This is a theoretical ordering gap, not
+an observed crash.  I have no syzbot report, no KCSAN splat and no
+runtime reproducer for the reordering itself; demonstrating that would
+need a weakly ordered machine (the instruction sequences above are the
+strongest evidence I can produce here).  So the series does not claim to
+fix an observed bug.
+
+Reachability of the path (for completeness): with
+net.ipv4.tcp_migrate_req=1 and four SO_REUSEPORT listeners on loopback,
+a 20 second churn run (4 connector threads, 2 threads closing and
+re-adding listeners) moved TCPMigrateReqSuccess from 16426 to 17103 and
+TCPMigrateReqFailure from 1858 to 1875 on 6.18.58.  On 7.4.0-rc2 the
+same load drove 6,625 successful migrations across three 80 second runs
+(KASAN kernel, no reports).  A minimal two-listener case (64 established
+but unaccepted connections, then close one listener) moves the counter
+by 27-29.  This is only a reachability check, not a demonstration of the
+reordering.
+
+
+
+What was verified: the re-validation exists and is the guard described
+above; the teardown order is __sk_nulls_del_node_init_rcu() followed by
+WRITE_ONCE(msk->token, 0) in mptcp_token_destroy(); both touched objects
+compile cleanly (net/mptcp/token.o, net/core/sock_reuseport.o) on x86-64
+and arm64; the change is a no-op on strongly ordered CPUs.  The argument
+is the same one used in 5b5d8f351dd9 for the inet lookups: a successful
+reference acquisition has to order the validation that follows it.
+
+Happy to drop the series or fold it into a larger ordering series if
+reviewers would rather wait for a KCSAN/arm64 runtime demonstration.
+
+Hang Nan
+
+--===============1344242358540054460==
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="arm64-unpatched.txt"
+MIME-Version: 1.0
+
+ICAgICBmYWM6CWI5NDA4MjYxIAlsZHIJdzEsIFt4MTksICMxMjhdCiAgICAgZmIwOgk5MTAyMDI2
+MCAJYWRkCXgwLCB4MTksICMweDgwCiAgICAgZmI0OgkzNDAwMDVhMSAJY2J6CXcxLCAxMDY4IDxy
+ZXVzZXBvcnRfbWlncmF0ZV9zb2NrKzB4MTQ4PgogICAgIGZiODoJMTEwMDA0MjIgCWFkZAl3Miwg
+dzEsICMweDEKICAgICBmYmM6CTE0MDAwMDEwIAliCWZmYyA8cmV1c2Vwb3J0X21pZ3JhdGVfc29j
+aysweGRjPgogICAgIGZjMDoJMmEwMTAzZTMgCW1vdgl3MywgdzEKICAgICBmYzQ6CTg4YTM3YzAy
+IAljYXMJdzMsIHcyLCBbeDBdCiAgICAgZmM4Ogk2YjAzMDAzZiAJY21wCXcxLCB3MwogICAgIGZj
+YzoJNTQwMDA5ODEgCWIubmUJMTBmYyA8cmV1c2Vwb3J0X21pZ3JhdGVfc29jaysweDFkYz4gIC8v
+IGIuYW55CiAgICAgZmQwOgkyYTAxMDA0MiAJb3JyCXcyLCB3MiwgdzEKICAgICBmZDQ6CTM3Zjgw
+NTAyIAl0Ym56CXcyLCAjMzEsIDEwNzQgPHJldXNlcG9ydF9taWdyYXRlX3NvY2srMHgxNTQ+CiAg
+ICAgZmQ4OglmOTQwMjNmOSAJbGRyCXgyNSwgW3NwLCAjNjRdCiAgICAgZmRjOgk5NDAwMDAwMCAJ
+YmwJMCA8X19yY3VfcmVhZF91bmxvY2s+CiAgICAgZmUwOglhYTEzMDNlMCAJbW92CXgwLCB4MTkK
+ICAgICBmZTQ6CWE5NDE1M2YzIAlsZHAJeDE5LCB4MjAsIFtzcCwgIzE2XQo=
+
+--===============1344242358540054460==
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="arm64-patched.txt"
+MIME-Version: 1.0
+
+ICAgICBmYWM6CWI5NDA4MjYwIAlsZHIJdzAsIFt4MTksICMxMjhdCiAgICAgZmIwOgk5MTAyMDI2
+MiAJYWRkCXgyLCB4MTksICMweDgwCiAgICAgZmI0OgkxMmIwMDAwNCAJbW92CXc0LCAjMHg3ZmZm
+ZmZmZiAgICAgICAgICAgIAkvLyAjMjE0NzQ4MzY0NwogICAgIGZiODoJNGIwMDAwODEgCXN1Ygl3
+MSwgdzQsIHcwCiAgICAgZmJjOgkzNDAwMDVhMCAJY2J6CXcwLCAxMDcwIDxyZXVzZXBvcnRfbWln
+cmF0ZV9zb2NrKzB4MTUwPgogICAgIGZjMDoJNzEwMDAwM2YgCWNtcAl3MSwgIzB4MAogICAgIGZj
+NDoJNTQwMDA1NmQgCWIubGUJMTA3MCA8cmV1c2Vwb3J0X21pZ3JhdGVfc29jaysweDE1MD4KICAg
+ICBmYzg6CTExMDAwNDAzIAlhZGQJdzMsIHcwLCAjMHgxCiAgICAgZmNjOgkxNDAwMDAwZSAJYgkx
+MDA0IDxyZXVzZXBvcnRfbWlncmF0ZV9zb2NrKzB4ZTQ+CiAgICAgZmQwOgkyYTAwMDNlMSAJbW92
+CXcxLCB3MAogICAgIGZkNDoJODhlMTdjNDMgCWNhc2EJdzEsIHczLCBbeDJdCiAgICAgZmQ4Ogk2
+YjAxMDAxZiAJY21wCXcwLCB3MQogICAgIGZkYzoJNTQwMDA3ZTEgCWIubmUJMTBkOCA8cmV1c2Vw
+b3J0X21pZ3JhdGVfc29jaysweDFiOD4gIC8vIGIuYW55CiAgICAgZmUwOglmOTQwMjNmOSAJbGRy
+CXgyNSwgW3NwLCAjNjRdCiAgICAgZmU0Ogk5NDAwMDAwMCAJYmwJMCA8X19yY3VfcmVhZF91bmxv
+Y2s+Cg==
+
+--===============1344242358540054460==
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="x86-unpatched.txt"
+MIME-Version: 1.0
+
+ICAgICA4NjU6CTg1IGQyICAgICAgICAgICAgICAgIAl0ZXN0ICAgJWVkeCwlZWR4CiAgICAgODY3
+Ogk3NCAyYSAgICAgICAgICAgICAgICAJamUgICAgIDg5MyA8cmV1c2Vwb3J0X21pZ3JhdGVfc29j
+aysweGMzPgogICAgIDg2OToJOGQgNGEgMDEgICAgICAgICAgICAgCWxlYSAgICAweDEoJXJkeCks
+JWVjeAogICAgIDg2YzoJODkgZDAgICAgICAgICAgICAgICAgCW1vdiAgICAlZWR4LCVlYXgKICAg
+ICA4NmU6CWYwIDBmIGIxIDBmICAgICAgICAgIAlsb2NrIGNtcHhjaGcgJWVjeCwoJXJkaSkKICAg
+ICA4NzI6CTc1IDVmICAgICAgICAgICAgICAgIAlqbmUgICAgOGQzIDxyZXVzZXBvcnRfbWlncmF0
+ZV9zb2NrKzB4MTAzPgogICAgIDg3NDoJMDkgY2EgICAgICAgICAgICAgICAgCW9yICAgICAlZWN4
+LCVlZHgKICAgICA4NzY6CTc4IDVmICAgICAgICAgICAgICAgIAlqcyAgICAgOGQ3IDxyZXVzZXBv
+cnRfbWlncmF0ZV9zb2NrKzB4MTA3Pgo=
+
+--===============1344242358540054460==
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="x86-patched.txt"
+MIME-Version: 1.0
+
+ICAgICA4NzA6CTI5IGMxICAgICAgICAgICAgICAgIAlzdWIgICAgJWVheCwlZWN4CiAgICAgODcy
+Ogk4NSBjOSAgICAgICAgICAgICAgICAJdGVzdCAgICVlY3gsJWVjeAogICAgIDg3NDoJN2UgMjQg
+ICAgICAgICAgICAgICAgCWpsZSAgICA4OWEgPHJldXNlcG9ydF9taWdyYXRlX3NvY2srMHhjYT4K
+ICAgICA4NzY6CThkIDQ4IDAxICAgICAgICAgICAgIAlsZWEgICAgMHgxKCVyYXgpLCVlY3gKICAg
+ICA4Nzk6CWYwIDBmIGIxIDBhICAgICAgICAgIAlsb2NrIGNtcHhjaGcgJWVjeCwoJXJkeCkKICAg
+ICA4N2Q6CTc1IGViICAgICAgICAgICAgICAgIAlqbmUgICAgODZhIDxyZXVzZXBvcnRfbWlncmF0
+ZV9zb2NrKzB4OWE+CiAgICAgODdmOgllOCAwMCAwMCAwMCAwMCAgICAgICAJY2FsbCAgIDg4NCA8
+cmV1c2Vwb3J0X21pZ3JhdGVfc29jaysweGI0PgogICAgIDg4NDoJNDggODkgZDggICAgICAgICAg
+ICAgCW1vdiAgICAlcmJ4LCVyYXgK
+
+--===============1344242358540054460==--
+
