@@ -1,62 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=67.231.153.30
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794596191;
-	b=RzgYLJQr+MUmkgCnvqXznM+5GowFmQPRksimGWIbDWQjiDhxzwJ2Qlhk59r+i0W3MzBj
-	 uzBj9uO8Jg9o0LF+ZxKrEmp7ntD4a30yB6xU32+/jD545qPoZUA5W8Z5IAtabtB5snJo2
-	 gKe75o5rxaeBUiMkhyk+jSc+YlTmW4xWjQOUFyWPIqatdG+pXCwqU7kGTkF3WWnJZW3z9
-	 SL0/Iyab68wUnRAIxccMktjKeaiUld5FtQue9sgcIljwxHmoEl9bSf9Utdw/G7w3yiYZe
-	 81VkhYEEaMOjy5wZ6exzoEu5fPbJH9qsX4lAZsYBa4Dgt9XOOOpLi4H6atcfDEBkARA==
+	b=sy75HHXkt6YpO/KK2C7l0XU5jT5C72QC6wD9hmuTMSsQTd5pYB4mkbJf5vWIkudpLxbS
+	 lC35P61jYgyVvgkYf2IRmO3dyeU/GsTqSiWkuPnJswg1jDWnPKPcMvfCPIJ74n8NnaOxD
+	 D9zkVbpzSce61qjFWv/NFTBwH81yeqZc2cw6uGJdbZKRuAJ/884zuwrhdExBhukfsrCgH
+	 aC/D9ofoXJcZavOMRF2o4Fn0Q7SeaVoVvRHmQpj+WegrnvcO71Dt050Xu2zz+AOTLdjpm
+	 S62LBNMhxgjCluIDYHysu0l7EumaFUsu8GxwBTmMvk3Q4XzKdayRGthil1utgodXfAQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794596191;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:From:To:CC:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type:X-Originating-IP:
-	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-Spam-Info:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
+	 X-Proofpoint-Spam-Info:X-Proofpoint-ORIG-GUID:X-Authority-Analysis:
+	 X-Proofpoint-Spam-Details-Enc:X-Proofpoint-GUID:
 	 X-Proofpoint-Virus-Version;
-	bh=g0ioZjHygxwZjnEMNPplVdcx1LXsFhIZuILyLp54kuw=;
-	b=VjYBhOWGbBvz9tMZn/kNHkCY/ewz51+i2jvVbelUL5yENqdRvWExA1nw8x0MET4BwjZQ
-	 +DkQ04tFs6X6xYispxlDAG4ww5H0JFU9OLlQJdyXpXig8+PqkJ8Jqf8ap8ugOu7pnWZl+
-	 idFGhi6AqFjG7Pa0k9i0gvKXMfNC5DWN/kRQJE5gxroQjKi0Jhl7Ia6qKd3ov4aDMF1EH
-	 9B15ns0xtPE0AU0IRz3OsEpDJv1DM6vId+ExByG+p+dqm8BYQA3Z3cdrJGiUyoStmS/is
-	 RVeS9D6VNsVss5I7U8NrQlUveo54+V+e/EU2g0IV0R8j6ji7ySfOQryqAkhhqxmRfNg==
+	bh=yFdwvbHw5wYwNA79EZEdKg0l9rgBhDjGSJLzlZC1veE=;
+	b=DbaI19DLDGyi8iVoeihaOE65IrclVH5lWzHgWsC54sRui7AarNUEv17Nby5Mcw6kWiL6
+	 et5Wkw85PgsExAxKwjTABfmHrX9aaGNH/pU9yhYLy78WU2DcqrPJocHmyp5kR8ZI2s31z
+	 S5Z3yU9Io38+Xtm0vL2ayF1xlmd0y2bqamRv3gFquvtX7kpKCT8p412/v+R6C77XjUhzy
+	 KCK7XKlWgmu/MNnZ0Ifty1yQ6RMFwwdl0CX3ubfvcp5piK2RAaLdH+JawHCvZSL1dC0UQ
+	 urCwEDTcFvrC3ZXjb2yqNfq2Rs3nbRrnI6ON/iaMA0XCENx2DSA+m2fRO7DtnMXJ4YA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=meta.com;
 	spf=pass smtp.mailfrom=meta.com;
-	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=hbBX0fWc;
+	dkim=pass header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=CaHmSqNy;
 	arc=none smtp.remote-ip=67.231.153.30
 Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8468A607107B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D839D607107E;
 	Fri, 13 Nov 2026 18:56:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8468A607107B
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D839D607107E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=hbBX0fWc
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFSaRb2006580;
-	Fri, 13 Nov 2026 10:56:02 -0800
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.a=rsa-sha256 header.s=pps82601-s2048-2026-q3 header.b=CaHmSqNy
+Received: from pps.filterd (m0528004.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6ADFShxG2379543;
+	Fri, 13 Nov 2026 10:56:00 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=g0ioZjHygxwZjnEMNPplVdcx1LXsFhIZuILyL
-	p54kuw=; b=hbBX0fWcl/fbq9z/VNbDm8yVk8j45/LDBG6hYrXQ7kVeNwra2Kby2
-	p42sqhNkKW6Y62Vjoz0G3QYNsjHxbFWvvvYtVdMtFICSB5FyUsHpBa/8WqaczaOF
-	S5kruvpQOgydrEekAgJrrc9Qop+SdOW5wBrnC1WC1VS3R/xOOz7Z5CA6n1bJo/u+
-	MjMtJ7YzfAcinPefqQrzNcUTHPlx4Pmbwr0XWe8oQIPcH9ow5X/8Tw13d9C5GuwN
-	72JCBfVQT/oUi5DZ5dlpCbcLN6kwxSWXO+t63nb5urrDVpl7fhBqZdQfHb4D1xDB
-	G2vuJlwaj8u2Fb5MhVRNhsrRYqUz7XdlQ==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwj8cg3gn-2
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=yFdwvbHw5
+	wYwNA79EZEdKg0l9rgBhDjGSJLzlZC1veE=; b=CaHmSqNyykNxVCuA9oD1ttcJM
+	4jjuIode84a3DiYMTugXGn8pb71z0IGCJ6DG+TXy62IZRizVk8gqhD34Lixld7Tv
+	chstJluCpFShFh4Dau+WBUfde9X1FVPPrLm2pQ8xs2lalGewkHfuu9098tKQnqZ/
+	N5/qWTPifSC/jwBpwmE7NeC0JtYRnGWbbK5Dx7zvYr1GgzwjG3u1FC7tJBjsNn5k
+	Zz2/PiRmurA4SsCg8j4W/fyS8LSd4MnD9IgD33ouXowxcN8VNeOGCs3AgJoHXNh0
+	6Nc4b/JoyZ1CFih9nSKhm+wX/xD62/E9xjmowfoY3LEuyEafyZNgG6Ori9h1w==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4hwnm16etv-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 13 Nov 2026 10:56:01 -0800 (PST)
-Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+	Fri, 13 Nov 2026 10:56:00 -0800 (PST)
+Received: from localhost (2620:10d:c085:208::7cb7) by mail.thefacebook.com
+ (2620:10d:c08b:78::c78f) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.56; Fri, 13 Nov
- 2026 18:56:00 +0000
+ 2026 18:55:58 +0000
 From: Todd Freed <toddfreed@meta.com>
 To: <netdev@vger.kernel.org>, <toddfreed@meta.com>
 CC: "David S. Miller" <davem@davemloft.net>,
@@ -82,12 +81,10 @@ CC: "David S. Miller" <davem@davemloft.net>,
         "Boris
  Pismenny" <borisp@nvidia.com>, <bpf@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH net 2/3] bpf: don't redirect decrypted skbs from egress to ingress
-Date: Fri, 13 Nov 2026 10:55:52 -0800
-Message-ID: <20261113185553.171059-3-toddfreed@meta.com>
+Subject: [PATCH net 0/3] net: don't redirect decrypted skbs to ingress, psp time-wait validator
+Date: Fri, 13 Nov 2026 10:55:50 -0800
+Message-ID: <20261113185553.171059-1-toddfreed@meta.com>
 X-Mailer: git-send-email 2.53.1
-In-Reply-To: <20261113185553.171059-1-toddfreed@meta.com>
-References: <20261113185553.171059-1-toddfreed@meta.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,72 +96,74 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX/dTB1AVLshkA
- CGPIhBRtZXaf2gNJMWgVKH1pY3JifbIvceaCqcMg8lQloY/S/fBVGaQHJpxmwrtkmMf8ZPGSYPE
- 2RziXRF5pgt0UcYqO9aq2srPaqLMI/Ua9syFSB0yjmGvdbnCppRAF2O5tKX1JngWQZ5ofC+ZofF
- XfGrcaAn4wPkcZZvH+jOAQfjgElgjSA6dJmhOR3EnsK8UcCrVXNwWpBYjQ07ZmWSd/wXB1fm8jN
- Ncy5aeD6AimEK7UGZG3ZEcVsvVW7/2mfnhB+taBeKh4Vo2jJn8LyaQUYVFQqD7mO1BqCvJxuyF/
- TXfq0vWpsZUSNAtl1x0e67pXbv6M5bY9h1va6Q9Iz8LbMNHBnE+753UhblPrYLQLq+S6Eh26Nzn
- KCy+k/UbbsXA+WBYDLnDt2pdWpj6GT0Jtt9nhc+iv8WUnph/7cybtjbMFaNP1xjNKIqWBc0qjR9
- LeMVPER/yu5qLzCI/OQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX4c5LPZ4kjzqR
- LWRm+Y6OYj1FkzEyaLxihkiK+/Exc9f/7cVKnH08ficSqYfPWky2lEvlt3l+SYEEHlGyUMEbDWq
- GadTnLjtnB5CEcZ4kTr7d7mj/uOUyfs=
-X-Authority-Analysis: v=2.4 cv=DuvDa2/+ c=1 sm=1 tr=0 ts=6af75d41 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX67Tj9ZMupP62
+ guwflFJZNfZRkhKx9IbcoC7tqYYv+9E2KGaO3JZaf/GRrPyOJiA42xBDfDXdqvI3suYjIyk6a4W
+ Jr10Dw3gICm3do1uZsMy9IXiD/0uT+w=
+X-Proofpoint-ORIG-GUID: HbG8eXA8DjEGd4N3GkGaDT0kj9CyOF0u
+X-Authority-Analysis: v=2.4 cv=acv0Dhot c=1 sm=1 tr=0 ts=6af75d40 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
  a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=JnKecZnUtZousrUlYMGU:22 a=VabnemYjAAAA:8 a=jdngVG28WKp3NRxkfb0A:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: PsL5oux0oVFQlN2YOdeSOUujfH5u8__b
-X-Proofpoint-ORIG-GUID: PsL5oux0oVFQlN2YOdeSOUujfH5u8__b
+ a=GbPsI2Ihf5RTnMjR_gZv:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
+ a=rxrEgwTP5pyjjZjSKO4A:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA3NSBTYWx0ZWRfX79xatqR/Wbes
+ KDC0MzYBl6BjuBdaLhPKCSfyOSQVWtD2FFTr7i/AWWtKyF/anSwp/zorOO9P85n5D9aLYZRVNF3
+ qLYfUQkygCaXtdNt+lKDt1SUn/WEYbibpzUCIn4wphxfVBHc2kedJepeDyqS6IlGmtxOz2aoaxN
+ iIgBWIp7ltmOvK5SAtZmolTPw58DM1FuT/ldHgvC2H384GTOY0ViDLSh9zbQDJo7/mVr0GF6hdf
+ RMHV/06gLt0jOL/q0F8RNZ/lXJ0afz5aaHoPHZk5SXF22GO+LRAZWfrC849l5IqegxcJWVlnuSL
+ FZxsfT40cv03VI0DbebHK5bAUm8E/WcWfjpImCwQKnB6Jcr9Dd0QgXLcamBErrHE4PEEPYd5zxJ
+ tL6GZW20P5YtflopkpGuqkkiKI2TGRs4qs2dkcnAdJ81e6br1CfGUX0/ck6k4Zr14OF7J38/17L
+ 3yyRSNh721uKLWH5gjg==
+X-Proofpoint-GUID: HbG8eXA8DjEGd4N3GkGaDT0kj9CyOF0u
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-13_05,2026-11-11_03,2025-10-01_01
 
-On transmit, skb->decrypted means that the device must encrypt the
-packet, e.g. a packet of a kTLS or PSP device offload socket.
+Three fixes that are relevant for the net-next series, "psp: introduce
+socket-less associations". These were previously patches 6-8 of its v1:
 
-On receive, skb->decrypted means that the device decrypted the packet,
-and kTLS device offload trusts it as such (tls_device_decrypted()).
+  https://lore.kernel.org/netdev/20261111005533.6436-1-toddfreed@meta.com
 
-bpf_redirect() and bpf_clone_redirect() with BPF_F_INGRESS send the
-packet to a device's receive path with the bit still set, where it claims
-to have been decrypted by the device, although it was never encrypted.
+The first two patches prevent sending decrypted skbs from egress to
+ingress, since the meaning of skb->decrypted depends on the direction.
+This affects the packets of kTLS and PSP device offload sockets.
 
-In addition, the redirect drops the metadata dst (skb_scrub_packet()),
-which will hold the Tx association for socket-less PSP offload in the
-net-next series "psp: introduce socket-less associations".
+The third patch makes psp_twsk_init() give a validator only to the
+time-wait sockets of PSP connections with a Tx key, instead of to every
+TCP time-wait socket. It has no effect today, but the net-next series
+will rely on the presence of the validator to check if the socket has
+an encryption offload.
 
-Drop decrypted skbs which bpf redirects from egress to ingress, as mirred
-does since the previous patch.
+Testing, on two hosts with mlx5 (ConnectX-7), with and without the
+patches: an egress rule on a connection's flow sends its packets to the
+device's ingress, with mirred (mirror and redirect) or bpf
+(bpf_clone_redirect() and bpf_redirect() with BPF_F_INGRESS), for a PSP
+device offload socket, a kTLS device offload socket and a plain TCP
+socket.
 
-Fixes: 414776621d10 ("net/tls: prevent skb_orphan() from leaking TLS plain text with offload")
-Signed-off-by: Todd Freed <toddfreed@meta.com>
----
- net/core/filter.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Without the patches, the PSP and kTLS sockets' packets arrive on ingress
+in all four cases. With them, none do: mirrored and cloned packets still
+go out, encrypted by the device, and redirected ones are dropped. The
+plain TCP socket's packets arrive on ingress in all four cases, with and
+without the patches. The PSP and plain TCP cases give the same results
+on netdevsim.
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 946b07a17fce..defbef3a9f75 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2226,6 +2226,16 @@ static int __bpf_redirect_common(struct sk_buff *skb, struct net_device *dev,
- static int __bpf_redirect(struct sk_buff *skb, struct net_device *dev,
- 			  u32 flags)
- {
-+	/*
-+	 * On transmit, decrypted asks the device to encrypt the packet. Sent
-+	 * to ingress, the packet would read as decrypted by the device.
-+	 */
-+	if (unlikely((flags & BPF_F_INGRESS) && !skb_at_tc_ingress(skb) &&
-+		     skb_is_decrypted(skb))) {
-+		kfree_skb(skb);
-+		return -EINVAL;
-+	}
-+
- 	if (dev_is_mac_header_xmit(dev))
- 		return __bpf_redirect_common(skb, dev, flags);
- 	else
+drivers/net psp.py and hw/tls_hw_offload.py pass, with and without the
+patches, as does tc-testing mirred.json on netdevsim (39 pass, 7 skipped
+by their dependsOn probes). Each patch builds without warnings (gcc and
+clang, allmodconfig, W=1).
+
+Todd Freed (3):
+  net/sched: act_mirred: don't send decrypted skbs from egress to
+    ingress
+  bpf: don't redirect decrypted skbs from egress to ingress
+  psp: only give time-wait sockets of PSP connections a validator
+
+ net/core/filter.c      | 10 ++++++++++
+ net/psp/psp_sock.c     |  7 +++++--
+ net/sched/act_mirred.c |  6 ++++++
+ 3 files changed, 21 insertions(+), 2 deletions(-)
+
+
+base-commit: ead6fa9a0ab194f02a2f36d634b193e9c5f9a1c6
 -- 
 2.53.1-Meta
-
