@@ -1,102 +1,112 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.217.51
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794528225;
-	b=KzcmOLvegYoC38C18V0EqQmhjNzzJx7bzXK1URvBJWR0V+lXmnuPUU1ffDLNh0l3OZW+
-	 8FshOz5r+otFThoFE0s2j+IRcEzBS1UouFY1XYFMnIn6Fg+ftZC5e3tPbPxd13bUgJMxm
-	 juVuHdcYephsbFpLtjZdb93ec1i+zYifW3yt/d73OU+adphZyV5W1+pi9ofxJiD+GXMIi
-	 6jlZ8cE31aBYp7bXcGuGSN9GcFlO9TZpi9X/viTzy7PjG8tJJ8cXwEKacwTf0R6w3IFvc
-	 meTwKx+KoI4wg+w2tw4AFy7D07FX6qUskbw4wfevjrwgokdIxWFTLINvKfIa1dZju3A==
+	t=1794528319;
+	b=dl6pV6D/UDs6Fg4/s4HvLnFBcaLiTQXBAB+rScjnM57UW+sjzV8o+lh/pQR/u0eGf+II
+	 CJXgVJAUllZsZt95PROMUGN4hVY6hRCCKt1ZaAsQPfWMXZxfiCRFyc4e5msmXy9Ry3LjN
+	 A8d4v1fEVc0Hrl35kwfVqr1yMlZkOm8bD3bkXQLNZlvKhT+lPrOXQ8EYDtq2PufYr11y3
+	 Wt/uJuS3rswjlk0GllI7jvpwx3uV4nPgFGQpx7+Uc87GWoxVHK85kTEsMWS+mFhz6rpCa
+	 mNPkoiritjUY4QdEzjv1dEK9TDVcxRat3WVXsP4J5JQZrUTurP9NjkLL20SqgATRZwA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794528225;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794528319;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
 	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=n3EYCbbbGBOA4SNhncsXBfuKYI2HFyvcvwJsqRBHZ7w=;
-	b=MzhIOP64q24OFhxjcYTc4gykq1ogspXLBcRGkgNnfvS/6P4cUnLMO/UgEUJdS3YOkcVf
-	 HmalahcucoRx+HRcIJ+Bx9hhaZ3WI9BHyiA5LkD1rlGme2GBl2RNzNrvHN9DMCCBzmvKM
-	 IEUovf1Oz68DYX6PeznlRnvZdZk7znGUF3uJmLji4Z65yxlFbuEivXiRBcj93kw+2+lq6
-	 sM2X5BqpAF+AlmkL5n9Rnwy/5s0K6PIptOol1/qMvXvbcslseWNm2E6IIy8YvFn7aJVQ5
-	 tP6J8IwL1LXptqSBTZw9r3jSt+N+ZUqhBR3O03maK87oA+HUWMunTHL6psHfJG9Zvog==
+	bh=ZP7w34GShAuXcCWiodI7YmsdXNmvF5TzQf1yjJvKrG8=;
+	b=nRp5Igys+F/GL7S2iEt/f/A6eHX4tFSqdpSNWohRgnPyqGhYoM3FJLOCFjk2s779Rk9S
+	 2Of0kOfHuMYiQUCSo0vSPdhg79Wi5d1KbcbSmKOo5tsifr6YoCfFrVwFmFsIpRxxPJuzF
+	 NhHFeCMVWzVV8AvmeHRsZdW+yfy5wcnjA3f3ltq8V0z+/NviyCzMnGwLPh0iSxd8BrbL0
+	 QQRC3BeO1Ur0mrP3TQCGEjpcPUKLg8smbCNOnnVrOXu+hWcJJGwhlaG8WONAfCgEZlLRi
+	 hSJXN8INMgjPI1+p4kLJCAK+B7pQOmcdyrC9063UaSl0NNFVIe319/QdsOl+xdkld/A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kCtefAz4;
-	arc=none smtp.remote-ip=209.85.221.180
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DmDmIqDs;
+	arc=none smtp.remote-ip=209.85.217.51
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0604606A31C
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 00:03:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0604606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F63606A323
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 00:05:18 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1F63606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=kCtefAz4
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5eaf169fe3dso151110e0c.3
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:03:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DmDmIqDs
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7d2dbe5c4b0so97728137.0
+        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:05:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794528224; x=1795133024; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794528318; x=1795133118; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=n3EYCbbbGBOA4SNhncsXBfuKYI2HFyvcvwJsqRBHZ7w=;
-        b=kCtefAz4/EkDF3Yqj6SgOJsCYDn4NeoTs1if1EcQU9pQ0nzGBf0PQGOPzY8zQBnqBQ
-         29pH0NHAWTM0gqPBw6y6GqAE1WZ2cqKxqY50ogebyPwYYSHvRqpl9se8ZCp7nh9196A0
-         +0ns0Vik8xHARVqNwSHJLKXF4IUCbBL3oZMhGxUs5FOJJhFCtSfvUH8mj3nwmjQqlj1z
-         e4qzoCKyKyKtxarqMzaG8AQ7sK6cdFjvnNskYnFI+714B6u6wLp4OA1NpFUdGFQSihlI
-         Zi/KMT6vU6upGejVAhXsGTbA3bKZEw9yO3i7wfNGrEg+h42zv+FrrCqEvtRlswh710WL
-         yy/Q==
+        bh=ZP7w34GShAuXcCWiodI7YmsdXNmvF5TzQf1yjJvKrG8=;
+        b=DmDmIqDsd3KGpm3pYfSBm6QfRSeIJaviqKbucIixjaB2kq+0Uq/HX0AqFy02tySaaa
+         Qasz/xY0ZgxEaiLqbAmrfPtK8sdbsfG9DN5C8SYcR/++KtBTGbx00Bbvc+Ak6kUYclTj
+         bLBS2xO10lpVwFda9Abuk9p6yYUi/hYA005qCZtVscxZENGD0FOgt+r7Dok96HK1zf7b
+         oF2K6A5jk/ZYZdCHz1yI2OlArvWk/HXMFoIC8kBl3ssryTugnB9UXOyMZvA0LIMc7V22
+         JFDZmNfldjBnPKSzdsK5KnSEQdhHWfv6cpmHKJbbrqn3ZzdKZMFwBoHJMgUPy6a4AAbC
+         6s2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794528224; x=1795133024;
+        d=1e100.net; s=20260707; t=1794528318; x=1795133118;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=n3EYCbbbGBOA4SNhncsXBfuKYI2HFyvcvwJsqRBHZ7w=;
-        b=QLMVxM/uW9drG9K4lSclaj6gH+rVQ/FPEmARoRgTEh9X9/ciNKR1aTlmMMSua2Oe+N
-         LBnOAPTyUh5Js3jQ7QDj5L1H7wRqe76oUOYuVXNqt2IFUcoNOYsYruVM4y2+3RGE0LqS
-         YvPo1Fxbf/87aLaz/HRzUxjntXlzBWG+AJ3injwvoILPJNe8e7UXK6ckSmlOLnFXihW5
-         WPiqqfn4LbKn4U/BeLk+ILL0p/yqgeohkXVUZYmIFSQtDZc/AKulw1SYhbwimeB2s3Pl
-         dwdGurVsqs8+iq8N7akkPXWXhpMS1Cy/JrLuvaF4eeUg13WCsuTCSpETOKtAy8wh/tk0
-         DO+Q==
-X-Forwarded-Encrypted: i=1; AL+hErE92X1jbws9fGpk8rDGHFsQdL9UmlPbIi/Z0wTA+LWI3BVRFB9rElIoVxQUP5jvPY/EECBOaHA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/e6d+ErIQ9pXKVbMAkwDD3pCXtPBB+LeLkV6NvdCvHDstnk0yu
-	Gs1W8VrHK9d6xSlMfZGIjX5aIXSS/VtFKa7oFIghAcCZ/Gmo4ix7OUqN
-X-Gm-Gg: AYBFou13/1PLXyYgclV2zOyBAV2TURK0585yC00TaPOvxqfGQQp7KKOUsHnzHq6oXKb
-	GgRHpVEqdR4Ccz+w9OAoTEKq1NbrCVQUv7u30EngtCjPCHvmw2J1W29G3ykIhfBC4PkvugP6qsK
-	uPWJRWC/SAgfbBG7XROzUIB/gkdVlGOkRLtc8kyQgnucwd17vd8/SPdIl0wTb5ozdpGC2fJsOvH
-	Cay4Tiu9+oU6Kb51ypKqgEedmw0FkilmXwTK7Cbh8ro2gc+nV82DqyEvMex1+538oXr5jiBmUkI
-	nqanNSfURTfuG4dbLBa6Tm/cvhZ5Yy9hpq402rOxPhmn2Yt1wwG6mlijiUH9zGA7dNxzZB2hcRc
-	RMdtWKWnwRiB4r14l3vYyTnr9vUzUvf5qQqSuv1VnT5WJARkUdIH1gF43C5HQVfpfo2cNTSiCyu
-	AEEvPIlCVPT0fzOBYzix5CvWYnLYm5EsPRw5MPziLryTyN4OSutWF1p4xRgD8mVFAAu1hw1ia2t
-	q+R3VhPHQoX/8mJdUm4GS8epLOKfkXH7WT+MXW6MTHKjxI9FFhSMl4NiiOR5I5mMcn86LreJeNZ
-	oO6lDDfRVRtVIc66CbpPEySCSjuW68eyg/KoamgPg9n32ZjdeYrIvfTPkTNTF06fgmBSAcZjoWH
-	t7R3mxhVNcVpfxZ1Pfv4myYHPRxWPccN4nFm0nlbEsC0Uk/GhfMKjHnTEABr9Kyk=
-X-Received: by 2002:a05:6122:3295:b0:5e9:6d96:aa38 with SMTP id 71dfb90a1353d-5ee34a72ee5mr262842e0c.9.1794528223692;
-        Thu, 12 Nov 2026 16:03:43 -0800 (PST)
+        bh=ZP7w34GShAuXcCWiodI7YmsdXNmvF5TzQf1yjJvKrG8=;
+        b=ZEgBMbF8V+oZkirofIdFY03HUju9wYcF942Rl9k4gO+8RaRJ5h3OqmemqlUjH/GkuJ
+         2VlA+U6QHDeDVOk/Egj8AgqyOfXtc2DyFjNF7us4m8R+qx/9MczRMZLXauGMq8u+Z4dX
+         g2VfyOf0uXA1qQsvijblQR/Um9z2Y7csA8CnsWVfui7piAHBuc75qPf6D9ZWSiHLjoOl
+         xtUEWEHu95kIWvE8pae/rk3kmYIRtqET/4W69revmMjh91uweMhxMEF2FhsiKnO9cWzr
+         Fo8CPfWoou/O0O4Fkk3eayWFglmuey8y2jDdPRrvWVhdOrV1xFasjweaNQMz+zoonCOi
+         FHng==
+X-Forwarded-Encrypted: i=1; AL+hErHpaEfy4k5BJeMbr0Oox8J7w3CJ5QIOxL/BCf2sUrSbdFcqv5z8rR/Q4fzPlvvnewHwdCAQL/k=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8etG4vyi7Qr9wnti43UlH5Pe1wy0W5DNIa6kv0C2O3AK0dhPXe
+	0IB4f6grAuWZWZ6d3TeIc60p2GWa9HNBJ3NnzEJF9v0mRf+T2XHzQDGz
+X-Gm-Gg: AYBFou3SR/VPhmlMXYvi7jwRqxFFp7o3q72B/UvfvbwrHPdfpRIA0G0goHZcl4ydRvJ
+	icYh+Wn6ALMrh0Cm91cmQNBQ5RNCA8JNXBGgpbp4LytNyOii/Fi8C7qzfLTAqkbpzn5b2L5ZT+M
+	8zxpiAJ8CWEkAs3aeLHXPQ/Fy9iCMbfvN7ENQO61soJ5MWrisbTv+lXDegmEWLy1Tx1Z+ikzEE4
+	ki6AQvsYZcvT9gfxpxu/LKo0aa+v2H7HNSvc12eKivtdzDacfguhBteo+0zR/L5qMhvKLD7bxC7
+	labFN57Xb///xy5eFHZyUt5DkU9YsdzJRje0JXGmzXmso7OLbnPZKXiuYIu6gs7uWLvlQA7J9Xh
+	wvCcFaeUXKuS1wJASrYWaUoC0CNng++9t3LVuqiz/6koQkZrzTQJtm0I4SkNIpYiI7K483tSRk8
+	8QaKX3wqt/IY1q3yHEiCkXPFTpDEXNXYJnrfJ1LS4Aa03TBvxrxhdJogjrpdf4jgCQI+Z7887zN
+	D5uIlhRyyEAv+Ga4D+rYlyaqGuA+2m9XpaXZCeyEo6k6tocIo3VAw7tRoP7ieMCEMT3AzBop8gh
+	f/WYveSG/pzt7n8oUF55wVnUlmsFx02cG0FLQMSCLb9XPVNSWEUIUM2/ke4axq8xwt1YLGCfxUf
+	bOnUm66zAADJnBoqf377ryppFdGjF612ujuovuE9/VmWykS+x/R1Z1BgOx+1qux3Jag9NkYx2Dj
+	cYBWQWUpzh
+X-Received: by 2002:a05:6102:32d1:b0:7c3:a6f0:99cb with SMTP id ada2fe7eead31-7d64db100cbmr246150137.33.1794528316894;
+        Thu, 12 Nov 2026 16:05:16 -0800 (PST)
 Received: from gmail.com (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee34e3137csm349609e0c.3.2026.11.12.16.03.42
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99c8424fb8fsm546119241.3.2026.11.12.16.05.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 16:03:43 -0800 (PST)
-Date: Thu, 12 Nov 2026 19:03:42 -0500
+        Thu, 12 Nov 2026 16:05:16 -0800 (PST)
+Date: Thu, 12 Nov 2026 19:05:15 -0500
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
+To: Jan Koester <jan.koester@tuxist.de>, 
+ linux-kernel@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
  Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Willem de Bruijn <willemb@google.com>, 
- Simon Horman <horms@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Karol Wachowski <karol.wachowski@linux.intel.com>, 
+ Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>, 
+ Oded Gabbay <ogabbay@kernel.org>, 
+ Jens Wiklander <jenswi@kernel.org>, 
+ Sumit Garg <sumit.garg@kernel.org>, 
+ Christian Brauner <brauner@kernel.org>, 
  netdev@vger.kernel.org, 
- edumazet@kernel.org, 
- Sashiko <sashiko-bot@kernel.org>, 
- Jiri Benc <jbenc@redhat.com>
-Message-ID: <willemdebruijn.kernel.27a5f74eac338@gmail.com>
-In-Reply-To: <20261112102001.3744643-2-edumazet@kernel.org>
-References: <20261112102001.3744643-1-edumazet@kernel.org>
- <20261112102001.3744643-2-edumazet@kernel.org>
-Subject: Re: [PATCH net 1/2] nsh: limit recursion in nsh_gso_segment()
+ dri-devel@lists.freedesktop.org, 
+ op-tee@lists.trustedfirmware.org, 
+ linux-fsdevel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.31eb7df44411@gmail.com>
+In-Reply-To: <20261112153841.1661720-1-jan.koester@tuxist.de>
+References: <cover.1792552161.git.jan.koester@tuxist.de>
+ <20261112153841.1661720-1-jan.koester@tuxist.de>
+Subject: Re: [RFC PATCH v2 0/3] uid_r: convert tun, ivpu and tee
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -110,55 +120,44 @@ Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-Eric Dumazet wrote:
-> nsh_gso_segment() calls skb_mac_gso_segment() for the inner packet,
-> which calls nsh_gso_segment() again when the next protocol is NSH,
-> either directly or behind an inner Ethernet header (ETH_P_TEB).
+Jan Koester wrote:
+> Hi,
 > 
-> Nothing limits the depth: a GSO packet made of stacked 8-byte NSH
-> headers recurses once per header, and a 64KB packet can hold about
-> 8000 of them, overflowing the kernel stack.
+> Building the UUID/GUID id RFC (uid_r v2,
+> <cover.1792552161.git.jan.koester@tuxist.de>) with a distribution
+> config instead of the one I had tested with turned up three users of
+> kuid_t/kgid_t it doesn't build with: kuid_t is a tagged union now and
+> has no .val, and it no longer fits READ_ONCE()/WRITE_ONCE().
 > 
-> Such a packet can be injected with a packet socket using
-> PACKET_VNET_HDR, or with tun/tap or virtio_net, as nothing checks
-> that a GSO packet with VIRTIO_NET_HDR_F_NEEDS_CSUM carries the
-> protocol it claims. It is then segmented in software if the output
-> device does not support the GSO type:
+> 1/3 tun: TUNSETOWNER/TUNSETGROUP write the owner and group under RTNL,
+>     tun_fill_info() may read them without it. Mark that read as
+>     data_race() instead of READ_ONCE(). Only classic ids from
+>     make_kuid()/make_kgid() are ever stored there.
 > 
-> BUG: TASK stack guard page was hit at ffffcad5c0ab3ff8 (stack is ffffcad5c0ab4000..ffffcad5c0ab8000)
-> Oops: stack guard page: 0000 [#1] SMP NOPTI
-> CPU: 3 UID: 0 PID: 337 Comm: nsh_gso Tainted: G            E       7.4.0-rc1+ #118 PREEMPT(lazy)
-> RIP: 0010:lock_acquire (kernel/locking/lockdep.c:5902)
-> Call Trace:
->  <TASK>
->  skb_mac_gso_segment (include/linux/rcupdate.h:309 include/linux/rcupdate.h:849 net/core/gso.c:50)
->  nsh_gso_segment (net/nsh/nsh.c:110) nsh
->  skb_mac_gso_segment (net/core/gso.c:53)
->  nsh_gso_segment (net/nsh/nsh.c:110) nsh
->  [...]
->  skb_mac_gso_segment (net/core/gso.c:53)
->  __skb_gso_segment (net/core/gso.c:129)
->  validate_xmit_skb (net/core/dev.c:4238)
->  __dev_queue_xmit (net/core/dev.c:5087)
->  packet_sendmsg (net/packet/af_packet.c:3157 net/packet/af_packet.c:3189)
->  __sys_sendto (net/socket.c:800 net/socket.c:818 net/socket.c:2283)
->  __x64_sys_sendto (net/socket.c:2290 net/socket.c:2286 net/socket.c:2286)
->  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
->  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+> 2/3 accel/ivpu: the per-user context limits are keyed by
+>     __kuid_val(). UUID and GUID users share the (uid_t)-1 bucket, which
+>     only makes the limit stricter for them.
 > 
-> Use gso_recursion_inc_test(), added in commit 006c8b834aed ("net: gso:
-> limit recursive IP-in-IP segmentation"), with the same limit as IPv4
-> and IPv6. The counter is shared with them: a packet with four NSH
-> headers in front of an IPv4 header is still segmented, one more NSH
-> header and it is dropped.
+> 3/3 tee: the TEE_IOCTL_LOGIN_USER client UUID is derived from the
+>     classic uid. With __kuid_val() alone every UUID or GUID user would
+>     get the same one and could act as any other such user towards the
+>     TEE, so those logins are refused with -EPERM, like ublk refuses
+>     unprivileged devices to them in the series.
 > 
-> The NSH -> ETH_P_TEB -> NSH route is covered as well, as each round
-> goes through nsh_gso_segment().
+> These belong into the series before the patch that lets kuid_t and
+> kgid_t hold a UUID or a GUID and will be folded in there in v3; I'm sending
+> them now so that the reviewers of these drivers see what uid_r means
+> for them.
 > 
-> Fixes: c411ed854584 ("nsh: add GSO support")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/netdev/179443691180.2199510.148246238688217560@kernel.org/
-> Cc: Jiri Benc <jbenc@redhat.com>
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+> Jan Koester (3):
+>   tun: read the owner and group without READ_ONCE()
+>   accel/ivpu: key user limits by __kuid_val()
+>   tee: refuse user logins of UUID and GUID users
+> 
+>  drivers/accel/ivpu/ivpu_drv.c |  2 +-
+>  drivers/net/tun.c             |  8 ++++----
+>  drivers/tee/tee_core.c        | 13 +++++++++++--
+>  3 files changed, 16 insertions(+), 7 deletions(-)
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+I only received this cover letter. Also do not see the patches on
+https://lore.kernel.org/all
