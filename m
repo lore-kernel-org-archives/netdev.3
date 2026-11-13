@@ -1,102 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.70
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794580160;
-	b=sHIq17QwGFdecr6HmqMNcIcL37Rs1gyGsmO/lweBDBVviGITYmfMB/+LiVsA/a0Mei8q
-	 xvOaqNbi/49DoqtVJ3+4mmqdEZtrrhuzn47MHVauf+htH3APvntrpEUu4WUwCgdjD3qVw
-	 ZvAlHv8w2c+twGb3Inyb7QpwdywDGkuZerfcKmUDL6e1kc2Ckw5VdxTqLv9cyhERpQ0k9
-	 TMCrTONtRFHMPkKv+tTh25V5jf7jlSvffaC1khExoXu/RxLNHiQ+Fpv9fvNy/dFEiM8mg
-	 kVPkq3BxtjxRvAlk0SYj/e4aBq+uzH9suX2Fv4tMzli0lw/JAGUMek+pfj6xgXilKIg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794580160;
-	h=DMARC-Filter:DKIM-Signature:Received:Received:Message-ID:Date:
-	 User-Agent:Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
-	 X-MS-Exchange-CrossTenant-UserPrincipalName:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=OICuhvTZflej+WWR7scHPBDRm7v1T31zRnEt87KO+lk=;
-	b=Ww1n5ZicOjGlSpyrhavVg2E0ANIA2aFwITrjcI9j7kgAoDkmBj9OEO/RnakKrFH5pM1V
-	 xzkupSCTcpl/6022eAyUJvsWrT+vGYZ5wEicCf3ESjbNbqoFshTnjuaC/DwZuqKDWLTDB
-	 lQTEo0oWEHgF+8k1/uWTwUNt3SwgitO8km+G5ARMe3e52lAMlPBh0Ru6gpXC5dHsd5rBM
-	 T+37n4J4WHdyFVIo0JyC2fHNnciRadRrR0C5kS6dP8P8dvfjkArmBZxZKPU7cCO47ekw7
-	 BgNC8rTSx2G+ZceJtMV8ETZCiS3aT8skqkhLNm0+50C3y1+MVoL/0ub1zZ9CCD6sR4A==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=nvidia.com;
-	spf=fail smtp.mailfrom=nvidia.com;
-	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Dvmg1RR1;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=40.107.209.70
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012070.outbound.protection.outlook.com [40.107.209.70])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.240.164.96
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794580368;
+	b=cPyxjtFS3/a391hgUH+OEc3wydIR2BF5eZjA+LVTyZdA9ses2CwzojsqGYu/CqbAHBUZ
+	 iitiWAjrCwPOa7yfqimzx9vA+LJh/A+yV1KsOkOg2Wq9XmeK2YpZnikUSYyKbatvxuyJ+
+	 Fqzl84ASO8p1C6COsS2gpTWZXAT/GNKjYvP0Czbm6t6+ePxXuoOqAS7jd377wMHWcYhj5
+	 dYxicjI6X1Pzgxlwgsq3pCgAova5nKX9fWtASpxN/Hwe/JunhM4kPPBx5oVwJRop1u0PY
+	 GcX0+kGDwU1KeFmqOok+4nvFbtq6wCer871Dpo8nP4fUVrmTMrDm5yg84ku+M2QuK6Q==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794580368;
+	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding:
+	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:
+	 X-Get-Message-Sender-Via:X-Authenticated-Sender:X-Source:
+	 X-Source-Args:X-Source-Dir;
+	bh=P6Zz8nLVr+CXWqX8BFHKnq5c+RvQQo6UVKKSWAKXWMA=;
+	b=Glp8IcTneFZJ383CNlkSQ0oXmOBbfW79W4qPukk4ktrlI1b4V88cskM7EIZ+du00MIOH
+	 0AvSgIi2X9NX1eYs00yXaFHUMOIY7k7QBd1jYBMpvZep5QtwI/h0cXJ9D0AHEQ3iaCP46
+	 l97DbfuEw+4y9ImVCeoEZphwMh9vbcd+SgbI7zh0g55ytGhUMR+JJXCpOO+ooXewt04+x
+	 tfZBlrA4bJr7ek5Gf1NDvIiO/f5ljE3aDnbYCE6ZoSw2LKVQi18Oce5WV2LnuftWdWPyK
+	 8L/f1QYAV9u8qw4G+wczix0rV7pBkxx+C3RZTt2Jh9qcgmHvUsshm9L4qhvgVun0fDw==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=couthit.com;
+	spf=pass smtp.mailfrom=couthit.com;
+	dkim=pass header.d=couthit.com header.i=@couthit.com header.a=rsa-sha256 header.s=default header.b=ePefooXq;
+	arc=none smtp.remote-ip=162.240.164.96
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66987606A335;
-	Fri, 13 Nov 2026 14:29:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66987606A335
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A521B606A32D;
+	Fri, 13 Nov 2026 14:32:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A521B606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Dvmg1RR1
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iV92TtQHqRbyUawm3iPLhaa5pW7hRDSKHcYET0R1EBzVgTXkspBK1b9NDoxiV1BoLLsQoFz0gPIT62fgVGfjDHpy5cAkgPPxsWBa0whnFVDfIu/Ix6qlA/2ABCH3YZpFeBPLknRx8pQxzR9VcBvvb7i04T9Q/3hBPxM5xkk9IqRWH5hhXeqRUBf2pg4ddhEtj9PBL1U7PAGlXj4r3Y9cO4kGzJDCd3P3jZn4i0dANOKWVIlCDcuSi1m4VLjU4fL2ouefdYVusfrsSvO2UpjjUDaJPPykMcyBiqKgZggQHY6Kt10zullFv5Bil9CeBsnvDuGPJWbtEoHjsF/MEzap5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OICuhvTZflej+WWR7scHPBDRm7v1T31zRnEt87KO+lk=;
- b=pTF1Yc5kk1WVHIOmS0iSi0vIeYtgqZGP7UgWXIEn34ccGb1eEzbQapcsRHwGDebKyJXwvfYC2MUQW1ibJAS0hbNaW1HWKac5u8nU37NoFB/wq0osrtlcl/tIbDUNrhS3Z2gXUG0HLgDgIhh8up3FqC3raUh9zL49ueCGGjmU3T76qtZuMS7WxBkSM/Y9TcoEmdMCkEhGD/frloXB4waLeUyErM1oQ/kYZa2YIzdQEQDAeAwUWb9uinFqpAYggL1y3NUqri6jzwJf2aFfGY+Wn0PWS7dFDGnD7F+hY+H+pmee/dxErj7Sf8iI3TFhFemEc9yZHQ6KtVw0KSF/TvxqGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OICuhvTZflej+WWR7scHPBDRm7v1T31zRnEt87KO+lk=;
- b=Dvmg1RR18osuDMghg+uGsUFVRpnN8/O+NDNlk/4lSfJPqjVLcv0AZWQCsWccVt9EXgjtQkd/L5o5ABYum47p3s6EvwcpX9qi7Vymn4Gkw8l3VW37DJ4cYgH8INzP4fhNHvhT2Y6eY3yewaii9zI75x95OcMhpiEQ8N6/SyEnUrqLh3iJQ4tWljm62vEv+UeTxg6LDLo9hh7NdqFhU593HOgBdbEfq1rxBKSz6CJWM915Zsbc9evyVmI8GEyfjwXEQB56FPvRUT7D3DKFHWwyykpvJMxL3/mMq9lv4mwtRyESr7N/awDcOgPunkjNbGdj3SdQPah75E0IWajgfmdpMw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CHAPR12MB999248.namprd12.prod.outlook.com
- (2603:10b6:610:2ff::22) by BN7PPF8FCE094C0.namprd12.prod.outlook.com
- (2603:10b6:40f:fc02::6d8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Fri, 13 Nov
- 2026 14:29:08 +0000
-Received: from CHAPR12MB999248.namprd12.prod.outlook.com
- ([fe80::4972:8062:d74e:b205]) by CHAPR12MB999248.namprd12.prod.outlook.com
- ([fe80::4972:8062:d74e:b205%6]) with mapi id 15.21.0615.007; Fri, 13 Nov 2026
- 14:29:08 +0000
-Message-ID: <52cb2c1f-5fe4-4c9d-bb41-3bdc688a6c2b@nvidia.com>
-Date: Fri, 13 Nov 2026 16:28:58 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next V2 06/13] net/mlx5e: Add data direct RX
- infrastructure
-To: netdev-bot+sashiko@kernel.org, tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- bobbyeshleman@meta.com, cjubran@nvidia.com, cratiu@nvidia.com,
- daniel@iogearbox.net, dw@davidwei.uk, erfansh@meta.com, gal@nvidia.com,
- Jacob.e.keller@intel.com, kaifengw@google.com, leon@kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
- mfleming@cloudflare.com, almasrymina@google.com, razor@blackwall.org,
- saeedm@nvidia.com, horms@kernel.org, sdf@fomichev.me, sdf.kernel@gmail.com,
- witu@nvidia.com
-References: <20261110183826.2927274-7-tariqt@nvidia.com>
- <179447640550.2199510.9976355768850888899@kernel.org>
-Content-Language: en-US
-From: Dragos Tatulea <dtatulea@nvidia.com>
-In-Reply-To: <179447640550.2199510.9976355768850888899@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR3P281CA0067.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:4b::14) To CHAPR12MB999248.namprd12.prod.outlook.com
- (2603:10b6:610:2ff::22)
+	dkim=pass (2048-bit key, unprotected) header.d=couthit.com header.i=@couthit.com header.a=rsa-sha256 header.s=default header.b=ePefooXq
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=P6Zz8nLVr+CXWqX8BFHKnq5c+RvQQo6UVKKSWAKXWMA=; b=ePefooXqVjeiIv0mKuCVNYRIJ/
+	qIDAFrlF7rZes8Kk0yE4v/ajxrNxt+23wOW67eown8UqSnRXI35aGkMaMh6xPk7ujCgW7rdyfwTkt
+	/BBxnP6aozD2WHUeXd1c1UX7IuqK+WtGU6YkyzUhnCjGTu+BzzzNteX3cHMF8JUHlY0clVCp0vw69
+	IHVfMzy7ccn57lB6Vqc1z1mmajXgkiI7WiMZIlVbO/H9sn+eFK+e1Oj6NVfBRLDmWtERvGV4rI0De
+	Sll09hSh2rTjcY2e10tYuSmPkZPYfGP+Gjgl1/mpdLSXzCT0BNa7VTewvq3gGIM8/QMiKgCDZATAk
+	cmgtCKkA==;
+Received: from [115.246.246.98] (port=25118 helo=bulbasuar.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <saivarun@couthit.com>)
+	id 1xRsKV-000000060PR-1L1r;
+	Fri, 13 Nov 2026 09:32:40 -0500
+From: Sai Varun Mudepally <saivarun@couthit.com>
+To: danishanwar@ti.com,
+	parvathi@couthit.com,
+	rogerq@kernel.org,
+	pmohan@couthit.com,
+	vadim.fedorenko@linux.dev,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	afd@ti.com,
+	basharath@couthit.com,
+	arnd@arndb.de,
+	haokexin@gmail.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pratheesh@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	j-rameshbabu@ti.com,
+	m-malladi@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com,
+	saivarun@couthit.com
+Subject: [PATCH net-next v6 0/3] Introduce HSR/PRP HW offload support for PRU-ICSSM Ethernet driver
+Date: Fri, 13 Nov 2026 19:58:21 +0530
+Message-ID: <20261113143127.282466-1-saivarun@couthit.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,229 +94,420 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CHAPR12MB999248:EE_|BN7PPF8FCE094C0:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40c94c30-63ff-4f1d-d933-08df41927a16
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|10067099003|11063799006|4143699003|261021135927099003|261021121427099003|261026121527099003|56012099006|261102123227099003|261009223027099003|261028144727099003|261026140227099003|261022105027099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	rGpvHXia3E8IOgZFPO16R9Q+C9yiTu51C1E4jB/JENpaodeDmjdT5XnnBXV0RSAt0GkKyTYJw/sQfu1WfsTwgZQU2ja/T9SKiFjj0XmtnuKqwFXcTZMpy1dHpq8U7jGIWsV8BYt+xGML+4E8oIfK8yecka6BqHm0j8zzdZvejwibBam3WSnRJL2Hf2i+P7yv6hcySWRse32ngqBa/p8juKdLOJWYaWMUPYTdEyVdLQCa+vCnCRVdqYYttXNsbuKa0BpTaGSRQtHr3kY8OH/z2eQwTZE22Sz492jtFZvaTZEpmuW1Z/JmO+uWPmXNUTb6iaw7J0cPSOMPt2xuVPt2xZT19PP+bXhcfz7eNGs+gpCt30FIu/NsIdassvnR0+x0Ba53ZnBZJyUHMhHG6kzlcxjHZrdVSRvZiUxD5hSe1cVl0L0InxuZD6oeo2DWytCzSIV/eIhSFwm8ab24R9dE/PTn9eDJ2DsRBWHyC7V/2vLtBNxZeRI9IrfF+izrAE1zqW/ic6VF8kMb9RZiQOdIN24U8eqH9urghttPvlFECNUXFTK2T8zNFHMw6ZyTRuT/UUY/oiGqSUhKomFbtATlT7GZ8wFOIJmYT/z3fqTJrj/ae5f2006GKO6kCoKQYsOePPbGp51gTBrUsuvpK8MjF/RYXvF62vekJUVdhmiVtek=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CHAPR12MB999248.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(10067099003)(11063799006)(4143699003)(261021135927099003)(261021121427099003)(261026121527099003)(56012099006)(261102123227099003)(261009223027099003)(261028144727099003)(261026140227099003)(261022105027099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YkEzMFNRTDJVWkIwS2gwdWs4YmluNmgxaC9udUM2TGg5S0x4dDR1dVlvTTJt?=
- =?utf-8?B?Vm9DRUd2S1NSV2M2VUFnTnp2aGV1MTlBUnhCaVYzd1BtdWVRMW1vTTE0YXBv?=
- =?utf-8?B?emhFei9BT2RSRkw2c2RHbmZlblFhc29GOXRYNHAyVW5CRFFyNFdMcDNxZkdq?=
- =?utf-8?B?dW1Uc2lVMHExdzRxdEtkSDcreTZ5VVhsQThPT2Fva243T0IvcTRBZVl1UXcy?=
- =?utf-8?B?eDZ2OTNaRlgrUDAyY1o2a2UvYUs1SDVaTVdVTmFNc2JNYzc2NTM4KzhKZlN3?=
- =?utf-8?B?UUtZakJPRmRzTkQyR0k3YzZwUGtqdkEyRE9sUE1NQ3FLdUN0MzRCMVdyUk1M?=
- =?utf-8?B?eVJMUFZOWlZkN2VKUTF0YUhiNm1qNnNhN0RnNC9NMmxUV1Z6QU0vVWlteUxZ?=
- =?utf-8?B?S0tmb2tQblcvRHN5VG9mNENWTFE0M2hqWldBYlBzclZHNlM2elZ3WmlQV1cr?=
- =?utf-8?B?RmFJVTBxNTRRUjZJaUUrQU9kcGx1bjd3VGh6TW0wN0NRVVJZUGs3a1NWaWUz?=
- =?utf-8?B?MkJoTW5FV0prRnU2SEhwMSt3R2dkOHROUHFFVzdQTjE0dmZQYTR6QUgxV2Y0?=
- =?utf-8?B?RmM3Vlo3ME5EN1ZXb3RpdEFENThSMERhaGwxNVc1T0xDR096VXF3ZCswcGhC?=
- =?utf-8?B?VEM2UzV4L0dDNFAxWUVVTmJUb3ZqdW5OUEM0TWVIR1hJbzhiVjBMcmFTejZi?=
- =?utf-8?B?R1JHREZtbjN1eERxaGQwVDdaNmwwa1pzYXd5UWU0Y2tBTWZ3M3U0REFrQlRl?=
- =?utf-8?B?a0NtbmZKQktQaDhOWWFGN3p1UjRnRXdNQnh4NGhHOVR2cm03WVJ1YXJ5WjdW?=
- =?utf-8?B?VmNnTndocFdseDlCN3UxZ0JzcnZQdGs0YTJsOXBDa20yUkxiY2VBMmRpeUZ0?=
- =?utf-8?B?ajNKTTM4REI3ZjE5Q2lHM0NNOGNrZlFYcjQ0bnVtYW41V0JUditkQUk2RGsx?=
- =?utf-8?B?WWQ5WHVqa0JoSmpaUTVncVNuSG1jU1ZGN0Y0alhMYjZkOUVHSWFlVWlsaVFm?=
- =?utf-8?B?bEI1ckV5TDlxQVlsWkJIcTRvZU1Na0VmOFNlNEpiZ0R1ZGFrcWhpUnVHNjBm?=
- =?utf-8?B?Y3czdEtmWnNLZG5JSGJFNEo0WHVzZVlHVXNTa2l6VmtPQjU4Y3h1R2RtcHBU?=
- =?utf-8?B?dnJjUktDUHBwcXorTi9OZEtERjFBODc3TlVESUduaUxqT2VGZ2QxdmU3bzY5?=
- =?utf-8?B?ZDdIcTNmeFVBQy9XcFBGSGVRd2pWN09jSFBQV2hsajJhck9EVTdRemtTeFJH?=
- =?utf-8?B?Vjk1blIrTHU0cDFmNWYvK3krSW1EcjNKZjVHV2QzbjRaWXUyTG9RQmpucldp?=
- =?utf-8?B?ckpacXp5bnQ2a0ZVYkE1YlJZZi91OHNOSEFSNEpVM0h6Snd0TDNZU1o4VVVM?=
- =?utf-8?B?cXMwMnJ5NCtkUnYzeEhXaTJ6UmlWT0R6SjBmcFlIYnJ5amtJV1ZsamU5bTdF?=
- =?utf-8?B?aWNTeFhHRGJoY2JmWGtMZUdIRE1rR0ZlcUpkK0R6U21YZWRCVjk3UFZZQmVv?=
- =?utf-8?B?cndVUS9ZUW1renZPKzVqWW9Sdy81dzlNbGpiWU5QSFhuNzBjNWYrbkFmNUJu?=
- =?utf-8?B?QmtVOW5Tc2Z6NE1VR1cycHVYZVZ6ZFZ6UnJGMVIyUWN1M05PNXpWTk1xdFds?=
- =?utf-8?B?ZndwekV6QmJKRlQ3OWtDZXZoYVlLVnZYQURjdzhrZlhFWG5pS2tHVVZyKy8w?=
- =?utf-8?B?Wms3V1FMQXlnbUtWM3dHVHFBWld1SVlKVE9ldTliem1YZit4OVhmRTcxQWFH?=
- =?utf-8?B?R1JnWkRwWWNiQVNOWTg4bEM0bU9yWi9FYlJNSllFYnVKVnVWT2Z1WG5tdGcy?=
- =?utf-8?B?YVpST054T2Exa0NHTHJ1bngvaU5rL3BMd05YWTBIVXhFdmJCdThESWxKdXdp?=
- =?utf-8?B?WDhsMUx2UlRzMCtjcXpHYkM4bjhHR2NDMmsrK1lSUm83VUZabmtDWmVsNVZj?=
- =?utf-8?B?NXdITzVmOUU4bTFPKzgwY1orSzZJanpjbElMRHNLOERCc3JMZ2JNYjREemwv?=
- =?utf-8?B?Njc4cE5YVmUrWlZNN2d2YWxjLzJ6T3FuUUpISGxzNkhsdEk0S0xERi9PUk9r?=
- =?utf-8?B?NkI4SktwTmRzNjVtaFIxVnNwbTQxMUpyNG5QL0FvYVg3U1lJdkRiNUJ0ZnNq?=
- =?utf-8?B?Q2tWc0xPNENScmY3akxra09EdkNVUlBWN21uU2VLT0RIVnZURUpUVG41blNF?=
- =?utf-8?B?dlZQWFcrNVh2SkxNYVU1MXpLZk8xdDl0emNibXEvS2FxSjZXcmVzcXpEbi9E?=
- =?utf-8?B?Uk0zaW8vN1l1ODVBWXRURUdnY3FYUm5xbVhVdXR6QU9jRUI3c2ZDQTkwNmow?=
- =?utf-8?B?ZHF0clNONW5neS96TlZWOUY4MjNGbCtnajZGck1JeGtaeXlDQUt4QT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40c94c30-63ff-4f1d-d933-08df41927a16
-X-MS-Exchange-CrossTenant-AuthSource: CHAPR12MB999248.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2026 14:29:08.1492
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OWj7Ofc4sdt2c1qGO9GXiaOwDEsZi2f0/vDGWoJntdamy0bIPvvuc6ggY7bPhZVxZirsTUl6igYvYVzP6YUQNA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF8FCE094C0
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: saivarun@couthit.com
+X-Authenticated-Sender: server.couthit.com: saivarun@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 12.11.26 10:40, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 5 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 3 · Low: 2
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] A data-direct RQ's KSM UMR mkey has child entries from two
->   different PDs and DMA domains.
-> - [Medium] mlx5e_alloc_rq() calls mlx5e_rq_alloc_data_direct_mkey() right
->   after mlx5e_create_rq_umr_mkey().
-> - [Medium] net/mlx5e: SHAMPO header buffer double-sized in
->   mlx5e_shampo_hd_per_wqe()
-> - [Low] Data-direct RQs are forced into MLX5E_MPWRQ_UMR_MODE_UNALIGNED
->   (KSM) by mlx5e_mpwrq_umr_mode().
-> - [Low] mlx5e_create_umr_mkey() rejects MLX5E_MPWRQ_UMR_MODE_UNALIGNED
->   when MLX5_CAP_GEN(mdev, fixed_buffer_size) is missing and logs…
-> 
-> --
-> 
-> net/mlx5e: Add data direct RX infrastructure
-> 
-> This commit adds the RX side infrastructure for data direct in mlx5e. It
-> adds a new RQ state flag and a crossing mkey over the RQ's UMR mkey. It
-> also creates the KSM UMR mkey in the data direct PD and sizes the ICOSQ for
-> the KSM UMR mode. Data direct itself is enabled in a later commit.
-> 
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
->> index 5caf7820a136b..61a77ee77244a 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
->> @@ -62,6 +62,9 @@ mlx5e_mpwrq_umr_mode(struct mlx5_core_dev *mdev,
->>  	bool unaligned = xsk ? xsk->unaligned : false;
->>  	bool oversized = false;
->>  
->> +	if (rqo && rqo->data_direct)
->> +		return MLX5E_MPWRQ_UMR_MODE_UNALIGNED;
->> +
-> 
-> [Severity: Medium]
-> mlx5e_open_channel() only enables data direct together with SHAMPO,
-> so every data-direct RQ also allocates a SHAMPO header buffer.
-> Switching those RQs to UNALIGNED here changes the WQE geometry, but
-> the header buffer sizing doesn't seem to follow.
->
-This will be improved in v3.
+Hi,
 
-> [...]
-> 
-> [Severity: Low]
-> 
-> This puts data-direct RQs under the KSM limits. Is there anything that
-> checks the ring size against those limits, the way mlx5e_mpwrq_validate_xsk()
-> does for XSK?
-> 
-> mlx5e_ethtool_get_ringparam() still computes rx_max_pending from the
-> MLX5E_MPWRQ_UMR_MODE_ALIGNED geometry. Its comment says only XSK RQs may
-> clamp the queue length. mlx5e_mpwqe_get_log_rq_size() makes the same
-> assumption:
-> 
-> 	if (WARN_ON_ONCE(params->log_rq_mtu_frames > log_pkts_per_wqe + max_log_rq_size))
-> 		return max_log_rq_size;
-> 
-> KSM entries are twice the size of MTT entries, and max_num_entries is
-> bounded by 1 << log_max_klm_list_size. Take a device with
-> log_max_klm_list_size <= 15, an MTU around 9000 and an RX ring of 8192.
-> log_pkts_per_wqe would be 3 and max_log_rq_size would be 9, so 3 + 9 < 13.
-> 
-> Would that trigger the WARN_ON_ONCE() and quietly shrink the RX ring below
-> the size ethtool reports? Neither mlx5e_open_channel() nor the later
-> set_pflag_data_direct() appears to check for this. The comments in both
-> places would also no longer match the code.
-> 
-log_max_klm_list_size is not <= 15
+This series introduces HSR and PRP protocol HW offload support for ICSSM-Prueth driver.
+HW offload support for HSR/PRP is implemented using dedicated HSR/PRP firmware running
+on 2 PRU cores(PRU-ICSS) as a "DAN" available in AM57xx, AM437x and AM335x.
 
-> [ ... ]
-> 
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
->> index 96b521d8bed35..cee73f3b7a997 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
->> @@ -425,7 +425,7 @@ static u8 mlx5e_mpwrq_access_mode(enum mlx5e_mpwrq_umr_mode umr_mode)
->>  static int mlx5e_create_umr_mkey(struct mlx5_core_dev *mdev,
->>  				 u32 npages, u8 page_shift, u32 *umr_mkey,
->>  				 dma_addr_t filler_addr,
->> -				 enum mlx5e_mpwrq_umr_mode umr_mode,
->> +				 enum mlx5e_mpwrq_umr_mode umr_mode, u32 pdn,
->>  				 u32 xsk_chunk_size)
->>  {
-> 
-> [Severity: Low]
-> 
-> Data-direct RQs now use UNALIGNED mode, so they hit the existing
-> fixed_buffer_size check at the top of this function:
-> 
-> 	if ((umr_mode == MLX5E_MPWRQ_UMR_MODE_UNALIGNED ||
-> 	     umr_mode == MLX5E_MPWRQ_UMR_MODE_TRIPLE) &&
-> 	    !MLX5_CAP_GEN(mdev, fixed_buffer_size)) {
-> 		mlx5_core_warn(mdev, "Unaligned AF_XDP requires fixed_buffer_size capability\n");
-> 		return -EINVAL;
-> 	}
-> 
-> On a device without fixed_buffer_size, opening a data-direct channel would
-> fail with -EINVAL and a warning about AF_XDP, which the user never set up.
->
-Devices that support data-direct also support fixed_buffer_size.
+The following features are offloaded to HW in case of HSR and PRP:
+1. L2 forwarding of a HSR frame via traditional store and forward or via cut-through (only for HSR)
+2. Transmit frame duplication is offloaded to HW
+3. Tag removal on the receive is offloaded to HW
+4. Redundant duplicate packet discard on the receive is also offloaded to HW
 
-> 
-> [ ... ]
-> 
->> @@ -546,13 +548,80 @@ static int mlx5e_create_rq_umr_mkey(struct mlx5_core_dev *mdev, struct mlx5e_rq
->>  			      __func__, wq_size, rq->mpwqe.mtts_per_wqe,
->>  			      max_num_entries);
->>  
->> +	pdn = dd ? mdev->data_direct->pdn : mdev->mlx5e_res.hw_objs.pdn;
->>  	err = mlx5e_create_umr_mkey(mdev, num_entries, rq->mpwqe.page_shift,
->>  				    &umr_mkey, rq->wqe_overflow.addr,
->> -				    rq->mpwqe.umr_mode, xsk_chunk_size);
->> +				    rq->mpwqe.umr_mode, pdn,
->> +				    xsk_chunk_size);
-> 
-> [Severity: Medium]
-> 
-> With dd set, the parent KSM mkey is now created in
-> mdev->data_direct->pdn. However, mlx5e_create_umr_mkey() still fills every
-> UNALIGNED entry with the regular NIC mkey and the filler page:
-> 
-That's how crossed mkeys work for data-direct.
+In HW offload mode, redundant tag insertion in the transmit path will be still done by HSR driver
+and firmware updates the LAN information available in the tag on the fly when PRU is transmitting
+frame in that respective LAN.
 
-> 
-> [ ... ]
-> 
->> @@ -975,10 +1050,14 @@ static int mlx5e_alloc_rq(struct mlx5e_params *params,
->>  		if (err)
->>  			goto err_rq_drop_page;
->>  
->> -		err = mlx5e_rq_alloc_mpwqe_info(rq, node);
->> +		err = mlx5e_rq_alloc_data_direct_mkey(rq);
->>  		if (err)
->>  			goto err_rq_mkey;
-> 
-> [Severity: Medium]
-> 
-> This creates the crossing mkey right after mlx5e_create_rq_umr_mkey().
-> At that point the crossed UMR mkey is still in the free state, because
-> mlx5e_create_umr_mkey() sets:
-> 
-> 	MLX5_SET(mkc, mkc, free, 1);
-> 
-> The crossed mkey only becomes valid after the first UMR WQE completes on
-> the ICOSQ, once the channel is activated.
->
-This is the design for all ethernet string RQs. Not an issue.
+HSR Test Setup:
+--------------
 
-Thanks,
-Dragos
+     ___________           ______________           ___________
+    |           | Link AB |              | Link BC |           |
+  __|   AM57*   |_________|AM57/AM43/AM33|_________|   AM57*   |___
+ |  | Station A |         |   Station B  |         | Station C |   |
+ |  |___________|         |______________|         |___________|   |
+ |                                                                 |
+ |_________________________________________________________________|
+                            Link CA
+
+Steps to switch to HSR forward offload mode:
+-------------------------------------------------
+Example assuming eth1, eth2 ports of ICSSM on AM57x, AM437x and AM335x EVM's
+
+  1) Bring down both slave interfaces
+      ip link set eth1 down
+      ip link set eth2 down
+
+  2) Set matching MAC addresses on both slave interfaces
+      ip link set eth1 address <mac-addr>
+      ip link set eth2 address <mac-addr>
+
+  3) Enable HSR offload for both interfaces
+      ethtool -K eth1 hsr-fwd-offload on
+      ethtool -K eth1 hsr-dup-offload on
+      ethtool -K eth1 hsr-tag-rm-offload on
+
+      ethtool -K eth2 hsr-fwd-offload on
+      ethtool -K eth2 hsr-dup-offload on
+      ethtool -K eth2 hsr-tag-rm-offload on
+
+  4) Create HSR interface and add slave interfaces to it
+      ip link add name hsr0 type hsr slave1 eth1 slave2 eth2 \
+    supervision 45 version 1
+
+  5) Add IP address to the HSR interface
+      ip addr add <IP_ADDR>/24 dev hsr0
+
+  6) Bring up the HSR interface
+      ip link set hsr0 up
+
+  7) Bring up the both slave ports
+      ip link set eth1 up
+      ip link set eth2 up
+
+Switching back to default mode:
+--------------------------------
+  1) Bring down both slave interfaces
+      ip link set eth1 down
+      ip link set eth2 down
+
+  2) Delete HSR interface
+      ip link delete hsr0
+
+  3) Disable HSR port-to-port offloading mode, packet duplication
+      ethtool -K eth1 hsr-fwd-offload off
+      ethtool -K eth1 hsr-dup-offload off
+      ethtool -K eth1 hsr-tag-rm-offload off
+
+      ethtool -K eth2 hsr-fwd-offload off
+      ethtool -K eth2 hsr-dup-offload off
+      ethtool -K eth2 hsr-tag-rm-offload off
+
+Testing the port-to-port frame forward offload feature:
+-------------------------------------------------------
+  1) Connect the LAN cables as shown in the test setup.
+  2) Configure Station A and Station C in HSR non-offload mode.
+  3) Configure Station B is HSR offload mode.
+  4) Since HSR is a redundancy protocol, disconnect cable "Link CA",
+     to ensure frames from Station A reach Station C only through
+     Station B.
+  5) Run iperf3 Server on Station C and client on station A.
+  7) Check the CPU usage on Station B.
+
+CPU usage report on Station B using mpstat when running UDP iperf3:
+-------------------------------------------------------------------
+
+AM57xx
+------
+
+  1) Non-Offload case
+  -------------------
+  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+  all    0.00    0.00    0.00    0.00    0.00   10.41    0.00    0.00   89.59
+    0    0.00    0.00    0.00    0.00    0.00   20.88    0.00    0.00   79.12
+    1    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+
+  2) Offload case
+  ---------------
+  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+  all    0.00    0.00    0.10    0.00    0.00    0.73    0.00    0.00   99.17
+    0    0.00    0.00    0.20    0.00    0.00    1.46    0.00    0.00   98.34
+    1    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00  100.00
+
+AM437x
+------
+
+  1) Non-Offload case
+  -------------------
+  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+  all    0.30    0.00    0.80    0.00    0.00   35.19    0.00    0.00   63.72
+    0    0.30    0.00    0.80    0.00    0.00   35.19    0.00    0.00   63.72
+
+  2) Offload case
+  ---------------
+  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+  all    0.10    0.00    0.31    0.10    0.00    1.74    0.00    0.00   97.75
+    0    0.10    0.00    0.31    0.10    0.00    1.74    0.00    0.00   97.75
+
+AM335x
+------
+
+  1) Non Offload case
+  -------------------
+  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+  all    0.30    0.00    1.10    0.00    0.00   90.32    0.00    0.00    8.28
+    0    0.30    0.00    1.10    0.00    0.00   90.32    0.00    0.00    8.28
+
+  2) Offload case
+  ---------------
+  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest   %idle
+  all    0.43    0.00    3.61    0.00    0.00   13.28    0.00    0.00   82.68
+    0    0.43    0.00    3.61    0.00    0.00   13.28    0.00    0.00   82.68
+
+PRP Test Setup:
+---------------
+
+     _________________        LAN-A        __________________
+    |                 |eth1-----------eth1|                  |
+    | AM57/AM437/AM335|                   | AM57/AM437/AM335 |
+    |    station A    |eth2-----------eth2|    station B     |
+    |_________________|       LAN-B       |__________________|
+
+Steps to switch to PRP offload mode:
+------------------------------------
+Example assuming eth1, eth2 ports of ICSSM on AM57x, AM437x and AM335x EVM's
+
+  1) Bring down both slave interfaces
+      ip link set eth1 down
+      ip link set eth2 down
+
+  2) Set matching MAC addresses on both slave interfaces
+      ip link set eth1 address <mac-addr>
+      ip link set eth2 address <mac-addr>
+
+  3) Enable PRP offload for both interfaces
+      ethtool -K eth1 hsr-fwd-offload on
+      ethtool -K eth1 hsr-dup-offload on
+      ethtool -K eth1 hsr-tag-rm-offload on
+
+      ethtool -K eth2 hsr-fwd-offload on
+      ethtool -K eth2 hsr-dup-offload on
+      ethtool -K eth2 hsr-tag-rm-offload on
+
+  4) Create PRP interface and add slave interfaces to it
+      ip link add name prp0 type hsr slave1 eth1 slave2 eth2 \
+    supervision 45 proto 1
+
+  5) Add IP address to the PRP interface
+      ip addr add <IP_ADDR>/24 dev prp0
+
+  6) Bring up the PRP interface
+      ip link set prp0 up
+
+  7) Bring up the both slave ports
+      ip link set eth1 up
+      ip link set eth2 up
+
+Switching back to default mode:
+--------------------------------
+  1) Bring down both slave interfaces
+      ip link set eth1 down
+      ip link set eth2 down
+
+  2) Delete PRP interface
+      ip link delete prp0
+
+  3) Disable PRP offloading mode
+      ethtool -K eth1 hsr-fwd-offload off
+      ethtool -K eth1 hsr-dup-offload off
+      ethtool -K eth1 hsr-tag-rm-offload off
+
+      ethtool -K eth2 hsr-fwd-offload off
+      ethtool -K eth2 hsr-dup-offload off
+      ethtool -K eth2 hsr-tag-rm-offload off
+
+Testing the PRP offload feature:
+--------------------------------
+  1) Connect eth1 of Station A to eth1 of Station B (LAN-A).
+     Connect eth2 of Station A to eth2 of Station B (LAN-B).
+  2) Configure Station A in PRP non-offload mode.
+  3) Configure Station B in PRP offload mode.
+  4) Run iperf3 Server on Station B and client on Station A.
+  5) Check the CPU usage on Station B.
+  6) Disconnect LAN-B cable to verify Station A frames still reach
+     Station B over LAN-A with no traffic interruption.
+  7) Reconnect LAN-B and disconnect LAN-A, verify the same.
+
+CPU usage report on Station B using mpstat when running UDP iperf3:
+-------------------------------------------------------------------
+
+AM57x
+-----
+
+  1) Non Offload case
+  -------------------
+  CPU    %usr   %nice    %sys  %iowait    %irq   %soft  %steal  %guest   %idle
+  all    2.04    0.00   18.85    0.00     0.00   27.83    0.00    0.00   51.27
+    0    1.80    0.00   21.56    0.00     0.00   54.89    0.00    0.00   21.76
+    1    2.29    0.00   16.14    0.00     0.00    0.80    0.00    0.00   80.78
+
+  2) Offload case
+  ---------------
+  CPU    %usr   %nice    %sys  %iowait    %irq   %soft  %steal  %guest   %idle
+  all    2.79    0.00   18.36    0.00     0.00   18.16    0.00    0.00   60.68
+    0    3.89    0.00   22.16    0.00     0.00   36.13    0.00    0.00   37.82
+    1    1.69    0.00   14.56    0.00     0.00    0.20    0.00    0.00   83.55
+
+AM437x
+------
+
+  1) Non Offload case
+  -------------------
+  CPU    %usr   %nice    %sys   %iowait  %irq   %soft    %steal  %guest   %idle
+  all    5.68    0.00    43.27   0.00    0.00    43.57    0.00     0.00    7.48
+    0    5.68    0.00    43.27   0.00    0.00    43.57    0.00     0.00    7.48
+
+  2) Offload case
+  ---------------
+  CPU    %usr   %nice    %sys   %iowait  %irq   %soft    %steal  %guest   %idle
+  all    6.39    0.00    42.86   0.00    0.00   32.57    0.00      0.00   18.18
+    0    6.39    0.00    42.86   0.00    0.00   32.57    0.00      0.00   18.18
+
+AM335x
+------
+
+  1) Non Offload case
+  -------------------
+  CPU    %usr   %nice    %sys    %iowait  %irq   %soft    %steal  %guest   %idle
+  all    2.29    0.00    14.04    0.00    0.00    75.50    0.00    0.00    8.17
+    0    2.29    0.00    14.04    0.00    0.00    75.50    0.00    0.00    8.17
+
+  2) Offload case
+  ---------------
+  CPU    %usr   %nice    %sys    %iowait  %irq   %soft    %steal  %guest   %idle
+  all    5.70    0.00    48.50    0.00    0.00    29.00    0.00    0.00    16.80
+    0    5.70    0.00    48.50    0.00    0.00    29.00    0.00    0.00    16.80
+
+Note:
+  hsr-fwd-offload, hsr-tag-rm-offload and hsr-dup-offload are tightly coupled in the
+  firmware implementation. All need to be enabled / disabled together and
+  hsr-tag-ins-offload is unsupported.
+
+This is the v6 of the patch series [v1]. This version of the patchset addresses the
+comments made on [v5] of the series.
+
+Changes from v5 to v6 :
+
+*) Addressed eleven Sashiko AI review comments which required code changes.
+*) There are four Sashiko AI review comments which are false positives:
+   Patch 1:
+   - Comment : "In LRE mode, icssm_emac_mc_filter_ctrl/reset/hashmask/bin_update all redirect
+               `ram`..."
+     Reason  : The HSR core syncs the master's multicast list and IFF_ALLMULTI to both slaves,
+               so the shared filter always reflects the HSR device. Multicast must be configured
+               on the HSR device, not on an individual slave.
+   - Comment : "icssm_prueth_lre_timer() calls hrtimer_forward_now() and returns early unless
+               `prueth->emac_configured == BIT(MII0)|BIT(MII1)`..."
+     Reason  : emac_configured tracks admin state (ndo_open/ndo_stop), not link state, so link
+               loss does not affect it. The table-check write is skipped only while a slave is
+               admin down, which is not a redundant HSR/PRP setup. Stale entries age out once it
+               is back up.
+   - Comment : "icssm_prueth_lre_protocol_init() always writes ICSS_LRE_SUP_ADDRESS_INIT_OCTETS_HIGH
+               (0x4E1501) and _LOW (0x1) to..."
+     Reason  : The PRU firmware matches only the first five octets of the supervision address
+               (01:15:4E:00:01) and ignores the last octet. Matching frames are classified as
+               supervision and passed to the host regardless of the multicast filter configuration.
+   Patch 3:
+   - Comment : "In LRE mode, icssm_prueth_tx_enqueue() finds the L2 header with skb_mac_header(skb)
+               instead of skb->data."
+     Reason  : The driver does not support XDP; in HSR/PRP mode the slave ports only transmit
+               frames from the HSR/PRP master, where the MAC header is always set.
+
+*) There are two pre-existing issues which will be addressed in seperate patches.
+   - [High] icssm_prueth_change_mode() calls ndo_stop()/ndo_open() directly and never calls
+     dev_close().
+   - [Medium] icssm_prueth_tx_enqueue() cannot tell a full ring from an empty one.
+
+*) There are four other comments related to pre-existing issues which will be addressed by a
+   separate patch.
+   Patch 1:
+   - [Medium] Mode changes are not synchronised with multicast-filter programming.
+   Patch 2:
+   - [High] The new 'do not restart TX during teardown' logic is a check-then-act sequence with
+     no lock or ordering against ndo_stop().
+   - [Low] This feature patch also carries a fix for an existing bug, with no Fixes: tag.
+   Patch 3:
+   - [Medium] The TX path now reads prueth->eth_type (through prueth_is_lre()) several times with
+     no synchronisation.
+
+*) Rebased the series onto the latest net-next.
+
+Changes from v4 to v5 :
+
+*) Addressed 3 shashiko AI review comments which required code changes.
+*) There are four comments which are false positives:
+   - Shared NAPI is initialized and used only when both MII0 and MII1 are present. If MII0
+     is absent, the device remains in EMAC mode and uses the per-port NAPI.
+   - The shared RX IRQ handler is registered only in SWITCH/HSR/PRP modes and with MII0 absent,
+     EMAC mode uses the per-port IRQ handler instead.
+   - HSR packet TX duplication (hsr-dup-offload) and tag removal (hsr-tag-rm-offload) are
+     unconditional by design because HSR mode is entered only when the HSR offload features are
+     enabled. Otherwise, the device stays in EMAC mode and the HSR core handles these operations
+     in software.
+*) There is one pre-existing comment related to the VLAN tag check in the TX path which will be
+   addressed in a separate series.
+*) Rebased the series onto the latest net-next.
+
+Changes from v3 to v4 :
+
+*) Addressed 27 sashiko AI review comments that required code changes in this series.
+*) There are three pre-existing sashiko comments that are not introduced by this series:
+   - FDB learning can sleep in softirq context
+   - mode changes can bypass normal network state synchronization
+   - allocation failure can leave the RX descriptor unadvanced, potentially causing
+     repeated interrupts.
+   These will be addressed in a separate series.
+*) There are four comments which are false positives:
+   - NETIF_F_HW_HSR_DUP is for TX duplication, not RX duplicate discard, and is added in patch 3.
+   - The __packed comment is not applicable since C packing rules already handle this structure, as
+     noted in feedback on an earlier series (https://lore.kernel.org/all/20250708175301.599c82b8@kernel.org/).
+   - The LRE timer check depends on interface admin state, not link state, and both interfaces
+     are expected to remain up for HSR/PRP.
+   - atomic64_t is used to safely update statistics from the RX/TX paths, and the associated overhead
+     does not cause a performance regression in this context.
+*) Rebased the series onto the latest net-next.
+
+Changes from v2 to v3 :
+
+*) Addressed the 8 Sashiko AI review comments that required code changes in this series.
+*) Identified 4 Sashiko AI review comments as false positives and replied accordingly.
+*) The remaining 7 comments correspond to pre-existing issues and will be addressed separately.
+*) Rebased the series onto the latest net-next.
+
+Changes from v1 to v2 :
+
+*) Fixed all applicable issues, except for the false positives flagged by the AI review
+on sashiko.dev.
+*) Addressed Jakub Kicinski comments on patch 3 of the series.
+*) Rebased the series on latest net-next.
+
+[v1] https://lore.kernel.org/all/20260611123636.376577-1-parvathi@couthit.com/
+[v2] https://lore.kernel.org/all/20260630124958.894360-1-parvathi@couthit.com/
+[v3] https://lore.kernel.org/all/20260804121644.465118-1-parvathi@couthit.com/
+[v4] https://lore.kernel.org/all/20260921134343.200426-1-parvathi@couthit.com/
+[v5] https://lore.kernel.org/all/20261005154654.576663-1-parvathi@couthit.com/
+
+Thanks and Regards,
+Sai Varun Mudepally.
+
+Roger Quadros (3):
+  net: ti: icssm-prueth: Add HSR and PRP HW offload mode support for
+    AM57xx, AM437x and AM335x
+  net: ti: icssm-prueth: Add priority based RX IRQ handlers
+  net: ti: icssm-prueth: Support duplicate HW offload feature for HSR
+    and PRP
+
+ drivers/net/ethernet/ti/Kconfig               |   1 +
+ drivers/net/ethernet/ti/Makefile              |   2 +-
+ .../ethernet/ti/icssm/icssm_lre_firmware.h    | 141 +++
+ drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 802 ++++++++++++++++--
+ drivers/net/ethernet/ti/icssm/icssm_prueth.h  |  89 +-
+ .../ethernet/ti/icssm/icssm_prueth_common.c   | 338 ++++++++
+ .../net/ethernet/ti/icssm/icssm_prueth_lre.c  | 229 +++++
+ .../net/ethernet/ti/icssm/icssm_prueth_lre.h  |  19 +
+ .../ethernet/ti/icssm/icssm_prueth_switch.c   | 333 +++++++-
+ .../ethernet/ti/icssm/icssm_prueth_switch.h   |   2 +
+ drivers/net/ethernet/ti/icssm/icssm_switch.h  |  40 +-
+ 11 files changed, 1881 insertions(+), 115 deletions(-)
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_lre_firmware.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_common.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_lre.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_lre.h
+
+-- 
+2.43.0
 
