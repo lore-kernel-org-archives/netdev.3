@@ -1,58 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794560761;
-	b=QKGtTRBBJoM81eKBuKTxWufFtuSc3zIO9iNcIZQU5zesqUekkTiiV0ztmJAKpEkuFaWN
-	 4TNvxWH7n8Ndn3gb7EWa+WvLi/R/2RIVdWIMdh0vLxzsUbrREqaELN2s8t4homCAmHeuw
-	 EVFzZGi0R8sNCu4KGxNNxvJ9yqNj98++EfmFTPv7UUCTyEDUcvpMDyHkrqAbdU0CJfDe5
-	 o4E3DA1tb9uNFKJ+zvdCsIcd5jaxm52drb2EE97YzIVv3UxqJxwjFD5x1VsAexlWOhcEP
-	 i+RjOg0dY7zNWx7hkD16ooaMKoAMzG+LbAD6y/LME9AUiKWNJRCas3lG5GugPwa2W/w==
+	t=1794560926;
+	b=Fqfi0D1UlPDv9IH6sJevUMSrLt0sYtwYJyljnOhK4pKEhZDnrXWeX/CiU5YjBo6YUi1U
+	 HWfFG4kUC4co5XGS0o1HtifrE1ZXGEjRXxHHUNbtse+zgwaw7RCblZvFzryVZ9i5jFWEV
+	 AWvcAdSl19URFdLN/wmv5DEz28zfO39iHVlwvMqEkxJLyFYJqjPs5Iv/MyMdjR+mSi5C7
+	 /Ot+pMSFhqQEieYlEhQ1yYLUlKLHWp5vadyUXbYrYBAI9jx618r73S9Y+aQLv1MA7h+jm
+	 OCzuTndIocVS6bQsHxvsCy9Qrpnl+ZvjW/k/S8eae+P7i/hcCDWcEn6amYF4YQPv60Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794560761;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
-	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	 Content-Language:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Last-TLS-Session-Version;
-	bh=m9B2HLqDdiE/y5FWXTFo38VfZGVo4F39dSrwK05GBbY=;
-	b=JM5C16ng0BIyEQ5BFVmcN2KAahrFB88CneWhXqSzYDMjSwEU9H4Zz8oZxA5ZrUPEwOzT
-	 dZjXW5nKD4oYQ0VWRGIfknUJEnn65T8pIToihcgfzmrCyiVTT3ajJpQhLToYReMueEuIo
-	 a+YPTwxHsP1OoxVMyuHzfn+d8/3CEpSZRt3Pbco5pRE0H6GCXkyrJ0bPA8vXO4uuRx0SC
-	 5RYvKUuQWdL6VTIcoGulWBx9E4AgAkJ0i78wylo40ROSVFzlOPWjubFzDyiR2v4thdcTd
-	 EDsKj2kWC5dwKpOq94HZgDhf/n4jPVmSc+2fNIH7EINKnzABY798RZ+R6cZ1NhbKp9w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794560926;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:In-Reply-To:References:
+	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=M3J02I9fhxLNnztawYzUAlQ6QhBDBuVfwK+zFsDggxI=;
+	b=5Oek/wlbB0pqSdvC9//R2TF9iMKVo9EzoPn2/tUkO3FE4AMKhSy7sRe+4IIpXDDUTER1
+	 t4IYyDKNKYmCRLQOwvC17LuWAAk39TNUUN9c4Y5Yy54PJzzlw436mMDAdenPky6Hs9K2D
+	 Wi+Qyez429xdjWPhjWsLqv0sGK1+u80Tm8Gc3roe+3rlahVB7GQSqXjq1KpaJHizy2MOb
+	 KgRH3MCYpHizglEmom4PEgi9wWJ97vSfg1zv/0/0LP/9jW+qVCJRTjmIRbmobyKn8uMeQ
+	 KxMSt3MANH69geYD9K4vhhBkNvWdeuo5fIgdSoi6qkwImvjbnfX9PVUGfNv6cTZMn2Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=f0vffpVZ;
-	arc=none smtp.remote-ip=185.246.84.56
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KD5ni9Rf;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1936C606A327
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:06:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1936C606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2C3606A321;
+	Fri, 13 Nov 2026 09:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=f0vffpVZ
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 14E5E1A164C;
-	Fri, 13 Nov 2026 09:05:53 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D57B7601D5;
-	Fri, 13 Nov 2026 09:05:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1469611BC04C2;
-	Fri, 13 Nov 2026 10:05:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1794560752; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=m9B2HLqDdiE/y5FWXTFo38VfZGVo4F39dSrwK05GBbY=;
-	b=f0vffpVZZrslinjhbIpY9qf8M3/CTvC1z9yRuJJogyIu+IMIeQXQfStNZCfvTBfaholj0T
-	XaUi5RncKXMF7GgfOhQVDBRYLBVRFb5xKn4JFbmA7GBQjCWX675/Mp4q0uAlmhPbkYexMp
-	9BVS2T1GmGDfln9dDKXTOClFTBVMsv+n0CadBkAkLrnTz494mmEpVvD8eiqM0gdGSByExO
-	bEJoOGwXZBlIhKafG9ATQYOfWbZvmV28m3FFXd0ZU1yGK8PgofIRLbNVkIbZrZwQAxmfD6
-	4SgqesLYSHv0C1TIzkodXek6GjHCpZ0gw2QZYIxh9kwnrThjZzgVWgWre5XuhQ==
-Message-ID: <03612a8a-0899-47e9-b992-d166bc7fd63a@bootlin.com>
-Date: Fri, 13 Nov 2026 10:05:43 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KD5ni9Rf
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80211F000C4;
+	Fri, 13 Nov 2026 09:08:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794560926;
+	bh=M3J02I9fhxLNnztawYzUAlQ6QhBDBuVfwK+zFsDggxI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=KD5ni9RfgR2oPiPnTxi9WLqFkN9jV0P/xl5AkArK9PZNzck6d6GSiqqcJLJ/1h143
+	 kjxcOQqn84Lfh85aDV87hexctxhF/nU0KHAKhGlqODU9EPG3GpscaiR8/OGM17Y3eE
+	 3JsA1PZQHTpuU+g/NR8TRSaE1KtmYUXa6QZ5/LRs9MNCOW4VEWTtlj41F3Emlca/ji
+	 QSTeQmwaIArDJNMwK5hgHd+szqeNvFaSZBmzERMWwJ0Ep/wRiO886k/Dii+Yrm78am
+	 jBbocMXOzmMr6FOUxxx9DdhnxLTzPGk3dhKjrv6HkbPkj7JDAR71qYfKrQSJOWyDMk
+	 gK4o4Jm5Ej1KQ==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Magnus Karlsson <magnus.karlsson@intel.com>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
+ <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>,
+ kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Pavel
+ Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, Andrii
+ Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
+ Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
+ <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis
+ <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, io-uring@vger.kernel.org,
+ "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi
+ <bestswngs@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, David
+ Wei <dw@davidwei.uk>, Alexander Lobakin <aleksander.lobakin@intel.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Stuart Clark
+ <stuclar@meta.com>
+Subject: Re: [PATCH net-next v1 01/11] net: Get skb fragment addresses
+ through netmem
+In-Reply-To: <CAHS8izPnmy4W6f3dWp2NCkmNYxtP8jKm5rxjvPbQc8VdFm0Wng@mail.gmail.com>
+References: <20261110102039.1002605-1-bjorn@kernel.org>
+ <20261110102039.1002605-2-bjorn@kernel.org>
+ <CAHS8izPnmy4W6f3dWp2NCkmNYxtP8jKm5rxjvPbQc8VdFm0Wng@mail.gmail.com>
+Date: Fri, 13 Nov 2026 10:08:42 +0100
+Message-ID: <87pkw9p085.fsf@all.your.base.are.belong.to.us>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -62,114 +81,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: stmmac: re-base EST after PTP settime64
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Jose Abreu <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20261111-stmmac_set_time-est_lock-v1-1-da1554f233e6@oss.qualcomm.com>
- <ea9ae0f9-d373-4e97-b96b-3855c01100ee@bootlin.com>
- <avbOwepxkFf1F717@lore-desk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <avbOwepxkFf1F717@lore-desk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Mina Almasry <almasrymina@google.com> writes:
 
-On 11/13/26 09:48, Lorenzo Bianconi wrote:
-> On Nov 12, Maxime Chevallier wrote:
->> Hi Lorenzo,
+> On Tue, Nov 10, 2026 at 2:21=E2=80=AFAM Bj=C3=B6rn T=C3=B6pel <bjorn@kern=
+el.org> wrote:
 >>
->> On 11/11/26 10:54, Lorenzo Bianconi wrote:
->>> stmmac_set_time() initializes the PTP clock through
->>> stmmac_init_systime() (TSINIT) while holding only ptp_lock.  It neither
->>> takes est_lock nor disables and re-bases EST around the step, unlike
->>> stmmac_adjust_time(), which performs TSUPDT through
->>> stmmac_adjust_systime() under est_lock.
->>>
->>> Both operations change the PHC system time, so both invalidate the
->>> absolute EST base time.  With settime64, a concurrent
->>> tc_taprio_configure() can read the pre-step clock through gettimex64()
->>> and program EST with a base time that is already stale once TSINIT
->>> lands.  Separately, a taprio offload installed before the clock_settime()
->>> is never re-based and keeps running with its old base time until taprio
->>> is reconfigured.
->>>
->>> Take est_lock for the whole disable/step/reprogram sequence, as
->>> stmmac_adjust_time() does: disable EST before initializing the clock and
->>> call __stmmac_setup_est() afterwards so the base time is recomputed from
->>> the reserved taprio base time and the new clock.
->>>
->>> This keeps the established est_lock -> ptp_lock ordering:
->>> stmmac_init_systime() only uses readl_poll_timeout_atomic() under
->>> ptp_lock, and __stmmac_setup_est() takes ptp_lock through gettimex64().
->>>
->>> Fixes: b60189e0392f ("net: stmmac: Integrate EST with TAPRIO scheduler API")
->>> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+>> skb_frag_address() goes through struct page, so a net_iov never has an
+>> address. Only unreadable memory should lack one: XDP and BPF read
+>> fragments through this helper, and AF_XDP UMEM will back readable
+>> net_iovs. netmem_address() also returns NULL, not a bogus pointer, for
+>> an unmapped highmem page.
 >>
->> This LGTM, the return values from stmmac_est_configure/__stmmac_setup_est are 
->> ignored though, the [cl|s]ashiko gang may not like that.
+>> Generic code needs the size of a net_iov to find its address, so keep
+>> it in struct net_iov_area instead of the devmem binding.
 >>
->> Besides one of the EST commands timing out, it seems unlikely though.
-> 
-> I used the same approach used in stmmac_adjust_time(). I guess we can update
-> both of them if required.
+>> Suggested-by: Mina Almasry <almasrymina@google.com>
+>> Suggested-by: Stanislav Fomichev <sdf@fomichev.me>
+>> Signed-off-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+>
+> Are the changes for niov_shift some kind of rebase error? I don't see
+> how they're related. Otherwise changes LGTM.
 
-Bah, I'm OK doing that as a followup then,
+Not a rebase error, but it's early. Nothing here reads it.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+The generic code that needs it is net_iov_address() in patch 4; in this
+patch netmem_address() still returns NULL for every net_iov. I'll move
+it to patch 4.
 
-Maxime
 
-> 
-> Regards,
-> Lorenzo
-> 
->>
->> Maxime
->>
->>> ---
->>>  drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c | 9 +++++++++
->>>  1 file changed, 9 insertions(+)
->>>
->>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
->>> index 31a66e855d6b..6370bdc6c58b 100644
->>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
->>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
->>> @@ -129,10 +129,19 @@ static int stmmac_set_time(struct ptp_clock_info *ptp,
->>>  	    container_of(ptp, struct stmmac_priv, ptp_clock_ops);
->>>  	unsigned long flags;
->>>  
->>> +	mutex_lock(&priv->est_lock);
->>> +	if (priv->est && priv->est->enable)
->>> +		stmmac_est_configure(priv, priv, priv->est,
->>> +				     priv->plat->clk_ptp_rate, false);
->>> +
->>>  	write_lock_irqsave(&priv->ptp_lock, flags);
->>>  	stmmac_init_systime(priv, priv->ptpaddr, ts->tv_sec, ts->tv_nsec);
->>>  	write_unlock_irqrestore(&priv->ptp_lock, flags);
->>>  
->>> +	if (priv->est && priv->est->enable)
->>> +		__stmmac_setup_est(priv);
->>> +	mutex_unlock(&priv->est_lock);
->>> +
->>>  	return 0;
->>>  }
->>>  
->>>
->>> ---
->>> base-commit: 22b7cb932c6a0f7566d41072be6956cb6c8af4e1
->>> change-id: 20261111-stmmac_set_time-est_lock-f74f4ce678b7
->>>
->>> Best regards,
->>
-
+Bj=C3=B6rn
