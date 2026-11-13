@@ -1,70 +1,70 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794565204;
-	b=EogOexZbYBQJHz6FxAxhiQaMSdqEJg54fVAjhoqOd7c/VdLnKXWdXqwO8uv2gjq/I3Nd
-	 2eRjFsmX3uUoDV47Du4Br2QqcQ7kdrD/JntbCRbSFxTgngYeiaVp6zS0FCRIFJcEzjDMu
-	 cmrAqKvAJAU45kl6N1+uoNJHWCYY/tC8Js3xOksZudpthPvSz+kI2+81WtHTZZ7FiH9bK
-	 6xjJALnfPHgqduHmKLUqbTfaiEW2LdZTqHD1aZsTxQBxHZZDEXctF1O8Sm0guZNB2x5cS
-	 S3mj9eFbn9Yga31gLojbpcoSRouYvZohPvB5DitGH87qp7UdF89wapmlnH8KilFmB8Q==
+	t=1794565209;
+	b=fDP2LEcIKjwQSmDqqeU4fPA+ZHk2cUEnZiCA6GqxBJE2fbAeg/jjypIerN2nHcmIyvhc
+	 LrPTR0DY519ynZrWBl+Ealyhf2f4Jvsp80q5uJ0a/f1MS314ZoXFv2TpewdM5hICgtUI7
+	 D9PTeBrnnlzGEcsamQdvkpf0I1IfFkVVA4st6qLu+1D7avwRwI8+nfopsu9s8B83J3EuK
+	 HYL8VILhhpdViHVfqKRdDm+Dbyrfi+pWFeGpC1qdTifAsf9FIHF/4mISwUGXJGIb873Hi
+	 vl3rZYV6i5VxOwjW8au9bWywdbwKFeKstRZztqR0eWugM6CL5hoZRapREoPed3h4/vg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794565204;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794565209;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Subject:
-	 Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-B4-Tracking:X-Change-ID:To:CC:X-Mailer;
-	bh=EvM6xyY+uxZxS8Sqk7d7mHcuxUUAebFLqQRWU1uifsw=;
-	b=T5G4rvvjsyLJ5mi+51Uut8oMfuD68hREndBlhKOcxL5eY5LrcYDoNpQvxz4CQTdD23RZ
-	 rXsppB9N+4kyIvDWrhUZRwUeaJyakpBi1LcdA5osbTllSpVS8EF5c+nsqM3nk6MyiG5fI
-	 B9jCfBVTERYtqOlpG7/c5F+xTCawLOg5PRVC83K5nWnFOCepSapzZe55EAaMXZ2cRB5fa
-	 3goyqqNku/E5kkm2pEq9Jb/zMLEV9DY7MKOnCZSeUFNY8UCyX1Mn59lFfMkBzQ7bnrYAe
-	 t0Sy++ADVIqz8S/A+mOv1dUujg2sghWpJY5BCGZdRoxN/6jbW+4sw5S/lJuhI2mmkmg==
+	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
+	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 Message-ID:References:In-Reply-To:To:CC:X-Mailer;
+	bh=LUws8lXCCGM09vIpNQlZrRYUhT+HqT4ptKRv1Dr8cMg=;
+	b=eiT0bliFdwTV0STEFrWgFbeMK45mGlHqNEJkgNHu4ntagQqL80LXNaNS71hNpZpg5B+C
+	 ob5Y35xbcqXpoKcUinGOqm51ikatM82bnH8ADrdwHnxqO3r2mfymFtg/20DtfPAcxvPUC
+	 6u17Nclu8JqnrutnFNJUf/GMPzF9SF6yvlmii0X7mxpgmjk9QOMlup451ulVaCfiNnA0b
+	 xSn2fecu6MD4Q/I0h7Z17Mf495r2qjL31W0dEAUqqNBdB/CITadz1Nd1x6bbmYOh0nmwa
+	 mh4aqiy88yLq2p7tetFiD+zQwNclrzVJnReo/5PTzGhbpAXXc5bRDD4iLuBwfA0hYBw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=microchip.com;
 	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b="B39P3/FL";
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=aZzlmmTR;
 	arc=none smtp.remote-ip=68.232.153.233
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB26B606A323;
-	Fri, 13 Nov 2026 10:20:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB26B606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82D4606A8A1;
+	Fri, 13 Nov 2026 10:20:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B82D4606A8A1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=B39P3/FL
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=aZzlmmTR
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794565204; x=1826101204;
-  h=from:subject:date:message-id:mime-version:
-   content-transfer-encoding:to:cc;
-  bh=FfCRFY7Bvm5aNhQnrCe5i/u9H45+lz5nsRsQwHL0hts=;
-  b=B39P3/FL2CR/pJBU9wV6mm33E5EwLr2CUhlweXtd0A7ENuV0Hi+aZKnf
-   +4GPcr8RzkFwoRCu0mF07X4KxvWbZa6t3LkKMYO1cDRMdNlNKRN5NdMat
-   R4rZBqj4uEH8Z4a9J7wvoGDaxBTqsyqDXn2InacTT9/e9xwUiaIbG+t58
-   ukHwAPb25acRQ7ol8qr3fuVc7V33PU3u9FvTgMxuZdeaxtyqkAtVHaOua
-   7j19vupc3xrnyYUP40taRysfwp7y1vMgjq784iB68T/mPhsNui2cQ70zE
-   FLF7tFkHUwQiE87jsiKLwEQnMpEh9rt2YOwOoLoNpit7F74Rdq0Wm7dEt
-   A==;
-X-CSE-ConnectionGUID: W7OuCreGQl6KJhtER0qbmA==
-X-CSE-MsgGUID: Q3VH/kL3Qmm4lpxNFNWz3g==
+  t=1794565209; x=1826101209;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=0ppGaxYzHhTZMYLmZQhGZ4gh2uWFyqmCABcMwC7v9t8=;
+  b=aZzlmmTRTY4ik3nfgey8MvB4Nk7cdUlf7a4R/kXgJezyvjyZuf15cT9M
+   lYYAvRwzfC9MBcswtpAD7ahfBDC+b+LFglk+Y2E9NItKMybhSlj3bUemU
+   hhjlX08wMj/3jkI+2yotd10Qg+WL7mFeJdo9CbDXb5levs1+72130XkqJ
+   kYM8iBJ2rWm8ZK5zlDBzmaHGNT4qnjZRc1JFlDW00G5o3pFbIfiO5N/mb
+   HWroMqx5UKlzwe7SOIyVnfLNUDVtP8EnOvo6Ij00iRBVRC0HNJfrK77pQ
+   xcWLMh3XAySTfBrkUlS3JCStcZ5m7zYaxRtEV74O8cbP5TX7On6AI3n61
+   Q==;
+X-CSE-ConnectionGUID: WfAZ6DLcQXe5zG6XNnaJUg==
+X-CSE-MsgGUID: 5QQM5uEsSvu7pMKFBEJ5vQ==
 X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="66461920"
+   d="scan'208";a="66461927"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Nov 2026 03:20:03 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 03:20:08 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 13 Nov 2026 03:20:02 -0700
+ 15.2.2562.56; Fri, 13 Nov 2026 03:20:07 -0700
 Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 13 Nov 2026 03:19:59 -0700
+ 15.1.2507.58 via Frontend Transport; Fri, 13 Nov 2026 03:20:05 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Subject: [PATCH net-next 0/4] net: lan969x: skew the core clock by 200 ppm
-Date: Fri, 13 Nov 2026 11:19:39 +0100
-Message-ID: <20261113-lan969x-core-skew-v1-0-b9b02b863d38@microchip.com>
+Date: Fri, 13 Nov 2026 11:19:41 +0100
+Subject: [PATCH net-next 2/4] net: sparx5/lan969x: enable the switch core
+ after clock setup
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,10 +76,9 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADzk9moC/x3MQQqDMBBG4avIrDtgQiPoVaSLVP/YoTJKIjYQv
- HuDy2/xXqGEKEg0NIUiTkmyaYV5NDR9vC5gmavJtrYzrbW8eu27PvO0RXD64schOOMc/Px8g2q
- 3RwTJ93MkxcGKfNDruv5AwtqGbQAAAA==
-X-Change-ID: 20261022-lan969x-core-skew-ff5155ead4be
+Message-ID: <20261113-lan969x-core-skew-v1-2-b9b02b863d38@microchip.com>
+References: <20261113-lan969x-core-skew-v1-0-b9b02b863d38@microchip.com>
+In-Reply-To: <20261113-lan969x-core-skew-v1-0-b9b02b863d38@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Steen
@@ -89,55 +88,52 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kernel@vger.kernel.org>
 X-Mailer: b4 0.14.3
 
-At its 328.125 MHz default, the lan969x core clock is too close to the
-line clock frequencies for the high accuracy phase detectors to work as
-intended, which degrades PTP accuracy. The core clock should therefore
-be skewed about 200 ppm up. The PTP time of day (TOD) increment is
-already set up for the skewed rate, but the driver leaves the core PLL
-at its default, so the TOD and the clock that drives the scheduler run
-200 ppm apart.
+sparx5_init_switchcore() ends by setting HSCH_RESET_CFG.CORE_ENA, so the
+switch core and queue system are already running when
+sparx5_init_coreclock() configures the core clock afterwards. That is
+fine for the dividers it sets on sparx5, but a later patch makes it also
+program the lan969x core PLL, which should be done before the queue
+system is enabled.
 
-This series programs the core PLL to the skewed rate, and reworks the
-PTP frequency adjustment to scale the nominal increment directly. It is
-not a fix as such, but an improvement: nothing breaks at the default
-rate, and this moves lan969x to the core clock configuration
-recommended for PTP.
+Move the CORE_ENA write to mchp_sparx5_probe(), right after
+sparx5_init_coreclock(), so the core is enabled once its clock is set
+up.
 
-The difference can be seen with taprio: timestamping the frames released
-by a schedule with a 1 ms cycle time shows the gates opening about every
-1000.2 us instead of every 1000 us.
+CORE_ENA also tells sparx5_init_switchcore() that the switch memories
+are already initialized. The switch is only reset once, when the reset
+controller probes, so after an unbind and bind CORE_ENA is still set
+and the core clock is configured with the queue system running.
 
-Patch 1 adds the CHIP_TOP registers and maps the target.
-
-Patch 2 enables the switch core only after the core clock is
-configured, so the PLL is not reprogrammed underneath a running queue
-system.
-
-Patch 3 programs the core PLL.
-
-Patch 4 makes the PTP frequency adjustment scale the nominal increment
-instead of using a separate one ppm table.
-
-Tested on lan969x and sparx5.
-
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
-Daniel Machon (4):
-      net: lan969x: add the core PLL registers
-      net: sparx5/lan969x: enable the switch core after clock setup
-      net: lan969x: configure the core PLL
-      net: sparx5/lan969x: scale the nominal TOD increment in adjfine
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- .../ethernet/microchip/sparx5/lan969x/lan969x.c    |   1 +
- .../net/ethernet/microchip/sparx5/sparx5_main.c    | 123 ++++++++++++++++++++-
- .../net/ethernet/microchip/sparx5/sparx5_main.h    |   7 ++
- .../ethernet/microchip/sparx5/sparx5_main_regs.h   |  82 ++++++++++++++
- drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c |  54 +--------
- 5 files changed, 217 insertions(+), 50 deletions(-)
----
-base-commit: 676f3aace662fbbc180b3898b190a372fa2a516b
-change-id: 20261022-lan969x-core-skew-ff5155ead4be
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index 68c80c63f9087..93a7cb89493c4 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -471,9 +471,6 @@ static int sparx5_init_switchcore(struct sparx5 *sparx5)
+ 	spx5_wr(ANA_AC_STAT_RESET_RESET_SET(1), sparx5, ANA_AC_STAT_RESET);
+ 	spx5_wr(ASM_STAT_CFG_STAT_CNT_CLR_SHOT_SET(1), sparx5, ASM_STAT_CFG);
+ 
+-	/* Enable switch-core and queue system */
+-	spx5_wr(HSCH_RESET_CFG_CORE_ENA_SET(1), sparx5, HSCH_RESET_CFG);
+-
+ 	return 0;
+ }
+ 
+@@ -928,6 +925,9 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
+ 		goto cleanup_config;
+ 	}
+ 
++	/* Enable switch-core and queue system */
++	spx5_wr(HSCH_RESET_CFG_CORE_ENA_SET(1), sparx5, HSCH_RESET_CFG);
++
+ 	for (idx = 0; idx < sparx5->port_count; ++idx) {
+ 		config = &configs[idx];
+ 		if (!config->node)
 
-Best regards,
 -- 
-Daniel Machon <daniel.machon@microchip.com>
+2.34.1
 
