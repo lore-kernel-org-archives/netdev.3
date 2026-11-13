@@ -1,101 +1,122 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794577741;
-	b=Q+4H/kw+fCmIg6dLxVcXB63vAP9sL83ifPf8W39PMI8p7RgcldP7dBCyvkoQhnP6Pwng
-	 ocIr8q7xxJ8M45C59o+USzCxnPF5Fngr0moG3hvCrBREC4Bn1RLPYCiQAfTk08iXzcw2N
-	 CHbq7MnsJ3m/4yhNWr6SFAEOAbCSuPo1ostXRBCRBuo5RBmQfyJB2w4tRKIF2hTy+FDhW
-	 vEvffJAkZeeW08JwiSHLRQn0CF7AlaVFhDz//toEAmoxubHGd2U71OavDuWM3pV9/eg/X
-	 MSd1qfSxCJvxFb0KQEmHqHpfXpCg7VqLWaeZxQEReE3VZv80lVtWI8rLzyA5GNPxIwg==
+	t=1794577796;
+	b=PWzTKe++Wt0uJSg9J9zQGF/zcQhDEGYAP7IIxmAqxXvwymkdN7VUWiPJZfJbEOJkY0Ce
+	 4be9G7IyTA0Nzd8bXOEJtOBqdm4iYlAKT1LVURXyChpY1/2kDZhM6HnINseGAw6Zr2rlE
+	 KSoe8ukzFebPh9yOsroKxzK0j9xM0h3XaCFc4HMSaMOL9tGYK1G78a8zJDao9w/yGSVMV
+	 N8OWAKD0zKqqZI3NMYms2bDzceUfQN0DQJbhGNeRUYapGrJIdk3prpl3E1lu12BxjNqv5
+	 MvW8TlmSQMP4wbiKS7XpGzrySN07YoFeFxpfw0/r7M7jEwxm9p86/vuP0gqGtqhNrww==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794577741;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794577796;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=1bhPViXt1pRD/+G0cozJg3X1gM1h4MG3wea7XTuXsrc=;
-	b=R52fuOLhIpw+comtT4BEOMrwP6XbKtwYCBPucQO+gl4yvnq7ZHg80VR5OUYJvs+WygJY
-	 dbdHMd5LTvM7TQIrCZbJCFmi2K/36Inv+LQa1X4HOw7YZeAmwc/X0RcwG3pQf65k6xykd
-	 gyjh1+dqBqQFHXttI6HBOZSA58PtPpKQ8fpKNkE2987LxzepRU7dZM5paH4XgtY2PCSwY
-	 uOjfVb2jCPBaX9hRY5r1oSeqh2SqXL/ZDV078/pww32LU1AqFaYho0XdjYSvVBPHBy1JO
-	 fYa691UELwn8GJMb8xKyvmGsAwHJ+tb6UEh46O8dHCzMwdXOq0za8hFDRfdYeXYcekQ==
+	 X-Received:Received:From:In-Reply-To:References:MIME-Version:Date:
+	 X-Gm-Features:Message-ID:Subject:To:Cc:Content-Type;
+	bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
+	b=d785xSFq207SWZjGB6WDr9A2AHv+V+5fAMF3buVrMukVBFUztp5CrxsErBUoB1p8rE2J
+	 UrOxFlF2M8KA16kkOm3Zvj8xXwspwrrP8ItYqhPEwpzNBLJhI+9H68txgmfckUUV6rtKV
+	 6qi+uJouh/SXvuXGOnVtYXGiTsKn7hWKgvuS5It13gpZfB0IEWqXh6QzVJyUuJWwTShH7
+	 QFhN6O72mB/73kzMq1c05zBX9mtNoB6Nx9cFkJNldwUM1T3QPs4v3C4ELV9aPlLBKJAHB
+	 leBDXNbMPu1IwxRM6EJyH6m0ApjfRw5Ycc8be2AS8abaizDITHrFVatJlIDdwczHj3A==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IDaBJi6E;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.177
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dnr4bWaa;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Ga5oluTv;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230B1606A336
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 13:49:00 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 230B1606A336
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3647760A3834
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 13:49:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3647760A3834
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=IDaBJi6E
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8a0673d9bd2so1120872b3a.3
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:49:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794577739; cv=none;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dnr4bWaa;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=Ga5oluTv
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794577795;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
+	b=dnr4bWaah9/wySNrHe71UxG7yxYO1hP4OJsDO4UuONplGfOBRiaQICVPWXH0a5xAfClVPc
+	t+VpNg58eHK3YP5XWW59CAcUzV5E/GfH9p/c18EmHQRz6zpg7GqxOWWu1kW44oqkX5txvm
+	zu2Lk64sIPPATltWgXHym6Mxatxh5HU=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-530-i3984RHvNXyMYD7T9ww8qw-1; Fri, 13 Nov 2026 08:49:54 -0500
+X-MC-Unique: i3984RHvNXyMYD7T9ww8qw-1
+X-Mimecast-MFC-AGG-ID: i3984RHvNXyMYD7T9ww8qw_1794577793
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-91edde88d16so12636516d6.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:49:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794577793; cv=none;
         d=google.com; s=arc-20260327;
-        b=P22ifpF4qV3m/CGbqoiCQUAHYEEChg2n1JkpJV8fmY29Ag1qEWSuZMHWVlP9kzyPbD
-         QjLiOcQvqah+uPhrTZkYK4fEsW8EeVvfUy32W4dmGfYqzGCO6MSQ2oZFe/e3nYZKOewE
-         5Rq5O9JAe5Mip4UdfsLaQSmnggruUznU7nz1JkRTyVCCw7ckJBBveyRgYuemy3VP2fi6
-         M3Uh83/vKpCtMhWgpXHoXgLnNdtpql6Grsr6Uhl4uYJfklgmWmitSnHEiG1+yjMV1hmY
-         ki9T3q+SjH4oOC//lieWqBE4+Xet7GABC9SVpX8acPu7pTU/gwBHmi+wkbw4aTARfshC
-         qVNQ==
+        b=iyDmpS8kdk8x7QCyPbYrDAdRR9LvzlYMobjGflPFIElWUmoDNwcsVT9g9oAk5GL9+f
+         Se61z+W97QT4WqRFSbi9Iq0BXKsya95MsFRavTX5V0lCsOTap5YDv3eEIVTuBQ3owyb5
+         wsKZ/ye1UXOesq+smX85cLY+DKIgZKJ7jw6VoHlFycYCB+DrYv1doE/YUPlPi/gSi51u
+         ZzHt262EgWomL3kCCrTxO6q128HjPddNPmYBzvsRaoBwiIJceQV4xJeGcIdMM4fPF541
+         ZL8UmUxm225mMvRY2N/q0pOys+McTRFOO8pDtkjkF/MTdadk5ETDUIqg+kF7DRFLSiL4
+         ljMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1bhPViXt1pRD/+G0cozJg3X1gM1h4MG3wea7XTuXsrc=;
-        fh=2gwJAY0GkT5IUI1X6Et2jXWJJQwj2Xi7H2HZBlq5Yvk=;
-        b=hQq7hs5AWnpxSe5PYbvsGhagdE53V8NIATfhDMc6WW+Hg5iBDfpbvJs+fsqk+IDOuv
-         skZq+nnWarVbzMEBppvXBzrl0r96nGUYs+z9vTfULAAz/GNBZiBPPYtXkS+EY4I+vlbb
-         9lelQ4XLvjXMXPFlYqtyqa0CkHWfPGIAGAtwJbM6vTXfHG1R1viOkiYHoDDRDPgQ2YWH
-         Gpe3MmoAflP5iCxnBsT5yV9fZBD1qsJ9+kH5GbS841Pfw+nYI5gP1KT0KBqZaz5lqPN9
-         fOiDlkLbzsvEaDGbBeMi7gNClKtZWxGvTeu9mwdS4YZ0zUkwjWaVe8OMbpngXa9KJbU8
-         r+2A==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
+        fh=lMRBbP+vfhtYMXscdNuOsvUHW+X1WMH1WohFm5ZPALI=;
+        b=oS21Kcd9EdW3MPg/jSuVsRi8hFnGELjFlUpa7m1HchXiSk/+R3UrdfE85LZ5EY4C7O
+         5V7ngerufidv8FHXDAaDcKcW9eOoBieXSx8a1sLUesAV6aQB8p3M7dVqLgbjHvFM6Wat
+         8LBAEipYmJzu2k9GT5/4VokHd/n+gKra+k85U++u5ktdxf59xuNrAA+dH3aiVPCtNf/f
+         y/9xDhxCzvmtM9fzpCAJ+K94cYyhavruxMM8pYOXwlAQIIPFDajMrTxF+eJHJA9qBrW5
+         L9zOtKqBTNx8ZbODQ30zRGn5NiCU8hW7IYoBx/ue5OHDrRv46tHxJyDoJXeHeK/lAwK3
+         mBiA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794577739; x=1795182539; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1bhPViXt1pRD/+G0cozJg3X1gM1h4MG3wea7XTuXsrc=;
-        b=IDaBJi6EnzYWBbfLMiIPr0Hr9fUbFucDOD5m0rjktHtv4g65mORdut5ERKbwL3+WdB
-         Ebh98AmvbnRMDB5UNnyQWh0hqd6x9Lv/vmnaDNCw0JqxFBUeoDpXKz4lTndlo/XHrvpi
-         N/I7ww+bA3R+GVpMMfkFGheCSAaZ/BG1iIfgs8r+xIG0umJ8Q2Mmh1VpTOBS07jjZqTz
-         nAJgyVzCIyaklyNxiek0OKHskIrA+FjsbNJgYwzHgxK7+Wl8x/c1WAVZPZpkcAVL+/sS
-         xZLCb4uuHJ40hxymUgOM3U1c328PfYaV0Nj9Q5mB0ZEffdzBeJ/uyt01pd2SwV5StXSr
-         l6xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794577739; x=1795182539;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1794577793; x=1795182593; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1bhPViXt1pRD/+G0cozJg3X1gM1h4MG3wea7XTuXsrc=;
-        b=eeQoNcrZwoiX9PhXRpKicn8brkN3NNQF5MaCm9eGwGNMnI75/zN7OEPVM2kv6R4bso
-         SkmW1WodySUozqu7A9SHP9LyRHrgp+5Orqz72bEPWvYxFB/byedxtnegmkyzOgVjdlVn
-         WrxZlP/72JVF4VG7MjSWhWROpRdWlXwPexoBGUri9jhgfqOXHysH6yxNJpAOEB2ve180
-         t/N2SvUjAcaVyLfNzpOGDd+7spVhJgtZ4TxM+FCuQeY4wWNlOzLyNsmWeOHcmjblU9rP
-         buVd2DhSLw+HqDRzR+i/YtV8J55zuWSggfXlvYpXkdZLPbwbn23qabjAwFWbDELpWskB
-         hLGg==
-X-Forwarded-Encrypted: i=1; AL+hErGeMp2f7Fo0NpoVDc9i8K5Owvar3utDB/IaauWS5ajkz78512xTHPkCaSGQrss9tB6U6K/JLew=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/mOn3eulG+Vw1PmDVV1peQw3+jgTq8+6tlfMRbU5/b/FOs0o51
-	3OzIMPjyYyCvgve9n7I1Qlb6XGFSI4FhuKl0QFjYPawRxJGuD7ckPmP+N1c9KSyYpPQye6e3cDM
-	xxr/CD7xh8M84DYGjjiMXr6uaz7oNVJiUmW0tBrs=
-X-Gm-Gg: AYBFou08vtOlYcw4/y7G7fI0hA8ghpjqjSYb0n3oyYSJYm5oRw5YvVOAALz2eUcXjwM
-	051Zq3aerX6lEt5949Qn02KoMjOXsCxA3vct/m70MDezLrhsem0pkA5ivxxRbPPQ5+CLhDiZDBf
-	n9R5b643KwtO9rNReXtniP9s1kCYZsgJyPKD6odkc0lWOC8POIyEkXkwqsRtTaAhPkXqBdxbKkT
-	Hor4tk+A+Lu05Q8F0WEUwZdG/BcPuZfikJC42E5VB9v527XYHsp4i9PmujyqI7JoHtGS81ese8q
-	Osj+4KNGeoE1dwXG7dkLHOtz9ran4s28EJNPFEuowgX+nOImub4SLW3yFUKpNLM8Ubk+ldpZJOG
-	iyBKO6aWVuT8gvzliWRwa2381bhKyVRwnyZxPtWRpd4W79KNCcpTXmsD7v81eW+u93sXMNXM1OM
-	tfXN9JUmPkLXrq8xjxz/eQ94dXA5847v1jJQNPUITS9XAkALDs1L5ZYEPB
-X-Received: by 2002:a05:6a00:893:b0:8bb:1b05:dd39 with SMTP id
- d2e1a72fcca58-8beb58bcc45mr2934303b3a.11.1794577739414; Fri, 13 Nov 2026
- 05:48:59 -0800 (PST)
+        bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
+        b=Ga5oluTv2VoCAk4tJJMwd4DcHxnzZN8P5RMMfsYuwHSiMT40x247pqXYZppw40aUfp
+         AgXHj7O5P5EGzLh4fIFmrS2LDUH+QEQZYT3NfXESJ7+2AAzl/5iG4ssuum/lz5MnkbiY
+         FEWaupRQi3hJm3DKU1Rj2ZQVesMwID+ZlD3yg4Dcq13ucBIA2y5CuZZ0qDg+hag5pCQ2
+         rQ5GzjunzI61xrZyS6U/SOWzCL5dpAMnK6H42AAF/0so3HDc8I1e5CduBSEcu1Nj+iKT
+         Na7YqNXXzrX2iDdPop6PnLFczlm8s6Y4c3Y6Takf75DT2e9wYXuz0ZE7I3UrxJfbFVUJ
+         fD0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794577793; x=1795182593;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8e2MXnw38pYzH1XVs1yXJtejPbQN6bZltGajv/NaWc0=;
+        b=atu3VDFiM+41pS1xinYhS5QaWcuPcuscMpgREu/EfqqdB5eMR0wSPoQbYqcvBCp6FJ
+         X/IpmsAO29G3Y9obn/R3XwQ8gRBWOuOv3mr1AwdvPaR6ErcdpeOnXol71biWGI2h7n/w
+         EN+mCZjTJATWgVPcCl4tKTaSbttthy0UK43CJOP2h7YMWKSkCXdo5sXTNFX05s5F7PmV
+         jdmo66EerOnmNBgOz4BeYTQlWwXHp/WPqgTiIQv0DIyK+FRw2DhD//kQGn+rwfAtlr92
+         wO+Wo9f+YYw657XuqDVM6ISyauoJMrxonQ5uw6qj6rHV1d9SpZU2bPn4JT+n2RmPf0WK
+         jIHQ==
+X-Forwarded-Encrypted: i=1; AL+hErFIhccVSlUD4gD52uBvjC6MBfq/w94q3RMqrwszG2d8mVvfTKs9pyMJ8n2pddOP7P9qV+s8Tow=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9GaouEHFv7K78euPXrOxYZgnyqmpaDF7qrKlHEcifypGSzy1WF
+	osGP9fpQ35X4vl83am2uLTe5YnBQ8wngzF0lmYJAysUpSl6OMz9KueabPPDteYk1J1YJbLphBVb
+	82siY2q1w3QphI09B+KmravdMtGcj/EYRiaWK+3wT2lfcOyqyf20T+uTf0sApEG+fHLDtRuTy32
+	z2odGfRdofympzIbasjbaoA945KdfeJ6GD
+X-Gm-Gg: AYBFou29xRWI+I7DTgEUwKhIqeralInMGPED/PofDjVgsH0genL5XGmRKOyeiGdQbN8
+	kRrrFrTOvaD7XLK0q1G3i0iqxE2hrkqe4IYT9056Fw6lrF5G0ohFfyzrW2EGSpNRe6Mv6cAHaz1
+	DIHsATYcvfDKlAZ67h3YGLDWRSGiv1KVhNEEwvfXKDVrd5ampdWCl1mXs=
+X-Received: by 2002:a05:6214:85cd:20b0:91e:89d8:a330 with SMTP id 6a1803df08f44-91f241f6d2bmr27649276d6.25.1794577793134;
+        Fri, 13 Nov 2026 05:49:53 -0800 (PST)
+X-Received: by 2002:a05:6214:85cd:20b0:91e:89d8:a330 with SMTP id
+ 6a1803df08f44-91f241f6d2bmr27648836d6.25.1794577792581; Fri, 13 Nov 2026
+ 05:49:52 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 13 Nov 2026 07:49:50 -0600
+From: Sergio Lopez Pascual <slp@redhat.com>
+In-Reply-To: <20261113080506-mutt-send-email-mst@kernel.org>
+References: <20261113-vsock-dgram-support-v2-0-bacfc85b71ce@redhat.com> <20261113080506-mutt-send-email-mst@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -105,129 +126,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261112172149.27355-1-yves.bieri@theori.io>
-In-Reply-To: <20261112172149.27355-1-yves.bieri@theori.io>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Fri, 13 Nov 2026 08:48:47 -0500
-X-Gm-Features: AclHuK8PfN4ou0sIEU-hFGhRyxEEh94jLa5NJ3yVhQe-fdSo_K9CA5s6bPZ98fo
-Message-ID: <CADvbK_cetnuX7=VDEh9hE4db3BdYWr9es28jVorMXOQsTfrxGQ@mail.gmail.com>
-Subject: Re: [PATCH net v2] sctp: do not free a new asoc peeled off while
- sendmsg slept
-To: Yves Bieri <yves.bieri@theori.io>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Fri, 13 Nov 2026 07:49:50 -0600
+X-Gm-Features: AclHuK9yYj2AE7jCL2Q7aluEqsTHouql9M7zvOo0Tu9GOsA54iFCZqauW8Q06G4
+Message-ID: <CAAiTLFXvuHY=r8FPM7TFNTAO1oyco-brcc6YAc=YN432h87RSw@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 0/8] vsock: add datagram support to virtio and vhost
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Alexei Starovoitov <ast@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 12, 2026 at 12:21=E2=80=AFPM Yves Bieri <yves.bieri@theori.io> =
-wrote:
->
-> When sctp_sendmsg() creates a new association and sending on it fails
-> with anything but -ESRCH, it frees the association. The send can
-> sleep in sctp_wait_for_sndbuf(), which releases the socket lock, and
-> meanwhile another thread can peel the new association off to a new
-> socket. The wait then returns -EPIPE, and sctp_sendmsg() frees an
-> association that now belongs to the peeled-off socket, without holding
-> that socket's lock.
->
-> If the peeled-off socket frees the association first, e.g. on close(),
-> sctp_sendmsg() frees it a second time. Otherwise a syscall running
-> concurrently on the peeled-off socket can use it after sctp_sendmsg()
-> freed it. Both are reachable by an unprivileged user. The double free
-> on net with KASAN:
->
->   BUG: KASAN: double-free in sctp_tsnmap_free+0x5c/0x80
->    sctp_association_free+0x1eb/0x750
->    sctp_sendmsg+0x15ff/0x2020
->   Freed by task 836:
->    sctp_association_free+0x1eb/0x750
->    sctp_primitive_ABORT+0x85/0xe0
->    sctp_close+0x22a/0x8d0
->
-> Commit dfcb9f4f99f1 ("sctp: deny peeloff operation on asocs with threads
-> sleeping on it") fixed this double free by denying the peeloff.
-> Commit cea0cc80a677 ("sctp: use the right sk after waking up from
-> wait_buf sleep") replaced that check, and commit a0ff660058b8 ("sctp:
-> return error if the asoc has been peeled off in sctp_wait_for_sndbuf")
-> reverted it to return -EPIPE, without restoring the check.
->
-> Fix this by holding a reference on the new association while sending
-> on it, and by freeing it on error only if this socket still owns it.
-> asoc->base.sk only changes in sctp_sock_migrate(), which runs with this
-> socket locked, so the ownership check is stable. The reference keeps
-> the check safe if the new owner frees the association meanwhile.
-> Userspace still gets -EPIPE, and the association stays with the socket
-> it was peeled off to.
->
-> This was found by Xint Code, an AI code review agent, and reproduced as
-> an unprivileged user on net with KASAN (trace above), without modifying
-> the kernel or using error injection. With this patch the sender gets
-> -EPIPE and the association keeps working on the peeled-off socket.
-> Without a peeloff, a failed send that created the association (EAGAIN,
-> EINTR) still frees it, and a peer ABORT while the sender sleeps still
-> frees it exactly once. The SCTP selftest sctp_vrf.sh passes. The
-> reproducer is available on request.
->
-> Fixes: a0ff660058b8 ("sctp: return error if the asoc has been peeled off =
-in sctp_wait_for_sndbuf")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yves Bieri <yves.bieri@theori.io>
-> ---
-> v2:
->   - move the hold to right after the association is created (Xin Long)
-> v1: https://lore.kernel.org/netdev/20261110224233.82977-1-yves.bieri@theo=
-ri.io/
->
-> Tested on net at b71c101bbb98.
->
-> The fix and this message were drafted with Claude, and reviewed and
-> tested by me.
->
->  net/sctp/socket.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-> index b5a57f6..6ed184e 100644
-> --- a/net/sctp/socket.c
-> +++ b/net/sctp/socket.c
-> @@ -2063,6 +2063,11 @@ static int sctp_sendmsg(struct sock *sk, struct ms=
-ghdr *msg, size_t msg_len)
->
->                         asoc =3D transport->asoc;
->                         new =3D true;
-> +                       /* sctp_sendmsg_to_asoc() may release the socket =
-lock,
-> +                        * and the new asoc can be peeled off meanwhile. =
- Hold
-> +                        * it, and free it on error only if sk still owns=
- it.
-> +                        */
-> +                       sctp_association_hold(asoc);
->                 }
->
->                 if (!sctp_style(sk, TCP) && !(sflags & SCTP_ADDR_OVER))
-> @@ -2084,8 +2089,11 @@ static int sctp_sendmsg(struct sock *sk, struct ms=
-ghdr *msg, size_t msg_len)
->
->         /* Send msg to the asoc */
->         err =3D sctp_sendmsg_to_asoc(asoc, msg, msg_len, transport, sinfo=
-);
-> -       if (err < 0 && err !=3D -ESRCH && new)
-> -               sctp_association_free(asoc);
-> +       if (new) {
-> +               if (err < 0 && err !=3D -ESRCH && asoc->base.sk =3D=3D sk=
-)
-> +                       sctp_association_free(asoc);
-> +               sctp_association_put(asoc);
-> +       }
->
->  out_unlock:
->         release_sock(sk);
->
-> base-commit: b71c101bbb9814d163c00234d43c41f0a17907d4
-> --
-> 2.43.0
+"Michael S. Tsirkin" <mst@redhat.com> writes:
 
-Acked-by: Xin Long <lucien.xin@gmail.com>
+> On Fri, Nov 13, 2026 at 01:47:33PM +0100, Sergio Lopez wrote:
+>> This RFC adds SOCK_DGRAM support to virtio-vsock and vhost-vsock through
+>> the existing AF_VSOCK API. It is intended for guest and host services
+>> that exchange independent requests, responses, or events and need message
+>> boundaries and sender addresses without a stream connection or application
+>> framing.
+>>
+>> VIRTIO_VSOCK_F_DGRAM gates virtio traffic in both directions. Each virtio
+>> send carries zero to 64 KiB of payload in one VIRTIO_VSOCK_TYPE_DGRAM
+>> packet. On the RX virtqueue, the device may split a datagram across
+>> page-sized guest buffers.
+>> START and EOM delimit the message; the guest reassembles at most 64
+>> fragments and 64 KiB before delivering it to a socket.
+>
+> where do these limits come from? how does peer know not to send more?
+>
+
+The 64 KiB limit comes from VIRTIO_VSOCK_MAX_PKT_BUF_SIZE. The number of
+fragments is a reasonable number to prevent the driver from putting too
+much strain on the device.
+
+Both limits should be part of the spec. This is the relevant part from
+the draft I have put together so far:
+
++When VIRTIO_VSOCK_F_DGRAM is negotiated, each rx virtqueue buffer supplied
++by the driver MUST have room for the header and at least 1024 payload bytes.
++The driver MUST discard a received datagram packet whose \field{dst_cid}
++differs from the current \field{guest_cid} configuration value.
++The driver MUST reassemble consecutive fragments with matching address
++fields and MUST NOT deliver a partial datagram. It MUST discard an orphaned
++fragment, a fragment with an unsupported flag or operation, and any
++incomplete datagram interrupted by a new START or an unrelated packet. It
++MUST discard a datagram if its total length exceeds 65536 bytes or it has
++more than 64 fragments.
+
+Thanks!
+Sergio.
+
