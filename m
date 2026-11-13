@@ -1,96 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794567130;
-	b=ZgdEw+bjGcDIQ7uJrDXN9ee6PYuz6Y/Lc8TRXXb5w2mBB9D2xJ7neblQ33uLoZ3hnwW+
-	 UcnXfIjRP+A9/Ut9+Zs3UUncAGQ6nhREF9f95KbDmC4gc9lEk2RcnYdwyM2Ed3FXOPU55
-	 hS9ahE2ANzq9cofr4qcNoEZ5QDy8xZz8FfjgFP3eb1mQr/mszUw/1OMC0CBiXPyA+iHUq
-	 RgedJAKa+dLFSdVA47DA4Rx19kQxV7BialkhYLD9OW0n7rUhkmuWQtq2mIvXTHdNvk2/P
-	 gKV+9qCoCw2EucgEYHWlVsFFSV0hSKsFDZCZJ5D++jmGF/h6LpOHVVSv4sBiUaizSiA==
+	t=1794567138;
+	b=b+psvOsEPBhJPXaIrrXAhVe0+VFwICiJDHC32wagZtI2lLFRSnRVHxkPxnvgf6ZGseGU
+	 Je5Qdv4x/Fub3tL0/LidhY8S6un6w7cW+CuY+0Hy7Jins2N4P7UkGsP7Qkd0NHEm7vcb5
+	 kwQTJko4oH9RxNSNGGjivv2umXU+c/QRQyhO/FbpCBC/9uePthAOVDWjvS1ErovN+ktHv
+	 At2dBDDT4knX3AVPtZwfBETxB3Es4GXEpm1IslksL0afNKalhJS/lX2AvrrtgREG94H6Q
+	 cLdFCG35goCDJymIyDnk1/uD+RGUzvfLub7SD+2DRXIL07/9Kq09kBLhlOQDfvKuiAw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794567130;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=6LE1z7gowkT2QwQ9Xe8s2BLaMMnQ4E5AzDFlKjo4x+8=;
-	b=mEvjuOx5377nIPmXw0Yxu+citkDwuioZBUMJ/WPgPUHVXuJqlpnMj19X6oso+qIFZ7Wv
-	 UbsrhXiLD2ntweuozf2ifcZ4MKR4ZSoUeRbhMnwa3FjuouyLmq2sl4Kstd9dAQMKVeJHv
-	 4xUp/vv6GStpYuWxkSsLiu/gFJhW//kYhTR2yNCyjki7GU8jIP1PZl0JuunmlkgemlY9n
-	 V+zUz6BRVKFG9Wd2uZM8ygRV4pH2i0vgdR0XYawGkHW0OxA5U5gsDqvdV2DxYU8VhxGC5
-	 seKtbbaOQXLDH7q+YO1k+N9zNnVko2NCot3qdI8rsVxby1DJvtrrrngsHylY0kd+O7Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794567138;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:References:From:Cc:Autocrypt:Organization:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding;
+	bh=S6FBjO5gc3xn7ht6Zu9lU/nDDIjHwR2pe7on+zxgXbo=;
+	b=MPXFeKQLaJJSLKA8FLdKOJavtHEf1YSemawe9+1qVhqZO19fpPQg+mPsEUiQE4xakkvr
+	 yxpQ1T2rubOq3uih7dhaQXN/DqL2uQK+pItI9XmVfPxZG3dPejNU8EgX8hz12s1UUib28
+	 Xaxh6gp1YYAQYSjuDEC/W1nS0DBeKiyu23W1cr/Ei1Fc0pSk4jHwMLPkkqMAf1z8vtWO3
+	 dQMPXFCDjSYQtHmE9v2EVkgAar3waiIBRod0eR2kqrei+kPblo7/roz3Janexj3VeDrAi
+	 6DYSb8V/ErSNuE2ZLmExtVlsrj0uWkCsY/9rDL1UxJ78XUzt6qBdyRZr3rqWbGYXJUg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=resnulli.us;
-	spf=pass smtp.mailfrom=resnulli.us;
-	dkim=pass header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=RbILq5eE;
-	arc=none smtp.remote-ip=209.85.208.171
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="LsDfByW/";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F877606A33D
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 10:52:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1F877606A33D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=resnulli.us
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4F1606A33D;
+	Fri, 13 Nov 2026 10:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli.us header.i=@resnulli.us header.a=rsa-sha256 header.s=google header.b=RbILq5eE
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3ae1fd4252fso10392451fa.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 02:52:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli.us; s=google; t=1794567127; x=1795171927; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6LE1z7gowkT2QwQ9Xe8s2BLaMMnQ4E5AzDFlKjo4x+8=;
-        b=RbILq5eEFtD/i6u6LFi3wa8pqHNSFCNRiqRrPQbfTCOivDKqSRvDUGLIdYkM9rdRO0
-         mDO1zRNspwgsxmI6FZXpFxhTl3zTCKLQBmQ4CPPb382vkwjbQO7t7Ep/Kb7ZloNg+iv6
-         U9UEV1E6nBJYKrtqR7mTZ0c6+6FBOM2kpuLg+Z+2bQ10exP27yVHmHwEz5VkPW+8uUi2
-         nU0R+1RtAqhIugbWe6kE7Q4sHFy7GwnO5lIbxWMY1oeQdpFDBYoiVmv7rdmrbElp9u+i
-         WM4njKNGbudwGtmsF6IxAGilqTqMpKCd7tdpfCC0vXWq1RRnnJPlviAWHTmFAx2AxzH7
-         FLwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794567127; x=1795171927;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6LE1z7gowkT2QwQ9Xe8s2BLaMMnQ4E5AzDFlKjo4x+8=;
-        b=FR2A6SSdjKQ6TXFK43y/Y7dKTKsq68l9992+5Yxmh1oNhxzsFGvGj6M3w8r0aAdhen
-         uqrWuf8gDDZBYXDrVxoJ6aJkZ+fIyI8fRqxRZOuHM7Bs/QdrBZoCy95xF+iFPp+gMAYp
-         L54im8rzfxWTXQLeA3fGmoMpTMAeeRWcuQ4rJOBkA9ngY0O4t/gljOHwlO5s1otTW6a9
-         iy0rX2X3x9SjaBdu8tvZCYhqvd+Bl4HPgtmE8txsrTHt8HNHYml/bjVqFqx9o+Qrzz89
-         kxqPp2OvkMfL8jfmRczUnd+rClPGQ2HQIdwhcegBg/p4WeOhWtL9a+o26L8wWuuIrIi/
-         BOlg==
-X-Forwarded-Encrypted: i=1; AL+hErEp1STRlxi0fsUcwNtebNxXlwzf6ddntmdQaBwAj9br8rD54SWZGkOF+57I8uA/0H4pzdi4D8w=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8cmFMRWOLm7Dk2lJqrda58Pj4GeZW7tYUAJqFdqYIq4xxilwgU
-	GTyzzD01EjbAh7DnktqjV0xeVEl3oeMsE8fSx9s8KgxE8GOn5fkSekGvei/QjUyE1ug=
-X-Gm-Gg: AYBFou3JOSZ8xQefJdWEVNi+BDZyBVcJE4SZgMvZfgN6KfGmLcxt/Ewm6+RkMlIA9wf
-	6c1BI3EpCrLRkUbsvKuMdPjdhOQjG1gksoMpDlL6BNEe2uppxnqG4Vz/1FesIR/Tpc8JyBTNbzo
-	YedjldzWgkpTWYpSx/IFhCxL6izq8JniICvy24nNw+HAJzkJzodR7bJX2elT/VJtedQWueOMg5u
-	cgFvuuwwxqwoB5CLcp16dMRKNJGfLqCdIh30XmVnLZN+BGTyj21YrDUq1XVqy1nJktr7TpohsD6
-	ijy5rxshI2p/kR7MEez6oMQsxMhzKyBeJO4wUBkUJlBgMYbMFwWalRt0X513IThKSSTTHanDcy0
-	nbFClr+cPw9lG0IMgqZeTKK9Azk90Fn4gRw3cr4HJ7jZ/215Jb1vKOg144gr/CuQAEylBKyi9tI
-	+iU37OfqlU744xygDMZVCtzu+62NgXP0rV+ZJoxrXpLp0zuHMKzau+S/VuSI2GeV/dbKUHWRPQM
-	3aWmR0RjUCqBGpWt/Km06wkV4Pf8Sq28yXU7e34Cz/fy7D69rZSq/62mf96p5J4Yx+vGNsWfTKg
-	m/sXWtiUQecHCkyPTvbqsMPKCtOCNFSVlOymPQ==
-X-Received: by 2002:a05:651c:211b:b0:3ab:1639:9a75 with SMTP id 38308e7fff4ca-3ae2b4efaebmr6838051fa.11.1794567127086;
-        Fri, 13 Nov 2026 02:52:07 -0800 (PST)
-Received: from localhost ([208.127.45.21])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3ae2b7ae914sm7498931fa.26.2026.11.13.02.52.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 02:52:06 -0800 (PST)
-Date: Fri, 13 Nov 2026 11:52:03 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	1342116488@qq.com
-Subject: Re: [PATCH net v3] team: validate the length of U32 and S32 option
- data
-Message-ID: <avbrzVvksHvTF89W@FV6GYCPJ69>
-References: <20261113090108.175889-1-sunwenbo@cmss.chinamobile.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LsDfByW/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010C71F000C4;
+	Fri, 13 Nov 2026 10:52:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794567137;
+	bh=S6FBjO5gc3xn7ht6Zu9lU/nDDIjHwR2pe7on+zxgXbo=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To;
+	b=LsDfByW/6XkSMBcdvn7j1+BxQm/Eo8jJQkVcGqcCe3ms2ZVXI7EOrgn3gUPbqsNpc
+	 if2WCcMgw0tINi1wLlyaYQFkAkWBi/pOA0wp137yAQ1S+bNPkJWLJZFGF2Vj3GYLxi
+	 gurs/cZC70OATQBpxsu7oasdDe47Z9ZwPEgQxqkTlN71r0YvHgcuOJwW7Xek9UdmHw
+	 ssVt1630MgMRDdjQ9u1+kLRLjUJ59MY+f1hiNDDRAMOlH4/EziZrjsaWmXVKjtvXlA
+	 rcURG4c+cfr7/sl9SzvzIO2celWZ3kdT7eB7s1yURl1OS5F6iHWU6Bhs7NkIhNrdqa
+	 eQSZQa5stsH/g==
+Message-ID: <737e3c57-9aad-4081-ac75-f79cb2084349@kernel.org>
+Date: Fri, 13 Nov 2026 11:52:05 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -100,41 +51,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261113090108.175889-1-sunwenbo@cmss.chinamobile.com>
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next v19 10/15] net: Document PCS subsystem
+Content-Language: fr
+To: Christian Marangi <ansuelsmth@gmail.com>
+References: <20261113003217.197757-1-ansuelsmth@gmail.com>
+ <20261113003217.197757-11-ansuelsmth@gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ llvm@lists.linux.dev
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20261113003217.197757-11-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Fri, Nov 13, 2026 at 10:01:08AM +0100, sunwenbo@cmss.chinamobile.com wrote:
->In team_nl_options_set_doit(), the policy for TEAM_ATTR_OPTION_DATA in
->team_attr_option_nl_policy is NLA_BINARY because the payload layout
->varies with the option type.
->
->For TEAM_OPTION_TYPE_U32 and TEAM_OPTION_TYPE_S32, the payload is
->read directly with nla_get_u32(attr_data) and nla_get_s32(attr_data)
->without checking its attribute length. When userspace supplies a
->truncated attribute (0 to 3 bytes), nla_get_u32() or nla_get_s32()
->performs an out-of-bounds read past the attribute buffer. Conversely,
->oversized payloads (> 4 bytes) would also have trailing bytes
->silently ignored instead of being rejected as invalid input.
->
->Validate that nla_len(attr_data) equals sizeof(u32) or sizeof(s32)
->for TEAM_OPTION_TYPE_U32 and TEAM_OPTION_TYPE_S32 respectively, and
->return -EINVAL otherwise, consistent with how NLA_U32/NLA_S32
->attributes are validated and similar to commit 5bef3ac184b5 ("team:
->better TEAM_OPTION_TYPE_STRING validation").
->
->This issue was identified with the assistance of an LLM-based code
->review of Netlink option handlers in the team driver, confirmed by
->sending malformed U32 (notify_peers_count) and S32 (priority) option
->attributes on a UML kernel, and verified after the patch that
->invalid lengths (0..3, 5, and 8 bytes) are rejected with -EINVAL while
->valid 4-byte options still work as expected.
->
->Built with W=1 on UML, x86_64 allmodconfig, and x86_64 allyesconfig with
->zero new warnings or errors.
->
->Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
->Fixes: 69821638b274 ("team: add signed 32-bit team option type")
->Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+Hi Christian,
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Thank you for the patch.
+
+On 13/11/2026 01:32, Christian Marangi wrote:
+> Add extensive documentation of the new PCS subsystem and the fwnode
+> implementation with producer/consumer API.
+> 
+> Also update the sfp-phylink migration guide.
+
+FYI, the Netdev CI seems to have issues with this patch when building
+the documentation, because a new warning is visible:
+
+
+/srv/nipa-builds-contest/testing/wt-doc-build/Documentation/networking/pcs.rst:3:
+WARNING: Duplicate C declaration, also defined at networking/kapi:486.
+
+When executing:
+
+  https://github.com/linux-netdev/nipa/blob/main/contest/tests/build-doc.sh
+
+Logs:
+
+  https://netdev-ctrl.bots.linux.dev/build/doc-build/results/909345/
+
+Cheers,
+Matt
