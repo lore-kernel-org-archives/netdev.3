@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=54.38.221.178
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794615607;
-	b=Jkr5rOdha7v96qe6hgB2NsjJ8wV0rKW27ruEO2rmYiJWzM1AqoV0kip05Ir+AF6kA2Fx
-	 02LEaDno3s0gmuatZHBIyjfPh0dvASlIlLxJ6L2l/vjxJ/500E15DfxpLFy0EYc0JKlpg
-	 c98ZWyIB6ZivssjWe8XYZ1+IFMf7+8QwWtL/ip9ZPh44GhL+o6vz83UcL14bBqY7Cv44E
-	 dHD6tnTukrUFLOETjg7zsSDMbc+9emVc9cOMoxmTXyMCMLxleRSUpXajXqOpkP9BHupRH
-	 4BWaoa1NMesEOZokExy2WKg30KX3BxfR7U/qx/MFR3nOp5gKWerB4cpwILAfE0hvp0g==
+	b=IZ29oKyInpcBSm8WA8e5d+Fl/JBa5lGmocdCMdzKd5ymLd/QjtCfixQSMwqtpNgQTPvX
+	 Nuk3ZLS/h2ZCjAeYCEpYjB0OEMODlq13Seb/qi9QU8UzKpJQo86yh/YqGFFLDv0v/Ky54
+	 76mmmvCaS+DJfWjfDIy4jkFOkUsg2TUcBsEtOTQVXA3/VUVEPf5hV96gqX2sxWOLYe+HA
+	 YguohcdaGfNUfQaoD6t2yJwVLPL4/XQTOG8Q00Ocywj2rkUe6ZuN/wjIPKW35Va/OY5aC
+	 THRdDTsVSN24DUCwN48+b6JnSaaZtoMSWRYgfCtl19MhnyiPae3kbIwqSo9IJKCmuQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794615607;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-Id:In-Reply-To:References:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=XV9do77su4poLHOSxdbPm3s5wWjPH2t0IduyWFfv3m8=;
-	b=cHobqg+jEyDmIcVANMinxzfTYwze+Ajh/7CXEXXQEbBqzK+tocA3FLBCr3qh6oiS3IYj
-	 zb2rsGW99jau2fXuJyz7Bic8wh63TztSa3zjytDyW9AFbKl9K+DuA5+cxACUkw040zf8w
-	 FBZdn1ND4SL6lRndca+PmWyFwcCMPxkTxXXC0dSrNu4hEbniaI7jURO1DsICRfpEzNf+K
-	 U+P0jbyzAKEcA9RNxSnjH7Co6OLYlYyak+IfRIM0eGxH7QJK+MYOYxf27LyIo/uXwLCZi
-	 1jMCLT6Glm3ifNzhjAhY34xuWSiOWVML1QfbUuIzUa0A4uLpDIGZLTtE9Qhg9qoCG5w==
+	bh=hK8aCGgzYfT7wVf+5NVjQORxmxgjTle6uk6kBmLZTK4=;
+	b=htb1cvP4IE4qaHGuVZc5RKwrsmdOZdte2CZKl3wD9R3cLmZmVgnA+kggmvZQI3Brr139
+	 TwzIo62rOvqh7UgyZMyP0x8u6mNIo27g1oIeiKQ/LDwxZxGmUT6YFuY7TJ/Vnxx90cAIa
+	 cKcQ4HfZbKmeU7M9okoFdL2/Fln0Vbb8hjM1lXRU7QCU6bv52heb7LYI5MFmCwP6j8zAF
+	 i+vKEu3C3oKQepanDp2/6VPXoe7SNdMOfiHcXni20rS4LQYF+X9pPHOqOc2EN8h8KMihg
+	 jzuimNXuXq7MXJvs37yTmMUsJXHgG4Bu4NtuIPaVA4kNfIiBBKE3sDSGuskamvjK+5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=loljews.com;
 	spf=pass smtp.mailfrom=loljews.com;
-	dkim=pass header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=auh2m1WQ;
+	dkim=pass header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=ZEqj0aMY;
 	arc=none smtp.remote-ip=54.38.221.178
 Received: from mnc015mcc432.ss7-reroute.local (unknown [54.38.221.178])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01EB606A333;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0232606A335;
 	Sat, 14 Nov 2026 00:20:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B01EB606A333
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0232606A335
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=loljews.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loljews.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=auh2m1WQ
+	dkim=pass (2048-bit key) header.d=loljews.com header.i=@loljews.com header.a=rsa-sha256 header.s=mail header.b=ZEqj0aMY
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=loljews.com; s=mail;
-	t=1794615596; bh=XV9do77su4poLHOSxdbPm3s5wWjPH2t0IduyWFfv3m8=;
+	t=1794615596; bh=hK8aCGgzYfT7wVf+5NVjQORxmxgjTle6uk6kBmLZTK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=auh2m1WQHMEXNLZ2ByvSDVK0kcR6EbY2YmqSCSVTUrZijhRmr2xPfpBz+zLzL25U0
-	 BpRCAw0jFiyRH/jS4hl+M0WVyE7OXBV8OagfcjRROcLs6MRz8gU9DjoKJnzeO4EiXM
-	 2S4kxSsvRIKCZG54CSc1ATgqxVVMCG/hutjyWevKypBHbwtZdZNGGNAPfrIXOf3Ywn
-	 CQj6s5d1wf7dIJUUk1vgXCMfBXiQAsFmchfsKioCYDxffti5rWMFzXEpoya7gq42EK
-	 NDc3viZoYer4KKEv5W+e8vAEqbKblADxw6Hph5IA/c49lZRLdUkexb5n3AzeXhdIQq
-	 5THA/uyafQqwA==
+	b=ZEqj0aMYVWDwPyN+xANHeTzHoTBYqVtH4VVfZTLi5ZIuZqIVPv2SGMyjDdqBUVDd2
+	 uEoweN3gTv6k4r5WupUA/gA79rLVfwe6Ct/GHbO0XEBZadpHQTy5UoyGYMYGs5GRLX
+	 icv6n59SRrd4b8juuFo0pzrcn9ucOVHJBgmzVQQmf9qYU/7xtWlaLuGhFXnu6kchNq
+	 0e7pbg4/pmWvpcItdPztGUq+Mv0h7W/EClCaJ+qJ6y8I5b/G/wVkAFC7qogtqddZ02
+	 XlojWw2LUIf5o/KgXxw7bacRyJcyDD3rqXknKTS2lfOo4LS4A9aUacaQncCtqdxOXF
+	 f+EPhnDEvHbwg==
 Received: from loljews.com (localhost [127.0.0.1])
-	by postfix (Postfix) with ESMTP id A0A5F27A66FD;
+	by postfix (Postfix) with ESMTP id 77CD927A66F9;
 	Sat, 14 Nov 2026 02:19:56 +0200 (EET)
 From: Sandeep Haemoon <sandeeph@loljews.com>
 To: netdev@vger.kernel.org
 Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Russell King <linux@armlinux.org.uk>, Daniel Golle <daniel@makrotopia.org>, Mason Chang <mason-cw.chang@mediatek.com>, Frank Wunderlich <frank-w@public-files.de>, linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 2/3] net: ethernet: mtk_eth_soc: skip page_pool
-Date: Sat, 14 Nov 2026 00:34:31 +0200
-Message-Id: <patch-14fe14f8d845a12e954f19d3ec34ca9d@loljews.com>
+Subject: [PATCH net-next v5 1/3] net: ethernet: mtk_eth_soc: fix the RX
+Date: Sat, 14 Nov 2026 00:34:14 +0200
+Message-Id: <patch-c279f68b0cd14ae5779a591e8241dc6c@loljews.com>
 In-Reply-To: <patch-f1e62a87eb0f914e1ea52a395f465998@loljews.com>
 References: <patch-f1e62a87eb0f914e1ea52a395f465998@loljews.com>
 X-Mailing-List: netdev@vger.kernel.org
@@ -65,47 +65,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-The page_pool is created with order-0 pages and MTK_PP_MAX_BUF_SIZE as
-the maximum DMA length, so it can only back a ring whose descriptor
-length fits in that.
+mtk_poll_rx() keeps one dma_addr_t across the whole poll loop and only
+refreshes it when a replacement buffer was mapped for the descriptor
+being processed.  The paths that jump straight to release_desc (no
+netdev for the source port, MTK_RESETTING set, or a refill allocation
+failure) re-arm the descriptor with the buffer it still holds.  The
+address written back must therefore come from the descriptor's own
+rxd2, and the release path relies on dma_addr being DMA_MAPPING_ERROR
+to select those bits.
 
-Gate the pool on ring->buf_size <= MTK_PP_MAX_BUF_SIZE and let larger
-rings use the netdev_alloc_frag()/mtk_max_buf_alloc() path that already
-exists.  ring->frag_size cannot serve as the limit: it follows the
-netdev_alloc_frag() layout, whose headroom and skb_shared_info footprint
-differ from the pool's, so a ring can have frag_size <= PAGE_SIZE while
-its descriptor length is already larger than the pool can map.
+That protection was added by commit 6e0490fc36cd ("net: ethernet:
+mtk_eth_soc: fix SER panic with 4GB+ RAM") for the MTK_RESETTING path,
+but commit e10a35abb3da ("net: ethernet: mtk_eth_soc: fix
+uninitialized variable") moved the DMA_MAPPING_ERROR initialisation
+out of the loop, so it only holds for the first iteration.  From the
+second iteration on, the previous descriptor's high address bits are
+combined with the current descriptor's low bits in rxd1.  With
+MTK_36BIT_DMA and DRAM above 4 GiB the hardware then DMAs the next
+frame to an address that is neither buffer, and the driver passes the
+stale contents of the untouched buffer up the stack.  mtk_rx_clean()
+unmaps the same mismatched address during a SER, which is the panic
+commit 6e0490fc36cd ("net: ethernet: mtk_eth_soc: fix SER panic with
+4GB+ RAM") was fixing.
 
-With the current MTU limits every ring fits and the gate always passes;
-it becomes active with the 9K jumbo support that follows, when the
-shared rings grow past the limit.
+Reset dma_addr to DMA_MAPPING_ERROR at the start of every iteration,
+so a descriptor that is released without a new mapping keeps its own
+address bits.
 
-Link: https://github.com/mediatek/mtk-openwrt-feeds
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 2d75891ebc09 ("net: ethernet: mtk_eth_soc: support 36-bit DMA addressing on MT7988")
 Signed-off-by: Sandeep Haemoon <sandeeph@loljews.com>
 ---
  drivers/net/ethernet/mediatek/mtk_eth_soc.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index a46cf54411..6768ab8ebe 100644
+index ad0fdc4133..a46cf54411 100644
 --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
 +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -2825,7 +2825,13 @@ static int mtk_rx_alloc(struct mtk_eth *eth, int ring_no, int rx_flag)
- 	if (!ring->data)
- 		return -ENOMEM;
+@@ -2210,7 +2210,7 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
+ 	u8 *data, *new_data;
+ 	struct mtk_rx_dma_v2 *rxd, trxd;
+ 	int done = 0, bytes = 0;
+-	dma_addr_t dma_addr = DMA_MAPPING_ERROR;
++	dma_addr_t dma_addr;
+ 	int ppe_idx = 0;
  
--	if (mtk_page_pool_enabled(eth)) {
-+	/* A page_pool hands out order-0 pages and is created with
-+	 * MTK_PP_MAX_BUF_SIZE, so it can only back a ring whose descriptor
-+	 * length fits.  Larger rings use the netdev_alloc_frag()/
-+	 * mtk_max_buf_alloc() path below instead.
-+	 */
-+	if (mtk_page_pool_enabled(eth) &&
-+	    ring->buf_size <= MTK_PP_MAX_BUF_SIZE) {
- 		struct page_pool *pp;
+ 	while (done < budget) {
+@@ -2219,6 +2219,12 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
+ 		u32 hash, reason;
+ 		int mac = 0;
  
- 		pp = mtk_create_page_pool(eth, &ring->xdp_q, ring_no,
++		/* The release paths below hand the descriptor back with the
++		 * buffer it still holds, so only overwrite its address when
++		 * a new buffer was actually mapped for it.
++		 */
++		dma_addr = DMA_MAPPING_ERROR;
++
+ 		ring = mtk_get_rx_ring(eth);
+ 		if (unlikely(!ring))
+ 			goto rx_done;
 -- 
 2.53.0
 
