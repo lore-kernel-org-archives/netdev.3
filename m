@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794546125;
-	b=cimmjaPVt9HydOZ4RTcXdQZLg6lH4nxN2r1iG5dWb+XpKE/NoUoy+E6ob5zJvBBT+t8d
-	 Z+uzYc9oau4NvWQJziguRn3MUYVePEfofRZggb2kEa37D0jRxk6T1GUtt0yQTHoJJ4+v1
-	 TpE9WPhuElL4ONaokwx1W785uxEpTmOANMiGEMflutziXXsj8wBaCQYlTjKt1jaMQ33yI
-	 aONi/YtjZOyFOeMNYIfpqHq+0AO76QFFDaYNszlQ46cmTYAPbHUfCDu7AXxwb4LlBdWRG
-	 XOPdbZlyYVp9lpatK8EOG9BYgKRdSeAO5VrFBXcUGnOvv/hciIRN5coTYZbUsSA79Pg==
+	t=1794546127;
+	b=oCGS/VZTkbZwmx+D2TLq5dl5EGZkcZuYYbmsefU/7VW5OnzmUTKbL7hL4KyWjBPtz0/e
+	 5wIHC2XrKzUs01K2Q/8GVTsB9qSr2ZU/ydxwxTKQl1YPNSO3xF0agQ4goLv+V+xLE4ip9
+	 +qVtVLeijOhKNOCipFRWb4eiWOcueOgYFEy+M6VLbOx29GAcMiqDldyhTjMawgILgEstZ
+	 45gOBLdc6ShQRh4Zsj0yi37vsi4afeNhU+tCi+o50yUfbz8O1GRu2xWy6qg4eRutucQLY
+	 pyGpaLRMoulbUYln3PfxmAp+e9wViG+FMKVHOJZvmu34O1twzx47Af+FZe1rScux71w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794546125;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794546127;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=4Vw4lgRPCCAATIt+hxOa8/bRcLW2qv1GY0q9oLPU9Bo=;
-	b=Xgft7isB544hbKbeAooG6F19j67+c8y3ZVspW3uyFxQdhlLlBmUt+WqzkriuKomrXYRh
-	 GTsKMwR9hZwA9z0pjRR8NW7zg0wccTet2aDybH6WmQZmAmJ5yx/kTEJQ34HW/MhHy4Osx
-	 AZMQL2TVBQ69B6AJsLzxrMgdKsdeB9fNTUOrmrvKL6AIQGMZhLx+Sumoo5A6BXRYJsBga
-	 7JOsjhc3pYJ7m7h/FDkboznKLsiyU8v/OVgLY8GK3u/2w7BqTSz7kOjl+PpL9EbKT3uSu
-	 5Bi2mWPoYL41Y31L03ppOBg1/MEEaANMX+2kS+0BcmbkY+bCtCBIGjuDLtE7VvBaTxw==
+	bh=hzkV5CuqcRmeRc5AbzVPlfYP5uf4EAd07rgYr3Hn0tg=;
+	b=yZ4AirtyXidCNQKlfZQoItqeLOhQwowI05JF373uAt6Ebrq8dsRYo1Uc6l4oS7pzQOmA
+	 mkUvhqIrupGuWXCkD7PrOb8aShopGRlxYzWwk2kJ/U3UQmVRF4Ck18kNRGvtiZmWyqelq
+	 Ra8P4P7k6iPp8OftZRoY8nI0zjVpH0jTuVPcfxo5tS2HaWMhEijgAah4XqrntjTmbGt+I
+	 wodIQAwetStAx8ebox9ObhNYg8nw1DaVfvUQDK8EmZ9X7gJ5C7NV7/DfV6jbgeVvzo8sW
+	 uemF5aFKYmztnmnQ2Ls0FnLzuEUxBqn7CkI/X7iUzST5BS7Ci8g54UmyQuJ4Bq8LqKw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RafftHtQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NTlyKBfv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFF1606A321;
-	Fri, 13 Nov 2026 05:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659BE606A33B;
+	Fri, 13 Nov 2026 05:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RafftHtQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CF21F000C4;
-	Fri, 13 Nov 2026 05:02:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NTlyKBfv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783F51F000C4;
+	Fri, 13 Nov 2026 05:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794546124;
-	bh=4Vw4lgRPCCAATIt+hxOa8/bRcLW2qv1GY0q9oLPU9Bo=;
+	s=k20260515; t=1794546127;
+	bh=hzkV5CuqcRmeRc5AbzVPlfYP5uf4EAd07rgYr3Hn0tg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RafftHtQibeHtVwtgV0EHt9veuY3lUF9zAhnD9ff/fZpXUcdvRzQjyAo0wmcRRkYw
-	 8anwo+AnwCpWpypc6K23VRbkTgsg8M9keRclxxjtONvUzMhwJjCs0kDfusST1/EpZg
-	 waqEPFbFoWptiy0hmLtny+X+Ou4K6o2MsRWkwqGchIZFByFcgTWQ10zGaWWm05skjD
-	 +uPWhuD1WG7ZRsUNZbJrrh0KTAjGmPaCEiq7rh81ijur4IwPBm5Ad93A8DGfc1tXeX
-	 c9wcynE0wphpCyxO9SxhpPtqfqT3+roHI9ryt1VwXVAnjIWKt2Y/1uq8Gwj4vijAMQ
-	 SAOFRWPA6xNKQ==
-Subject: Re: [PATCH net-next 1/2] rust: net: phy: make Device generic over a
- lock context
+	b=NTlyKBfvPom0QJTse7p07OR7rx836GJXfxfB9nGyz2fykRV88VC+X6u06ihnReqwb
+	 d+dZfHF2ZKhlIKj0J+I1vsglpAlQEERG60DYffpqKuTd6vjh6PRaq4vJbIzO405ie9
+	 EY5uMdNlM3TxP96u/lWqABRAGxXHyD0XceNRdu7SdkZi3MgyRJm4R6C6ZVP9Pqp5eA
+	 338pzwp9Qa4xPx9OpkDtn6ZAmwMfRrI8amrxgpUK+NFrFCWKCGcHXU4BPqJgQjLn+R
+	 GbkzFXgGpllm9XSRC0J0ctvgn1EZwMzA8cJZWOR9WLdphsCurRAkMwj5GkkRiLupxp
+	 VaqFwszzSRbpg==
+Subject: Re: [PATCH net-next 2/2] rust: net: phy: pass a MaybeLocked device to
+ soft_reset and match_phy_device
 From: netdev-bot+sashiko@kernel.org
 To: engineer.jjhama@gmail.com
 Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, davem@davemloft.net,
@@ -52,11 +52,11 @@ Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, davem@davemloft.net,
  tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, andrew@lunn.ch,
  hkallweit1@gmail.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 13 Nov 2026 05:02:03 +0000
-Message-ID: <179454612309.2199510.8826947622711200035@kernel.org>
-In-Reply-To: <20261110-exp-phy-rs-maybelocked-v1-1-3023cc9055e9@gmail.com>
-References: <20261110-exp-phy-rs-maybelocked-v1-1-3023cc9055e9@gmail.com>
-X-sashiko-severity: Medium
+Date: Fri, 13 Nov 2026 05:02:05 +0000
+Message-ID: <179454612500.2199510.688554972467066283@kernel.org>
+In-Reply-To: <20261110-exp-phy-rs-maybelocked-v1-2-3023cc9055e9@gmail.com>
+References: <20261110-exp-phy-rs-maybelocked-v1-2-3023cc9055e9@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -69,10 +69,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 2
+Critical: 0 · High: 2 · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -80,266 +80,186 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch moves `genphy_soft_reset()` into `impl<Ctx:
-  PhyContext> Device<Ctx>` (rust/kernel/net/phy.rs:317) and makes it a…
-- [Medium] The new `Locked` documentation and `# Invariants`
-  (rust/kernel/net/phy.rs:62-73) say that PHYLIB holds…
-- [Medium] Before this patch, every Rust MDIO access needed `&mut
-  Device`, which only Locked or exclusive callbacks hold.
-- [Low] `Device::from_raw()` (rust/kernel/net/phy.rs:130) still returns
-  `&'a mut Device<Locked>`.
-- [Low] rust: net: phy: missing #[inline] on small Device and Register
-  wrappers
+- [High] The fix is incomplete.
+- [High] Safe Rust code in `Driver::match_phy_device` can now oops the
+  kernel by calling `read_paged()`.
+- [Low] The rewritten `MaybeLocked` doc says "PHYLIB calls these
+  callbacks [Driver::soft_reset and Driver::match_phy_device] both with…
 
 --
 
-rust: net: phy: make Device generic over a lock context
+rust: net: phy: pass a MaybeLocked device to soft_reset and match_phy_device
 
-This commit makes the Rust phy Device generic over a lock context. Locked
-is the default, and MaybeLocked is for callbacks that may run without
-phy_device->lock. Device<Locked> derefs to Device<MaybeLocked>, and
-phy_id(), register access, read_paged() and genphy_soft_reset() move to
-both contexts and take &self instead of &mut self.
+This patch changes the Rust PHY abstraction so that the soft_reset and
+match_phy_device callbacks receive a &Device<MaybeLocked> instead of a
+Locked device. It also corrects the SAFETY comments that said PHYLIB holds
+phy_device->lock for these callbacks. ax88796b_rust is updated to the new
+signature.
 
 > diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index c4e7b1d6c6f4a..60c58bbc12d6d 100644
+> index 60c58bbc12d6d..c2dfc58dbe55f 100644
 > --- a/rust/kernel/net/phy.rs
 > +++ b/rust/kernel/net/phy.rs
-> @@ -50,6 +50,48 @@ pub enum DuplexMode {
->      Unknown,
->  }
+> @@ -72,10 +72,10 @@ pub trait PhyContext: private::Sealed {}
+>  /// other access to the `phy_device` made under `phy_device->lock`.
+>  pub struct Locked;
 >  
+> -/// The [`Device`] context of callbacks that PHYLIB calls both with and without
+> -/// `phy_device->lock` held.
+> +/// The [`Device`] context of [`Driver::soft_reset`] and [`Driver::match_phy_device`].
+>  ///
+> -/// A callback in this context must not take `phy_device->lock`.
+> +/// PHYLIB calls these callbacks both with and without `phy_device->lock` held. A callback in this
+> +/// context must not take `phy_device->lock`.
+
+[Severity: Low]
+Is this accurate for match_phy_device? Its only caller is phy_bus_match(),
+and that never holds phydev->lock:
+
+drivers/net/phy/phy_device.c:phy_bus_match() {
+    ...
+	if (phydrv->match_phy_device)
+		return phydrv->match_phy_device(phydev, phydrv);
+    ...
+}
+
+The new SAFETY comment in match_phy_device_callback() further down in this
+patch says "phy_bus_match() holds no PHY lock". So the type doc and the
+callback's SAFETY comment describe the same callback differently.
+
+Could the doc say that soft_reset is called both with and without the lock,
+and match_phy_device always without it?
 
 [ ... ]
 
-> +/// The [`Device`] context of every [`Driver`] callback that does not take a
-> +/// [`Device<MaybeLocked>`].
-> +///
-> +/// PHYLIB holds `phy_device->lock` for these callbacks, except for [`Driver::probe`], which runs
-> +/// before the device is published, and for [`Driver::suspend`] and [`Driver::resume`], which run
-> +/// without concurrent access to the instance.
-> +///
-> +/// # Invariants
-> +///
-> +/// For the lifetime of a [`Device<Locked>`] reference, the holder is serialized against every
-> +/// other access to the `phy_device` made under `phy_device->lock`.
-> +pub struct Locked;
+> @@ -370,10 +386,9 @@ impl<T: Driver> Adapter<T> {
+>      /// `phydev` must be passed by the corresponding callback in `phy_driver`.
+>      unsafe extern "C" fn soft_reset_callback(phydev: *mut bindings::phy_device) -> c_int {
+>          from_result(|| {
+> -            // SAFETY: This callback is called only in contexts
+> -            // where we hold `phy_device->lock`, so the accessors on
+> -            // `Device` are okay to call.
+> -            let dev = unsafe { Device::from_raw(phydev) };
+> +            // SAFETY: `phydev` is valid for the callback. `phy_init_hw()` calls `soft_reset` both
+> +            // with and without `phy_device->lock`, which is the `MaybeLocked` context.
+> +            let dev = unsafe { Device::from_raw_maybe_locked(phydev) };
+>              T::soft_reset(dev)?;
+>              Ok(0)
+>          })
 
-[Severity: Medium]
-Is this invariant accurate for Driver::read_mmd and Driver::write_mmd?
+[Severity: High]
+Is this conversion complete? read_mmd_callback() and write_mmd_callback()
+in rust/kernel/net/phy.rs still say "This callback is called only in
+contexts where we hold phy_device->lock", and they still build a Locked
+device:
 
-read_mmd_callback() and write_mmd_callback() still build a
-&mut Device<Locked> through Device::from_raw(). The C side calls them with
-only the MDIO bus lock held:
-
-drivers/net/phy/phy-core.c:phy_read_mmd() {
-	phy_lock_mdio_bus(phydev);
-	ret = __phy_read_mmd(phydev, devad, regnum);
-	phy_unlock_mdio_bus(phydev);
+rust/kernel/net/phy.rs:Adapter::read_mmd_callback() {
+    ...
+            let dev = unsafe { Device::from_raw(phydev) };
+            // CAST: the C side verifies devnum < 32.
+            let ret = T::read_mmd(dev, devnum as u8, regnum)?;
+    ...
 }
+
+phy_read_mmd() and phy_write_mmd() take only the MDIO bus lock. Then
+__phy_read_mmd() and __phy_write_mmd() dispatch to the driver:
 
 drivers/net/phy/phy-core.c:__phy_read_mmd() {
-	...
+    ...
 	if (phydev->drv && phydev->drv->read_mmd)
 		return phydev->drv->read_mmd(phydev, devad, regnum);
-	...
+    ...
 }
 
-phy_probe() also calls get_features without phydev->lock, and
-get_features is not in the exception list here either.
+<C45 as Register>::read() and write() in rust/kernel/net/phy/reg.rs are
+now generic over PhyContext. That means the new MaybeLocked soft_reset can
+get back to a Locked device:
 
-This patch also makes C45::read() and C45::write() in reg.rs generic over
-PhyContext. A &Device<MaybeLocked> holder can now reach a bound Rust
-driver's read_mmd_callback(). With the follow-up patch, the path would be:
+phy_attach_direct() or phy_mii_ioctl()   (no phydev->lock)
+  phy_init_hw()
+    drv->soft_reset()
+      soft_reset_callback()
+        T::soft_reset(&Device<MaybeLocked>)
+          dev.read(C45::new(...))
+            phy_read_mmd()               (MDIO bus lock only)
+              __phy_read_mmd()
+                read_mmd_callback()
+                  T::read_mmd(&mut Device<Locked>)
 
-match_phy_device (MaybeLocked, unlocked)
-  dev.read(C45::new(..))
-    phy_read_mmd()
-      read_mmd_callback()
-        Device::from_raw() -> &mut Device<Locked>
+>From there, T::read_mmd() can call start_aneg(), set_speed(),
+set_duplex() and so on without phy_device->lock, racing with
+phy_state_machine(). The commit message says a soft_reset can no longer
+reach these Locked-only operations. This path also creates a &mut Device
+that aliases the still-live &Device<MaybeLocked>.
 
-Could safe code in that read_mmd then call Locked-only mutators such as
-set_speed() while the bound driver's read_status runs under
-phydev->lock?
+The series also opens a second lock-less entry. Before the series,
+match_phy_device got only &Device and could not call read() or write(),
+which took &mut self. Now it can issue C45 reads. On an already-bound
+device, those go to the bound Rust driver's read_mmd_callback() with no
+lock held.
 
-The follow-up patch "rust: net: phy: pass a MaybeLocked device to
-soft_reset and match_phy_device" fixes how this commit classifies
-match_phy_device and soft_reset. The read_mmd and write_mmd case is still
-there after it.
+The Locked type doc says PHYLIB holds phy_device->lock for every callback
+except probe, suspend, resume and the MaybeLocked ones. That would also be
+wrong for read_mmd and write_mmd.
 
-> @@ -71,7 +115,7 @@ pub enum DuplexMode {
->  // [`Driver::resume`] and [`Driver::suspend`] also are called where only one thread can access
->  // to the instance.
->  #[repr(transparent)]
-> -pub struct Device(Opaque<bindings::phy_device>);
-> +pub struct Device<Ctx: PhyContext = Locked>(Opaque<bindings::phy_device>, PhantomData<Ctx>);
->  
->  impl Device {
->      /// Creates a new [`Device`] instance from a raw pointer.
-> @@ -91,14 +135,6 @@ unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
->          unsafe { &mut *ptr }
+No in-tree Rust PHY driver implements read_mmd or write_mmd today, so
+nothing triggers this yet.
+
+Should read_mmd and write_mmd also move to a MaybeLocked-style context?
+
+> @@ -471,10 +486,9 @@ impl<T: Driver> Adapter<T> {
+>          phydev: *mut bindings::phy_device,
+>          _phydrv: *const bindings::phy_driver,
+>      ) -> c_int {
+> -        // SAFETY: This callback is called only in contexts
+> -        // where we hold `phy_device->lock`, so the accessors on
+> -        // `Device` are okay to call.
+> -        let dev = unsafe { Device::from_raw(phydev) };
+> +        // SAFETY: `phydev` is valid for the callback. `phy_bus_match()` holds no PHY lock, which
+> +        // is the `MaybeLocked` context.
+> +        let dev = unsafe { Device::from_raw_maybe_locked(phydev) };
+>          T::match_phy_device(dev).into()
 >      }
 
-[Severity: Low]
-Does the safety reasoning in from_raw() still hold? It still returns
-&'a mut Device<Locked>, and its SAFETY comment still claims "we have
-unique access for the duration of 'a".
+[Severity: High]
+Can safe code in a Rust match_phy_device dereference a NULL phydev->drv
+here? Device::read_paged() is now a &self method for every context, so a
+match_phy_device implementation can call it on &Device<MaybeLocked>:
 
-The commit message says a MaybeLocked callback "may run concurrently with
-a Locked one on the same device". With the follow-up patch, a
-&Device<MaybeLocked> and a &mut Device<Locked> for the same phy_device can
-be live at the same time on different threads.
+Device::read_paged()
+  phy_read_paged()
+    phy_select_page()
+      phy_save_page()
+        phy_lock_mdio_bus()
+        __phy_read_page()
 
-For example, a newly registered driver's match_phy_device can run through
-__driver_attach() while the bound driver's read_status holds the &mut.
-
-Opaque prevents noalias here, so this may have no runtime effect. Should
-the from_raw() safety comment be updated to explain why &mut is still
-acceptable? The SAFETY comments in set_speed() and set_duplex() also still
-say the field is accessed "without additional synchronization".
-
-[ ... ]
-
-> @@ -276,7 +283,61 @@ pub fn genphy_read_abilities(&mut self) -> Result {
->      }
->  }
->  
-> -impl AsRef<kernel::device::Device> for Device {
-> +impl<Ctx: PhyContext> Device<Ctx> {
-
-[ ... ]
-
-> +    /// Reads a PHY register.
-> +    // This function reads a hardware register and updates the stats.
-> +    pub fn read<R: reg::Register>(&self, reg: R) -> Result<u16> {
-> +        reg.read(self)
-> +    }
-> +
-> +    /// Writes a PHY register.
-> +    pub fn write<R: reg::Register>(&self, reg: R, val: u16) -> Result {
-> +        reg.write(self, val)
-> +    }
-
-[Severity: Medium]
-Can MaybeLocked register writes interleave with a multi-access sequence in
-a Locked callback on the same PHY?
-
-Before this patch, every Rust MDIO access needed &mut Device. For Rust
-drivers, phydev->lock therefore serialized multi-register sequences.
-C22::write() and C45::write() hold bus->mdio_lock for only one
-transaction.
-
-The Rust Driver vtable has no read_page or write_page. Rust drivers have
-to open-code page-select sequences (for example through
-C22::vendor_specific::<0x1f>()) or indirect MMD sequences with write() and
-read().
-
-With the follow-up patch, match_phy_device is MaybeLocked. It runs from
-__driver_attach()->phy_bus_match() on devices that are already bound.
-
-Suppose it writes a page-select or indirect-address register while the
-bound driver's read_status or config_aneg is partway through a paged
-access. Would the Locked callback then access a register on the wrong
-page?
-
-A concurrent BMCR write could also break ordered sequences such as
-asix_soft_reset(), which writes BMCR = 0 and then BMCR_RESET. Should the
-MaybeLocked documentation at least say that register accesses in that
-context must not change persistent paging or indirect state?
-
-[ ... ]
-
-> +    /// Executes software reset the PHY via `BMCR_RESET` bit.
-> +    pub fn genphy_soft_reset(&self) -> Result {
-> +        let phydev = self.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-> +        // So it's just an FFI call.
-> +        to_result(unsafe { bindings::genphy_soft_reset(phydev) })
-> +    }
-
-[Severity: Medium]
-The commit message lists genphy_soft_reset among the "Methods that do not
-need the lock". Does the C function really do only MDIO accesses?
-
-drivers/net/phy/phy_device.c:genphy_soft_reset() {
-	...
-	if (phydev->autoneg == AUTONEG_ENABLE)
-		res |= BMCR_ANRESTART;
-	...
-	phydev->suspended = 0;
-	...
-	if (phydev->autoneg == AUTONEG_DISABLE)
-		ret = genphy_setup_forced(phydev);
-	...
+drivers/net/phy/phy-core.c:__phy_read_page() {
+	if (WARN_ONCE(!phydev->drv->read_page, "read_page callback not available, PHY driver not loaded?\n"))
+    ...
 }
 
-genphy_setup_forced() also writes phydev->pause and phydev->asym_pause. It
-builds BMCR from phydev->speed and phydev->duplex.
+match_phy_device runs from phy_bus_match() before phy_probe() sets
+phydev->drv = phydrv. phydev is allocated zeroed, and phy_remove() resets
+drv to NULL.
 
-In struct phy_device, suspended:1 is in the same run of bitfields as
-autoneg, link, autoneg_complete, interrupts, irq_suspended and irq_rerun.
-Setting suspended is a non-atomic read-modify-write of that shared storage.
+So for an unbound PHY, this would oops with the MDIO bus mdio_lock held.
+Every other PHY on that bus would then hang.
 
-With the follow-up patch, match_phy_device gets a &Device<MaybeLocked> and
-can call dev.genphy_soft_reset() from safe code.
+This wasn't reachable before the series: read_paged() took &mut self, and
+match_phy_device only got &Device. The previous patch, "rust: net: phy:
+make Device generic over a lock context", made read_paged() a &self method
+for all contexts, and this patch makes MaybeLocked the match_phy_device
+context.
 
-phy_bus_match() calls match_phy_device without any PHY lock.
-__driver_attach() calls driver_match_device() for every device on the bus.
-That includes devices already bound, where phy_state_machine() runs under
-phydev->lock.
+The read_paged() SAFETY comment ("just an FFI call") also does not cover
+the requirement of phy_read_paged() that phydev->drv is non-NULL.
 
-Could the suspended = 0 store then race with genphy_update_link() or
-genphy_read_status() updating link, autoneg_complete, speed and duplex?
-It could also race with the IRQ path updating irq_suspended and
-irq_rerun.
+C drivers that need paged access during match open-code the page select
+instead, for example rtlgen_supports_2_5gbps() in
+drivers/net/phy/realtek/realtek_main.c.
 
-Before this patch, the reset needed &mut Device and match_phy_device could
-not call it. Nothing later in the series seems to change this.
-
-The Rust abstraction already treats these fields as lock-protected:
-set_speed() and set_duplex() are Locked-only. Should genphy_soft_reset()
-also stay in the Locked-only impl?
-
-[ ... ]
-
-> @@ -91,14 +135,6 @@ unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
->          unsafe { &mut *ptr }
->      }
->  
-> -    /// Gets the id of the PHY.
-> -    pub fn phy_id(&self) -> u32 {
-> -        let phydev = self.0.get();
-> -        // SAFETY: The struct invariant ensures that we may access
-> -        // this field without additional synchronization.
-> -        unsafe { (*phydev).phy_id }
-> -    }
-> -
->      /// Gets the state of PHY state machine states.
->      pub fn state(&self) -> DeviceState {
->          let phydev = self.0.get();
-
-[Severity: Low]
-This is a nit. These are kernel crate abstractions, and the Rust
-guidelines ask for #[inline] on small functions and on thin wrappers
-that only forward to a binding call. None of the functions this patch
-touches have it:
-
-- phy_id(), read(), write(), read_paged() and genphy_soft_reset() in
-  the new impl<Ctx: PhyContext> Device<Ctx> block
-- deref() in the new Deref impl for Device<Locked>
-- as_ref() in the AsRef<kernel::device::Device> impl
-- the C22 and C45 Register::read() and Register::write()
-  implementations in reg.rs
-
-Most of these are now generic over Ctx (or C). They get instantiated
-in the driver crate anyway, so the practical effect is small.
-
-deref() is the one that matters most. It is a non-generic pointer cast
-that runs whenever a &Device<Locked> is coerced to
-&Device<MaybeLocked>, and it should compile away entirely.
-
-This patch already moves or rewrites all of these functions. Could
-#[inline] be added to them while they are being touched?
+Should read_paged() be limited to contexts where phydev->drv is known to
+be set, or should match_phy_device get a narrower context?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261110-exp-phy-rs-maybelocked-v1-0-3023cc9055e9%40gmail.com
