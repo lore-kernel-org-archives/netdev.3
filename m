@@ -1,113 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=173.37.86.77
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.46
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794583087;
-	b=laIvvNCn2/pKsKnSSnUprIAXi7EZpDwQVwGtc/6RhSBRbrCr08qpmEKEVp/r1sEwQGFI
-	 hfdkJOQtlnCHfqlIRmcFjk+7Eqw//iaRxCSfsYDa+//THe3t3Pj6j0n9Kqg6jmvgSh2IG
-	 d7h5ORSWPXxs5WTKQRzkwZK/l7/T5aX/xar2TWlM7BJkM6V3spDiXDuAf+rQOQBWr2m7O
-	 QiU7wGHBGLP81Sv1bupkJXEGSmE1oT5cBigIoC8gy5ox6jw+09pJtBL6ykxiGNmZhbZdY
-	 AR7/Ee9zjqIe0mn73DNjJlX6fYlD9CS35kZ1IcxI+ERyZYi5GU3YcnXO1MimZJVFJBQ==
+	t=1794583186;
+	b=jUO8g/AkyF6p1kbuIPaiOmigRYOFuQja8l3Uuf/5zB0Mn5LIZ5AonUPDN1B2FfhEnGyy
+	 dZnluSpeXpCxuJ1wkIZrrTs4Ms7Ynq/ZUHYRrlRrU6QNWyTbFRp/Y9I7W1ce/2USaRdfr
+	 vdV+g5ElWOfWWbtnztGUq9mrI2cUV38/036NRID8WPpykuYQhht68dZjUNZGRu2Vb9B/i
+	 ZX34pBdeQDTP7GKQ6ebFSchern+FxVzThmurzrm6BPzgsGgCLT7Es6IrNqflkHbu8V8zY
+	 3sCrnhoEmJdsefuCUsDIo7TPnKf7N21j8BGvratJPKWYsqkHjTYywzV2iaRh85BrGQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794583087;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IPAS-Result:IronPort-Data:IronPort-HdrOrdr:X-Talos-CUID:
-	 X-Talos-MUID:X-IronPort-Anti-Spam-Filtered:X-IronPort-AV:Received:
-	 Received:From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Outbound-Client-TLS:X-Outbound-SMTP-Client:X-Outbound-Node;
-	bh=cAIGF/N/dcgGFqkWqmHvmxdGrhlHqENgdut6TKmMIms=;
-	b=mOMJRE7WDiPJHtCO+jAcMF9HcuSvxqd3Gs9KkxLK5ek1/CT7sOOryeuK1ywQNqPv+lqN
-	 VtigJKLCMW5TPS2ZjlGirTi9lFkGkfPbmc6js7IZbY0d/k2BzBaitl9q1nIxkNdhW2lyv
-	 86OfA8nTgGQbRwohTRZ1ecxtGKhWoqhgKL1nSqB3lyi5ySCLQVmjsB4CefSDEyg2OwjFY
-	 dUwDle3o1evN64wEzKxoDziCluwkREG7kJ68uugd0PHTJivg3KXnemsqCwYkiaE42dj9I
-	 TBfVM7zmHfoL0mcFEZsRy3BXZM2qNSXGFPPbyXf5nxFxAlnYit+GM8p8z1v4rpqbCPA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794583186;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:
+	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=juFDnmO5EDRtsSCXIUiqwlHbuc6Wxn7oOfpk1FDCS/0=;
+	b=4KIwzWvSPjMk3c2Q1s/4+84nXIg7ZD4GHz8kEaHXfipBjeraOely7EaXUUSiKnsSZIS8
+	 6TKZVwWxmIZ12oprT4RuhkRWOB90aqqef+vweczHv3OvdN34skXrzla5q7pQRSGldTLHA
+	 AYwonZBj3iM9SMM1ySLqGvZOnjUnVPB9xf/tu3fiFE2NxqmxrOovbIp0iwvQPa2QoyKE9
+	 SFKLdrP5BtEXEypPQTAx7qicQNVGB9X+HmldO9cXKwHjUG2fyU7jbIVnI+sxfm9jlWCOq
+	 dNf+XN0ZIC06GU3BhUDgLWN5NyPcdINmKTGgP4WYbx2/o98piimwuF1w6WXI9NHVLoA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cisco.com;
-	spf=pass smtp.mailfrom=cisco.com;
-	dkim=pass header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=GblbfX92;
-	arc=none smtp.remote-ip=173.37.86.77
-Received: from rcdn-iport-6.cisco.com (rcdn-iport-6.cisco.com [173.37.86.77])
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=rK7OT7NJ;
+	arc=none smtp.remote-ip=195.10.208.46
+Received: from mout-b-106.mailbox.org (mout-b-106.mailbox.org [195.10.208.46])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C661B606A327
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 15:18:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C661B606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A09E606A32D;
+	Fri, 13 Nov 2026 15:19:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0A09E606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cisco.com header.i=@cisco.com header.a=rsa-sha256 header.s=iport01 header.b=GblbfX92
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=1629; q=dns/txt;
-  s=iport01; t=1794583086; x=1795792686;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cAIGF/N/dcgGFqkWqmHvmxdGrhlHqENgdut6TKmMIms=;
-  b=GblbfX92o75YxLT5i3+IuNa3fKsCYi/xLtY/G27eFpB9lY2kUWBjkrA0
-   EdHYuEdFFn5pP55lDmpweS8WBcZZhUkSvkoDYxVPXMHzqF5PUY+BFMSyU
-   wHN/MxH9yyORyI8q3zqTzYPQ/TRADneLhxqiYXpjwoGGzKhaQiwydqrea
-   2z97jprSce+p6og0U98v8/5tAaUlUzSxxVtU177ayvTvuukujIzX4ImLe
-   ZwfoqflA7UzBRBkMy+tYv5/DwCDZ86xpQ+8u7JBI08gqvcC/ZIbGTolbu
-   /fqMDzk/MFloU0p735Fpl0lgm/TaEUxsEKS0ZIWis7ADV6xZgo1SQcKkh
-   A==;
-X-CSE-ConnectionGUID: fFS/OjccTTK0iwMW/oNSbQ==
-X-CSE-MsgGUID: AbZBe0ZIRbmCFJ4UcS1XEg==
-X-IPAS-Result: =?us-ascii?q?A0AnAADQKPdq/4z/Ja1aHAEBAQEBAQcBARIBAQQEAQGBf?=
- =?us-ascii?q?AcBAQsBhCtDhSCIG4lZA54iFIFqDwEBAQ9RBAEBhQUCjh8CJjQJDgECBAMCA?=
- =?us-ascii?q?wEBAQEBAQEBAQEBAQoBAQUBAQECAQcFgQ4ThlyQEwEBAQIBIw8BRgULCxoCJ?=
- =?us-ascii?q?gICVoMbgk4nA7pCeoEygQHeR4F0FYEKLgGFc4JuAYUDdoR9JxuBSUSBFAGDL?=
- =?us-ascii?q?D6EKmaDD4JqBIIigQyXd0gKeBwDWSwBVRMNCgsHBYElQwM1EioVI0sFLR2BI?=
- =?us-ascii?q?yEdFxEeWBsGBRIgKkBDW4ESgQVdgSsoXQECH0YtFYF1AoJRgSNdAgFJQQ4HR?=
- =?us-ascii?q?VMJJUMSRyQiCBIJARMaLAqBGjU8CSY/FQxbDAgDGgUaJgIfCAILAgx0KBEQE?=
- =?us-ascii?q?x0eJC8FGiY+GwqBDgUYDUgRLDcVGQQ9AW4HlRwPUBMVQgEiCRJEcQkpAk6TJ?=
- =?us-ascii?q?SIHPJIFgTWKQ5UZhCqBaJ92GjOEBI0UmVqZCKQOTYRqgWg8gVkzGggbFYMjU?=
- =?us-ascii?q?hkP4H8mcQcCBw8Ck3EBAQ?=
-IronPort-Data: A9a23:sRKWhqjan+/g1IYjGFGiX4O+X161oxEKZh0ujC45NGQN5FlHY01je
- htvCD2COP3ZZzejc48laN7loR8H7cKAnNM2GQM9qH1gRnljpJueD7x1DKtf0wB+jyHnZBg6h
- ynLQoCYdKjYdleF+FHwdOCn/SMhvU2xbuKUIPbePSxsThNTRi4kiBZy88Y0mYcAbeKRW2thg
- vus5ZeAULOZ82QsaDxNsvvY8EoHUMna4Vv0gHRvPZing3eG/5UlJMp3Db28KXL+Xr5VEoaSL
- 87fzKu093/u5BwkDNWoiN7TKiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JAAatjsAhlqvgqo
- Dl7WTNcfi9yVkHEsLx1vxC1iEiSN4UekFPMCSDXXcB+UyQqflO0q8iCAn3aMqUW1N0wJmNF/
- sAkC2gMcTW8wOWQ+7iCH7wEasQLdKEHPasFsX1miDWcBvE8TNWbGOPB5MRT23E7gcUm8fT2P
- pVCL2EwKk6dPlsWZg9/5JEWxI9EglHkeiFZs1KWpYI84nPYy0p6172F3N/9J4DVHp8IwhnBz
- o7A103zMDsXbO6+8zCA2VyO2tLEpnrLdY1HQdVU8dYv2jV/3Fc7BBQIWF6TrfCnh0u6XNxDb
- UoZ5kIGoKQv8UW5Q8XVXBCipnOA+BkGVLJ4EPAw4SmOx7DS7gLfAXILJhZHZcAqudFzTzs2l
- USAhNPoBjtHs7CPT3+ZsLCOoluaMC4ZN2IdJikJUQcI/fHnvYc1yBnPJv57GaS4iNzdAzz8w
- zmW6iM5gt07i8MX26il1U7IjijqpZXTSAMxoALNUQqYAhhRfoWpYcmsrFPc9/sFdN3fRViat
- 39CkM+bhAwTMayweOW2aL1lNNmUCzytaVUwXXYH80EdygmQ
-IronPort-HdrOrdr: A9a23:1BillK8rFtMJ2Dzho5Nuk+D+I+orL9Y04lQ7vn2ZhyY4TiX+rb
- HIoB17726RtN9/Yh8dcLy7UpVoBEmslqKdgrNhWItKPjOGhILAFugLhrcKgQeQeREWndQz6U
- 4PScVD4aXLbWRSvILd/BSyFcomzZ2s9aClgvqb8lJWJDsaDZ2JK2xCe36m+oocfng+OaYE
-X-Talos-CUID: =?us-ascii?q?9a23=3A6hWqoWqBS3CIWFz+/JfLWAzmUc4LSTr6znzbH3O?=
- =?us-ascii?q?bUWd2bYLSTnmr8poxxg=3D=3D?=
-X-Talos-MUID: 9a23:YJ1WHgqSICk65GgQUVUezxhoBu1lu5aPMkoIursk5/SPDnVAFjjI2Q==
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.27,211,1787011200"; 
-   d="scan'208";a="547325471"
-Received: from rcdn-l-core-03.cisco.com ([173.37.255.140])
-  by rcdn-iport-6.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 13 Nov 2026 15:17:59 +0000
-Received: from satishkh-l-mj0bbv6x.cisco.com (unknown [10.25.129.52])
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=rK7OT7NJ
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by rcdn-l-core-03.cisco.com (Postfix) with ESMTPS id 34C401800061A;
-	Fri, 13 Nov 2026 15:17:58 +0000 (GMT)
-From: Satish Kharat <satishkh@cisco.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org,
-	sebaddel@cisco.com,
-	aradhana@cisco.com,
-	rfaucett@cisco.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH net v7 1/2] enic: retain admin-channel DMA until queues stop
-Date: Fri, 13 Nov 2026 07:17:22 -0800
-Message-ID: <20261113151722.3116868-1-satishkh@cisco.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179450328635.2199510.2101319582570477640@kernel.org>
-References: <20261109-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v7-0-30ca6f467673@cisco.com> <20261109-b4-enic-dma-vf-index-net-generic-first-v1-20261010-v7-1-30ca6f467673@cisco.com> <179450328635.2199510.2101319582570477640@kernel.org>
+	by mout-b-106.mailbox.org (Postfix) with ESMTPS id 4jR1Bv2VW0zNls7;
+	Fri, 13 Nov 2026 16:19:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1794583175;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=juFDnmO5EDRtsSCXIUiqwlHbuc6Wxn7oOfpk1FDCS/0=;
+	b=rK7OT7NJBGMGnT65DfgAikqlPWKvwgStjKE6a9/DJJ2z2QZf0EFYeOsoERKR26t7ZtNIf5
+	h5lxgs4bytdcFtqLDqN72nRKWLN0yUIMdVQQoNIU/qJiFUcd/d7/01kb4t1JlhXoiveCNl
+	0KcVayUcQYK4WO/RY8s1dF1EokmufpGPFcelcoB/tZheZ8hA4ASi7u4RssehtoOPbH0gh+
+	B61CwCKURSlaPR5Wedd41nsgD5AlFwinINU7viB6zA6yKXYuh7fwy5QKIcDXfH/RIyybmP
+	+fNK+cJzNMr0OCagPFxl4uTYNmAeJZNg3tqtro59m+UjMaF+vMaoGnrTH2fZWA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
+Message-ID: <9afd9031-9a66-4c13-b1a2-e1da62ef5e69@mandelbit.com>
+Date: Fri, 13 Nov 2026 16:19:32 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -117,48 +66,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Outbound-Client-TLS: ANONYMOUS;unknown [10.25.129.52];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 10.25.129.52, [10.25.129.52]
-X-Outbound-Node: rcdn-l-core-03.cisco.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 2/2] selftests: net: add a vhost-net test for the
+ tun NAPI queue bound
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, jasowangio@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
+ eperezma@redhat.com, shuah@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ maheshb@google.com, peterpenkov96@gmail.com, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20261111014208.1795777-1-antonio@mandelbit.com>
+ <20261111014208.1795777-3-antonio@mandelbit.com>
+ <willemdebruijn.kernel.1220f3b31f685@gmail.com>
+ <73aa2f53-e2ba-42b7-9712-06e223459144@mandelbit.com>
+ <willemdebruijn.kernel.14b320acee076@gmail.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@mandelbit.com>
+Organization: Mandelbit SRL
+In-Reply-To: <willemdebruijn.kernel.14b320acee076@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4jR1Bv2VW0zNls7
 
-Thanks for the review.
+On 13/11/2026 16:07, Willem de Bruijn wrote:
+>>> That's a lot of code for a fairly narrow test.
+>>>
+>>> Not that long ago I would have applauded all test coverage we can get.
+>>> But now that LLMs generate them instantly, not sure where to draw the
+>>> line.
+>>
+>> Well, the test has already done its job because it immediately helped me
+>> fix some small itches in patch 1.
+>>
+>> This said, I can definitely shrink this test a bit, maybe around 50% of
+>> the current code. But it'll still be quite some code for a small fix.
+>>
+>> Should I just drop this patch?
+>>
+>> Alternatively, I drop it from this series and I send the shrunk-down
+>> version with the wrapper script to net-next later on.
+>>
+>>
+>> Opinions?
+> 
+> If you could compress it to about 50%, let's merge.
+> 
+> Maybe we can use it over time for more coverage in this area.
 
-> enic_admin_channel_close() can return an error after releasing the graph.
-
-Agreed. The QP_DISABLE result and the direct queue-stop checks describe
-different outcomes. If both complete disable helpers succeed, the resources
-are released and the state becomes DOWN, even when firmware rejected
-QP_DISABLE. The partial-open caller can therefore print a misleading
-close-failure message. The queue-stop proof and resource handling remain
-correct.
-
-> The quarantine check can close a PF and prevent its reset.
-
-The ownership check deliberately remains outside enic_has_admin_chan().
-Disabling SR-IOV clears ENIC_SRIOV_ENABLED but can leave retained admin
-resources with unresolved DMA ownership. Clearing that flag must not
-bypass the reset guard.
-
-I agree that PF reset and reopen policy need to be consistent. PF
-admin-channel activation is dormant in this series because
-.sriov_configure is not registered.
-
-> A failed internal reopen can leave the interface marked up and allow
-> repeated NAPI teardown.
-
-Agreed. This is the pre-existing datapath lifecycle issue acknowledged
-in my earlier replies. Adding dev_close() directly after failed reopen
-would invoke another stop and can encounter the same problem.
-
-I will handle the pre-existing datapath lifecycle issue in a separate
-fix. The PF quarantine and recovery policy will be addressed before PF
-SR-IOV activation, and I will follow up separately on the close-status
-diagnostic.
-
-If there are no further concerns with the two fixes in V7, would you
-please consider applying the series to net?
+Ok, I'll see what I can do and I'll send v6 including a compressed test.
 
 Regards,
-Satish
+
+
+-- 
+Antonio Quartulli
+
+CEO and Co-Founder
+Mandelbit Srl
+https://www.mandelbit.com
+
