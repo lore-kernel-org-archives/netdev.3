@@ -1,69 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.35
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794549152;
-	b=YYdYEZVyHGDLuOaGd5LTCkbwHw8LbrKU9GyVc/4pKPuynmuMKguX08uHJvG0X4O4Sva5
-	 nSVkFz+AzXXwPibeL0xy7bQ/bH37nK7QLAhYSwFbWmWfh81IyP0q6lwX5m2M/0MLmbRv5
-	 QweD9g2YoJM0AZotiTenrDNIw1Q6s1H1QZVX2bRnv2HcfyPSjxFXiQkS7zqjdKtDNkljt
-	 QlvfLU0K/6sHPUYt8451rOmjhEvgQyidvIv3uPN6Oh7NFt1/EXLyVoWSNzO5u2xr6rK1d
-	 FuBoQnSvo03GySxhNrdcrbXbu4jg7gtHbx/0J1L+fS+BXylvAMt2KxXcvHpDyu1jZlg==
+	t=1794549246;
+	b=HUk3Ro3GZmI7MHQVYyvs8T+5k++evQzddUwVWEUxMLpqVQp7m/Wtx6XobI1VhMkm5GI2
+	 2r6SbrjTFgSj5xiKGs6kk1mh7EQRhLDnMpKjyHLVu/J72dj+gsjz8tyom4jSDb1CI19f3
+	 Z0OUXB1Qm4E+zDxRYUFDVPhn+++T/E2ymvgoAM2SQnuiR+VO2mmprBi381k8mGNviRz/+
+	 5EsNBSWO2wlEH+o6tD2phU7sJwGYEMRPvaccWEeHq5adi8055peB57ueEgeWaZrmtz+I5
+	 OYwM2/PI0mK8MiI2ScO6x75lrjz7GISg4Xd0+KkWKI9UmWIIHN1vHPT2yLKx2LaJkfA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794549152;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794549246;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
 	 X-Zmail-TransId:X-Mailer:Message-ID:In-Reply-To:References:Date:
 	 Mime-Version:From:To:Cc:Subject:Content-Type:X-MAIL:X-TLS:
 	 X-ENVELOPE-SENDER:X-SOURCE-IP:X-CLEAN:X-Fangmail-Anti-Spam-Filtered:
 	 X-Fangmail-MID-QID;
-	bh=kd7vUyZhtwzef66vbWwbN38QDSUoYzPck+DuOQ77Uhk=;
-	b=0AgjpQA0LjiPt+7MR70idCn2FcR83FFufGOX6ug/wvcOao7+N2t1zP9wTh9rU94QGX0U
-	 DtnjhbeCl3EhH63tSYpMTMsh1ptWokCtvw1hmfEqr6wLy+AubmEsZdGu94v3115mIlD7O
-	 goM3iP+GuhulWepJB2bBszhMNunhtQuopFXFoUejc0qL/Ux0eF2Vy8Eu8BSeLx/OnEoS0
-	 FTI7cB/oDv8Fy1HnrxH4vyKSikrDAFBvVZ4yFKFMS9r7SWI9yvBm1x8lnzXMdJGsWf3Cc
-	 4SZG/dudGa4u4rhd4fCPo7WruIk2b5pVBTtKXwjwpxUhhWqFsY20rgbA1cDEXzU1zyQ==
+	bh=wBesOGo5d03UP6eRZImlwFIG1WbNEzOLQe2VxLFQzYE=;
+	b=0TVyvyvwAoTofxo3wAZj5Tld7hr1gmmR3ZlC9N/b0arhxA4jqvh1ZFMWT1tmoUs4diQL
+	 vTk3g8Wbrublb5nOOFBXf+6J3eO2O5+D89vo01cZTziqDZeMjRUo56Z4X/49PZkHON8Rc
+	 6h1u24wpYPTyV2Fi5zVIlXym821F7Td7NQzEIIhaHGFkknkhAUuWF+MBDAG3jo1SUnmYd
+	 hYs6HMNbfmzrHTo2LKevtzCMR5HcmoDtWe7YKQrVJi900qsDrx9lgjAWwSyxeC/4W4w4v
+	 MaKbN6HLNPaiTrn9wS5RJaMJZHJeGU3IARSbltUDTPKCyRTrR4muYIEpE7PyCvs4XbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=zte.com.cn;
 	spf=pass smtp.mailfrom=zte.com.cn;
-	dkim=pass header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=eSaf1U0i;
+	dkim=pass header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=qKLYgvsR;
 	arc=none smtp.remote-ip=160.30.148.35
 Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647FD606A321;
-	Fri, 13 Nov 2026 05:52:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 647FD606A321
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC74606A31C;
+	Fri, 13 Nov 2026 05:54:05 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0EC74606A31C
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=eSaf1U0i
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	dkim=pass (2048-bit key, unprotected) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=qKLYgvsR
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jQmcY4kCpz8XrrX;
-	Fri, 13 Nov 2026 13:52:29 +0800 (CST)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jQmfN2Nrmz8Xrrd;
+	Fri, 13 Nov 2026 13:54:04 +0800 (CST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
-	s=z202610; t=1794549149;
-	bh=CCsLOlHWlsOCS2z716E29F7ST7ksn0xdSjmvEq6UdSs=;
+	s=z202610; t=1794549244;
+	bh=bSOwZW9LK2zlZfsqJo0kiTCKgp8fn8FK/Hp/6n43Noo=;
 	h=In-Reply-To:References:Date:From:To:Cc:Subject;
-	b=eSaf1U0i9Jxtzrh8T+AM8sQ/y/KVbLfVFREIbTsXXIm45LwGLxTxKoPnNZR+aaOYA
-	 0f6K0+f3v0AAQXMXB2cVUBzlMsy2Mq9MVn++lHfOuswxIbKMbOnfTrmElaBqYfQMyI
-	 Y4P+tAxwdTba+Vkyzayz+ebz35u0sbpkVrCldWOhzvzFFgxMNF2sVyP3nNJYDw7/hM
-	 M055OLySY3iofh8jOpInNgtk2mK50rtWcN3pYvUBI1pSS2cJLCGJV9w7ObppJVqdht
-	 ymrdZhRfOvxJ738nQwBi9meGhJ6MDFA1g1IKyyHCDc4Or1OjnA5UpUr01VQ3NvxlJW
-	 LdasjJvXKqBVg==
-Received: from njy2app01.zte.com.cn ([10.40.12.136])
-	by mse-fl1.zte.com.cn with SMTP id 6AD5qIlX036898;
-	Fri, 13 Nov 2026 13:52:19 +0800 (+08)
+	b=qKLYgvsR4txB9yF5+HM9FJwzvj6pAQWpy6eF/oYe2Lt0iKRNP1ScUspPe5nVQ7+F3
+	 c5RPUhFpm2F2yI/vkXJVFh7VuVmPHrQGHxsz/Jqskb2IL0owyNGCL8KBzngPTQK6BY
+	 fkCfsv/2Ush7XKGOGkbkimC9+xstoTxEoHWzn7u9s0vw1fqxwoWC2ZRzlkC1fWq3FV
+	 IG5PxrbafULYpB0FWJC3FrclPThtoX7Q6a5BgH6WqnllmbH1yXtJuvqk1pXr1FDop1
+	 KGEkAQcrqraggx7lY7CWqxcIO8T2QKbvjox68oPOkhtGEUyg9RaJajFdnwKkLDxy13
+	 B6pPJimaZoTZQ==
+Received: from njy2app04.zte.com.cn ([10.40.12.64])
+	by mse-fl2.zte.com.cn with SMTP id 6AD5rrcg001650;
+	Fri, 13 Nov 2026 13:53:53 +0800 (+08)
 	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njy2app03[null])
+Received: from mapi (njb2app05[null])
 	by mapi (Zmail) with MAPI id mid204;
-	Fri, 13 Nov 2026 13:52:20 +0800 (CST)
-X-Zmail-TransId: 2afb6af6a59456d-225a5
+	Fri, 13 Nov 2026 13:53:55 +0800 (CST)
+X-Zmail-TransId: 2afd6af6a5f3b7c-0cbca
 X-Mailer: Zmail v1.0
-Message-ID: <20261113135220713uvE1CCvGgC9U59hVZGJsZ@zte.com.cn>
+Message-ID: <202611131353550805pQNJ97v2tR6FK-IhhDQ0@zte.com.cn>
 In-Reply-To: <20261113134743145KUhKvpwU6uqR0QzymEP96@zte.com.cn>
 References: 20261113134743145KUhKvpwU6uqR0QzymEP96@zte.com.cn
-Date: Fri, 13 Nov 2026 13:52:20 +0800 (CST)
+Date: Fri, 13 Nov 2026 13:53:55 +0800 (CST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -79,703 +79,329 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
         <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
         <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY2IDIvM10gZGluZ2hhaTogYWRkIE1TSS1YIGludGVycnVwdCBwb29scw==?=
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY2IDMvM10gZGluZ2hhaTogYWRkIGFzeW5jIGV2ZW50IHF1ZXVlIGZvciBmaXJtd2FyZQogbm90aWZpY2F0aW9ucw==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 6AD5qIlX036898
+X-MAIL:mse-fl2.zte.com.cn 6AD5rrcg001650
 X-TLS: YES
 X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Fri, 13 Nov 2026 13:52:29 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Fri, 13 Nov 2026 13:54:04 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AF6A59D.000/4jQmcY4kCpz8XrrX
+X-Fangmail-MID-QID: 6AF6A5FC.000/4jQmfN2Nrmz8Xrrd
 
 From: Junyang Han <han.junyang@zte.com.cn>
 
-Allocate the fixed MSI-X vector layout of the device and manage the
-vectors in per-purpose pools: the async event queues first, a range
-reserved for RDMA in between and the vq queue pairs last. This series
-wires up the async pool; the vq pool comes with the netdev series.
+Add the event queue table and the first async event queue, fed by the
+RISC-V management core of the firmware. The queue owns one MSI-X
+vector taken from the async pool and, on interrupt, reads the event_id
+from the PF receive sub-channel of the BAR message area, maps it to
+an event type and fans it out through the per-event-type notifier
+chains of the table. The PF probe creates and tears down the queue
+through the existing IRQ pool interfaces.
 
-IRQs are reference counted so that several event queues can share one
-vector. The pool hands out the least loaded matching IRQ once it passes
-the pool minimum threshold, and binds newly created IRQs to the least
-loaded CPU of the requested affinity mask. Interrupt delivery fans out
-through an atomic notifier chain attached to each IRQ, which the async
-event queue setup posted later in this series hooks into.
+The BAR message channel handshake that tells the firmware which
+vectors to signal comes with the BAR message subsystem in a later
+series; the PF side wired here is live as soon as that channel is
+enabled. Subscribers for the RISCV_READY event register on the
+notifier chains in later series as well.
 
 Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
 ---
- drivers/net/ethernet/zte/dinghai/Makefile   |   2 +-
- drivers/net/ethernet/zte/dinghai/en_pf.c    |  87 +++++
- drivers/net/ethernet/zte/dinghai/en_pf.h    |   8 +
- drivers/net/ethernet/zte/dinghai/zxdh_irq.c | 406 ++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/zxdh_irq.h |  73 ++++
- 5 files changed, 575 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.c
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.h
+ drivers/net/ethernet/zte/dinghai/Makefile  |   2 +-
+ drivers/net/ethernet/zte/dinghai/en_pf.c   |  16 ++-
+ drivers/net/ethernet/zte/dinghai/en_pf.h   |   2 +
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.c | 137 +++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.h |  60 +++++++++
+ 5 files changed, 211 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.h
 
 diff --git a/drivers/net/ethernet/zte/dinghai/Makefile b/drivers/net/ethernet/zte/dinghai/Makefile
-index e2f4da33df59..f4a8f9480291 100644
+index f4a8f9480291..2dc6d68cc0e1 100644
 --- a/drivers/net/ethernet/zte/dinghai/Makefile
 +++ b/drivers/net/ethernet/zte/dinghai/Makefile
 @@ -4,4 +4,4 @@
  #
 
  obj-$(CONFIG_DINGHAI_PF) += dinghai10e.o
--dinghai10e-y := en_pf.o
-+dinghai10e-y := en_pf.o zxdh_irq.o
+-dinghai10e-y := en_pf.o zxdh_irq.o
++dinghai10e-y := en_pf.o zxdh_irq.o zxdh_eq.o
 diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
-index ddff9b0438fb..5927f1f39b02 100644
+index 5927f1f39b02..f7400d66bc69 100644
 --- a/drivers/net/ethernet/zte/dinghai/en_pf.c
 +++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
-@@ -8,6 +8,8 @@
- #include <linux/pci.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-+#include <linux/mm.h>
-+#include <linux/slab.h>
- #include <net/devlink.h>
- #include <linux/dma-mapping.h>
- #include "en_pf.h"
-@@ -27,6 +29,14 @@ static const struct pci_device_id zxdh_pf_pci_table[] = {
-
- MODULE_DEVICE_TABLE(pci, zxdh_pf_pci_table);
-
-+struct zxdh_pf_irq_table {
-+	struct zxdh_irq_pool *async_pool;
-+};
-+
-+/* IRQ compaction thresholds of the async pool, in number of queues. */
-+#define ZXDH_PF_ASYNC_IRQ_MIN_COMP	0
-+#define ZXDH_PF_ASYNC_IRQ_MAX_COMP	7
-+
- void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size)
- {
- 	void *priv = kzalloc(size, GFP_KERNEL);
-@@ -485,6 +495,74 @@ static int zxdh_pf_wait_riscv_ready(struct zxdh_core_dev *zxdh_dev)
- 	return 0;
+@@ -552,13 +552,10 @@ void zxdh_pf_irq_table_destroy(struct zxdh_core_dev *zxdh_dev)
+ 	pci_free_irq_vectors(zxdh_dev->pdev);
  }
 
-+static int zxdh_pf_irq_pools_init(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_irq_table *pf_irq_table = zxdh_dev->irq_table.priv;
-+	struct zxdh_irq_pool *pool;
-+
-+	pool = zxdh_irq_pool_alloc(zxdh_dev, 0, ZXDH_ASYNC_CHANNELS_NUM,
-+				   "zxdh_pf_async", ZXDH_PF_ASYNC_IRQ_MIN_COMP,
-+				   ZXDH_PF_ASYNC_IRQ_MAX_COMP);
-+	if (IS_ERR(pool))
-+		return PTR_ERR(pool);
-+
-+	pf_irq_table->async_pool = pool;
-+
-+	return 0;
-+}
-+
-+static void zxdh_pf_irq_pools_destroy(struct zxdh_pf_irq_table *pf_irq_table)
-+{
-+	if (pf_irq_table->async_pool)
-+		zxdh_irq_pool_free(pf_irq_table->async_pool);
-+}
-+
-+int zxdh_pf_irq_table_init(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
-+	struct zxdh_pf_irq_table *priv;
-+	int total_vec;
-+
-+	priv = kvzalloc_obj(*priv, GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	table->priv = priv;
-+
-+	total_vec = ZXDH_VQS_CHANNELS_NUM + ZXDH_ASYNC_CHANNELS_NUM +
-+		    ZXDH_RDMA_CHANNELS_NUM;
-+	total_vec = pci_alloc_irq_vectors(zxdh_dev->pdev, total_vec, total_vec,
-+					  PCI_IRQ_MSIX);
-+	if (total_vec < 0) {
-+		dev_err(zxdh_dev->device, "pci_alloc_irq_vectors failed: %d\n",
-+			total_vec);
-+		return total_vec;
-+	}
-+
-+	return zxdh_pf_irq_pools_init(zxdh_dev);
-+}
-+
-+void zxdh_pf_irq_table_destroy(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
-+
-+	if (table->priv)
-+		zxdh_pf_irq_pools_destroy(table->priv);
-+	kvfree(table->priv);
-+	table->priv = NULL;
-+	pci_free_irq_vectors(zxdh_dev->pdev);
-+}
-+
-+struct zxdh_irq *zxdh_pf_async_irq_request(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
-+	struct zxdh_pf_irq_table *pf_irq_table = table->priv;
-+
-+	if (!pf_irq_table->async_pool)
-+		return NULL;
-+
-+	return zxdh_get_irq_of_pool(pf_irq_table->async_pool);
-+}
-+
- static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++/* Fetch a vector from the async pool for one async event queue. */
+ struct zxdh_irq *zxdh_pf_async_irq_request(struct zxdh_core_dev *zxdh_dev)
  {
- 	struct zxdh_core_dev *zxdh_dev;
-@@ -533,10 +611,18 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto err_modern_cfg;
+-	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
+-	struct zxdh_pf_irq_table *pf_irq_table = table->priv;
+-
+-	if (!pf_irq_table->async_pool)
+-		return NULL;
++	struct zxdh_pf_irq_table *pf_irq_table = zxdh_dev->irq_table.priv;
+
+ 	return zxdh_get_irq_of_pool(pf_irq_table->async_pool);
+ }
+@@ -617,10 +614,18 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		goto err_irq_table;
  	}
 
-+	ret = zxdh_pf_irq_table_init(zxdh_dev);
++	ret = zxdh_pf_eq_table_init(zxdh_dev);
 +	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_irq_table_init failed: %d\n", ret);
-+		goto err_irq_table;
++		dev_err(&pdev->dev, "zxdh_pf_eq_table_init failed: %d\n", ret);
++		goto err_eq_table;
 +	}
 +
  	devlink_register(devlink);
 
  	return 0;
 
-+err_irq_table:
-+	zxdh_pf_irq_table_destroy(zxdh_dev);
++err_eq_table:
++	zxdh_pf_eq_table_destroy(zxdh_dev);
+ err_irq_table:
+ 	zxdh_pf_irq_table_destroy(zxdh_dev);
  err_modern_cfg:
- 	zxdh_pf_modern_cfg_uninit(zxdh_dev);
- err_cfg_init:
-@@ -554,6 +640,7 @@ static void zxdh_pf_remove(struct pci_dev *pdev)
+@@ -640,6 +645,7 @@ static void zxdh_pf_remove(struct pci_dev *pdev)
  	struct devlink *devlink = priv_to_devlink(zxdh_dev);
 
  	devlink_unregister(devlink);
-+	zxdh_pf_irq_table_destroy(zxdh_dev);
++	zxdh_pf_eq_table_destroy(zxdh_dev);
+ 	zxdh_pf_irq_table_destroy(zxdh_dev);
  	zxdh_pf_modern_cfg_uninit(zxdh_dev);
  	zxdh_pf_pci_close(zxdh_dev);
- 	zxdh_core_free_priv(zxdh_dev);
 diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
-index 730cb084a8ae..3de96488a810 100644
+index 3de96488a810..b48c786ef48a 100644
 --- a/drivers/net/ethernet/zte/dinghai/en_pf.h
 +++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
-@@ -9,6 +9,8 @@
+@@ -9,6 +9,7 @@
 
  #include <linux/types.h>
 
-+#include "zxdh_irq.h"
-+
++#include "zxdh_eq.h"
+ #include "zxdh_irq.h"
+
  #define ZXDH_PF_VENDOR_ID	0x1cf2
- #define ZXDH_PF_DEVICE_ID	0x8040
- #define ZXDH_VF_DEVICE_ID	0x8041
-@@ -78,6 +80,7 @@ struct zxdh_core_dev {
- 	struct device *device;
+@@ -81,6 +82,7 @@ struct zxdh_core_dev {
  	struct pci_dev *pdev;
  	struct devlink *devlink;
-+	struct zxdh_irq_table irq_table;
+ 	struct zxdh_irq_table irq_table;
++	struct zxdh_eq_table eq_table;
  	void *priv;
  };
 
-@@ -118,4 +121,9 @@ int zxdh_pf_device_cfg_init(struct zxdh_core_dev *zxdh_dev);
- void zxdh_pf_modern_cfg_uninit(struct zxdh_core_dev *zxdh_dev);
- int zxdh_pf_modern_cfg_init(struct zxdh_core_dev *zxdh_dev);
-
-+/* PF IRQ table (en_pf.c) */
-+int zxdh_pf_irq_table_init(struct zxdh_core_dev *zxdh_dev);
-+void zxdh_pf_irq_table_destroy(struct zxdh_core_dev *zxdh_dev);
-+struct zxdh_irq *zxdh_pf_async_irq_request(struct zxdh_core_dev *zxdh_dev);
-+
- #endif /* __ZXDH_EN_PF_H__ */
-diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_irq.c b/drivers/net/ethernet/zte/dinghai/zxdh_irq.c
+diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.c b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
 new file mode 100644
-index 000000000000..bc5348dfa5ba
+index 000000000000..3e70f4f3063f
 --- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/zxdh_irq.c
-@@ -0,0 +1,406 @@
++++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
+@@ -0,0 +1,137 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * ZTE DingHai Ethernet driver - IRQ pool management
++ * ZTE DingHai Ethernet driver - event queue plumbing
 + * Copyright (c) 2022-2026, ZTE Corporation.
 + *
-+ * Device vectors are managed in per-purpose pools. An IRQ carries a
-+ * refcount so that several event queues can share one vector; on
-+ * raise, the interrupt is fanned out through an atomic notifier chain
-+ * attached to the IRQ.
++ * Async event queues are the delivery path for firmware notifications:
++ * a queue owns one MSI-X vector of the async pool and fans interrupts
++ * out to the per-event-type notifier chains of the event queue table.
++ * The BAR message channel handshake that tells the firmware which
++ * vectors to signal comes with the BAR message subsystem in a later
++ * series; the PF side wired here is live as soon as that channel is
++ * enabled.
 + */
 +
-+#include <linux/cpumask.h>
-+#include <linux/device.h>
-+#include <linux/interrupt.h>
++#include <linux/io.h>
 +#include <linux/kernel.h>
-+#include <linux/pci.h>
++#include <linux/mutex.h>
++#include <linux/notifier.h>
 +#include <linux/slab.h>
-+#include <linux/string.h>
-+#include <linux/xarray.h>
 +
 +#include "en_pf.h"
++#include "zxdh_eq.h"
 +#include "zxdh_irq.h"
 +
-+static void zxdh_cpu_put(struct zxdh_irq_pool *pool, int cpu)
++/* PF side of the event queue table: one async EQ fed by the RISC-V
++ * management core.
++ */
++struct zxdh_pf_eq_table {
++	struct zxdh_eq_async riscv_eq;
++};
++
++/* Fetch the event_id the RISC-V core posted in the PF receive
++ * sub-channel of the BAR message area. The field lives at byte offset
++ * 2 of the 12-byte message header, so a single 32-bit read of the
++ * sub-channel start covers it.
++ */
++static u16 zxdh_eq_event_id_get(struct zxdh_core_dev *zxdh_dev)
 +{
-+	pool->irqs_per_cpu[cpu]--;
++	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
++	void __iomem *subchan;
++
++	subchan = pf_dev->pci_ioremap_addr[0] + ZXDH_BAR_MSG_SUBCHAN_RECV;
++
++	return ioread32(subchan) >> 16;
 +}
 +
-+/* Release callback of the IRQ kref, called with pool->lock held. */
-+static void zxdh_irq_release(struct kref *kref)
++static enum zxdh_eq_event_type zxdh_eq_event_type_get(u16 event_id)
 +{
-+	struct zxdh_irq *irq = container_of(kref, struct zxdh_irq, refcount);
-+	struct zxdh_irq_pool *pool = irq->pool;
++	if (event_id == ZXDH_MSG_MODULE_RISC_READY)
++		return ZXDH_EQ_EVENT_TYPE_RISCV_READY;
 +
-+	lockdep_assert_held(&pool->lock);
-+	xa_erase(&pool->irqs, irq->index);
-+	zxdh_cpu_put(pool, cpumask_first(irq->mask));
-+	/* free_irq() requires the affinity hint to be cleared before it is
-+	 * called; the asymmetry with the set path in zxdh_irq_alloc() is
-+	 * intentional.
++	/* Only the RISC-V ready notification is dispatched in this
++	 * series; the remaining firmware events arrive with the BAR
++	 * message subsystem.
 +	 */
-+	irq_update_affinity_hint(irq->irqn, NULL);
-+	free_cpumask_var(irq->mask);
-+	free_irq(irq->irqn, irq);
-+	kfree(irq);
++	return ZXDH_EQ_EVENT_TYPE_MAX;
 +}
 +
-+/* Drop one reference; returns 1 if the IRQ was released. */
-+static int zxdh_irq_put(struct zxdh_irq *irq)
++static int zxdh_eq_async_riscv_int(struct notifier_block *nb,
++				   unsigned long action, void *data)
 +{
-+	struct zxdh_irq_pool *pool = irq->pool;
-+	int released;
++	struct zxdh_eq_async *eq = container_of(nb, struct zxdh_eq_async, irq_nb);
++	struct zxdh_core_dev *zxdh_dev = eq->priv;
++	enum zxdh_eq_event_type event_type;
 +
-+	mutex_lock(&pool->lock);
-+	released = kref_put(&irq->refcount, zxdh_irq_release);
-+	mutex_unlock(&pool->lock);
++	event_type = zxdh_eq_event_type_get(zxdh_eq_event_id_get(zxdh_dev));
++	if (event_type == ZXDH_EQ_EVENT_TYPE_MAX)
++		return NOTIFY_DONE;
 +
-+	return released;
++	atomic_notifier_call_chain(&zxdh_dev->eq_table.nh[event_type],
++				   event_type, NULL);
++
++	return NOTIFY_OK;
 +}
 +
-+static int zxdh_irq_get(struct zxdh_irq *irq)
++int zxdh_pf_eq_table_init(struct zxdh_core_dev *zxdh_dev)
 +{
-+	return kref_get_unless_zero(&irq->refcount);
-+}
-+
-+static irqreturn_t zxdh_irq_int_handler(int irq, void *data)
-+{
-+	struct zxdh_irq *zxdh_irq = data;
-+
-+	atomic_notifier_call_chain(&zxdh_irq->nh, 0, NULL);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static struct zxdh_irq *zxdh_irq_alloc(struct zxdh_irq_pool *pool, int vecidx,
-+				       const struct cpumask *affinity)
-+{
-+	struct zxdh_core_dev *zxdh_dev = pool->dev;
-+	struct zxdh_irq *irq;
++	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
++	struct zxdh_pf_eq_table *priv;
++	struct zxdh_eq_async *eq;
 +	int err;
-+	int cpu;
-+
-+	irq = kzalloc_obj(*irq, GFP_KERNEL);
-+	if (!irq)
-+		return ERR_PTR(-ENOMEM);
-+
-+	irq->pool = pool;
-+	irq->irqn = pci_irq_vector(zxdh_dev->pdev, vecidx);
-+	if (irq->irqn < 0) {
-+		err = irq->irqn;
-+		goto err_irqn;
-+	}
-+
-+	ATOMIC_INIT_NOTIFIER_HEAD(&irq->nh);
-+	snprintf(irq->name, ZXDH_MAX_IRQ_NAME, "%s_%d@pci:%s", pool->name,
-+		 vecidx, pci_name(zxdh_dev->pdev));
-+
-+	err = request_irq(irq->irqn, zxdh_irq_int_handler, 0, irq->name, irq);
-+	if (err) {
-+		dev_err(zxdh_dev->device, "request_irq failed: %d\n", err);
-+		goto err_irqn;
-+	}
-+
-+	if (!zalloc_cpumask_var(&irq->mask, GFP_KERNEL)) {
-+		dev_err(zxdh_dev->device, "zalloc_cpumask_var failed\n");
-+		err = -ENOMEM;
-+		goto err_cpumask;
-+	}
-+
-+	if (affinity) {
-+		cpumask_copy(irq->mask, affinity);
-+	} else {
-+		/* No preference requested; spread over all online CPUs. */
-+		for_each_online_cpu(cpu)
-+			cpumask_set_cpu(cpu, irq->mask);
-+	}
-+	irq_set_affinity_and_hint(irq->irqn, irq->mask);
-+
-+	kref_init(&irq->refcount);
-+	irq->index = vecidx;
-+	err = xa_err(xa_store(&pool->irqs, irq->index, irq, GFP_KERNEL));
-+	if (err) {
-+		dev_err(zxdh_dev->device, "xa_store failed for irq %u: %d\n",
-+			irq->index, err);
-+		goto err_xa;
-+	}
-+
-+	return irq;
-+
-+err_xa:
-+	irq_update_affinity_hint(irq->irqn, NULL);
-+	free_cpumask_var(irq->mask);
-+err_cpumask:
-+	free_irq(irq->irqn, irq);
-+err_irqn:
-+	kfree(irq);
-+	return ERR_PTR(err);
-+}
-+
-+int zxdh_irq_attach_nb(struct zxdh_irq *irq, struct notifier_block *nb)
-+{
-+	int err;
-+
-+	if (!zxdh_irq_get(irq))
-+		return -ENOENT;
-+
-+	err = atomic_notifier_chain_register(&irq->nh, nb);
-+	if (err)
-+		zxdh_irq_put(irq);
-+
-+	return err;
-+}
-+
-+int zxdh_irq_detach_nb(struct zxdh_irq *irq, struct notifier_block *nb)
-+{
-+	int err;
-+
-+	err = atomic_notifier_chain_unregister(&irq->nh, nb);
-+	zxdh_irq_put(irq);
-+
-+	return err;
-+}
-+
-+/* Release one or more IRQs back to their pool. */
-+void zxdh_irqs_release_vectors(struct zxdh_irq **irqs, int nirqs)
-+{
 +	int i;
 +
-+	for (i = 0; i < nirqs; i++) {
-+		synchronize_irq(irqs[i]->irqn);
-+		zxdh_irq_put(irqs[i]);
++	priv = kvzalloc_obj(*priv, GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++	table->priv = priv;
++
++	mutex_init(&table->lock);
++	for (i = 0; i < ZXDH_EQ_EVENT_TYPE_MAX; i++)
++		ATOMIC_INIT_NOTIFIER_HEAD(&table->nh[i]);
++
++	eq = &priv->riscv_eq;
++	eq->priv = zxdh_dev;
++	eq->irq = zxdh_pf_async_irq_request(zxdh_dev);
++	if (IS_ERR(eq->irq)) {
++		err = PTR_ERR(eq->irq);
++		goto err_irq;
 +	}
++
++	eq->irq_nb.notifier_call = zxdh_eq_async_riscv_int;
++	err = zxdh_irq_attach_nb(eq->irq, &eq->irq_nb);
++	if (err)
++		goto err_attach;
++
++	return 0;
++
++err_attach:
++	zxdh_irqs_release_vectors(&eq->irq, 1);
++err_irq:
++	eq->irq = NULL;
++	return err;
 +}
 +
-+static void zxdh_cpu_get(struct zxdh_irq_pool *pool, int cpu)
++void zxdh_pf_eq_table_destroy(struct zxdh_core_dev *zxdh_dev)
 +{
-+	pool->irqs_per_cpu[cpu]++;
-+}
++	struct zxdh_pf_eq_table *pf_eq_table = zxdh_dev->eq_table.priv;
++	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
++	struct zxdh_eq_async *eq;
 +
-+/* Find the least loaded CPU, i.e. the CPU with the fewest IRQs bound
-+ * to it, within the requested mask.
-+ */
-+static int zxdh_cpu_get_least_loaded(struct zxdh_irq_pool *pool,
-+				     const struct cpumask *req_mask)
-+{
-+	int best_cpu = -1;
-+	int cpu;
++	if (!pf_eq_table)
++		return;
 +
-+	for_each_cpu_and(cpu, req_mask, cpu_online_mask) {
-+		/* This CPU has no IRQs yet, no need to look further. */
-+		if (!pool->irqs_per_cpu[cpu]) {
-+			best_cpu = cpu;
-+			break;
-+		}
-+		if (best_cpu < 0)
-+			best_cpu = cpu;
-+		if (pool->irqs_per_cpu[cpu] < pool->irqs_per_cpu[best_cpu])
-+			best_cpu = cpu;
++	eq = &pf_eq_table->riscv_eq;
++
++	mutex_lock(&table->lock);
++	if (eq->irq) {
++		zxdh_irq_detach_nb(eq->irq, &eq->irq_nb);
++		zxdh_irqs_release_vectors(&eq->irq, 1);
++		eq->irq = NULL;
 +	}
++	mutex_unlock(&table->lock);
 +
-+	if (best_cpu < 0) {
-+		dev_err(pool->dev->device,
-+			"no online CPU in affinity mask (%*pbl)\n",
-+			cpumask_pr_args(req_mask));
-+		best_cpu = cpumask_first(cpu_online_mask);
-+	}
-+	pool->irqs_per_cpu[best_cpu]++;
-+
-+	return best_cpu;
++	mutex_destroy(&table->lock);
++	kvfree(table->priv);
++	table->priv = NULL;
 +}
-+
-+/* Create a new IRQ from the pool and bind it to the requested mask. */
-+static struct zxdh_irq *zxdh_irq_pool_request_irq(struct zxdh_irq_pool *pool,
-+						  const struct cpumask *req_mask)
-+{
-+	const struct cpumask *affinity = req_mask;
-+	cpumask_var_t auto_mask;
-+	struct zxdh_irq *irq;
-+	u32 irq_index;
-+	int err;
-+
-+	if (!zalloc_cpumask_var(&auto_mask, GFP_KERNEL))
-+		return ERR_PTR(-ENOMEM);
-+
-+	err = xa_alloc(&pool->irqs, &irq_index, NULL, pool->xa_num_irqs,
-+		       GFP_KERNEL);
-+	if (err) {
-+		if (err == -EBUSY)
-+			err = -EUSERS;
-+		goto err_xa;
-+	}
-+
-+	if (cpumask_weight(req_mask) > 1) {
-+		/* Bind to the least loaded CPU of the request. */
-+		cpumask_set_cpu(zxdh_cpu_get_least_loaded(pool, req_mask),
-+				auto_mask);
-+		affinity = auto_mask;
-+	} else {
-+		zxdh_cpu_get(pool, cpumask_first(req_mask));
-+	}
-+
-+	irq = zxdh_irq_alloc(pool, irq_index, affinity);
-+	if (IS_ERR(irq))
-+		goto err_alloc;
-+
-+	free_cpumask_var(auto_mask);
-+
-+	return irq;
-+
-+err_alloc:
-+	/* Undo the per-CPU accounting done above. */
-+	zxdh_cpu_put(pool, cpumask_first(affinity));
-+	xa_erase(&pool->irqs, irq_index);
-+err_xa:
-+	free_cpumask_var(auto_mask);
-+	return err ? ERR_PTR(err) : irq;
-+}
-+
-+/* Look for the IRQ with the smallest refcount whose affinity mask is a
-+ * subset of the requested mask.
-+ */
-+static struct zxdh_irq *zxdh_irq_pool_find_least_loaded(struct zxdh_irq_pool *pool,
-+							const struct cpumask *req_mask)
-+{
-+	struct zxdh_irq *irq = NULL;
-+	struct zxdh_irq *iter;
-+	unsigned long index;
-+	int iter_refcount;
-+
-+	lockdep_assert_held(&pool->lock);
-+	xa_for_each_range(&pool->irqs, index, iter,
-+			  pool->xa_num_irqs.min, pool->xa_num_irqs.max) {
-+		iter_refcount = refcount_read(&iter->refcount.refcount);
-+
-+		/* Skip IRQs whose mask is not a subset of the request. */
-+		if (!cpumask_subset(iter->mask, req_mask))
-+			continue;
-+		/* IRQ below the minimum threshold found, take it. */
-+		if (iter_refcount < pool->min_threshold)
-+			return iter;
-+		if (!irq ||
-+		    iter_refcount < refcount_read(&irq->refcount.refcount))
-+			irq = iter;
-+	}
-+
-+	return irq;
-+}
-+
-+/* Request an IRQ for the given mask: share the least loaded existing
-+ * matching IRQ once it passes the pool minimum threshold, otherwise
-+ * create a new one.
-+ */
-+static struct zxdh_irq *zxdh_irq_affinity_request(struct zxdh_irq_pool *pool,
-+						  const struct cpumask *req_mask)
-+{
-+	struct zxdh_irq *least_loaded_irq;
-+	struct zxdh_irq *new_irq;
-+
-+	mutex_lock(&pool->lock);
-+
-+	least_loaded_irq = zxdh_irq_pool_find_least_loaded(pool, req_mask);
-+	if (least_loaded_irq &&
-+	    refcount_read(&least_loaded_irq->refcount.refcount) < pool->min_threshold)
-+		goto out;
-+
-+	/* No IRQ below the minimum threshold, try to create a new one. */
-+	new_irq = zxdh_irq_pool_request_irq(pool, req_mask);
-+	if (IS_ERR(new_irq)) {
-+		if (!least_loaded_irq) {
-+			mutex_unlock(&pool->lock);
-+			return new_irq;
-+		}
-+		/* Could not create a new IRQ for the requested affinity,
-+		 * share the existing one.
-+		 */
-+		dev_warn(pool->dev->device,
-+			 "irq pool %s exhausted, sharing irqs\n",
-+			 pool->name);
-+		goto out;
-+	}
-+
-+	least_loaded_irq = new_irq;
-+	goto unlock;
-+
-+out:
-+	/* Holding pool->lock keeps the IRQ alive, so this cannot fail. */
-+	zxdh_irq_get(least_loaded_irq);
-+	if (refcount_read(&least_loaded_irq->refcount.refcount) > pool->max_threshold)
-+		dev_warn(pool->dev->device,
-+			 "irq %u overloaded, pool %s, %u refs on this irq\n",
-+			 pci_irq_vector(pool->dev->pdev,
-+					least_loaded_irq->index),
-+			 pool->name,
-+			 refcount_read(&least_loaded_irq->refcount.refcount) /
-+			 ZXDH_EQ_REFS_PER_IRQ);
-+unlock:
-+	mutex_unlock(&pool->lock);
-+
-+	return least_loaded_irq;
-+}
-+
-+/* Request an IRQ from the pool, spread over the online CPUs. */
-+struct zxdh_irq *zxdh_get_irq_of_pool(struct zxdh_irq_pool *pool)
-+{
-+	cpumask_var_t req_mask;
-+	struct zxdh_irq *irq;
-+
-+	if (!zalloc_cpumask_var(&req_mask, GFP_KERNEL))
-+		return ERR_PTR(-ENOMEM);
-+	cpumask_copy(req_mask, cpu_online_mask);
-+
-+	irq = zxdh_irq_affinity_request(pool, req_mask);
-+
-+	free_cpumask_var(req_mask);
-+
-+	return irq;
-+}
-+
-+struct zxdh_irq_pool *zxdh_irq_pool_alloc(struct zxdh_core_dev *zxdh_dev,
-+					  int start, int size, const char *name,
-+					  u32 min_threshold, u32 max_threshold)
-+{
-+	struct zxdh_irq_pool *pool;
-+	u16 *irqs_per_cpu;
-+
-+	irqs_per_cpu = kcalloc(nr_cpu_ids, sizeof(*irqs_per_cpu), GFP_KERNEL);
-+	if (!irqs_per_cpu)
-+		return ERR_PTR(-ENOMEM);
-+
-+	pool = kvzalloc_obj(*pool, GFP_KERNEL);
-+	if (!pool) {
-+		kfree(irqs_per_cpu);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	pool->dev = zxdh_dev;
-+	pool->irqs_per_cpu = irqs_per_cpu;
-+	mutex_init(&pool->lock);
-+	xa_init_flags(&pool->irqs, XA_FLAGS_ALLOC);
-+	pool->xa_num_irqs.min = start;
-+	pool->xa_num_irqs.max = start + size - 1;
-+	strscpy(pool->name, name, sizeof(pool->name));
-+
-+	/* Thresholds are expressed in queue references, two per IRQ. */
-+	pool->min_threshold = min_threshold * ZXDH_EQ_REFS_PER_IRQ;
-+	pool->max_threshold = max_threshold * ZXDH_EQ_REFS_PER_IRQ;
-+
-+	return pool;
-+}
-+
-+void zxdh_irq_pool_free(struct zxdh_irq_pool *pool)
-+{
-+	u32 cpu;
-+
-+	WARN_ON_ONCE(!xa_empty(&pool->irqs));
-+	xa_destroy(&pool->irqs);
-+	mutex_destroy(&pool->lock);
-+
-+	if (pool->irqs_per_cpu) {
-+		for_each_online_cpu(cpu)
-+			WARN_ON(pool->irqs_per_cpu[cpu]);
-+		kfree(pool->irqs_per_cpu);
-+	}
-+
-+	kvfree(pool);
-+}
-diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_irq.h b/drivers/net/ethernet/zte/dinghai/zxdh_irq.h
+diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.h b/drivers/net/ethernet/zte/dinghai/zxdh_eq.h
 new file mode 100644
-index 000000000000..a969e04f3ce4
+index 000000000000..ac9df4763059
 --- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/zxdh_irq.h
-@@ -0,0 +1,73 @@
++++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.h
+@@ -0,0 +1,60 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * ZTE DingHai Ethernet driver - IRQ pool management
++ * ZTE DingHai Ethernet driver - event queue abstraction
 + * Copyright (c) 2022-2026, ZTE Corporation.
 + */
 +
-+#ifndef __ZXDH_IRQ_H__
-+#define __ZXDH_IRQ_H__
++#ifndef __ZXDH_EQ_H__
++#define __ZXDH_EQ_H__
 +
-+#include <linux/cpumask.h>
-+#include <linux/kref.h>
 +#include <linux/mutex.h>
 +#include <linux/notifier.h>
-+#include <linux/types.h>
-+#include <linux/xarray.h>
 +
 +struct zxdh_core_dev;
++struct zxdh_irq;
 +
-+/* Number of MSI-X vectors per purpose. The layout of the vector space
-+ * is a hardware interface:
-+ *   [0, 8)    async event queues
-+ *   [8, 14)   reserved for RDMA (unused for now)
-+ *   [14, 78)  vq rx/tx queue pairs
++/* BAR message area: shared-memory mailbox between the driver and the
++ * firmware, split into sub-channels of 2048 bytes. Notifications from
++ * the RISC-V management core are posted to the PF receive sub-channel,
++ * one interval above the area base.
 + */
-+#define ZXDH_ASYNC_CHANNELS_NUM		8
-+#define ZXDH_RDMA_CHANNELS_NUM		6
-+#define ZXDH_VQS_CHANNELS_NUM		64
++#define ZXDH_BAR_MSG_OFFSET		0x2000
++#define ZXDH_BAR_MSG_SUBCHAN_INTERVAL	2048
++#define ZXDH_BAR_MSG_SUBCHAN_RECV	(ZXDH_BAR_MSG_OFFSET +	\
++					 ZXDH_BAR_MSG_SUBCHAN_INTERVAL)
 +
-+#define ZXDH_MAX_IRQ_NAME	100
-+#define ZXDH_MAX_POOL_NAME	16
-+#define ZXDH_EQ_REFS_PER_IRQ	2
-+
-+/* Reference counted interrupt. Event queues share an IRQ through the
-+ * notifier chain, which is fired from hard IRQ context.
++/* event_id of the "RISC-V core ready" firmware notification, carried
++ * at byte offset 2 of the BAR message header.
 + */
-+struct zxdh_irq {
-+	struct atomic_notifier_head nh;
-+	cpumask_var_t mask;		/* interrupt affinity */
-+	char name[ZXDH_MAX_IRQ_NAME];
-+	struct zxdh_irq_pool *pool;
-+	u32 index;			/* vector index */
-+	int irqn;			/* Linux IRQ number */
-+	struct kref refcount;
++#define ZXDH_MSG_MODULE_RISC_READY	13
++
++/* Event types the upper layers can subscribe to over the per-type
++ * notifier chains of the event queue table. The full catalogue lives
++ * in the firmware; only the ones dispatched in this series are named.
++ */
++enum zxdh_eq_event_type {
++	ZXDH_EQ_EVENT_TYPE_RISCV_READY = 0,
++	ZXDH_EQ_EVENT_TYPE_MAX,
 +};
 +
-+/* Pool of vectors dedicated to one purpose, identified by the
-+ * [xa_num_irqs.min, xa_num_irqs.max] vector range.
++/* Asynchronous event queue delivering firmware notifications to the
++ * driver without a request/reply handshake.
 + */
-+struct zxdh_irq_pool {
-+	char name[ZXDH_MAX_POOL_NAME];
-+	struct xa_limit xa_num_irqs;
-+	struct mutex lock;		/* serializes IRQ creation */
-+	struct xarray irqs;
-+	u32 min_threshold;		/* in queue references */
-+	u32 max_threshold;		/* in queue references */
-+	u16 *irqs_per_cpu;		/* number of IRQs bound per CPU */
-+	struct zxdh_core_dev *dev;
-+};
-+
-+struct zxdh_irq_table {
++struct zxdh_eq_async {
++	struct zxdh_irq *irq;
++	struct notifier_block irq_nb;
 +	void *priv;
 +};
 +
-+struct zxdh_irq *zxdh_get_irq_of_pool(struct zxdh_irq_pool *pool);
-+int zxdh_irq_attach_nb(struct zxdh_irq *irq, struct notifier_block *nb);
-+int zxdh_irq_detach_nb(struct zxdh_irq *irq, struct notifier_block *nb);
-+void zxdh_irqs_release_vectors(struct zxdh_irq **irqs, int nirqs);
-+struct zxdh_irq_pool *zxdh_irq_pool_alloc(struct zxdh_core_dev *zxdh_dev,
-+					  int start, int size, const char *name,
-+					  u32 min_threshold, u32 max_threshold);
-+void zxdh_irq_pool_free(struct zxdh_irq_pool *pool);
++struct zxdh_eq_table {
++	/* Notifier chains fanned out by event type. */
++	struct atomic_notifier_head nh[ZXDH_EQ_EVENT_TYPE_MAX];
++	/* Serializes async EQ setup/teardown. */
++	struct mutex lock;
++	void *priv;
++};
 +
-+#endif /* __ZXDH_IRQ_H__ */
++int zxdh_pf_eq_table_init(struct zxdh_core_dev *zxdh_dev);
++void zxdh_pf_eq_table_destroy(struct zxdh_core_dev *zxdh_dev);
++
++#endif /* __ZXDH_EQ_H__ */
 -- 
 2.27.0
