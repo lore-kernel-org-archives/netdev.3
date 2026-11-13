@@ -1,87 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.181
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794600155;
-	b=YD2ry53Z89rcZGmkaLLD/+Tl0W7CaOs+3iaElJBJYpqC4E9Db4vBuS97BENB1qMi6N2Y
-	 Pa9aqlqwWu/IZSUnNxITqcgfKPl9fXzHzmWchLhUYAf/ACd6PhhfNdIegA4y2UUZUEd92
-	 kUtaJTQumXb9QBAert/fTsDm/7zhafCA8lfLGVqzqRuJSBl7fHTCyi/jOZ70mUrPOTV4v
-	 GxUi+G6DGNFJ0aqtCiK7ZZPnqCY1OIKyZti2fK0Vn7nvoc/fNJf2PnfOmmAj6o+v4OEAY
-	 dHYW1gXWPwYTt9KQv4dJZYrlqid6BIYW1aKg1o7zE3WzPZEzIHadbklS7z/44LHAEgw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794600155;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=OdipV0qEsj3h9N2EHRblxLGiTfzERE+tzRI1XRZpm+0=;
-	b=PWzaxlR6VvaG8z5BCO0lEIisnSpEEUu0Cg72/txc98YejfxjdSjvcotqze+e+ZVoWH4Q
-	 WxuaW0l7FBnBOnyHdGsbTU8PPEBL4H+RcMZWgz+fmUKO27sqZnBLebm2FECy4fM0434jP
-	 PDeM0YpYcEV+8GGMF68L23wvJJ2e05yRQBI6LsAQ+epXDY7e5g+g1+mV2msoAr5CFhJ9u
-	 SlF0sLmgm+fdCGz7Pho3APs0oJz/N+YCc8vRPjjRtLN+y21G8kGvhyh2q9qBaxh0n1IGB
-	 R+uyndK+DFgx85jbW9LSl2WITtx4aKmP1oMiu+tZql7LJDvV6JsQndXBBpybCdhAi8Q==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cloudflare.com;
-	spf=pass smtp.mailfrom=cloudflare.com;
-	dkim=pass header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b="cG5/0LhC";
-	arc=none smtp.remote-ip=209.85.167.181
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794600902;
+	b=1M5dxFFE/rRcto42nXOhtclCoCXJ/mo26Fyn36sEgxXEpwJKmB49w0sPbshogA2HhHHt
+	 /Y+yh1hzotn6PCEHsXoAXlrfBpRWtIqaEDlmqvH+o2B0LlJNrX1fhwnp48YBN/Q6DMbpo
+	 Oe/Wb/7m3ViuJ4JRQKUuATfhLJqrRsadZqH2ahv8fHfi14v5l6+UGchp+GJI52GfjOS9G
+	 Kh/evnKK3jROnPDOag/78n1PPAjKTxhbk4ZopMNQC3bP+SNkUlbjt33Pgy52LT0eu7hFT
+	 TOg6ebgFuGQhLM3cLEW84u4KnubTviTc9T9huBZ3+lQ2GN6VaG/NmgXW7rSUFc2SQGA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794600902;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=AAo9Q3VQrLylyCTPQs8zy2hqWw0i0HrVtcUrV/cI8uQ=;
+	b=WRVTjoGkiF5SKpi+4gs/sQ/zFy+gj0z2AdVRGNcs/5Uex/GtVAGojdMf64QZMf9l1k25
+	 gZrEC/ohuAnEG9RghlhrbZ2MxzwzKapeK4NBvqH7uUtoBvnPdHU3LeXGKshp9HbxMWmjB
+	 /jCpWspIAQQHd4czfiazDMb0+McmT1WkWirylhBMI1BAqrFLGDx0DIx3sf+bYlYRCG+fY
+	 Xm/gYbe2nkYVQVcH6DldZglxA9aLSHt6rldS5k2yWIsU0CeGFkVxbIQMtZPfEhp/yLH3R
+	 srqADJUWM7MIXHHq2+RyVGtWOdwjRbF/Z1AqxaI0SD8Kqe4FKb86VthONO8BRXPJt9g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KbTBSfVJ;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA2E606A32E;
+	Fri, 13 Nov 2026 20:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KbTBSfVJ
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794600901;
+	b=G7d88/hoUQPKQHsPSmfF/iiwHVkwG3HuNhNIhdMzzoKSvxz9i3wkhsJMVpDqpFjlAwGE
+	 TM21QIVm+fl3eBwyRSWpIhHeJsE6xqPx4pGnbSkqMQUYaruiV7oPdhw9Kn1MD8TGgX936
+	 agH8xfkh95pYwU+ukFO6c/vQ16GtdaELhhI20BD52Lh6Sv7BDH0+UeTvlEHJZERv9DidU
+	 lL960vxIEn9VgwMZizwzUNpX6OHymCzqh1yHb8ASF1jZh8/CHHUuECNBHH88m9aBQ2vtU
+	 AX6I4CIo3lDaa9AxxsN67iXnDpZPKcoXiDi8gOVRGNoaeHncYAY3ioIi57IxED/Aqaw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794600901;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=AAo9Q3VQrLylyCTPQs8zy2hqWw0i0HrVtcUrV/cI8uQ=;
+	b=nPIH4ThaHfeXVjsZJsfy6P6VhuFMB3WeEimlxbZyLLXCAkSmsAk934pQBsn1aPDT1jVb
+	 dSyQ8En3SiO0ViVZwdCkGLO7ujA61yThAtJ+UQ2cef5VlnjLHS5Rz7ouZovYiOybyNN2/
+	 XIdi7dWvW2ngEk5h3ge4fRmg+HUFkoi48IGdVPQJYH/2/yfULy3fqGXuOhFPYJPX+nPjY
+	 a8MwjUnrQbXK6fKe423VQA7CtRWPOHpurRffBn2rXfZWvZb6KnBjhNXRvUKSDTXgqBxHt
+	 OV8vt1gWml7psAXuJT0Yse5vls1vi1Gm0qgav4t7m10RXfXPcJVlH0W03xi2rKKsZ6g==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5A2606A334
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:02:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AB5A2606A334
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.a=rsa-sha256 header.s=google09082023 header.b=cG5/0LhC
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-57180fff30eso201119b6e.3
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:02:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1794600153; x=1795204953; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=OdipV0qEsj3h9N2EHRblxLGiTfzERE+tzRI1XRZpm+0=;
-        b=cG5/0LhCZtvnIywu+BZam9v25+QoGvZSTjvrjWo/Th7JW24Rma41sJrkFbfqS1TZGD
-         xOxPE6ideTFvtHiEC16W3I5MPuZ4sUdkE3Z7nVV0lhnsKkvLNSv1j8D6xc9djt2v78tU
-         7Czjk0GQjau2Q6cJMPmEnWOVJyj61YlKZ8AwfHJRRfBYSBV+ZmDCU77S0p8Gy0AlhDSg
-         4gXjI7sOffpDmbFiqLj13ZQMccElKLWSvoeeEZaGpT1sYjuReNgLWaNXsvgjtUENDdU8
-         Gp7rE9IpnqkmguaXa7APUiJ18TNdjJwguXtvSs9KW3pMyfVGQd9llE1WGr8GqFo7peQb
-         Cfwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794600153; x=1795204953;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=OdipV0qEsj3h9N2EHRblxLGiTfzERE+tzRI1XRZpm+0=;
-        b=T4G54CfHfkzCHflQ2vK/dPW4crCbZKAUW6zjsA4smGCsnCJHvaYC/FsvxPfi6LAMTZ
-         GuaSsStD9sCunBJ//GMxvxlOJLmf4IWZkuWi96Y744/1FNTs/EoyvkMcI9isL76KqC/t
-         cNVIaNC2BnGR97rcKRbe50M2KDrpi9T7ZzWw4Q1DygwtNto6koBVDsiKeY8ojepFaJb6
-         paAAcXUbBy4XtEWPK1u7/B3hRzepWIqAgE6WSzPU/7yvkk7S8pUrsB6nMfXaPoMy+SI+
-         V8ycG1uoIMEHCSLaXMI9vaI9mceaDc38RxN3S9knetY+u3GAEM8j3cJG2ygbVuV1cf29
-         w2Pw==
-X-Gm-Message-State: APuU4Z8j3quTo3SV1T1FeAQUMefX9NlxohJH/Xl/twdgveTCL+P1mUi7
-	Wj19v40w6nZ8rz76Gfnf8jg4fil0s2hy4cTMTCjHUUdnH6xLujqsY//p/PZUg5kFGtE=
-X-Gm-Gg: AYBFou340iIKhG59ZiEdT43uV/JSKXjaz9AEjK/YB080DfOEF07PccNOXwnOiXxfl3a
-	hl+Zn1BJtTpUQxCiPQ7Dn7UjGvsfU4MMNi0bA8OLGYmpSN9+17/HPZkC0wEsutBs/yFkCNfh5w4
-	sd8Sf1wyocpynz0LJV9pY2us9Wsce8dHO7o8Asp5eivr9Q8Nw18DxnpayM/knEVEjZh1QxFL6c1
-	jlwOq1roaMibkoq34p+9h7f30czArSDvzH0arMUWLoAiLWb4kAAKZH8e79YbAIaYGaB9Q9mtPbc
-	VWFT7jwLbN/bPFzxfgiLyZQiKgXJJZK0uYzgWR3+k0nZjXWTsp4mIblHV5dDRk68Y0SpRb7q6wt
-	QTgJ4ksoqkzF/pnb2b4W14Pd81W/v4Po8YTI9mps+XC3Gb6DFKXuL/PpRhidl3G4vt69i076LlU
-	1FBEtsF7sJVeRJ/ntmODVe/nryeiC4qz4hfOIDOgtqHKsrIBXzxZ9alxcj1V3wUF9iLOaoLW/Pu
-	gSZ9+tEp4jIZ0vkjt7nA49YoQ7pa+CV2GsoNJQCnjsMmV+TUnS3cd+Eklriy2Edlci7eaFQ+Egf
-	RcHoiD+WRNAnw5wf5w==
-X-Received: by 2002:a05:6808:1510:b0:4c4:3997:ef2f with SMTP id 5614622812f47-56e63286b63mr3317786b6e.17.1794600153455;
-        Fri, 13 Nov 2026 12:02:33 -0800 (PST)
-Received: from [127.0.1.1] ([2a09:bac6:bf21:1923::281:18])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-56e6dcfcf4esm2893643b6e.2.2026.11.13.12.02.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 12:02:32 -0800 (PST)
-From: Chris J Arges <carges@cloudflare.com>
-Date: Fri, 13 Nov 2026 14:02:27 -0600
-Subject: [PATCH 6.18.y] net: Use a dedicated flag to track disabled napi
- instances
+	by smtp.kernel.org (Postfix) with ESMTPS id 3A0431F000C4;
+	Fri, 13 Nov 2026 20:15:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794600901;
+	bh=AAo9Q3VQrLylyCTPQs8zy2hqWw0i0HrVtcUrV/cI8uQ=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=KbTBSfVJMDncH7HQ/yoQaH8rJov1C3+hQf1IZWXpgMvHtewFXsrDJWEbOZuZHzAND
+	 UTsGtYrpCKl6xq67NNC30glNT+Ul5DU2i0r9jl1a7GUuhwWyhQEwXaJ/wEB3EK8Cjm
+	 2E6PTLm2pQJBJQayOBFZewVuu29cJG2fmYLlbsJGPzgS5oknfW0m/hVjmSE1MBH/g8
+	 ygdZtgeDaojidyKHBFM/+fBQ5AUtvGhbBQER+gmoRN1rJzW/joPv4Cvy0U+2Rc6k5P
+	 1asAgJYAQ40cR+B4tN5u/QpN5Uq8BQFWpbrz+GJcJ3Me8KsPqqIDnpPWNy3xvmOmxP
+	 1wqwzsAVOMGMg==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 8B36F49AA3;
+	Fri, 13 Nov 2026 20:15:00 +0000 (UTC)
+From: =?utf-8?q?Dani=C3=ABl_Trujillo_via_B4_Relay?= <devnull+datrujillo.nvidia.com@kernel.org>
+Date: Fri, 13 Nov 2026 20:15:43 +0000
+Subject: [PATCH bpf] bpf: mask speculative out-of-bounds skb helper loads
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,171 +83,162 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-napi-disabled-backport-6-18-v1-1-8081f2887b69@cloudflare.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQ7CIBBA4as0s3YahiaIXsW44GfUUUMJVGPT9
- O5FXb63+BaoXIQrHLsFCr+lypha0K6DcHPpyiixNWilDRENmFwWjFKdf3JE78Ijj2VCg2RRaRW
- GvT34YC00IRe+yOenn8D0ZPsZzv9fX/7OYfrSsK4b7Ce7P4cAAAA=
-X-Change-ID: 20261113-napi-disabled-backport-6-18-020c3789bc88
-To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Samiullah Khawaja <skhawaja@google.com>
-Cc: netdev@vger.kernel.org, kernel-team@cloudflare.com, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org, 
- Daniel Machon <daniel.machon@microchip.com>, 
- Chris J Arges <carges@cloudflare.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1794600151; l=5123;
- i=carges@cloudflare.com; h=from:subject:message-id;
- bh=6r+mxa6q4IYhpBpcpr4DGE82Y0Cl3bnuQ3KCYwMxafg=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgaxY1IIT5oTohBZJmhnVgJo2HsM7Sv
- 9I0LdJCgpeGX6gAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QNKXy0bXu7Mknfxffqwnf/kmKrYKzus0C8aZJNo6YAe5XtJ8pGzJY6d7oS5s5NOP3NVi0BSCw1i
- +NTaKAwKXNAA=
-X-Developer-Key: i=carges@cloudflare.com; a=openssh;
- fpr=SHA256:Cun99EBiH0EV7wvmfTBF9eDrld2NJx+aD4ScWZ45Q5M
+Message-Id: <20261113-cbpf-ind-nospec-v1-bpf-v1-1-764ac4c14573@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAO5v92oC/yWMSw7CMAwFr1K9NZZwi8rnKohF6zhgFmkUQ4VU9
+ e6ksJzRe7PAtZg6Ls2CorO5TakC7xrIY0h3JQuV0e7bnpk7kjFHshQoTZ5VaGbaTNefQzgco5y
+ GiHrORaN9fuEr6gC3v/T3+FR5bUms6xcJrs+sfwAAAA==
+X-Change-ID: 20261113-cbpf-ind-nospec-v1-bpf-369dd47fc8af
+To: Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+ Eduard Zingerman <eddyz87@gmail.com>, 
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+ Emil Tsalapatis <emil@etsalapatis.com>, 
+ Ihor Solodrai <ihor.solodrai@linux.dev>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Dani=C3=ABl_Trujillo?= <datrujillo@nvidia.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794600943; l=4789;
+ i=datrujillo@nvidia.com; s=20261008; h=from:subject:message-id;
+ bh=IrkM3A5rzY7Lrf7aX7/eWswOO8MwkLehIVbqhgYc0eI=;
+ b=yv1ifv5IFVTISmKtkoz2U0m3t/XpoQQNbWEsj72vF7o4NyVJgZqZGb9+Jk1Dx1T8OPQ5NulY8
+ IoTM7o5LAd7DiMUQTNIeNKu5gXHCV6pYBrPOvcO/d26dnI5SmenVi9K
+X-Developer-Key: i=datrujillo@nvidia.com; a=ed25519;
+ pk=AP24zUwENFy2geglpKJAA8oaT41tkteCL9hTWGd88rs=
+X-Endpoint-Received: by B4 Relay for datrujillo@nvidia.com/20261008 with
+ auth_id=1128
+X-Original-From: =?utf-8?q?Dani=C3=ABl_Trujillo?= <datrujillo@nvidia.com>
+Reply-To: datrujillo@nvidia.com
+Content-Transfer-Encoding: 8bit
 
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Daniël Trujillo <datrujillo@nvidia.com>
 
-commit 8dc87fc5d6a0eb337744737008177342a708bf36
-("net: Use a dedicated flag to track disabled napi instances") upstream.
+The fast paths in bpf_skb_load_helper_{8,16,32}() check whether the
+requested bytes fit before loading from data + offset. For indirect loads,
+packet data can determine the offset. A mispredicted check can cause a
+transient out-of-bounds load, as Jin et al. independently demonstrated
+for bpf_skb_load_helper_32() in BeeBox (USENIX Security 2024).
 
-Trying to disable the napi threaded state while the napi instance is
-disabled will hang forever in napi_stop_kthread(), as it waits for
-NAPIF_STATE_SCHED_THREADED to clear.
+A classic BPF filter can shift the loaded value and use it as another
+indirect load’s offset (BPF_LSH, BPF_TAX, then BPF_IND),
+creating a data-dependent cache footprint.
 
-This won't happen until the next ____napi_schedule() call, which won't
-happen as it's disabled.
+Leakage was demonstrated with instrumentation that delays branch
+resolution with a CLFLUSH before the mispredicted branch and makes the
+leaked location deterministic for reproducible measurement. In that
+setup, an unprivileged process that attached a classic BPF socket filter
+was able to recover kernel values from userspace using Prime+Probe. A
+real-world attacker would likely need to delay branch resolution, which
+was not demonstrated end-to-end without the added CLFLUSH.
 
-This happens in 2 instances :
+Mask the load address when the converted offset falls outside the
+permitted range. This removed the leakage in the described setup.
+Derive the lower bound from the network and MAC header
+positions. An out-of-bounds transient offset dereferences NULL instead
+of a potential secret.
 
- - Drivers that create but don't use napi instances (stmmac's rxtx napi
-   for AF_XDP for example), here it's a driver bug
+Masking increased the time for a filter with
+64 indirect byte loads by roughly 36% in a direct in-kernel test
+(280% with LFENCE). In a loopback UDP test with the same filter, the
+overhead was roughly 6% (21% with LFENCE).
 
- - Drivers that create their napi instances in .probe(). Here, setting
-   threaded off while the interface is down will hang :
-
-   ip link set eth0 down
-   echo 1 > /sys/class/net/eth0/threaded
-   echo 0 > /sys/class/net/eth0/threaded
-   -> hang
-
-Checking on netif_running() isn't enough, as napi instances may be
-transiently disabled when changing the MTU for example, let's use a
-dedicated flag to track if the instance is disabled.
-
-This allows immediately disabling the kthread when the instance is
-disabled.
-
-This was tested on mvpp2 (probe-time napi_add) and stmmac.
-
-[ Backport: omit threaded busy-poll state handling, which is not present
-  in 6.18.y. ]
-
-Fixes: 689883de94dd ("net: stop napi kthreads when THREADED napi is disabled")
-Tested-by: Daniel Machon <daniel.machon@microchip.com>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20261029153130.121204-1-maxime.chevallier@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chris J Arges <carges@cloudflare.com>
+Fixes: e0cea7ce988c ("bpf: implement ld_abs/ld_ind in native bpf")
+Signed-off-by: Daniël Trujillo <datrujillo@nvidia.com>
 ---
-Backport upstream commit 8dc87fc5d6a0 ("net: Use a dedicated flag to
-track disabled napi instances") to 6.18.y.
-
-The commit fixes a reproducible hang in napi_stop_kthread() when
-threaded NAPI is turned off while the NAPI instance is disabled. The
-sysfs writer holds the netdev instance lock while waiting, which can
-also block device recovery.
-
-The upstream patch does not apply cleanly because 6.18.y does not have
-threaded busy-poll support. Keep the 6.18.y state handling while adding
-the dedicated disabled-state tracking.
+Requesting fix for stable.
 ---
- include/linux/netdevice.h |  2 ++
- net/core/dev.c            | 14 ++++++++++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ net/core/filter.c | 36 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 7be5b78b2bff..e272d0006c6b 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -431,6 +431,7 @@ enum {
- 	NAPI_STATE_THREADED,		/* The poll is performed inside its own thread*/
- 	NAPI_STATE_SCHED_THREADED,	/* Napi is currently scheduled in threaded mode */
- 	NAPI_STATE_HAS_NOTIFIER,	/* Napi has an IRQ notifier */
-+	NAPI_STATE_DISABLED,		/* NAPI is disabled */
- };
- 
- enum {
-@@ -445,6 +446,7 @@ enum {
- 	NAPIF_STATE_THREADED		= BIT(NAPI_STATE_THREADED),
- 	NAPIF_STATE_SCHED_THREADED	= BIT(NAPI_STATE_SCHED_THREADED),
- 	NAPIF_STATE_HAS_NOTIFIER	= BIT(NAPI_STATE_HAS_NOTIFIER),
-+	NAPIF_STATE_DISABLED		= BIT(NAPI_STATE_DISABLED),
- };
- 
- enum gro_result {
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 673223065b95..95126e236079 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -7127,6 +7127,12 @@ static void napi_stop_kthread(struct napi_struct *napi)
- {
- 	unsigned long val, new;
- 
-+	/* Instance is disabled, we can immediately stop the kthread */
-+	if (test_bit(NAPI_STATE_DISABLED, &napi->state)) {
-+		clear_bit(NAPI_STATE_THREADED, &napi->state);
-+		goto stop;
-+	}
-+
- 	/* Wait until the napi STATE_THREADED is unset. */
- 	while (true) {
- 		val = READ_ONCE(napi->state);
-@@ -7156,6 +7162,7 @@ static void napi_stop_kthread(struct napi_struct *napi)
- 		msleep(20);
- 	}
- 
-+stop:
- 	kthread_stop(napi->thread);
- 	napi->thread = NULL;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 1a60a2a70e2d..c50e94df79b3 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -28,6 +28,7 @@
+ #include <linux/in.h>
+ #include <linux/inet.h>
+ #include <linux/netdevice.h>
++#include <linux/nospec.h>
+ #include <linux/if_packet.h>
+ #include <linux/if_arp.h>
+ #include <linux/gfp.h>
+@@ -240,6 +241,32 @@ static int bpf_skb_load_helper_convert_offset(const struct sk_buff *skb, int off
+ 	return INT_MIN;
  }
-@@ -7541,6 +7548,7 @@ void netif_napi_add_weight_locked(struct net_device *dev,
- 	napi->list_owner = -1;
- 	set_bit(NAPI_STATE_SCHED, &napi->state);
- 	set_bit(NAPI_STATE_NPSVC, &napi->state);
-+	set_bit(NAPI_STATE_DISABLED, &napi->state);
- 	netif_napi_dev_list_add(dev, napi);
  
- 	/* default settings from sysfs are applied to all NAPIs. any per-NAPI
-@@ -7577,7 +7585,8 @@ void napi_disable_locked(struct napi_struct *n)
- 			val = READ_ONCE(n->state);
- 		}
++static __always_inline const void *
++bpf_skb_load_nospec(const struct sk_buff *skb, const void *data,
++		    int headlen, int offset, int len)
++{
++	/* An unset mac_header is maximal and cannot lower the bound. */
++	int header = min(skb->network_header, skb->mac_header);
++	int lower = min(0, header - (int)skb_headroom(skb));
++	unsigned long index, size, mask;
++
++	/* Normalize [lower, headlen) to a zero-based range. */
++	index = (unsigned long)(long)offset - (unsigned long)(long)lower;
++	size = (unsigned long)(long)headlen - (unsigned long)(long)lower;
++
++	OPTIMIZER_HIDE_VAR(index);
++	OPTIMIZER_HIDE_VAR(size);
++
++	/* Check the start and the number of bytes remaining. */
++	mask = array_index_mask_nospec(index, size);
++	/* Each caller passes a constant width, so inlining eliminates this branch. */
++	if (len > 1)
++		mask &= array_index_mask_nospec(len - 1, size - index);
++
++	/* Out-of-bounds transient offsets select NULL as the load address. */
++	return (const void *)(((unsigned long)data + (long)offset) & mask);
++}
++
+ BPF_CALL_4(bpf_skb_load_helper_8, const struct sk_buff *, skb, const void *,
+ 	   data, int, headlen, int, offset)
+ {
+@@ -251,7 +278,8 @@ BPF_CALL_4(bpf_skb_load_helper_8, const struct sk_buff *, skb, const void *,
+ 		return -EFAULT;
  
--		new = val | NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC;
-+		new = val | NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC |
-+		      NAPIF_STATE_DISABLED;
- 		new &= ~(NAPIF_STATE_THREADED | NAPIF_STATE_PREFER_BUSY_POLL);
- 	} while (!try_cmpxchg(&n->state, &val, new));
+ 	if (headlen - offset >= len)
+-		return *(u8 *)(data + offset);
++		return *(const u8 *)bpf_skb_load_nospec(skb, data, headlen,
++							  offset, len);
+ 	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
+ 		return tmp;
+ 	else
+@@ -276,7 +304,8 @@ BPF_CALL_4(bpf_skb_load_helper_16, const struct sk_buff *, skb, const void *,
+ 		return -EFAULT;
  
-@@ -7620,7 +7629,8 @@ void napi_enable_locked(struct napi_struct *n)
- 	do {
- 		BUG_ON(!test_bit(NAPI_STATE_SCHED, &val));
+ 	if (headlen - offset >= len)
+-		return get_unaligned_be16(data + offset);
++		return get_unaligned_be16(bpf_skb_load_nospec(skb, data,
++							 headlen, offset, len));
+ 	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
+ 		return be16_to_cpu(tmp);
+ 	else
+@@ -301,7 +330,8 @@ BPF_CALL_4(bpf_skb_load_helper_32, const struct sk_buff *, skb, const void *,
+ 		return -EFAULT;
  
--		new = val & ~(NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC);
-+		new = val & ~(NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC |
-+			      NAPIF_STATE_DISABLED);
- 		if (n->dev->threaded && n->thread)
- 			new |= NAPIF_STATE_THREADED;
- 	} while (!try_cmpxchg(&n->state, &val, new));
+ 	if (headlen - offset >= len)
+-		return get_unaligned_be32(data + offset);
++		return get_unaligned_be32(bpf_skb_load_nospec(skb, data,
++							 headlen, offset, len));
+ 	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
+ 		return be32_to_cpu(tmp);
+ 	else
 
 ---
-base-commit: 1cdda838e8475edf89b73ff0cc952005dd0b1fa7
-change-id: 20261113-napi-disabled-backport-6-18-020c3789bc88
+base-commit: 7f1e33230b7c7a55318765862b255b41e5c97cfb
+change-id: 20261113-cbpf-ind-nospec-v1-bpf-369dd47fc8af
 
 Best regards,
 --  
-Chris J Arges <carges@cloudflare.com>
+Daniël Trujillo <datrujillo@nvidia.com>
+
 
