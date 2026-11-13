@@ -1,88 +1,61 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794574904;
-	b=tn5UtFdM8DzSxFl+KGJO+FURyWPN0iUkYdiC05T616pr7w+j5C0KJuwTmasOv2lqbEOa
-	 lIa0ciWxIXw4J0AOzqdRDEhFKV9kXxt/8ljB92AGqpSghllfQ3nHcNPxMFATqcs021x75
-	 P+uWvPxtG2EWXWUrIIyX7csliWJFbx5lhGGRiuTxedBN968N4vbTlxVtZowTxrjjBuxHu
-	 sKOT0ntHYi6YJ9b8e+w16eZCdrL7ojNtXgIa33ztaA7Bd75Xl4/WX/KWSjG6TNqq2mj3B
-	 Qhrs4oSx2q90e4FhF0eQFdp1kRj2w7xlRsqdF6PLDBMmqbri9Kmz1TEndtQLr0zvLsw==
+	t=1794575111;
+	b=skBol4w4jKeTcTMHhRVdpO+BdqA7rbuQbaMV4MPirTDH2QaRp0Kg17QKNRVNqJ0KrPTu
+	 wcVF+Cz6uYFda9UE/LiFUrrM4+gKGJpU8il+h9KnvNU6d1TOIPNp/LqwVYwl2xaRoOVP6
+	 SVaTpywrUSyz0wo7W6xq57ZqGZLrNwJIVFkLMZ9/Q02fWQj95kDyIidRe+hJQ8lK70UUt
+	 mBh6r2UTq+woI7lOJHnQKZhjN319Jmhg+FawHBcxv26EUqPtrYIVknu9y3FBg0FoD4UnF
+	 5WTVT3YSIlU+CDLlalWvOrvJKKM/ki0uobJGEzH4LXUUi/I1omYqrY1/1gQTJCd568Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794574904;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=dS9EyPR31sgD5ngavZ4avec13/Y4TPfrqwtVSgg1KpU=;
-	b=euv8XvHmxptcDRrW6XdrPiZmxqEea0spP9hwalAjlNaM0KZqWfkvqM0p6X48opt6izdA
-	 u9tRg7yG675l9k8CRSs4fSaB1yX4QLnwai/SmjJiYiOtOTQb4SkelpyMZ+GCVj5qOYMZK
-	 EDRoLMbmcbfNekcZgV6de9xxwSydlaoxrwtaozUT5mE+XyRuDh2mEe8ZyVTPTgNedqHtn
-	 AH64Wjj0/NACp3RF/cXUdDpNqVlDT3ZX/CzLIsoor2X538vWPKYrMKw1Cmycq+SBS3U/g
-	 SEujlj54omL5+8XaXt1VcNixaCMvqhKGnOZWdHHSFouoEALp3I0NETgqj3BaWEazC7A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794575111;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=EM8ZnpnsteTstTOFyEqAfs+v+bqrEfRmWvONaNCLxe8=;
+	b=RWPr5bgiA5Cxy2X6+twzaIS027nkUqdxYQNlsHhorVSROnoxSRk5mS/pRW/jA/a2NA/W
+	 tsfPRjuUCYKKCQAcCFAApNvbX5nLBfH9SP1hNvVVVnhUAo0YJ2nuGzepnLjAsAhr/DmrH
+	 iMpcH7F5c2QHnnHVZQFgxVxnkKJAckFvrrxlHgJbKxJsJdr8bDJXPMfoy+SEeJUGYjlC/
+	 iOQ4KQO51xpl1iCpTILZgEAf3viKhtqKkHLlBghs3mGH6s7gS1U0+ctwQNQ1lzeQJpqCE
+	 7LKspB+z7W3pDTzqxPRLZjZSNsX8UlSZmLZLZnHVMwcKviUl/C8biRHoieYkHot1Rgg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YII6ms0i;
-	arc=none smtp.remote-ip=209.85.128.47
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jlJaOQGR;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13824606A327
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 13:01:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 13824606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4E4606A32E;
+	Fri, 13 Nov 2026 13:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YII6ms0i
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a207b02a2cso4852025e9.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 05:01:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794574902; x=1795179702; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=dS9EyPR31sgD5ngavZ4avec13/Y4TPfrqwtVSgg1KpU=;
-        b=YII6ms0iqpD4miklHj44JtXK6mRH8pZXnqxdSEJjbuMPQu5C8q6gUL/p6jdGyzbXMk
-         JWx196u9vfQtd42MXsJz4wdmYrcW5655ftKKzJfhrPXsrhUk9Pdqx/0dotPXIruGzf3Y
-         XBb4pf6ufxh4Ks34ywqGMlcZ5RjXkYOzjeCtxj5qrytRA10n2yNVw9ALYmxCccrcXY5K
-         /bW6q3SBvwOCxdp4yDNfMPihR6fxSXs4uoS212hMg5YN8Dg/FZSHF7xl0U+KODeTRpJI
-         ZLiFK7S2okiagl2ghkX5/YPO4uUHziNA51uo+FXimlpVxRR4Wr4Lwj9iGd9xWMwjG2lM
-         Owxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794574902; x=1795179702;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=dS9EyPR31sgD5ngavZ4avec13/Y4TPfrqwtVSgg1KpU=;
-        b=drYjjWMgjRPD70IeTZAP1JmKZMjVoQ6Zi884TkP/Q7wlia0GHITSnXqpWtgUg0LSaP
-         aTSyPMfWjw8yMKsYKhiwifU6FVn8SSsNSr/xsnjD5nk7i61TIOvCGTvPkIR5Zgi/BVk3
-         3v2JUGylDMpTGLmnoD1nain/naZUJlahkUdGTjicld2jM1K2SE5avr8QDLluS/tY8zIR
-         3s+yhvOcmdoQBQzwl34V39QOHXQJVBEI2V26XZtib/90U+DkC5xb2+/XSdsqi7hbSrlF
-         9lUyPFwd8+VYuYobxDVaOujp9C8sQVtdiljNWY6uACsaAl8j8MhtAjZ7CnKdc/8d5Kpm
-         C5wg==
-X-Gm-Message-State: APuU4Z/6d5EU8mxgn64lapiUyxgIog/tHTOnXQfCvGd3pdEDx+rasfoY
-	SGqtD7Vw1GxGesAQeQKEItxrRy4V4+nRJaPA3ZVh4uPaSWzurZJPgX1WpBSJlq3o7iEaEQ==
-X-Gm-Gg: AYBFou3rCP8eufIQM1o6Fz2U2WTbNH1JmwtzdhrEBympntdI/DAWPb8Gs1QkJ98mNs4
-	dGzPEQyl9LXLMVU5HU9b7Cholmd3KEM6wszoSbkvo88iO9RJaJQdWydGpgvFmawN+iANz5ESM0V
-	mrq7icGDFwB+mCVQOLZO8vnuDmkR8L6Din1Jnr8d/x6qB8TOZrsWm7MU9n7OsJoi8vzceBnDoSN
-	RDkfB9d8lBT6o1wW2KL/cGdx1Xrhrgkn2gaKucjDeujzeM+Y+UHKxqJQvOLbFUc+9xnjcrtJVM+
-	ao1q/xnGIWcGz3fmGrMfT5ThQq53bo/D2rDCvhPetUyd9qN85zy208+IoGsB4uvMGrOmyeL0Dt/
-	9cU0qXCFQhaeyLjVX26xvTSya+KQranHypvke1xBbfByRBsmwqXmJuTfoqzTCJiRvnthMCHQrlQ
-	ftsEbOWYjtfHsgAR+h04WrzY7lUN/Pf+4+806otbVH8yUeu+2Hs9rDEa8eW4tOT/9AiqOaSIlYR
-	7jj69kcwOY/YJLVTCzOFlyt6f1dBERpPry3pl//zfRMrpWVsOyTYD8iX25EwOBFMf9bYpmqFBhW
-	rWBcSLc/UlwnXWi2vngwQoqBC8NBskS5yqSeCWjM5Ref8sfMsvZWlSzeKpKBSanFYVkW5dB75qU
-	SanD2k+4=
-X-Received: by 2002:a05:600c:c05a:b0:4aa:1527:659 with SMTP id 5b1f17b1804b1-4bb55a50e9fmr40374425e9.17.1794574901964;
-        Fri, 13 Nov 2026 05:01:41 -0800 (PST)
-Received: from alchark-surface.localdomain (bba-86-98-194-229.alshamil.net.ae. [86.98.194.229])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4bb566cec2esm40477495e9.1.2026.11.13.05.01.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 05:01:41 -0800 (PST)
-From: Alexey Charkov <alchark@gmail.com>
-Date: Fri, 13 Nov 2026 17:01:05 +0400
-Subject: [PATCH net] net: via-rhine: Stop the NIC on platform device
- shutdown
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jlJaOQGR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444531F000C4;
+	Fri, 13 Nov 2026 13:05:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794575111;
+	bh=EM8ZnpnsteTstTOFyEqAfs+v+bqrEfRmWvONaNCLxe8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jlJaOQGRUOYVxQEoQtS2xwULbwTBBVEQRnJhTJK82AZQc2WDH5QTQJpbPfVBX7YD+
+	 BNB2PEFo0hxpfCLTkvvA6HRbPVGr2AkXeJp0GE9SQKDJ1RFA2QCRIJ6rz7IO9QM146
+	 NiprzNTOpYfX+t7bd7rS1Czxzn6NmpLJ7S/nxKPXktcmAiAlcRKmsoQ/M15VAJWitA
+	 +2fvErObhF/4tOShepwObLyFwWwF4ia8KSamBoWjdmCNVdUR0tVcmlOg9XSlsVAuQr
+	 iSi9ysECkFDhYqIB9alCprSEN3vM5NnvxO7pYrMm1waDn0KKDgAlJ1h6Zty5tyQMdg
+	 BvVFAZa7xS9YQ==
+Subject: Re: [PATCH net 1/2] net: mptcp: take token lookup references with
+ acquire ordering
+From: netdev-bot+sashiko@kernel.org
+To: 2122295973@qq.com
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, matttbe@kernel.org,
+ martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, willemb@google.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Fri, 13 Nov 2026 13:05:09 +0000
+Message-ID: <179457510979.2199510.5244757217297725488@kernel.org>
+In-Reply-To: <tencent_28A2BD1631FE531992E91753BA6419FFC506@qq.com>
+References: <tencent_28A2BD1631FE531992E91753BA6419FFC506@qq.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,83 +65,219 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-vt8500-rhine-shutdown-v1-1-9448ea9548ec@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMSw7CMAwFr1J5XUtJKiDiKohFmhpiFi6K049U9
- e4NdDlPb2YDpcykcG82yDSz8igVbNtATEHehDxUBmfc1Vrb4Vz8xRjMiYVQ01SGcRHsXYg+3Or
- Je6juN9OL13/3AUIFnueoU/+hWH5F2PcDcA2ain4AAAA=
-X-Change-ID: 20261113-vt8500-rhine-shutdown-b2ac8a702688
-To: Kevin Brace <kevinbrace@bracecomputerlab.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alexey Charkov <alchark@gmail.com>, Rob Herring <robh@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2049; i=alchark@gmail.com;
- h=from:subject:message-id; bh=slih1j7uIKXNSsFl43FCfxGqI1wEAtZXMRnxWUVycdI=;
- b=owGbwMvMwCW2adGNfoHIK0sZT6slMWR95zI24fh6/PurCQZM3rqeYVafV6etKM6PvVt4g/vlw
- bgrsk3yHRNZGMS4GCzFFFnmfltiO9WIb9YuD4+vMHNYmUCGSIs0MAABCwNfbmJeqZGOkZ6ptqGe
- oZGOsY4RAxenAEx1YjHD/6QO/+/uExfOUOCYFRS8UTZEtfP6+pucQlfuHo5YtT6ZbTbDf7+tjnt
- U4u4833uWL/LTYlXDlF8LPLznXM8IFnR2sQ2N5wUA
-X-Developer-Key: i=alchark@gmail.com; a=openpgp;
- fpr=9DF6A43D95320E9ABA4848F5B2A2D88F1059D4A5
 
-Close a running interface on platform device shutdown, so that the chip
-stops its receive DMA before kexec hands its memory to the next kernel.
-Do it in the driver, as the platform (OF) variant lacks a .shutdown
-callback and nothing else stops it, unlike for PCI, where the core
-clears bus mastering ahead of kexec.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Keep incoming frames from landing in receive buffers the old kernel had
-allocated: on a WonderMedia WM8950 board, broadcast traffic alone
-corrupts the next kernel at random points as it decompresses and boots,
-hanging about a third of kexec attempts early on, e.g. with
-"unrecognized/unsupported processor variant".
+Critical: 0 · High: 2 · Medium: 1 · Low: 1
 
-Fixes: 2d283862dc62 ("net: via-rhine: add OF bus binding")
-Signed-off-by: Alexey Charkov <alchark@gmail.com>
----
- drivers/net/ethernet/via/via-rhine.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/drivers/net/ethernet/via/via-rhine.c b/drivers/net/ethernet/via/via-rhine.c
-index e56ebbdd428d..dbbbaf7f20ac 100644
---- a/drivers/net/ethernet/via/via-rhine.c
-+++ b/drivers/net/ethernet/via/via-rhine.c
-@@ -2461,6 +2461,17 @@ static void rhine_remove_one_platform(struct platform_device *pdev)
- 	free_netdev(dev);
- }
- 
-+static void rhine_shutdown_platform(struct platform_device *pdev)
-+{
-+	struct net_device *dev = platform_get_drvdata(pdev);
-+
-+	rtnl_lock();
-+	netif_device_detach(dev);
-+	if (netif_running(dev))
-+		dev_close(dev);
-+	rtnl_unlock();
-+}
-+
- static void rhine_shutdown_pci(struct pci_dev *pdev)
- {
- 	struct net_device *dev = pci_get_drvdata(pdev);
-@@ -2580,6 +2591,7 @@ static struct pci_driver rhine_driver_pci = {
- static struct platform_driver rhine_driver_platform = {
- 	.probe		= rhine_init_one_platform,
- 	.remove		= rhine_remove_one_platform,
-+	.shutdown	= rhine_shutdown_platform,
- 	.driver = {
- 		.name	= DRV_NAME,
- 		.of_match_table	= rhine_of_tbl,
+- [High] mptcp_token_get_sock() uses the token value as its only liveness
+  check, but it accepts a requested token of 0.
+- [High] mptcp_token_iter_next() re-checks only net_eq() after taking the
+  reference (token.c:376).
+- [Medium] The commit message gives the wrong reason for the change, and
+  it never mentions the race the change actually closes.
+- [Low] net: mptcp: Fixes trailer cites commit predating token.c lockless
+  lookups
 
----
-base-commit: ead6fa9a0ab194f02a2f36d634b193e9c5f9a1c6
-change-id: 20261113-vt8500-rhine-shutdown-b2ac8a702688
+--
 
-Best regards,
---  
-Alexey Charkov <alchark@gmail.com>
+net: mptcp: take token lookup references with acquire ordering
 
+This patch changes mptcp_token_get_sock() and mptcp_token_iter_next() to
+use refcount_inc_not_zero_acquire() instead of refcount_inc_not_zero().
+The aim is to order the re-validation of msk->token and sock_net() after
+the reference is taken, as 5b5d8f351dd9 did for the inet lookups.
+
+> mptcp_token_get_sock() validates the token and the network namespace,
+> takes a reference on the socket and then validates them again.  The
+> second validation only rejects a socket that is being torn down if it is
+> ordered after the reference acquisition: mptcp_token_destroy() unlinks
+> the socket and does WRITE_ONCE(msk->token, 0), so a reader that observes
+> the token before the acquisition can return a socket whose token has
+> already been cleared.
+
+[Severity: Medium]
+Is this the race that the acquire ordering actually closes?
+
+mptcp_token_destroy() clears the token without touching sk_refcnt:
+
+net/mptcp/token.c:mptcp_token_destroy() {
+    ...
+	spin_unlock_bh(&bucket->lock);
+	WRITE_ONCE(msk->token, 0);
+}
+
+That leaves no release on the refcount for
+refcount_inc_not_zero_acquire() to pair with. With or without acquire,
+the re-check can still read the old token. mptcp_token_destroy() can also
+run right after the re-check succeeds.
+
+The case the acquire does fix looks like object reuse. mptcp_prot uses
+SLAB_TYPESAFE_BY_RCU and only listeners set SOCK_RCU_FREE. So an
+established msk can be freed and reallocated while an RCU reader still
+holds a pointer to it. The new owner publishes the refcount in
+sock_init_data_uid():
+
+	smp_wmb();
+	refcount_set(&sk->sk_refcnt, 1);
+
+Without acquire, the re-check loads of msk->token and sock_net() can be
+satisfied before the increment. They would return the old object's values
+while the increment succeeds on the new object. The lookup could then
+return an msk from a different connection, possibly in a different netns.
+include/linux/refcount.h documents this case as the reason for the
+acquire variants.
+
+Since this is tagged for stable, could the commit message describe the
+SLAB_TYPESAFE_BY_RCU reuse case instead of the teardown race?
+
+> diff --git a/net/mptcp/token.c b/net/mptcp/token.c
+> index e0f2823f92efb..3429b43a9f7c3 100644
+> --- a/net/mptcp/token.c
+> +++ b/net/mptcp/token.c
+> @@ -309,7 +309,7 @@ struct mptcp_sock *mptcp_token_get_sock(struct net *net, u32 token)
+>  		    !net_eq(sock_net(sk), net))
+>  			continue;
+>  
+> -		if (!refcount_inc_not_zero(&sk->sk_refcnt))
+> +		if (!refcount_inc_not_zero_acquire(&sk->sk_refcnt))
+>  			goto not_found;
+>  
+>  		if (READ_ONCE(msk->token) != token ||
+
+[Severity: Low]
+The Fixes tag points at fb041bb7c0a9 ("locking/refcount: Consolidate
+implementations of refcount_t"), which landed in v5.5-rc1. At that
+point net/mptcp/token.c did not exist yet, so there was no MPTCP code
+for that commit to break.
+
+The lockless lookup in mptcp_token_get_sock() came in with
+2c5ebd001d4f ("mptcp: refactor token container"). That is the
+refcount_inc_not_zero() on sk->sk_refcnt followed by the token and
+netns re-check.
+
+mptcp_token_iter_next() came in with 96d890daad05 ("mptcp: add msk
+interations helper"). That added its refcount_inc_not_zero() and the
+net_eq() re-check.
+
+Both of those are in v5.9-rc1.
+
+Stable tooling uses the Fixes tag to decide which trees get the
+backport. Pointing at a v5.5 locking commit would have it try v5.5
+through v5.8. In those trees this file is either missing or has no
+lockless lookup at all.
+
+Could the tags be changed to:
+
+Fixes: 2c5ebd001d4f ("mptcp: refactor token container")
+Fixes: 96d890daad05 ("mptcp: add msk interations helper")
+
+[Severity: High]
+What happens in mptcp_token_get_sock() when the requested token is 0?
+
+Token 0 is never assigned, because __token_bucket_busy() treats it as
+busy:
+
+	return !token || t->chain_len >= TOKEN_MAX_CHAIN_LEN ||
+
+However, 0 is exactly what mptcp_token_destroy() writes into a dying msk.
+It is also what a newly reallocated msk holds, since sk_alloc() zeroes
+the object. For token == 0, both the first check and this re-check pass
+on a cleared or recycled msk. So the "socket whose token has already been
+cleared" case from the commit message can still happen with this patch.
+
+The token comes from the wire. mptcp_parse_option() copies the MP_JOIN
+SYN token without checking it, and then:
+
+subflow_check_req()
+  subflow_token_join_request()
+    mptcp_token_get_sock(net, 0)
+
+Suppose an RCU reader holds a pointer to an msk on bucket 0's chain while
+that msk is unhashed, freed and reallocated by inet_create() in the same
+netns. Between sock_init_data() and sk_prot->init(), the new msk has
+refcount 1, token 0 and the matching netns. It would pass both checks and
+be returned.
+
+subflow_check_req() then calls subflow_use_different_sport(). That sees
+an inet_sport of 0 and calls mptcp_pm_announced_has_ssk():
+
+	list_for_each_entry(entry, &msk->pm.anno_list, list) {
+
+pm.anno_list is not initialised until mptcp_pm_data_init() runs from
+__mptcp_init_sock(), so head->next is still NULL. Can this oops in
+softirq?
+
+Even without reuse, a torn-down msk whose token was just cleared would be
+returned to the join path and pinned by the request socket.
+mptcp_diag_dump_one() with idiag_cookie[0] == 0 and the userspace PM
+token lookup seem to have the same problem.
+
+Should mptcp_token_get_sock() return early for token 0, for example:
+
+	if (!token)
+		return NULL;
+
+or should the re-check also confirm the msk is still hashed?
+
+> @@ -370,7 +370,7 @@ struct mptcp_sock *mptcp_token_iter_next(const struct net *net, long *s_slot,
+>  			if (num <= *s_num)
+>  				continue;
+>  
+> -			if (!refcount_inc_not_zero(&sk->sk_refcnt))
+> +			if (!refcount_inc_not_zero_acquire(&sk->sk_refcnt))
+>  				continue;
+>  
+>  			if (!net_eq(sock_net(sk), net)) {
+
+[Severity: High]
+The commit message says the iterator "has the same shape and is converted
+as well". The re-check in mptcp_token_iter_next() only looks at net_eq(),
+though. Can it reject an msk that was torn down or recycled in the same
+netns?
+
+With SLAB_TYPESAFE_BY_RCU, a preempted RCU reader in
+mptcp_token_iter_next() can hold a pointer to an msk while it is
+unhashed, freed and reallocated by inet_create() in the same netns.
+
+There is a window between sock_init_data_uid() publishing the refcount:
+
+	smp_wmb();
+	refcount_set(&sk->sk_refcnt, 1);
+
+and __mptcp_init_sock() running:
+
+	INIT_LIST_HEAD(&msk->conn_list);
+
+In that window the msk has refcount 1, the same netns, and zeroed
+conn_list and pm state. A zeroed pm.pm_type looks like
+MPTCP_PM_TYPE_KERNEL.
+
+The iterator would take the reference, pass the net_eq() check and return
+this msk. An endpoint delete then does:
+
+mptcp_nl_remove_subflow_and_signal_addr()
+  lock_sock(sk)
+  mptcp_pm_has_subflow_saddr()
+    mptcp_for_each_subflow(msk, subflow)
+
+Would this walk the zeroed conn_list and dereference a near-NULL entry?
+
+The other iterator users, mptcp_nl_flush_addrs_list(),
+mptcp_pm_nl_set_flags_all() and mptcp_nl_remove_id_zero_address(), would
+also act on a half-built or unrelated msk.
+
+Should the re-check after the acquire also confirm the msk is still
+hashed in this slot, for example:
+
+	!sk_unhashed(sk) && (READ_ONCE(msk->token) & token_mask) == slot
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/tencent_28A2BD1631FE531992E91753BA6419FFC506%40qq.com
