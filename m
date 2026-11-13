@@ -1,102 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.231.200
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794609803;
-	b=e4Fisj+AY+z8TWbrJ34hDHeTTB2Pe00gZY+6qzW9YxTnzJXowBefCqVBTSDcfAtkGOBo
-	 vyKKDVVu8TNiFlxBXnGrWehDfDsziyvMfLWBzqcANyYFLEgNm1r1sPDT4IJZc8LLxRHuW
-	 ALwUVaPKo50wLazE6+T40Ar8FkFO/iDsmcQ90+Kt9BHHYhN5HbVZW0hL4ksWZUb3T3E6m
-	 k1RGwpVDLl4+sFCRoUlAnESmm/kCgHId+SebRy6SOB6f6OHZeSFN2pEhEUk/WqmuBzjV7
-	 44DW7vFZTcoLqGNkbAIRRhCL6oOkBttNrtPw8ykXh3LI3YsXcQAIUzgugul0V607nug==
+	t=1794610551;
+	b=tmVbOdeUSnLJYSdNR1cxQnWXNfXtck1guyluu/co6+GseZkzoSuH45Z0AOSpmmcvp01B
+	 ltPqiY/zj4yS9izxUKftHx3ZjdwMpkn9re9QPTsjnQA/zjEp+OY/M4J6Rp6WXHO7RqmcA
+	 Y7SVL8vH1JKgEDLObGJ05BvV8Ebq605fzdgndOHLrKGfoOqQzwIvJMC1dADHFnA0QRHSX
+	 nlCiRVJ19OhYy5SyMtvBvqwDX1pgg08S1MepLuxT5SoDkt9a5O+sMKYxMrJcO0EJhtfvJ
+	 zeR9SmMulFAV6rIvm2TIADXPTOpgQvHVbe8RZQ+hoZtQloyMbRY1dSh4zjvh/4+fHXQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794609803;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794610551;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=Dxs3zEoSbcXfyuXkzQruDQFVj4t8rdiDEgXMtvqtLxY=;
-	b=upOV0rJVFwgw7VCG/ieg+oTahbrMF615mIdrhpI55CU+8MkBhJfi9gJgyGPpkpIbQIhi
-	 XinZeNEODoSaXC4jz+YnMrcanxwF/hNaJm+WgE9/A2QxvIweuh1lPANCDdxtq7N/ZgKTN
-	 efb2mNSgZ3n/Ji1EcDNC6rHGURFosG1OPInsm4t1LO1Ra7I4f+yJMw1xhW9hx4a90PLla
-	 XIE6m/jigoeST3aYJab9NxQjKHnNfgv1f8cpc03ObOs8B7l7GpmpcTS8ZuAQ5f9H0KNjM
-	 8hqY3JttlQQ/P/k/yufqasD9K6iyM7C3km3vf8d2AWELvzyniOrDqb9k3y/a92U06+g==
+	 Message-ID:Subject:To:Cc:Content-Type;
+	bh=ubHIV78BWdtikOGMl2tBl1TNThY7XLd4PDLG1WQAfwA=;
+	b=T7HuW94UBTaExNggh+1s1iZoODKHd8a3IDIHbWH5htK3gKUCPU50bGK61eWJMqDuozWm
+	 oT9HsX3+GdZnsXWA3zPIxwoaVnYZnKn4ERDcZhnbv8fkr1Q6YP1KvXo+QmKZbWAWppkZx
+	 444Q5T8EhbAxt9eFPpevVH49ZJbgIw9FhGkudPIoL+IqmqO68e2CT7WbesG7zPaGYuSrv
+	 kZjsZejX2I5Die3NSmLMcyccZRqRK8Znc4vsstoA+cBLI1qtbGitT4pj5fyL7xzlkA5fA
+	 U5PysHZMBKGGt5q5reoFv3mLaEicAPR6mfrbH7IFXpjAh4IXjZyYy6TqAYOKsPS/+IQ==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lXNS6fzM;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.221.171
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T8hARIt+;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.231.200
+Received: from mail-oi2-f8.google.com (mail-oi2-f8.google.com [74.125.231.200])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A9E606A33A
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 22:43:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53A9E606A33A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A3F606A32D
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 22:55:51 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 58A3F606A32D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lXNS6fzM
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5ece6c1d1cbso467504e0c.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 14:43:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794609799; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T8hARIt+
+Received: by mail-oi2-f8.google.com with SMTP id 5614622812f47-53c4858eb76so645832b6e.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 14:55:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794610550; cv=none;
         d=google.com; s=arc-20260327;
-        b=jC1KFpfinE2U7Vt/v/zCB4cYEHUDYSfmqeyjA+hVWqGps3cfil4rZCUBovCn+8arSB
-         ZDe4ln+3FJdsATxKgogthAdiakUfr84B43zOyrWMy/iPdWciBKfrZULhFT8px97JDwMm
-         RYyUhoHyaxWcl7bgJDmAt7f0eOxdHkHHKKiyDh8ET4VuDvyCu+yTw9O7HhLf33KPSViO
-         YWyfm+wP+IeCwu7VDz/spEdkFubh1F1gX47hjAOZT2sCW5nVvP3OdB6GOBZBkFYZKtl6
-         aJ0guywzJ6W67i7NSMpYLKVEGyb4+BmvOUoLdkdKNu0Ga3HBlsKHxpc9i4vKdvVI+ud5
-         oehQ==
+        b=eWu0drnqok2ugpXcVkqXoW2qj02SPhEExU45lTEshEvSGmoR01H7IpC0vZHwrQOOcN
+         AlophRlb3pM04w7BaoAAYsCK84CyKfzp+vsTDTYlywO3FY3knsBsCSyoXz/biEu9cfZr
+         O9toARfYBehVO7N6bXY8YXPGOPnrGwN+nSLA8LO8exLPn6BJc3v1quTPzczZXPRRPFwE
+         AWMYT40iJVJDmx5BrGJn0EZlVb+TthDFDfKeqXfdQ8Bd0JmlK4CmDhgMmv81do/H48u8
+         ajGJBjFm4Nsx6dM7i1JbF3hYfht/jgzrjZAJ2mjk7ceFyq9+nvYDi6jrLKLojNfazud6
+         URvg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Dxs3zEoSbcXfyuXkzQruDQFVj4t8rdiDEgXMtvqtLxY=;
-        fh=j+bX9ovjuhiLO9ZXjbHQx1qL1hH/OjM/RH/6DZlZqP0=;
-        b=bjifEI7I1f2+oQprxd+rDX+cayWo6MLorphSrAgmK1yA3Aq7DKDrR5spOkLduDGPUS
-         bMTD0dYtRMKWnZyCN5rafxPVAZCkXmVYLGZVX4dxzkqIWaXGDE8/Haq9H0vg885e0Nor
-         uRH8SjXNlwQd54GcJa4GqtMCf+psqtQC5Qczfdv34eVON9Zkqtvw8qzt6uKuW4Lee5VR
-         epdYmD3hWPLpFxybRSXA5bc2alaSPHidt2FornuC4C/9YppxBnxb1lI7uHPKkmb2Oe7b
-         ie6TmsOo7ESaG228Pe+uIjo8jUBKW4T8fxOTJkretozGK8jcNlki74ksGCbauApcfzJN
-         0xqQ==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=ubHIV78BWdtikOGMl2tBl1TNThY7XLd4PDLG1WQAfwA=;
+        fh=iicKSmV4UWpkSbXjUgnLpPwWmt6paZQPXU2x9FkZ8G8=;
+        b=ARcX+pMzGAi9n94TvJY1IKZwaDZyrXoxgIbpCMH4fd06GORcjxtGLCftzq47nuKDHW
+         s19v98IQ738yx1zuEUKD69NmiaPeqobgTROZYIYTUEU52+LBIG4h2HZ/lWpiEvNpYUc7
+         ToY3DoDyLZ2QfW2B2a7k6OhFvF56AU+RIwjwA918bmPFxIrz6WqfEEEt/4ukzVsna9Vq
+         lKz4G7uiPZXdryBv3guFKsRz1Tza/S3OoBusZ1ChCP3zMF8iM5QOvv1pgiu31t4rWo39
+         6jTp8upDyOOjrFaUeHP7JwvLTcb8+YvAKxUdih8HVkTp4pb9gIexpaP/A/hMJ/vMX9W8
+         Z6jA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794609799; x=1795214599; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Dxs3zEoSbcXfyuXkzQruDQFVj4t8rdiDEgXMtvqtLxY=;
-        b=lXNS6fzML+4ms8KRhgrDko+jDoeFLKoP7/8V9vvA0kngy5RONQDDaSWlykfzxvWBqy
-         ba3/RQkLsh5FJA7UziUKYswTcUoLp64Sprh1UKYouGqpRI4Zo52eTG9fTjA419TGXujq
-         ioxmWNLa+9j3Thyf7jRbQTEXHmqlt/zskzknrOjWG26iWAH1Jm868zz2hs9QpgTc4UMh
-         7aTNKsMd9Fd+lzUjNUj0iqIKUs2rHsbmTDUJJOhbyOKm8W+bzoO03dOKoulBUbuBt+Wm
-         PbaO0hG5DWySwdQCyKK6qRZ1lJwXcgfoAIi/koTLJVlNNaqY5YaC9c/u23zPaw4bZOv7
-         18Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794609799; x=1795214599;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1794610550; x=1795215350; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Dxs3zEoSbcXfyuXkzQruDQFVj4t8rdiDEgXMtvqtLxY=;
-        b=vc3eRbzyQnsWVhI2aPBn8FHw7eKfr7JmO8QfGGBUXw+oC4uxs4hlH3NtbbXRr6ydpk
-         NPqhc3DuCi5485gIt6Gfwv1bCNh1SOK3bBtYnJPKGJa++nH699KkdJ7PHAuPvLAP4+p2
-         VQJLIBd6Gwv+4uv42eYhi/0UtLCIetIvxURGdXoNL04fDyf4ickn7184rnCbptrfHdiK
-         Uo87xw56QPKDytKsExUFt3cVZVgRKOAXstE8YvDLSyaoV46MJzFWcho5nP+yraVxQfRX
-         oM+eCZuk0WXIOVAmzwc8s04wK7rImFggwuA20q1zPZF+7vlxXRPYbFMc/CaLHNgg5Hf2
-         YF5A==
-X-Forwarded-Encrypted: i=1; AL+hErEYSUL2FQC2gcsTKU34zyPesmqRd25XgCPc4cCPetFUMTwJtUQiHglH2PuAm2kGyYc9Tj0D0UA=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+eTgL2zFx7w4osSRLvDQ+XDjWKaqAFdNcajvAmYYN3UY8whElE
-	aU5TTlqXoE92Z3iHmJ2AbGB2ReDXEifO7pgTR8oq1UCmXzqeOWa4gdkIjEDh2iaAaObZyi20zc5
-	74w76yGiUOyHmZWJJTDls8kXbmqVRES4=
-X-Gm-Gg: AYBFou0hlmpfEV3T7+v5SRmxaIoec44xRxxEYR+Aeuw6WpZZqDJfD5mx/crcovbBZNI
-	xlmZ9aJO17VVA0CrM1GTeCvruq/t//F5ngab4iK5qBR7SqkYRKSykOu5a5EJLDvu5amvsgP2zUv
-	yZi3RUELecDdLO3pqlUNxxdsBX+ADWtgV58z6d0vwdCNuT1sv4Trq27Nssj2F44KQ6hqvfFn92n
-	Y2LhVjnDpSgc1eFNpyzop1lyOs8qwx2PIC0XCItI7Tr7/lbGEof2YuY2jnZNzyQNDJccWxI1zVj
-	Bvu5JwrJ2mm4O6dGPWOzoyHtyzi7PziHfQuzX14VzGN3j+PguDTrEDW50kxASI8ZidNHuaUIJ9e
-	1uEgMke9/bTcbG25cPYzb6fCcxxBeYZYu5BgvOB5vBGCuGVVJU96t3P4iD5/F643xGhlW06j63g
-	ftAy6QMcxcHnb/mK7cUBbJ5Hq+qHLsqLAnuVYMhZ1KhK2Le8kYFXbtJwoGyoI0f3PtITmqkJS/W
-	bxEqdrpb4Bat5G/btQdvjo/Eh+T/w==
-X-Received: by 2002:a05:6102:84c2:b0:7cc:ccb:ce5a with SMTP id
- ada2fe7eead31-7d64d89cdabmr1053049137.28.1794609799139; Fri, 13 Nov 2026
- 14:43:19 -0800 (PST)
+        bh=ubHIV78BWdtikOGMl2tBl1TNThY7XLd4PDLG1WQAfwA=;
+        b=T8hARIt+NW/FmW4/v/sit/FuJmA+iWrY0G9FAUkVCaY5ReC4DhU1n+4d5HNCZx/sqN
+         p2LpU5HqGTycZUoSsC7EgjFQDuek2CryyOAC9wy7u9eFvv9NnRZz7ppKcqKwwKhZg7A5
+         FneRPeENdI/K5C7y69Uh9+xIdnlp7vqaL02jEGjbC2J0urD0pY22a+Crie9SNJi7ytQW
+         6bzWxT3AVzJ07bR5nfk7c6kuwFuA1mJX06yXTwaJhJaRyD+8uktkpC2Z0Czw7x/a5Rp1
+         bD0O8L2pdnp1fayOogb+nYkGkYhsrWtIoa9hAX48la8jEqyot5Qrd962dcxk8voN4ysu
+         Al2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794610550; x=1795215350;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ubHIV78BWdtikOGMl2tBl1TNThY7XLd4PDLG1WQAfwA=;
+        b=fgNmLc2P9d6dPLqrzfvlHG4SfTjnS17z/RNLSAY7lBQ938FlEziP7b4R1J8vGK8TJu
+         R4ZhEORlT7Ahl7BqaYOL7G/Jam2RJYLum2s2h4ML62LX9/xT3+uK+10xxUnxTm691fpF
+         iXlk8aHLf6B5K/UboDs6+yH4uHx5elNRyJoqDjLI7B5faX+ThEyD9Y6dLs6c/CFYOw6Q
+         THfigluxC6WmaHh5Yp4S9rNN/zbX37sDlnUul4co+Ttg0JDHk8zt6/pPeKO3tbq1QsH2
+         Oyqjd7TBw7Wy1lvWXDRWaXZr6Pi9e/DabVK1oEXcIhywja0X87SBZisEMMLpf1P1ggXk
+         Yf8w==
+X-Forwarded-Encrypted: i=1; AL+hErE7+Mv1LGUqZoGCGOuUmwXJlcI9k6zb1D0bZtv3D9OBI6R6rCozAENx7trCpUSJ0UNs7Zw4Qrs=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/xF4/xtJkQEdQZ6bcKWvWlgjTZa5hrDE+aPuILVAvMLgoELhqw
+	wGSsPLt0HvJjGEpMOvs+39BQ5Ea8QQM1Pti/GKf0aC5OWv5C3MZohmtUBatSkvb/iTZkc//zX0W
+	GWaiDr38LiKONa+o2G3uysckz1AOMIVA=
+X-Gm-Gg: AYBFou2N195gXuEPRS3jkDTQ42TKh7zWR4WjTOCfvssz+o1ZB3k0PpM+gZTKLImt5Vr
+	wxF/AMX0p5+7Bqr4iGajm+SWXovl98lPmSPrk5PNeY/YGk/b5JuVygIDXRBSpQELz/kklZDN/7P
+	VxpRaJ4lzRELUMRSEG9NYbyCv/c8jFvIGlgWrl2OvbnoFaaThEXCE4MQq8lmjO/GE1mX+8XTOnL
+	OvDza9ajx0KgqM1dIzGM0BBaJ+gppkJn0TPUe9I+RLarqUwWdIwwM4R8ykz+PyiwR7i8rD5dTWT
+	e/s1IHekp+IQ2y1ROFAIhDDytFJhyCw0Mc5kW3Ery0974TTb8l/Tb74tHyldtPbpgEY4giHLGrX
+	ykU+c7bmC0NeX8hv2UWa1hEsmA91vLBVqUC9bmVWiG8x+83+udBTtD0No/NCiyyOoFIPvk3kYAV
+	TTM5QwBbp/d9QFjDhliS8wpkDu3xWrHeTfYRx5fUY1oka1nH5+mOpV
+X-Received: by 2002:a05:6808:244e:b0:55b:f88d:919f with SMTP id
+ 5614622812f47-56e65317dbamr3590625b6e.53.1794610550183; Fri, 13 Nov 2026
+ 14:55:50 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -106,158 +104,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261109-submit-acx00-phy-stats-v1-v3-0-fbc6327c5be4@gmail.com>
- <20261109-submit-acx00-phy-stats-v1-v3-1-fbc6327c5be4@gmail.com>
- <348f19e7-120e-4b41-adab-be016c7a6083@lunn.ch> <avdaBgWc5tpMhtqF@pengutronix.de>
-In-Reply-To: <avdaBgWc5tpMhtqF@pengutronix.de>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Fri, 13 Nov 2026 15:43:08 -0700
-X-Gm-Features: AclHuK_y5r8zy20zeheg5z5NyDwRpxzoSdoNuCWdWvLU_7paTeMna_98mFT74a0
-Message-ID: <CADvTj4q+QuSOre_Z7Kq286fLqrLfTq26oBCarDzx=wrc7Zz_WQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 1/3] ethtool: add PHY receive frame and byte totals
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
+References: <20261106124639.12584-1-dennylin0707@gmail.com>
+ <20261112075624.23c04230@kernel.org> <706b09ea-49cc-4801-a24b-b22d2ea7d257@lunn.ch>
+ <bc45c1e8-6904-47f7-9c96-512e024c9d71@gmail.com> <20261112113550.016cdab3@kernel.org>
+In-Reply-To: <20261112113550.016cdab3@kernel.org>
+From: Hungyu Lin <dennylin0707@gmail.com>
+Date: Fri, 13 Nov 2026 14:55:38 -0800
+X-Gm-Features: AclHuK9f-4XUFh-cJPJlk-I0MGZ48DWAeQPY9iTICab41F9Jkn5YSmRgl-29Kew
+Message-ID: <CAGEkeHdz3GPv8sd0SLD7zbRBPFfzMrWBSWG7uxho8uOUJAL4fA@mail.gmail.com>
+Subject: Re: [PATCH net] vlan: prevent cross-netns MII register writes
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, Andrew Lunn <andrew@lunn.ch>, davem@davemloft.net, 
+	edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, n05ec@lzu.edu.cn, 
+	ylong030@ucr.edu, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 13, 2026 at 11:42=E2=80=AFAM Oleksij Rempel <o.rempel@pengutron=
-ix.de> wrote:
->
-> On Tue, Nov 10, 2026 at 05:42:33PM +0100, Andrew Lunn wrote:
-> > On Mon, Nov 09, 2026 at 07:48:32PM -0700, James Hilliard wrote:
-> > > The generic PHY receive packet and byte counters describe successfull=
-y
-> > > received traffic. Some PHYs instead count all received frames and byt=
-es,
-> > > including frames with errors. A frame error count cannot recover the
-> > > number of successfully received bytes because damaged frames have
-> > > different lengths.
-> > >
-> > > Add optional receive-total counters to ethtool_phy_stats and the phyd=
-ev
-> > > statistics group. Count frame bytes including the Ethernet header, pa=
-dding
-> > > and FCS, and excluding the preamble and start frame delimiter. These
-> > > counters describe reception at the PHY, before MAC or host filtering.
-> > >
-> > > Append the new attributes so existing statistic IDs and their meaning=
-s
-> > > remain unchanged. Publish the names through the existing statistics s=
-tring
-> > > set, and retain the unset-counter convention so drivers can report ei=
-ther
-> > > set of counters independently.
-> > >
-> > > Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> > > ---
-> > >  Documentation/networking/ethtool-netlink.rst | 16 +++++++++++++++-
-> > >  include/linux/ethtool.h                      |  6 ++++++
-> > >  include/uapi/linux/ethtool_netlink.h         |  2 ++
-> > >  net/ethtool/stats.c                          |  8 +++++++-
-> > >  4 files changed, 30 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/Documentation/networking/ethtool-netlink.rst b/Documenta=
-tion/networking/ethtool-netlink.rst
-> > > index eba226c79ec3..5528d0f7afdd 100644
-> > > --- a/Documentation/networking/ethtool-netlink.rst
-> > > +++ b/Documentation/networking/ethtool-netlink.rst
-> > > @@ -1665,7 +1665,7 @@ the ``ETHTOOL_A_STATS_GROUPS`` bitset. Currentl=
-y defined values are:
-> > >   ETHTOOL_STATS_ETH_PHY  eth-phy  Basic IEEE 802.3 PHY statistics (30=
-.3.2.1.*)
-> > >   ETHTOOL_STATS_ETH_CTRL eth-ctrl Basic IEEE 802.3 MAC Ctrl statistic=
-s (30.3.3.*)
-> > >   ETHTOOL_STATS_RMON     rmon     RMON (RFC 2819) statistics
-> > > - ETHTOOL_STATS_PHY      phy      Additional PHY statistics, not defi=
-ned by IEEE
-> > > + ETHTOOL_STATS_PHY      phydev   Additional PHY statistics, not defi=
-ned by IEEE
-> > >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =
-=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-> > >
-> > >  Each group should have a corresponding ``ETHTOOL_A_STATS_GRP`` in th=
-e reply.
-> > > @@ -1683,6 +1683,20 @@ by ``ETHTOOL_A_STATS_GRP_SS_ID``. Complex stat=
-istics (such as RMON histogram
-> > >  entries) are also listed inside ``ETHTOOL_A_STATS_GRP`` and do not h=
-ave
-> > >  a string defined in the string set.
-> > >
-> > > +The ``phydev`` group provides separate counters for successfully rec=
-eived
-> > > +traffic and total received traffic.
-> >
-> > You need to be careful with naming here. This is a
-> > kAPI. phydev/phylib/phylink are implementation details, a set of
-> > helpers which some MAC drivers use to implement PHYs. But MAC driver
-> > can implement PHYs in different ways, and don't need to use a phydev.
-> >
-> > ``ETHTOOL_A_STATS_PHY_RX_PKTS``
-> > > +(``RxFrames``) and ``ETHTOOL_A_STATS_PHY_RX_BYTES`` (``RxOctets``) c=
-ount
-> > > +successfully received frames and bytes. ``ETHTOOL_A_STATS_PHY_RX_PKT=
-S_TOTAL``
-> > > +(``RxFramesTotal``) and ``ETHTOOL_A_STATS_PHY_RX_BYTES_TOTAL`` (``Rx=
-OctetsTotal``)
-> > > +include frames with errors. The total byte count includes the Ethern=
-et header,
-> > > +padding and FCS, but excludes the preamble and start frame delimiter=
-.
-> >
-> > And what would you call it when the counter does include the preamble
-> > and start frame delimiter?
-> >
-> > Take a step back. Just because this PHY has these counters, do we need
-> > to support them? And what happens when the next PHY comes along with
-> > slightly different counters? Do we add them as well?
-> >
-> > It is vendor SDK syndrome. The hardware can do this, so lets expose
-> > it.
-> >
-> > What is your use case here which justifies these specific counters.
->
-> I have the same question. James, your answer mentions traffic monitoring
-> and error diagnosis, but not a concrete problem on AC200/AC300 that these
-> totals would help with. My guess is a receive problem that another driver
-> for this PHY already works around.
->
-> Rockchip's vendor driver for the same PHY ID (RK630 and RV1106) reads the
-> packet and CRC error counters from page 9, registers 0x1b/0x1c and
-> 0x1d/0x1e:
->
-> https://github.com/rockchip-linux/kernel/blob/eeb355823a794954737fd75820d=
-fccdab4c57af6/drivers/net/phy/rk630phy.c#L430
->
-> The vendor driver does not export them. It polls them to tune the
-> receiver. If there is a signal but no link, it switches to a second
-> analog setting and checks again. It switches settings in two more cases:
-> too few frames arrive, or more than 15% of the frames have a CRC error.
+On Thu, Nov 12, 2026 at 11:35 AM Jakub Kicinski <kuba@kernel.org> wrote:
+> Maybe we can just delete it in -next and see if anyone complains?
 
-Allwinner applies efuse-derived trim on both AC200 and AC300 alongside
-hard-coded PHY register settings. AC200 uses one fixed set of settings;
-AC300 selects between two sets using efuse bit 9. These are applied at
-initialization, rather than adjusted from live packet/error statistics.
+Will do, I'll send a patch for net-next.
 
-> Its comments call this "Long network cable parameters". It also changes
-> the RX detect threshold depending on the temperature.
->
-> Do you see a problem like this on your AC200/AC300 boards? If so, can
-> you describe it? Then we can decide whether the driver should work
-> around that problem.
+Andrew, vlan is the only one doing this.
 
-I haven't reproduced that problem or tested long cables and temperature
-extremes. Temporary register changes on AC200 confirmed that candidate
-tuning fields are writable, but not that their analog meanings match
-Rockchip's. Adaptive tuning could be relevant future work, but I don't
-yet have evidence that ACx00 needs the Rockchip workaround.
-
->
-> Oleksij
+Hungyu
