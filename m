@@ -1,51 +1,51 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=217.70.190.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794532508;
-	b=hD20hfJvzCoa5WeR4QBGFab/5bu1lG0Wn2ge8+3d1TkLPTY3gx2SjkS9AeKx4BpHu98p
-	 e23Zp/nNOA12DYpUk9w11BR/qHyO5LWU7NrR8C4h7rnSTix6lQ3FCsahQEgTVnVw5tdwZ
-	 ywlPjHXcsZYClMJwrIZrc9RldSbLrIaSSYv3HrD+61rXJ72qCnwWyPR9ALexBmD81nYhK
-	 cvY9yNTXxBCwC/NnXyVnE8dkII2qw46GrhOEu44U/Ch3KAXnnwz4Hg7zhMSAYLh6Czrpy
-	 h79bP/XLeUNUGcbGsk4cLEaoMUXYcj4pWNykAlS0iyiPT29KJYCOo5Kmgn25ZSF0GYg==
+	t=1794532509;
+	b=VMjUo3d4cQfTqEQ11gotdN0Uba2uFoPiGO0d/8a7WxarOLemBDFRubpl5skuQ0b7C95B
+	 4mbSeAB/30/QD/fce68BiDw07zfZilrZ5DM/tRaCISCQjyswk/4aEdvCrcA1yeiIGlQga
+	 ARvztZFZoZTtVdUUYkGwCzWFQQMZzbDSHKE4YMuBkx/91+CMIjOWlVMwW/0iINm+qEsG0
+	 KvKsMAexCoMW+KygcvhNEdeyQOU6ixfT/nXHMrlQipjnB9unmZs3ZVh4vdISLgvNCBz64
+	 7psn3MfWIMZKvLUZDEhp1KAlqQwXTraqQ3yV3CZ13utpvd87ZeK25cB4lY2UVy/vJUw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794532508;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794532509;
 	h=DMARC-Filter:DKIM-Signature:Received:From:To:Cc:Subject:Date:
 	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-Spam-Status:X-Spam-Checker-Version;
-	bh=UnLggheEauYmSkvbgHbxqiUNagHbv3QczZGTkA9uNe0=;
-	b=JiQnpclZzKqDTrPkdL/xjxLJmMrmfs8UOcBz3UNqe4fWlY2iMccxN2lZ90BRUnMNUApc
-	 LsPESmDPbc3cIjbDeboDPA1E5D/DipozjWJGO3eEKFSkd56MTJAFh11T9wQgqsbtGo0Ww
-	 uZ0CKfpDiq6dgkEGqeey4nqfdQ8PWTFlmrhiFKCFZa9tk8MmUTkUvT4NW6vJxeqJ8cylv
-	 2oSwh3Jo6fRnDvVVUUmPAVzVYeLGMgJ7pYqiHr9R/9vn/g8KaWMefD3zMqj1x3uJ8SnIA
-	 dghVLA51avTD4TNSfLeBfj5PKMK82wrE4fxoHI3asAXcuzGr2uDxhOPpudZToqwl4+Q==
+	bh=JEPD8s17HilseeIGLyWmRryf5OeyuKuLuxwS1EhGQCs=;
+	b=UuPZT3bYhravWTF3Wve1nsKOqW/TM6FjLRsRaKqK/P2ZJlJdTKAWDCj5WKOczoShqRvx
+	 bKHjMkpsi4WymQUXEUhh+UWiUYpYxB96JCFPFeYcHGydFl637FB6v5vwJoXczvDeCsd64
+	 ueK6CIt/1lpEtwuUz09381qoRDse54XJmCjdshrXXZRfbQ6oXZXCtLxKTBUj1dJp0L6l2
+	 a3DY+Xdw9Tk7CarfPDmJCmMwFNzdIRHl8/VUhmFF29KEJ5paEfsADE6Qc+hzYNtItSOjw
+	 +/c8bw2Bw2PVFtYzabIw7ZOQv8cPELgcurkNlfnCjfCpqt4YsDoexmA9PmQvLZeQ6lQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=netfilter.org;
 	spf=pass smtp.mailfrom=netfilter.org;
-	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=ibnPI5pX;
+	dkim=pass header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=blTOqEz5;
 	arc=none smtp.remote-ip=217.70.190.124
 Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0FC606A8A8;
-	Fri, 13 Nov 2026 01:15:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CC0FC606A8A8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19613606A886;
+	Fri, 13 Nov 2026 01:15:09 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19613606A886
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=ibnPI5pX
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.a=rsa-sha256 header.s=2025 header.b=blTOqEz5
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1794532506;
-	bh=UnLggheEauYmSkvbgHbxqiUNagHbv3QczZGTkA9uNe0=;
+	s=2025; t=1794532507;
+	bh=JEPD8s17HilseeIGLyWmRryf5OeyuKuLuxwS1EhGQCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibnPI5pXIJDQukNGOyvcDZm+385TKu6qIGvn4RPpYZdRFpeTiiTvIwmLJdZqWD9sD
-	 gn8HaeeV1mCq9tN95vnIzdesZRp2bwxOBFeVZ8xYZ5UxvN8f6SKqlXSILSPtlZFN5O
-	 gGYHheZ5qngzjkmO2K67VchVTKTzcNgC7W5sr7Cgyx+C299N6/0gnCBymtGQaQKb/g
-	 jwu2DyDl4/o0koFFyEOAlpNxJBbZ/7u4GPiLdbFAPTerh0SyZtBq67C7gNl3I23EJz
-	 OoBhKOfgkJshnrQwHUsuMq5gYOSIkpsNHdOzM0zlxF+LoLktLNmtURNye91yNUCotH
-	 vVjaTpt92R8yA==
+	b=blTOqEz5ApKlxiONpOw0vLCqshWykzTda8+zbqg50Zsl+BY+HPtpYx6lrgmih1xkC
+	 scrCUCq3KRtIxRdlovqnpEobiKxzUFjNuplcXVvatcdM15W3WJNg4ybKxcNvbR2nVD
+	 dOaIrzrgiWfEdO+Acb2sCcHoFAHub/YcE8s+SDsMkJ646WJ1MbSbcSN7g+ULRGa3RH
+	 Orp3hB6Pp85KFwLq5tg1LHCRIQZqPaLo9umRNv0FPATC3aqVuGkVdiBcL51c4Gk7JH
+	 cZjBh/ULVj6DE9qQJxvDg4bwH15ATSyG2BqnsViyiGFyHUsKi3EsSnIKCzPOH0CQBS
+	 vCk1EworcxAEQ==
 Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id A81D160058;
-	Fri, 13 Nov 2026 02:15:05 +0100 (CET)
+	by mail.netfilter.org (Postfix) with ESMTPSA id 1C8BE6005B;
+	Fri, 13 Nov 2026 02:15:07 +0100 (CET)
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 To: netfilter-devel@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -56,9 +56,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	fw@strlen.de,
 	ja@ssi.bg
-Subject: [PATCH net 07/15] ipvs: ftp: add seqadj extension before linking the expectation
-Date: Fri, 13 Nov 2026 02:14:39 +0100
-Message-ID: <20261113011447.2357709-8-pablo@netfilter.org>
+Subject: [PATCH net 08/15] ipvs: update flags and seqs in backup server under lock
+Date: Fri, 13 Nov 2026 02:14:40 +0100
+Message-ID: <20261113011447.2357709-9-pablo@netfilter.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261113011447.2357709-1-pablo@netfilter.org>
 References: <20261113011447.2357709-1-pablo@netfilter.org>
@@ -73,76 +73,65 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+From: Julian Anastasov <ja@ssi.bg>
 
-ip_vs_ftp_out() links an expectation into the helper extension of the
-conntrack, then ip_vs_update_conntrack() adds the seqadj extension. If
-the conntrack is still unconfirmed, which happens when the real server's
-reply does not match an existing conntrack and creates a new one,
-krealloc() can move ct->ext and the expectation list keeps pointing into
-the freed area. Deleting the conntrack then writes to it:
+Sashiko reports that we modify the conn flags and seq values in
+the backup server without holding cp->lock. The same is true for
+other fields such as state, old_state and timeout which are
+modified by protocols under lock.
 
-  BUG: KASAN: slab-use-after-free in nf_ct_unlink_expect_report+0x490/0x4c0
-  Write of size 8 at addr ffff888004dd4e48 by task syz.2.17/649
+Extend the locked region in ip_vs_proc_conn() to update the
+fields atomically.
 
-Reachable with CAP_NET_ADMIN in a user namespace.
-
-Add the seqadj extension before mangling, so it is in place before the
-expectation is linked.
-
-Fixes: b25adce16064 ("ipvs: correct usage/allocation of seqadj ext in ipvs")
-Cc: stable@vger.kernel.org
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927220816.268206-1-pablo%40netfilter.org
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
- net/netfilter/ipvs/ip_vs_ftp.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ net/netfilter/ipvs/ip_vs_sync.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-index 44de99f4d187..81c3a2fd27b3 100644
---- a/net/netfilter/ipvs/ip_vs_ftp.c
-+++ b/net/netfilter/ipvs/ip_vs_ftp.c
-@@ -29,6 +29,7 @@
- #include <linux/netfilter.h>
- #include <net/netfilter/nf_conntrack.h>
- #include <net/netfilter/nf_conntrack_expect.h>
-+#include <net/netfilter/nf_conntrack_seqadj.h>
- #include <net/netfilter/nf_nat.h>
- #include <net/netfilter/nf_nat_helper.h>
- #include <linux/gfp.h>
-@@ -384,19 +385,25 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
+diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
+index 1caacf419af9..ba2fa1f9d08e 100644
+--- a/net/netfilter/ipvs/ip_vs_sync.c
++++ b/net/netfilter/ipvs/ip_vs_sync.c
+@@ -850,6 +850,7 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
+ 			    unsigned long timeout, __u32 fwmark,
+ 			    struct ip_vs_sync_conn_options *opt)
+ {
++	struct ip_vs_conn *cp_new = NULL;
+ 	struct ip_vs_dest *dest;
+ 	struct ip_vs_conn *cp;
  
- 	ct = nf_ct_get(skb, &ctinfo);
- 	if (ct && !nf_ct_is_template(ct)) {
--		bool mangled;
-+		bool mangled = false;
+@@ -891,9 +892,6 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
+ 		flags &= IP_VS_CONN_F_BACKUP_UPD_MASK;
+ 		flags |= cp->flags & ~IP_VS_CONN_F_BACKUP_UPD_MASK;
+ 		cp->flags = flags;
+-		spin_unlock_bh(&cp->lock);
+-		if (!dest)
+-			ip_vs_try_bind_dest(cp);
+ 	} else {
+ 		/*
+ 		 * Find the appropriate destination for the connection.
+@@ -920,6 +918,8 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
+ 		}
+ 		if (!(flags & IP_VS_CONN_F_TEMPLATE))
+ 			kfree(param->pe_data);
++		cp_new = cp;
++		spin_lock_bh(&cp->lock);
+ 	}
  
- 		/* If mangling fails this function will return 0
- 		 * which will cause the packet to be dropped.
- 		 * Mangling can only fail under memory pressure,
- 		 * hopefully it will succeed on the retransmitted
- 		 * packet.
-+		 *
-+		 * Add the seqadj extension before the expectation is
-+		 * linked into the helper extension: adding it later
-+		 * reallocates ct->ext under the expectation list.
- 		 */
--		mangled = nf_nat_mangle_tcp_packet(skb, ct, ctinfo,
--						   ipvsh->len,
--						   start - data,
--						   end - start,
--						   buf, buf_len);
-+		if (nf_ct_is_confirmed(ct) || nfct_seqadj(ct) ||
-+		    nfct_seqadj_ext_add(ct))
-+			mangled = nf_nat_mangle_tcp_packet(skb, ct, ctinfo,
-+							   ipvsh->len,
-+							   start - data,
-+							   end - start,
-+							   buf, buf_len);
- 		if (mangled) {
- 			ip_vs_nfct_expect_related(skb, ct, n_cp,
- 						  ipvsh->protocol, 0, 0);
+ 	if (opt) {
+@@ -951,6 +951,9 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
+ 		else
+ 			cp->timeout = (3*60*HZ);
+ 	}
++	spin_unlock_bh(&cp->lock);
++	if (!dest && !cp_new)
++		ip_vs_try_bind_dest(cp);
+ 	ip_vs_conn_put(cp);
+ }
+ 
 -- 
 2.47.3
 
