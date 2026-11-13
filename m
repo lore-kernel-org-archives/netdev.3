@@ -1,101 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794599189;
-	b=WmZvrK/SKAzyIsa3Zr0nPqCLdNjzMsvyz/qxIsBw11JfpiSDL0cvwxbo4Yx71ryVAuoE
-	 j0DkJ84BUJjNp7KuvchMl4hCfDOeV1sWXA10YrccMF7HLyxBVS+rMTWO5Yep47ie9cWxn
-	 W3m3nTZBWIWN3saQ8Iz/s5EPyPHboskk8Tb1iu0zcXAQVPGlAnMCIJ5vT7DLTxM0usjb0
-	 ZIdIyUu/W7bp5dlNdgXeF5gzdZnBnXSIlc8V1EHF5nxEDfcTYxsIJXolGQjDDnzPQV8/0
-	 6BUNS1SrCvLEMwlVd2io/TsNYV/t0cf30JoVviyAxt0xD+iir6dRm39pAv+5kDnK14A==
+	t=1794599774;
+	b=eYmgrCB0+e5COo3+A5YpUUim/U06rw3Xon+7HmdvA/eLlLrVzPmUD6fYRFHWEBpe+Bzh
+	 iFq1X6nxJj76N2sFszL0ycaJr3tvPC0u8nj0ORfJou8PfM1PniqUJeegb44V9w7ZZlY2v
+	 GPszSJCjPnIcm/1JsycqDf/YMePkIRKPQgf/k3tOmqJdx3Ln3fdXKU+KEiQ2K3o70mBfw
+	 8AYNC65RLa+sTs02b5QKKg0lkJDYmYTIWPlQBR4OvjyKqOMB7DBK9PAJbK3F8D/MpYTlp
+	 /5WdZpRGUc5xmAA97/7sk4HGq76s5RnSWNXqRJ0s+AzNiegvkRgTf9AEcGSHW5mcTrw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794599189;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794599774;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=bnFbcLg4xPh0sKDXQsE4qpXTpMcLOCkYe6dKlukYuLw=;
-	b=0jru49BJhdH2IxHALPq7sT29E/OdifPfRPwCBpUZogLRojgkC+KuGGrXIsi3gktl1xUS
-	 9vdakwBccaZ0STKfxOJnjp1Fs23ZAhjkdfMY4tqvdR03vCEtZFJ6FMSOOqbw7MewnM2+y
-	 GzoqhFmqV/5NYn5HfDWf5zRCVoozZI10M1D0qJydKz47hJtK0BowTmrx+1EoAYT3q7jtf
-	 mnqMVqEp9/bETu4b/URg93He0btWwUgLTUgObzO86XNnFR2PtUU3lYKAdxqoVDcu9ILLO
-	 OtPHvC2VVEsoHiHIH8A1GxL5QB0Sdepby0XjVCpzBQPcOCU2wLWS5+43ryJlF7ffRhQ==
+	 X-Gm-Message-State:X-Received:Date:Mime-Version:X-Mailer:Message-ID:
+	 Subject:From:To:Cc:Content-Type;
+	bh=C9JNMy87F5GjSumUJ/1eB0UMECSuf0ETEpR6hvHEzLQ=;
+	b=is5i1KxEmcRjG1+IlE/Q+LzJ/hqPUtQJTB3ICpFV4xJNm3VEpy1CCV6RavVWo8ZRgDrm
+	 OdHkW9LB53vJ8lba/W/ux7FMZW33Ao/MJXBnmES3bdJ+R2R4V/V45NL3dqzJTEYtnO82n
+	 J6rjS2aU2yzsdr+JkM9A50qtltSCnB13wGdX9ZUevS+u5c6wda1ylVUmdGNjsUeAGmjAY
+	 ugMgOm2oPdoMUPR1Tp66oC1Markcu8K5K4KZpZ3Ej+P4n7j4SySP6ssFX8FYHSy5ILDb/
+	 tZ2mPg/vTJWzIixPQUkd/utjmhfVw5ikQmQs6eeMpmdjHk+5bXOhvG3GWjZZpdpWyzQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=cs.unc.edu;
-	spf=pass smtp.mailfrom=cs.unc.edu;
-	dkim=pass header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=lUXWgwOT;
-	arc=none smtp.remote-ip=209.85.128.169
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	dmarc=pass header.from=google.com;
+	spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ckO1749W;
+	arc=none smtp.remote-ip=209.85.167.199
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66313606A337
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 19:46:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 66313606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cs.unc.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.unc.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F81660A3833
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 19:56:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3F81660A3833
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cs.unc.edu header.i=@cs.unc.edu header.a=rsa-sha256 header.s=google header.b=lUXWgwOT
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b394e2af9cso11106227b3.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 11:46:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ckO1749W
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-5384e381fbbso929887b6e.2
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 11:56:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cs.unc.edu; s=google; t=1794599188; x=1795203988; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bnFbcLg4xPh0sKDXQsE4qpXTpMcLOCkYe6dKlukYuLw=;
-        b=lUXWgwOT0nkGaNixNWwsujzne4Bek6VhbLEYIq+4/GxurLCI0t0pvTn+G9P2HCpEtg
-         B6qcag4rfJHE+G/2dfHYHrLbgLIYX2ybRQW/2X7//qE4a/V30/qIPhwTP2XeZ0kLHREs
-         RWgKRrSI6T0hnt6UW0NmSzMdv3sFQx4q0ksmZq79Uuz35PsTDPHgaxQMrT3UvIlEu4Vv
-         2PMw86rb6CVcl7CntVwrNeUhIbtOM+akuIo4i0dpB8Br+mwDZhPJoLH8a9kTL1r2cLUo
-         jOlFs/nQyuhbxtH7Jh/EaJ3YwPY3Ls9oSJCVPwAmC7PpFr/fM37tKHLd4ZmHPhY2jhSA
-         tpTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794599188; x=1795203988;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20260707; t=1794599773; x=1795204573; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bnFbcLg4xPh0sKDXQsE4qpXTpMcLOCkYe6dKlukYuLw=;
-        b=fwfp87Ozzn/B9AhyNOn9P+4F9Lsnv/KL4o4xGct3Yev+m/1vD0zlMnjDZ+IBD2PGiX
-         pFGC7VO0hotMt/moVAbtmBW8K7ZYNcvY7G55c0V2btHUNdZxFNiK0rbCGA2y54t/xwqn
-         eVf8+f9Du/AQKJe3C4J0eC+3zcyWT2BCTMjvjM+T7FrEyyWN3JbFU8Stigt5QxHHIw0V
-         ecwotuekigqX/5v/ojTlvKQmEgMl6looJwCZK4TzoHpPlDYgkXUFcpjqcrgA0GrnYKDz
-         Ar5kZtyF+mFzxd4Eyla52PN5MOSVsbU+w2rGyiXS2ImcVUQmCp71axfWmp3TH33vRGAt
-         vdsg==
-X-Gm-Message-State: APuU4Z+NpRUBbpOoyfBtMy+jQc9gV0KtBFspXSpWWjLJXK2MUvDpfDuq
-	DcXeEevK7qonVni0tgHTGAQUHnLnToJqG/4iqP37+uyUE9/BdwwW6loZJ19Gujl4ds0238S5Vwa
-	4FUNZ8gg3Ya35hNtku7aAPsp6CEuLnNHaXuJJgcGvsIeyvDdW/HmWsqja4zHiimSLsMucYYu6IR
-	J0pe1u3x+MsDQNMIhWMFLEyQbrjkkkc58LkOCWIrMo
-X-Gm-Gg: AYBFou10qMWF9bw9tcwoElkFOYIDDu5UhFSGDzDsrShnfFcJ5o0jo92sGKFXA41sa1s
-	2iHeTTOUspfzR7jc3I18dXsiBFIrjRkesHU6dqG5ZAdXSDjEQ0dcBGUR8TLoLxi/6wfr2Pj1K2e
-	Fu7Dr4QzuaLUjHBtz+Rur7l2xwr4HY5T1Mg6vmYhIx7qLYOiChEoyLe6Ar6thHmtG6JZR9BFueS
-	KDzywDIVYU7ATy5hgQfOlzSRbGtQCR64KS3kr2cEMnvzlkXH/ZCbk/BUFIdpqjN68CCH9Pafp6A
-	O6ucj1EUBOGZAqidrj9K7FPTMFSFqiliX5zfd9B7se7372J5k63gwMNGlpok7FH3NgK+cD7Sxw8
-	74gThASv0CILwm9H0GrQ4k1AbAUdv8xWz7QcEHgWXEUbAcI/WXpZk0GlDtMH8bqapT+hdLVpc+z
-	rec2TBLmFNSfvi4R3UetJnJt/CxDazaf7P4B2VpwkRQTGoZcRJMRo0/AESfTYUxiPF1MKRAaT4K
-	jNpMmKO8VcO7WVBsa/5zYT8P+H7Is5V6fwzfJivHRECo0WZRQKifXRGfkpIKa3IrkfTMCrTRAx7
-	VhSK/CEv8cG6Mc/PJUn5gOdGpeWZ9n3VCAiDYR4GINoITxnVxswAQHfFbQhbUUHcCSnbeuK7
-X-Received: by 2002:a05:690c:c4e6:b0:8b3:2ce6:a3c0 with SMTP id 00721157ae682-8b4aa26fdc4mr21818737b3.26.1794599188303;
-        Fri, 13 Nov 2026 11:46:28 -0800 (PST)
-Received: from cobra01.cs.unc.edu (cobra01.cs.unc.edu. [152.2.130.143])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b4aa7f1a0dsm28393167b3.1.2026.11.13.11.46.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 11:46:27 -0800 (PST)
-From: Hengyu Liang <hengyul@cs.unc.edu>
-To: netdev@vger.kernel.org
-Cc: John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Benjamin Coddington <bcodding@hammerspace.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] tls: fix send() returning success after the TCP send failed
-Date: Fri, 13 Nov 2026 14:46:20 -0500
-Message-ID: <20261113194620.3830173-1-hengyul@cs.unc.edu>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <179459891623.2168702.5534679656595552608@kernel.org>
-References: <179459891623.2168702.5534679656595552608@kernel.org>
+        bh=C9JNMy87F5GjSumUJ/1eB0UMECSuf0ETEpR6hvHEzLQ=;
+        b=ckO1749Wthm18+XiK92CDr4J+NhK81Qi2q1wxsBKkPUn7X97ioC7nbx97lysB2vzVY
+         q4cCLegItsqe2Jn6y6p6iguafYLpDBGygW/XKzgLKbCh0mUeaBtiKQjPPuD++Ye7OYhb
+         7iut0+AduTAdwRkZCjKlO8bN+UDg/bk0FfVdhQcyT3qSZmqxdyzS86RkHk010bA/p0Xf
+         X1j1Xbmxcd9jEsmLh31qpzBrs4liDLTovHUn1CDh1OcZag78dwogyFQWZXdTgds/4L2P
+         j/MWF7E6WWmp/6La1tTn+YwovzhPpXGgZ0ec7I7O2CyvrDt+0/dlULszyIvXVuMwr2n0
+         X7Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794599773; x=1795204573;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C9JNMy87F5GjSumUJ/1eB0UMECSuf0ETEpR6hvHEzLQ=;
+        b=WC+atvKHL7XsdZ52FyM2WQNDd5jczdfU+cnMVxP9LZBujBxyWH2MsxLWn4hHcCGaSJ
+         F1FqEqq21BA7YvzgU7mmFq4t2gYpvUHpOLZuGfskfvXmVeeU+HuKrvIerOOjNqelTV0+
+         hF8LCnRdBHjvMlTqZ2VEttPXCcIIR4+2pYfIHtzZTIQMW4/FUc9HPyaAOeKa30uQ7zmU
+         jnPRbhBj3JwaIrUqEajD/pE7UyZd4K403VnHZL2/5D8+R3FyW609CyZnP0DDXSbkXZzN
+         JnCHouo1ATyrjELAFhmNwBfQXujR9omt8cJ//dK/d1dD7Yr9T3WA+s9BB4YmeetHwMv2
+         Hn1g==
+X-Gm-Message-State: APuU4Z+KSVaF/KKWcSLd4fHGdhbmj+7PPtGMsuf7uPieErgz1jmDcTj9
+	a0NLLM6+ZDuAnL8n6MWonrkYWAMSYdQIkcReULdBQRYZg8cB8lR+ylH6Q9NSZcUVoLMafptoPkV
+	akgafOwGFUwcG2zsMCJ7o0K8f655i7cmQe9PW3i+s7pEWb5ZyprMIhGXAKtzOfoLPXbPrxp1KPT
+	8Y4gDUEhLC6nQJYQthISKWDff3XzzY/3nEFIzsp7QpqOGPwg8=
+X-Received: from iloo6-n1.prod.google.com ([2002:a05:6e02:6106:10b0:523:a008:3bb])
+ (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:c40a:b0:53f:4cb6:cdc1 with SMTP id 5614622812f47-56e64f0c967mr2901751b6e.34.1794599772767;
+ Fri, 13 Nov 2026 11:56:12 -0800 (PST)
+Date: Fri, 13 Nov 2026 11:55:53 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -104,17 +75,184 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.708.g77570a6a1d-goog
+Message-ID: <20261113195553.2220562-1-joshwash@google.com>
+Subject: [PATCH net] gve: fix checksum state and gso_segs of HW-GRO packets
+From: Joshua Washington <joshwash@google.com>
+To: netdev@vger.kernel.org
+Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jordan Rhee <jordanrhee@google.com>, Ankit Garg <nktgrg@google.com>, 
+	Tim Hostetler <thostet@google.com>, Willem de Bruijn <willemb@google.com>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Praveen Kaligineedi <pkaligineedi@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+From: Ankit Garg <nktgrg@google.com>
 
-I found this while comparing the behaviour of different kernel versions:
-a send() on a kTLS socket whose TCP socket is in repair mode fails with
-EBADMSG on v6.8 but returns the full length on v6.18. Testing
-b341ca51d267 and its parent showed the change comes from that commit,
-and I then checked the shutdown(SHUT_WR) and reset cases from the
-commit message as well.
+With HW-GRO enabled, gve_rx_complete_rsc() turns a coalesced packet into
+a GSO skb by setting gso_size, gso_segs and gso_type, but leaves it
+CHECKSUM_UNNECESSARY with th->check as the device wrote it. Unlike
+tcp4_gro_complete() and tcp6_gro_complete() for a SW-GRO packet, it does
+not seed th->check with the TCP pseudo-header checksum or set
+CHECKSUM_PARTIAL.
 
-Thanks,
-Hengyu
+The GRO stack completes a HW-GRO skb itself only if it holds the skb for
+merging (since commit 5eddb24901ee ("gro: add support of (hw)gro packets
+to gro stack")). Otherwise the skb is delivered as is, e.g. with rx-gro
+off or for a packet that is flushed immediately (e.g. with PSH set). If
+such an skb is forwarded out of a TSO-capable device, netif_needs_gso()
+accepts it as CHECKSUM_UNNECESSARY and the device segments it with a
+bogus checksum seed, so every segment is dropped by the receiver. This
+blackholes forwarded TCP traffic on VMs acting as routers or NAT
+gateways and was observed on VMs in real use.
+
+Fix it in a manner consistent with other drivers with HW-GRO: set the
+network and transport headers and, for packets whose checksum the device
+verified, seed th->check with the pseudo-header checksum and call
+tcp_gro_complete(), passing gso_segs through NAPI_GRO_CB(skb)->count.
+skb->data points at the Ethernet header on the napi_gro_frags() path and
+at the IP header on the header-split and copybreak paths, so account for
+that when setting the network header. Since the header layout now
+matters, tell IPv4 from IPv6 by the EtherType, as qede and bnx2x do,
+rather than by the packet type.
+
+Also compute gso_segs from the TCP payload length. It was computed from
+skb->data_len, which is 0 for a packet that rx_copybreak copied whole
+into the linear part, leaving such packets with gso_segs 0 and a
+non-zero gso_size.
+
+Fixes: e637c244b954 ("gve: Advertise NETIF_F_GRO_HW instead of NETIF_F_LRO")
+Cc: stable@vger.kernel.org
+Reviewed-by: Joshua Washington <joshwash@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+---
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 69 +++++++++++++++-----
+ 1 file changed, 53 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+index 82ed5e48b00a..58696d26c698 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -13,6 +13,7 @@
+ #include <linux/ipv6.h>
+ #include <linux/skbuff.h>
+ #include <linux/slab.h>
++#include <net/gro.h>
+ #include <net/ip6_checksum.h>
+ #include <net/ipv6.h>
+ #include <net/tcp.h>
+@@ -1000,13 +1001,34 @@ static int gve_rx_dqo(struct napi_struct *napi, struct gve_rx_ring *rx,
+ 	return -ENOMEM;
+ }
+ 
++/* Prepare a HW-GRO packet the way tcp4/6_gro_complete() prepare a SW-GRO
++ * packet, so that it can be resegmented by GSO or TSO if it is forwarded:
++ * seed th->check with the TCP pseudo-header checksum and set CHECKSUM_PARTIAL.
++ */
++static void gve_rx_fixup_gro_checksum(struct sk_buff *skb)
++{
++	int len = skb->len - skb_transport_offset(skb);
++	struct tcphdr *th = tcp_hdr(skb);
++
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV4)
++		th->check = ~tcp_v4_check(len, ip_hdr(skb)->saddr,
++					  ip_hdr(skb)->daddr, 0);
++	else
++		th->check = ~tcp_v6_check(len, &ipv6_hdr(skb)->saddr,
++					  &ipv6_hdr(skb)->daddr, 0);
++
++	NAPI_GRO_CB(skb)->count = skb_shinfo(skb)->gso_segs;
++	tcp_gro_complete(skb);
++}
++
+ static int gve_rx_complete_rsc(struct sk_buff *skb,
+ 			       const struct gve_rx_compl_desc_dqo *desc,
+ 			       struct gve_ptype ptype)
+ {
+ 	struct skb_shared_info *shinfo = skb_shinfo(skb);
+-	int rsc_segments, rsc_seg_len, hdr_len;
++	int rsc_seg_len, hdr_len, nhoff, thoff;
+ 	skb_frag_t *frag;
++	__be16 proto;
+ 	void *va;
+ 
+ 	/* HW-GRO only coalesces TCP. */
+@@ -1017,20 +1039,11 @@ static int gve_rx_complete_rsc(struct sk_buff *skb,
+ 	if (!rsc_seg_len)
+ 		return 0;
+ 
+-	switch (ptype.l3_type) {
+-	case GVE_L3_TYPE_IPV4:
+-		shinfo->gso_type = SKB_GSO_TCPV4;
+-		break;
+-	case GVE_L3_TYPE_IPV6:
+-		shinfo->gso_type = SKB_GSO_TCPV6;
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-
+ 	if (skb_headlen(skb)) {
+-		/* With header-split, payload is in the non-linear part */
+-		rsc_segments = DIV_ROUND_UP(skb->data_len, rsc_seg_len);
++		/* With header-split or copybreak, eth_type_trans() has already
++		 * pulled the Ethernet header.
++		 */
++		nhoff = 0;
+ 	} else {
+ 		/* HW-GRO packets are guaranteed to have complete TCP/IP
+ 		 * headers in frag[0] when header-split is not enabled.
+@@ -1039,7 +1052,6 @@ static int gve_rx_complete_rsc(struct sk_buff *skb,
+ 		va = skb_frag_address(frag);
+ 		hdr_len =
+ 			eth_get_headlen(skb->dev, va, skb_frag_size(frag));
+-		rsc_segments = DIV_ROUND_UP(skb->len - hdr_len, rsc_seg_len);
+ 		skb_copy_to_linear_data(skb, va, hdr_len);
+ 		skb_frag_size_sub(frag, hdr_len);
+ 		/* Verify we didn't empty the fragment completely as that could
+@@ -1049,10 +1061,35 @@ static int gve_rx_complete_rsc(struct sk_buff *skb,
+ 		skb_frag_off_add(frag, hdr_len);
+ 		skb->data_len -= hdr_len;
+ 		skb->tail += hdr_len;
++		/* napi_gro_frags() pulls the Ethernet header later. */
++		nhoff = ETH_HLEN;
+ 	}
++
++	skb_set_network_header(skb, nhoff);
++	proto = nhoff ? ((struct ethhdr *)skb->data)->h_proto : skb->protocol;
++	switch (proto) {
++	case htons(ETH_P_IP):
++		shinfo->gso_type = SKB_GSO_TCPV4;
++		thoff = nhoff + ip_hdrlen(skb);
++		break;
++	case htons(ETH_P_IPV6):
++		shinfo->gso_type = SKB_GSO_TCPV6;
++		thoff = nhoff + sizeof(struct ipv6hdr);
++		break;
++	default:
++		return -EINVAL;
++	}
++	skb_set_transport_header(skb, thoff);
++
+ 	shinfo->gso_size = rsc_seg_len;
+-	shinfo->gso_segs = rsc_segments;
++	shinfo->gso_segs = DIV_ROUND_UP(skb->len - thoff - tcp_hdrlen(skb),
++					rsc_seg_len);
++
++	if (!IS_ENABLED(CONFIG_INET) ||
++	    unlikely(skb->ip_summed != CHECKSUM_UNNECESSARY))
++		return 0;
+ 
++	gve_rx_fixup_gro_checksum(skb);
+ 	return 0;
+ }
+ 
+
+base-commit: dee3429e94d8089713645706df678ec54a049e13
+-- 
+2.56.0.611.g1030f0b940-goog
+
