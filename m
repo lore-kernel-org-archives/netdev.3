@@ -1,93 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794602517;
-	b=ODg/VV7MwNpfWrSv3PN/WfKbo00xWYwFcbwMn3HcImZRJkKo1tsUIRy861ztc0yB6eGH
-	 sBmOefSdiOpX5PMPHfoWBkPNsJFrfLTPb44yRFo4ZKUBLJhpuV8F119bYt+HV8jNbUgaX
-	 jdEoXJSZcQcWO1aGmrzLnFDDMLlBZHhcAaSUlmvgop8cptiMhzz//QIKSCWLF+C2BDwze
-	 bCTjBcOsOswe0lL9R30Ui20/5gP6vKnyvQ5nOZW1Mc1KN9Im50SiBRZJODEYc4MiS33cm
-	 MUn7UqfMll71fopUoGDIFVRXWwRDP1RvwLGWXP4x9ggwjCWpdevX7OJ+SyfnJWPF8Hw==
+	t=1794602524;
+	b=l52lGcred6uZK7PKh/t3QumZ4/+1CfA7n3G91slzqcc0ElWSk2fdwLP2vUUwhslSfWxW
+	 oDxzTOoOV+b8X5rQWfZGS+nvPTtBmi3Tp+9Mv+A62uA2gu1WkgicHQgv/hBMLdupyy3Ab
+	 ebS3cJZDXk70U9vlTEakomiX41zGP5nh6AI0x7y4k2upvVrp1dUbKRiB5GjZWEZ2sdqqv
+	 sVo65Y+QS64pTgGVN0NG5iPI5LpnxU6emFxOpNnfviSK/xl6JaV4HFPFOhj9aCHGArqlY
+	 oKllTpgsFKCi2sXSIPfpjQh8uUbQYEV33QM4aL9YrvRfAhvDkcDV5LhRSKVZcdzn4SA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794602517;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794602524;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
 	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=+ycpCc/+WGN6IE3EdqBfw73uboGNGqUXn9gFvgoGme4=;
-	b=q+JuTEXLPw2lxAszfoJLEOlnr6fJK8gdNMii4YmBTERt9bcSUgQ6MsVsE2eHaFnQT4Js
-	 XYEueJYtcxzV3lp4PHTG0jdoDpOV6oE+BDKgubhqtInbL01K1wkm7SL1mt00+E73+yNdb
-	 H43t347ZXXj6+hpZsS2vQ5g8HqAkXHSk497kBoHi2RhgsQTk39BvjM2ZDxHX0rXFK/aAv
-	 ZxuFHrN7WfYNLDC+uP6bWyax8MVj4QnPoAZg1ATwHqSmtvQqVyasoPBRkMAcEiF0d3NQi
-	 ldAHigAVO7QiXgyJQx68PUpXTDi1xnh29VJcfI7FyxeZcEa6+TR+okSL/1GYwAYKxeA==
+	bh=dGcn824rKEZ2cs2j/D0bTmwKcmAhL8Vsfhtp6L68fts=;
+	b=MnzUR5G4xQgJbB3xNNJW69x2SAjhM0J3GqCv4vt6MFYP+CIwEYggnM/zvYfX3sqzwiOB
+	 xkn5E3FI1RuQLroNSLvE/bYgrN11gJtwejJL/+j68g+gYIWDaTjQJpRAhjT0Gu3OG2Qj+
+	 mAka5GHSL7lPE35fSbKkNnIJZEbj+pwjVl3gaDQ6B7D/erGknMrgP7guS7sKinn9dhe1z
+	 FCaVFvP43FV/MJ0cBGmIJL8S+BhsPoL+l/EZH9wTJ/2Rpk82+fb6RJ2XuZrUdXifDgjMk
+	 UIyPtfYq4XOjlGwBP52Ro5otr/KbeUlyOqWV1w5gLsiJoPdVPF627f7FDZI84dQ8OQw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aFOJlyh7;
-	arc=none smtp.remote-ip=209.85.216.44
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="bPD/NoZD";
+	arc=none smtp.remote-ip=209.85.216.43
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B90606A323
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:41:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01B90606A323
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD48606A323
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:42:03 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DDD48606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aFOJlyh7
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b0ae87069dso1109232a91.2
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:41:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=bPD/NoZD
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3b18717a193so805627a91.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:42:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794602516; x=1795207316; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794602523; x=1795207323; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=+ycpCc/+WGN6IE3EdqBfw73uboGNGqUXn9gFvgoGme4=;
-        b=aFOJlyh74pZHwu95GwtsPU7WypFP+qeSwJKfMbjUQbX0c0Rr87t3WniX7rn3ZpI6Y3
-         xo9a2Cn3U4cvEolJVl9iuaW0sF3tfbMQNudf11oyO5IITcQLhYOpkVYuYl4wzLfuRpN+
-         Zl7cr+xMbgLVaXLRHDzEPEh2Fi4VUPkKgsy30fpIn5iGw/A+rm1xBZIJpZk1Vh2k2WNB
-         AxpevnsLIgISGatVRSkDQWe1ddssVrbCtFZ4JVj6lLouJ3L7oOXdWfgrmicqUGYofwAO
-         B5cC0MoiwiUrPJXpaooFm/jc2d17H993JO7aMGqxh+e5guZBxZWfvTo/ZACI5g7TsfhM
-         8ctg==
+        bh=dGcn824rKEZ2cs2j/D0bTmwKcmAhL8Vsfhtp6L68fts=;
+        b=bPD/NoZDhEN66i91GjHVmMPtwT4PFaMA+5+W+uaS/kF1xX+eA0atdJyMT8sl/rwmIm
+         wlFrPqTl/oO6vOAFWkWxMUFk+1DAiYW8zVo+ZPGVpX4HaDMyd4lKNWtMGHSulEm7K5jC
+         J9NvQECrjau4sX8grDa1HJzN1RRaTKwTv4JV8KsVS8U9wWJl93SlCVcNAEMNWz/MRsqu
+         bRBY2BpMusNDmpUGzy2DjAeLkuUVPLsbg/cc/71uE8bukqWMcu8f59tG8ViU6RmhoqaA
+         Dcv/Se9nBpgXThZTpGY4BEkA6pUNu/6IECUNghRBysMs7zGqL4YVH38U12iQ9HImjgM7
+         /Asw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794602516; x=1795207316;
+        d=1e100.net; s=20260707; t=1794602523; x=1795207323;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+ycpCc/+WGN6IE3EdqBfw73uboGNGqUXn9gFvgoGme4=;
-        b=FZMcaezzbcNj3lro+4VuPlPTNJt0chOgn+B0pC2MMCA9nZ7Tc4vGsRraDRN9eZrWoZ
-         gySJumf2Kk533/mixUo8h4RVDM21KCLx4OwvrjdlGHnsBly5YU7iBZzi2SCf9c/X3LM5
-         jIGAERHNINs5Tp9R1O7DqTLo/S8ix+DTOZemPjS33xtxwyscUdsA1L6z0SlML0lhN66i
-         jCQktuTlD1uv6dsosQ67rpHv2VhzMJgnxj4UjbvmNALArHDhCexnzSv87as8XBQ0i7hj
-         kTN9xMU6rPaN/Uw9r8+8vLBMb3U5guTuHYfbatSI3kZEJVD7KHEyd+VSs7FMDjqgy488
-         8ftA==
-X-Gm-Message-State: APuU4Z+Cn3sMLOMJjFI8EqL0Pm8ZF0Q2cYzY/IE/hjEZSJqeRvl5GlS4
-	9yvjPa2K5FbxwbCSxYSEr4OCwGrHwb+i4qXfxhrmpMk0DlIo2WCu3EFu
-X-Gm-Gg: AYBFou1DsQMpF7J706ibnzp0G10RyBvIhEhASW7dhR5z+FOZFfWL3AMGoidkjTmvc0I
-	lU4z5HrbC5eJ0IbEds/iiHQY9fuqJ3/s4AbnkXyOPA369+Sd3DFr6aCjdgtORLraWSiE1MOu7GQ
-	dtoSjZPD+XmfXUk2tOLVdy2bQiYhI21shHE36sYZ26nWruqBWYNDh+k2gjIwYUi2/CTxkBRPSZR
-	HsfOs+hu4tEoV9yBEYJDd3dy2rVEgICjB4yUNqAmWkpI7bQbsS7bDJPtCWjeDaxwjklnGVHzV81
-	kJ9gs0hK8qeFgPFrsGqYpqPQtMNDHKdMSQRUrviyBwGIUNONPNAmDMVyM1FZQDM0ct4aBQa5TzI
-	k+DxIiq3DQcKwsHaok3GHhwlPepNtaqHjvGB5TM9ZHKeC1+GOm65YpEZQIZ2+FKibpjQIwnGAkI
-	eA4rEbZjiXq/XXTK5/57DzcSl1PHPjNotvaWDdDf5Geh73j74AimpRwlOgiyHc6ob25cE/Jo/8s
-	N7JLl637W3gPDSKpzFi1HxPpTmr3TL78IZKNKYQAlnlqZHJ+PJQ9/3+HGKuR3b8lrWLujLNs3vn
-	3ev9KB9Y0oIZGihJWBIvoPNKjsI6xpvJ1tm+IRNyddNoHcNSY8avZfgwJbyTTgtW5ffw3YttNVh
-	mx4W8Rko4tqvY15+C9XuO3Gau6XE2IVLwuVbkrSmY8Gg8WA==
-X-Received: by 2002:a17:90b:33cc:b0:3b0:92b2:2e74 with SMTP id 98e67ed59e1d1-3b1b0b5e516mr3035403a91.62.1794602516311;
-        Fri, 13 Nov 2026 12:41:56 -0800 (PST)
+        bh=dGcn824rKEZ2cs2j/D0bTmwKcmAhL8Vsfhtp6L68fts=;
+        b=JGP9KTkcxckXsO7fsCb1RffB/4aoIufGtGG8wlO0VTkYOPdIxqzsCxE3mS7mX09AHE
+         A2AB9mvyxdqJWF441slyTAB2rFSeM8FJZx2QQsG6k0QMbYDHiQ9CQbX5YzlxSocGmfda
+         vYyJh9ERPbSwXei0VxtoiNRAQIXFj7+9W6M/ZObGX33tEDTPiCYnt+xjfTD2u1Puup76
+         X22Q1bcJVuS1mZFBvvLCOfyPiVSZIVmWVF2BPNNURI9cNrC+V26/hdogjSQFqQf4zcol
+         ZjUsY16D/sgZvrpMerckQD2A2oD852dSNz9In1m6VKbGyvJl+2c8Y3Y3IYjMvcNqcw/k
+         jFYQ==
+X-Gm-Message-State: APuU4Z+aLngpkwl5+BkNL1pyyCdtCX5QMsMELLL9ybUTGuJkii9JHAEE
+	mNqsHhuVhYlrv3SdzR38St4uaPI5EgYpLtkkxLmVdkG0iDlQwhk9imu1
+X-Gm-Gg: AYBFou0KNGwUOi9Wxmt2etFAncq4W6pkdD26RRvTUWPiVXL6jXbLidXO8oZts5J2G7l
+	eTCmslLxSueS352bajqvypaEXhpz67XNZejL2/hfo7hcLc60lnCMbPbmPjXpydqaC/DiyfE2usA
+	vfczmR/ftd+qtLN677bKkZ2AUx5r9j+5nEQy/ezgvbNxHiobOXYLkd1aTLz08SApHpVBpQvbN+6
+	dLmP7Hn+AcedkWElmohhWYm9l2EnTZ8dkHnA2bAJFeno+KCv7Mkmiwi+Tz9r7mN5Hj3ZWEGoQ4H
+	Ph3AWgRJfzWey4S36IDQkERB7CLVA6zpRFu04AXwBsa8sX/uLUH+tScFfa3amToeio7563GKPIE
+	g7Nul5xLMIfAorm47fLl7vLisHP3urJVcINVMELl7873Lqe2GFY9HGzZKfzZzsVnkbVaEK25dsz
+	uCDSADnL4LYeBt0U3rP+q7xiM1WaAGDQyN33vFsjezJagbTYFAA8Tx2H4AN46G61IPyypaNqLRQ
+	STm22goO/FAX9Cp1ZNWZkzPdSA0DSgrl+OTTv/qRzA03f/n4/Vgyj0EY2EaGFfDU+dReL7hIsoX
+	HeAByrcYloh3LR79pNz6NwebmQbAuMQFMOW9vpqzXfY4c25LXh2SAh6bDs4MNm3nCIIwRYHxOFF
+	HW7bZDzSrltHItXeZE7n5ccQJzM0REoYJvN/jR2ZRD8AwBQ==
+X-Received: by 2002:a17:90b:2543:b0:3ac:9e5e:d195 with SMTP id 98e67ed59e1d1-3b1b0b92206mr3127882a91.61.1794602523217;
+        Fri, 13 Nov 2026 12:42:03 -0800 (PST)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc160a17esm1943316a12.3.2026.11.13.12.41.52
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1aeb179fasm6008867a91.4.2026.11.13.12.42.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 12:41:54 -0800 (PST)
-Subject: [net PATCH 4/6] fbnic: Initialize and reset the HW stats before they
- can be read
+        Fri, 13 Nov 2026 12:42:02 -0800 (PST)
+Subject: [net PATCH 5/6] fbnic: Stamp heartbeat and ownership requests after
+ allocating them
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Fri, 13 Nov 2026 12:41:52 -0800
+Date: Fri, 13 Nov 2026 12:42:01 -0800
 Message-ID: 
- <179460251204.8819.12233374584808838528.stgit@ahduyck-xeon-server.home.arpa>
+ <179460252146.8819.5116894946781183620.stgit@ahduyck-xeon-server.home.arpa>
 In-Reply-To: 
  <179460241885.8819.7179935130629202331.stgit@ahduyck-xeon-server.home.arpa>
 References: 
@@ -107,132 +107,88 @@ Content-Transfer-Encoding: 7bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-The HW stats are kept as running totals that advance by the difference
-between each counter and the value last read, so the last values have
-to be captured before the first read, and rebased whenever the hardware
-counters are reset. Three paths get the ordering wrong.
+The fbnic_fw_xmit_heartbeat_message function records the request time
+on entry, before it allocates the message. The service task sends the
+heartbeat with RTNL held, and under memory pressure that GFP_KERNEL
+page allocation can sit in direct reclaim for minutes. The request then
+goes out stamped at the start of the stall, so the FW_HEARTBEAT_PERIOD
+gate in the fbnic_fw_check_heartbeat function has already expired on
+the next service task pass. That pass expects the response to have
+been processed already, and if the mailbox interrupt thread has not got
+to it yet on a host that is still struggling, the heartbeat is reported
+as missed and handled as a firmware crash although the firmware
+answered.
 
-The fbnic_probe function creates the debugfs directory, including the
-pcie_stats file, before it calls the fbnic_init_hw_stats function. A
-read in that window takes the stats lock before it has been initialized,
-and accumulates deltas against baselines that have not been captured.
+Take the request time after the allocation, just before the message is
+posted. A response still cannot be recorded as older than its request,
+and the firmware gets the full period to answer however long the
+allocation took.
 
-On resume, the __fbnic_pm_attach function rebases the stats only after
-it has returned early for a device in init failure mode, though such a
-device still exposes the PCIe stats through debugfs. And during PCI
-error recovery it runs from the resume callback, after the
-__fbnic_pm_resume function has already restored MMIO access from the
-slot_reset callback, so a debugfs read in between takes its delta
-against the values from before the reset and the totals jump by close
-to the full width of each counter.
+The fbnic_fw_xmit_ownership_msg function restarts the heartbeat the
+same way, stamping the request and the last response before it
+allocates the message. It runs from the service task with RTNL held
+when recovering from a firmware crash, so move its timestamp after the
+allocation as well.
 
-Initialize the stats before the debugfs directory and the devlink
-instance are registered. Rebase them in the __fbnic_pm_resume function,
-in the same stats lock section that restores MMIO access, so no read can
-see the reset counters first, ahead of its init failure check.
+This was seen on production hosts during host memory stalls, where a
+page allocation stall of 464 seconds in this allocation was followed by
+a "Firmware did not respond to heartbeat message" warning while the
+firmware kept running normally.
 
-The issue was found by code review, and the recovery case confirmed by
-hardware testing with forced AER/DPC recovery.
-
-Fixes: 25ba596d137d ("eth: fbnic: add PCIe hardware statistics")
-Fixes: 9f61eb2d185b ("eth: fbnic: add locking support for hw stats")
-Fixes: 05ec5504ff69 ("fbnic: Fix service task races with ndo_stop and PM suspend")
+Fixes: 20d2e88cc746 ("eth: fbnic: Add initial messaging to notify FW of our presence")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c |   11 +++++++++--
- drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h |    1 +
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c      |   16 ++++++++++------
- 3 files changed, 20 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-index 307d5e737848..966c2d0fb27a 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-@@ -547,9 +547,10 @@ static void fbnic_reset_hw_mac_stats(struct fbnic_dev *fbd,
- 	mac->get_rmon_stats(fbd, true, &mac_stats->rmon);
- }
- 
--void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
-+void __fbnic_reset_hw_stats(struct fbnic_dev *fbd)
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index e00d626f6438..3465f0139883 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -538,8 +538,8 @@ static bool fbnic_mbx_event(struct fbnic_dev *fbd)
+  */
+ int fbnic_fw_xmit_ownership_msg(struct fbnic_dev *fbd, bool take_ownership)
  {
--	spin_lock(&fbd->hw_stats.lock);
-+	lockdep_assert_held(&fbd->hw_stats.lock);
-+
- 	fbnic_reset_phy_stats(fbd, &fbd->hw_stats.phy);
- 	fbnic_reset_tmi_stats(fbd, &fbd->hw_stats.tmi);
- 	fbnic_reset_tti_stats(fbd, &fbd->hw_stats.tti);
-@@ -558,6 +559,12 @@ void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
- 	fbnic_reset_hw_rxq_stats(fbd, fbd->hw_stats.hw_q);
- 	fbnic_reset_pcie_stats_asic(fbd, &fbd->hw_stats.pcie);
- 	fbnic_reset_hw_mac_stats(fbd, &fbd->hw_stats.mac);
-+}
-+
-+void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
-+{
-+	spin_lock(&fbd->hw_stats.lock);
-+	__fbnic_reset_hw_stats(fbd);
- 	spin_unlock(&fbd->hw_stats.lock);
- }
+-	unsigned long req_time = jiffies;
+ 	struct fbnic_tlv_msg *msg;
++	unsigned long req_time;
+ 	int err = 0;
  
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-index caea4be46762..5eb1e8b29ef9 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-@@ -154,6 +154,7 @@ struct fbnic_hw_stats {
+ 	if (!fbnic_fw_present(fbd))
+@@ -556,8 +556,10 @@ int fbnic_fw_xmit_ownership_msg(struct fbnic_dev *fbd, bool take_ownership)
+ 	}
  
- u64 fbnic_stat_rd64(struct fbnic_dev *fbd, u32 reg, u32 offset);
- 
-+void __fbnic_reset_hw_stats(struct fbnic_dev *fbd);
- void fbnic_reset_hw_stats(struct fbnic_dev *fbd);
- void fbnic_init_hw_stats(struct fbnic_dev *fbd);
- void fbnic_get_hw_q_stats(struct fbnic_dev *fbd,
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-index 09ae797b1f0d..cb0191b65204 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-@@ -350,13 +350,13 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* Initialize heartbeat, set last response to 1 second in the past
+-	 * so that we will trigger a timeout if the firmware doesn't respond
++	 * so that we will trigger a timeout if the firmware doesn't respond.
++	 * Take the time after the allocation, as for the heartbeat request.
  	 */
- 	fbnic_fw_log_enable(fbd, true);
++	req_time = jiffies;
+ 	fbd->last_heartbeat_response = req_time - HZ;
+ 	fbd->last_heartbeat_request = req_time;
  
-+	/* Capture snapshot of hardware stats so netdev can calculate delta */
-+	fbnic_init_hw_stats(fbd);
-+
- 	fbnic_devlink_register(fbd);
- 	fbnic_devlink_otp_check(fbd, "error detected during probe");
- 	fbnic_dbg_fbd_init(fbd);
+@@ -793,8 +795,8 @@ static int fbnic_fw_parse_heartbeat_resp(void *opaque,
  
--	/* Capture snapshot of hardware stats so netdev can calculate delta */
--	fbnic_init_hw_stats(fbd);
--
- 	fbnic_hwmon_register(fbd);
+ static int fbnic_fw_xmit_heartbeat_message(struct fbnic_dev *fbd)
+ {
+-	unsigned long req_time = jiffies;
+ 	struct fbnic_tlv_msg *msg;
++	unsigned long req_time;
+ 	int err = 0;
  
- 	if (!fbd->dsn) {
-@@ -498,10 +498,16 @@ static int __fbnic_pm_resume(struct device *dev)
- 	struct fbnic_net *fbn;
- 	int err;
+ 	if (!fbnic_fw_present(fbd))
+@@ -804,6 +806,12 @@ static int fbnic_fw_xmit_heartbeat_message(struct fbnic_dev *fbd)
+ 	if (!msg)
+ 		return -ENOMEM;
  
--	/* Restore MMIO access */
-+	/* Restore MMIO access and rebase the HW stats in one step, so that
-+	 * no stats read can take its delta from counters the reset cleared
-+	 * against the values read before it.
++	/* Stamp the request after the allocation, which can stall in
++	 * reclaim, but before posting it, so the response can never be
++	 * recorded as older than the request.
 +	 */
- 	iomap_table = pcim_iomap_table(to_pci_dev(dev));
-+	spin_lock(&fbd->hw_stats.lock);
- 	fbd->uc_addr0 = iomap_table[0];
- 	fbd->uc_addr4 = iomap_table[4];
-+	__fbnic_reset_hw_stats(fbd);
-+	spin_unlock(&fbd->hw_stats.lock);
- 
- 	/* Rerequest the IRQs */
- 	err = fbnic_alloc_irqs(fbd);
-@@ -582,8 +588,6 @@ static void __fbnic_pm_attach(struct device *dev)
- 	rtnl_lock();
- 	netdev_lock(netdev);
- 
--	fbnic_reset_hw_stats(fbd);
--
- 	if (netif_running(netdev))
- 		fbnic_up(fbn);
- 
++	req_time = jiffies;
++
+ 	err = fbnic_mbx_map_tlv_msg(fbd, msg);
+ 	if (err)
+ 		goto free_message;
 
 
