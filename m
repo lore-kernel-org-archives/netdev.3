@@ -1,60 +1,79 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794537062;
-	b=jd42bX0WP7RIfnqmnQVOcmfphmzbzhp3jM4IM6w3LhWY2BNmaBRJdeH4vI2PclaGbuYU
-	 g11q2yzRnUtQNVlq0W3Ph8b2V9H+khCiq8epLlx4LB1FlFO1wAT5EIQHEyCRIZyWgXzM3
-	 c0ystepKOxpTnTId0nquzooL+iQ4CdA1xmkrvDDeLmQEy9oy2BUaKAwIzyS+8Wvug9AUx
-	 LeieVcvNXpHPBIs2eZ85fVxJkhHM4GlGLG9B21V7qIekjNyUfdmOjiCT8YxtEZhYVfFBt
-	 GdVv9yWQuDDEw56aJt3/Uiwpd7NwPb6tltEy9n0Yn6o9Cj17fUQIkgZMl1GvI64M/mA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794537062;
-	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
-	 In-Reply-To:References:X-sashiko-severity:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=5y6QZfTSiMv/r9t+oZRsJhbawjquWwyqBPI0GslwcxY=;
-	b=bnHgH0elcMmSOKrdVSf5zJJvE6+WzVI6dvocv8T0BVpsWJghYhGMdZ8LLDD9iPLM1Huh
-	 cirSesONUvOUIAtIzUBCOmKtzdjcDUhj9AL3FyT4R9ruP5E3tXDX09eU0u9pPzXKHCMQz
-	 ty+hOWoHwE2S77yRQxctv57ZgCEeKn2CXD6RS6etHvMVzTEyfh1u/gLwr3/5wmi/TAdPS
-	 eXGnnd7LGDvlLDEZ5sgZjulCXCT309q6t5ZsEQXz/+eAN2c3XNPgoBiO3LKxEqHl96hnO
-	 BvtxtcwwXkkGE7HmKUJnIMRREDlrJOl3S1c4lqs836fBCA1eiB8qti5hn6glc2nu5AQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMjwemEF;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794537209;
+	b=HBQrQzJ/bCviJp2Sk1OYIS+9OOIgEgQQfIznp32cLFloFMtoC5oLrt7AUkoFr9fkcOOc
+	 IwOmL3Te3T5hE5JPpYtnX47iMuznt3Ect9WgzOZICLFbS+blrLWqnxcE8mOQSQ9zvyf5O
+	 EwaTAuO7LTaRpgnR7ol2KRQvP51XrR1QbcWkTiePYPn11Pj7cBDLcC9VoMO1AA/W4nIcj
+	 pnH6mSYcfKoY+Yh720GI+WkpRNLSntzbAAmuQuvEu+cjam6g1iCz2jGq4pdlcGXrkUL3J
+	 hDLGeIXIF7WWOZIv/g3cu51lcbqbQw9nOzFYwjmDSSXjMckJBWj6Iqokf7/52QrIiIQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794537209;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=wbZST1vJA+sptBoHxkIdeWy6DfjF7+YldX5KdzSx3ck=;
+	b=wFDdnbyxuLImXFJzQl8kgZGukeC8QuIGLChl680PMlQ5a3o6c7P6UwWb1fyxtZD+G8QB
+	 yeYQBIkCB49ySzOAVDDfKBxlnedQqnG1gBFYhaqm9dQcBcI5JEToWzpC7EjtD49PNhOxl
+	 6scjFtUREYh5f5j3gff/Te+GSUsjyxH8TUl+zeuzz0i/gNKtydviM0gwC4kC7gF0BubKO
+	 98QtdzPdgsZCufEey+47cqveIhtwLKUirVS+YK7u/b5xUD+6FmOwcvWyJqGwvRsGFW7r7
+	 pvG6tvZ2PyOq+2tgsMI+IHpiPZEM24eULO4S9VgpO5BKNZ32GXbGTyqE1XE2lehC6Aw==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="Bk//eMyK";
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D1A606A31C;
-	Fri, 13 Nov 2026 02:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7B5606A31C;
+	Fri, 13 Nov 2026 02:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kMjwemEF
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732271F000C5;
-	Fri, 13 Nov 2026 02:31:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bk//eMyK
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794537209;
+	b=UXDneyPLPnevzirqf6KFZMT3WEXEzisvg+0ywYbIko466JpF158Dnsm7ZVLeylgIhzTO
+	 0mLN/kDIKOwtKaDd0JbUZMFOvhWxBrvVsHxtyFeRqFd5Btl2p0q2610XmlHYqWDk9+4Ez
+	 7h9fceeJz6o4PP3/270u7tsMn2vqnE656syqtG2Z6hYfWdCD/2ld4IN+LiAFQOs1Oe2UE
+	 mDtmnJM+CoSjXdpRHUzeDGcS+EMC4N8hkX87VQetMGE156Uftnr2XA1n+X3KL2EqVwFBe
+	 PXLXk63EPQTbmEQQ9muCWeZvJmS89NnwhrTepmFIciIhESD+n9AaRtPuVQpPmuZZIUA==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794537209;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=wbZST1vJA+sptBoHxkIdeWy6DfjF7+YldX5KdzSx3ck=;
+	b=1J1pfgJluYOX7JsZc87hQPCw53GEyWj6rC3c65LQdqkP4VYAVIP5f84kcm14WBHC19VK
+	 dvuJoo/85ixEwrGYLi30t7088kmIzgNPhtSyxpAC4J4sfh4aooSKzYgCcsVhuUw8tWOvb
+	 I7m3KWl9Qusu0oJkcmgE5hcwPqVOJ3ifYTk0fsN3ythdxZZL81DFPb0CdkP37Se9m/MvZ
+	 I74dLL8ANNZitIDwm0WLKMwJ9kdN5FFqQbq4/OwsxVduuobLWldlHdDeAjz7rPgxB3qD3
+	 i5ZkFnWi0y603yMpe7KJEvBvtGdDhmEuqoKxQo1JN15gcqYnVMHb9g0pNBTnRaFoDUg==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id C8E991F000C4;
+	Fri, 13 Nov 2026 02:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794537062;
-	bh=5y6QZfTSiMv/r9t+oZRsJhbawjquWwyqBPI0GslwcxY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kMjwemEFShD4PkWCc0O/x1VuqXTWyu/a640HP6cQFHq1U7GcorQunAYP2rrzl6WXc
-	 RbYrqfv+uXWhJniiyryl7ah2QwxQXressgI5d8+/YU9r41WiVLxaSOV0rbpwqGH0J/
-	 hJESgs7S8+3W39SzBdxE8wNCdrm+UMSLH8Q8tOX8CcHamijqaAuzs7lL1AgJyxEWjw
-	 avJ1Za7noHmxA9v9Mp6OQYnJpH2KJfhzhKdDataJL9UndzsXsFMZeX9/dLGu9Zi+jH
-	 pooYbg1AEoIT+vXDo+HYl7zyyHSHIzYqr61HeVeJ54vfvFOtUA4Wf9cOEP87twIEz+
-	 Fq9QIheQ/szHw==
-Subject: Re: [PATCH net] net: mana: report RX checksum offload for IPv6
-From: netdev-bot+sashiko@kernel.org
-To: hamzamahfooz@linux.microsoft.com
-Cc: netdev@vger.kernel.org, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- stephen@networkplumber.org, linux-hyperv@vger.kernel.org,
- stable@vger.kernel.org
-Date: Fri, 13 Nov 2026 02:31:00 +0000
-Message-ID: <179453706097.2199510.1777031818337204982@kernel.org>
-In-Reply-To: <20261109142856.779955-1-hamzamahfooz@linux.microsoft.com>
-References: <20261109142856.779955-1-hamzamahfooz@linux.microsoft.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1794537209;
+	bh=wbZST1vJA+sptBoHxkIdeWy6DfjF7+YldX5KdzSx3ck=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=Bk//eMyKXviKKSlBZK0/pOjrbmGfKGOrlxsgWGmYo/1TOuK2BrJE6RydCcmqq0/py
+	 nerXqx01/eW+6wV27/usnDCdClzruGVIbRy0BS/cuoBZ8O3GULPm0JOiATBGyFQDXA
+	 ZD2F4fLUkrVkWHYmby3CiA5tuZebznLBpKz7cTuB3wHLpM7c+2A+XGPPYb3WhDqH1h
+	 5tH0Wne+EfPskOelEKBL7XbuxTYsFRZoo1eAgWJI29r1J46GNa2w9DgXd3xOXMztv8
+	 5q5QPrDBGfyuriIcrTdwI+KWkFMqE8zYfZI5ByDPpz9O5FUodhDsjmQ7AkodnwI5sc
+	 mzwDJGzPo2OWA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 30BDD475B4;
+	Fri, 13 Nov 2026 02:33:28 +0000 (UTC)
+From: Cunhao Lu via B4 Relay <devnull+1579567540.qq.com@kernel.org>
+Date: Fri, 13 Nov 2026 10:33:06 +0800
+Subject: [PATCH net v2] MAINTAINERS: exclude CAN documentation from general
+ networking
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -64,110 +83,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261113-exclude-can-docs-from-netdev-v2-1-8ae9dc553024@qq.com>
+X-B4-Tracking: v=1; b=H4sIAOF29moC/42OTQ6CMBSEr0Le2mdsFVRW3sOw6M+r1EgrLTQYw
+ t0teAGXM/nyzcwQKViKUBczBEo2Wu9y4LsCVCvcg9DqnIEfeMUY40iTeo2aUAmH2quIJvgOHQ2
+ aEpYVO1816dIIA1nxDmTstOnvkBlofmUc5ZPUsIpXrLVx8OGznUhsg//bSwwZypLkUYqToEt16
+ /u98h00y7J8AU3Z2VncAAAA
+X-Change-ID: 20261112-exclude-can-docs-from-netdev-56179ded5faf
+To: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, 
+ horms@kernel.org, mkl@pengutronix.de, mailhol@kernel.org, 
+ socketcan@hartkopp.net, robin@protonic.nl, o.rempel@pengutronix.de, 
+ kernel@pengutronix.de, max@enpas.org, linux-can@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Cunhao Lu <1579567540@qq.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794537207; l=2171;
+ i=1579567540@qq.com; s=20261015; h=from:subject:message-id;
+ bh=6F5YqxvMaIs1hwfEFbyXKXtIGxmZw++Ht0ooa1sJl88=;
+ b=2DNpMdnz/83Syn6nW0AH1yBI48kZvv0cu5uv4pbBSxBZT83lgUHpn/v33Y0qTCpn1Mcz1CPHd
+ ojULR3hSGccDOvJWX+jBOA9x/rKs40M64/FX5tRwWQHC5CmFIX0Z7LZ
+X-Developer-Key: i=1579567540@qq.com; a=ed25519;
+ pk=sUTWrzlIwT4C7ctjNfVZAzzg0G7QUn2XxRGpYsw4RtM=
+X-Endpoint-Received: by B4 Relay for 1579567540@qq.com/20261015 with
+ auth_id=1177
+X-Original-From: Cunhao Lu <1579567540@qq.com>
+Reply-To: 1579567540@qq.com
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+From: Cunhao Lu <1579567540@qq.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+The SocketCAN, ISO-TP and J1939 documents and the CAN driver documentation
+directory match the broad Documentation/networking/ pattern in
+NETWORKING [GENERAL]. This makes get_maintainer.pl select netdev and the
+general networking maintainers for these CAN-specific documentation
+changes.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Exclude these paths from NETWORKING [GENERAL], as is already done for
+net/can/ and the CAN selftests. Add the driver documentation directory
+to CAN NETWORK DRIVERS to cover files without a dedicated CAN entry.
 
-- [Medium] In mana_rx_skb()
-  (drivers/net/ethernet/microsoft/mana/mana_en.c), the patch removed the…
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/all/20261111161459.4879a82d@kernel.org/
+Signed-off-by: Cunhao Lu <1579567540@qq.com>
+---
+Changes in v2:
+- Exclude the whole CAN driver documentation directory instead of only
+  can327.rst, and add it to CAN NETWORK DRIVERS.
+- Link to v1: https://patch.msgid.link/20261112-exclude-can-docs-from-netdev-v1-1-b5eb3ba4ae86@qq.com
+---
+ MAINTAINERS | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 222b7fc2c3aa..152771314140 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5992,6 +5992,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git
+ F:	Documentation/devicetree/bindings/net/can/
+ F:	Documentation/devicetree/bindings/phy/ti,tcan104x-can.yaml
++F:	Documentation/networking/device_drivers/can/
+ F:	drivers/net/can/
+ F:	drivers/phy/phy-can-transceiver.c
+ F:	include/linux/can/bittiming.h
+@@ -19600,6 +19601,10 @@ F:	samples/pktgen/
+ F:	tools/net/
+ F:	tools/testing/selftests/net/
+ X:	Documentation/networking/batman-adv.rst
++X:	Documentation/networking/can.rst
++X:	Documentation/networking/device_drivers/can/
++X:	Documentation/networking/iso15765-2.rst
++X:	Documentation/networking/j1939.rst
+ X:	Documentation/networking/mac80211-injection.rst
+ X:	Documentation/networking/mac80211_hwsim/
+ X:	Documentation/networking/regulatory.rst
 
-net: mana: report RX checksum offload for IPv6
+---
+base-commit: 79eb6679ef6a0d5ea68da53a8321fb1dc72299b9
+change-id: 20261112-exclude-can-docs-from-netdev-56179ded5faf
 
-This commit removes the rx_iphdr_csum_succeed check from mana_rx_skb().
-CHECKSUM_UNNECESSARY is now set from the hardware's TCP/UDP checksum
-result bits alone. This lets IPv6 TCP and UDP traffic, including VXLAN
-over IPv6, skip software checksum verification in GRO.
+Best regards,
+--  
+Cunhao Lu <1579567540@qq.com>
 
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index e6d494df22e4d..05bd4b4b8349e 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -2179,10 +2179,9 @@ static void mana_rx_skb(void *buf_va, bool from_pool,
->  	skb_checksum_none_assert(skb);
->  	skb_record_rx_queue(skb, rxq_idx);
->  
-> -	if ((ndev->features & NETIF_F_RXCSUM) && cqe->rx_iphdr_csum_succeed) {
-> -		if (cqe->rx_tcp_csum_succeed || cqe->rx_udp_csum_succeed)
-> -			skb->ip_summed = CHECKSUM_UNNECESSARY;
-> -	}
-> +	if ((ndev->features & NETIF_F_RXCSUM) &&
-> +	    (cqe->rx_tcp_csum_succeed || cqe->rx_udp_csum_succeed))
-> +		skb->ip_summed = CHECKSUM_UNNECESSARY;
 
-[Severity: Medium]
-For encapsulated frames, which L4 checksum do rx_tcp_csum_succeed and
-rx_udp_csum_succeed refer to?
-
-When CHECKSUM_UNNECESSARY is set with the default csum_level of 0, the
-stack takes it to mean the outermost TCP/UDP checksum was verified. For a
-VXLAN frame, that is the outer UDP checksum.
-
-struct mana_rxcomp_oob in include/net/mana/mana.h reports outer and inner
-IP header results separately, but it has only one set of L4 bits:
-
-	u32 rx_outer_iphdr_csum_succeed	: 1;
-	u32 rx_outer_iphdr_csum_fail	: 1;
-	...
-	u32 rx_iphdr_csum_succeed	: 1;
-	u32 rx_iphdr_csum_fail		: 1;
-	u32 rx_tcp_csum_succeed		: 1;
-	u32 rx_tcp_csum_fail		: 1;
-	u32 rx_udp_csum_succeed		: 1;
-	u32 rx_udp_csum_fail		: 1;
-
-struct mana_tx_long_oob also has is_encap, inner_is_ipv6 and
-inner_frame_offset, so the hardware seems to understand tunnels. That
-makes it plausible that the unprefixed L4 bits describe the inner header
-of a tunnelled frame.
-
-The driver never reads rx_outer_iphdr_csum_*, never sets csum_level, and
-does not set up hw_enc_features or udp_tunnel_nic.
-
-If the unprefixed bits describe the inner headers, then before this patch
-a tunnelled frame with an inner IPv6 header never had
-rx_iphdr_csum_succeed set. It stayed CHECKSUM_NONE, and the outer UDP
-checksum was checked in software. After this change, the same frame
-becomes CHECKSUM_UNNECESSARY at level 0.
-
-In the udp4/udp6 GRO receive path, the outer UDP check then uses up the
-single csum_cnt. skb_gro_checksum_try_convert() then builds a complete
-checksum from the outer checksum, which was never checked. Only the inner
-TCP checksum ends up being checked in software.
-
-If the hardware only checked the inner L4 checksum, could some bad frames
-be accepted instead of dropped? That would cover frames with a bad outer
-UDP checksum, and frames corrupted in the VXLAN header/VNI, the inner
-Ethernet header, or inner IPv6 fields outside the inner pseudo-header.
-
-The commit message lists VXLAN over IPv6 as a case that benefits:
-
-  TCP/VXLAN/IPv6, 10.9 Gbps   7934373       18
-
-These counts would look the same under either reading of the hardware.
-Once the outer checksum is assumed valid, GRO checksum conversion skips
-the full software sum.
-
-Tunnels with an inner IPv4 header already had this problem under the old
-check. This patch extends it to tunnels with an inner IPv6 header.
-
-Does the hardware or firmware guarantee that these bits always refer to
-the outermost L4 header? If not, there are two options. One is to use the
-outer/inner bits and set skb->csum_level = 1 where it applies. The other
-is to leave encapsulated frames as CHECKSUM_NONE.
-
->  
->  	if (cqe->rx_hashtype != 0 && (ndev->features & NETIF_F_RXHASH)) {
->  		if (cqe->rx_hashtype & MANA_HASH_L4)
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261109142856.779955-1-hamzamahfooz%40linux.microsoft.com
