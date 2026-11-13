@@ -1,88 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=195.10.208.42
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794529320;
-	b=pIAGn6LpSO+QDIeSeIhxun7g8xD+arEIUSenUvkvSxkEDwVPZcq+62YAbcAlOy3jjOQn
-	 x0Wv9WS7cjKtK3cfoMtAzIW7xB62GUOhl4o6tzjIIrx54xmSp1XrdBaNw+QjkjpcDCugM
-	 qQ317mrBuqDl1v+TJPgW8C6KxtMbG+vs22imt5HktdfJ+s6elwNMy4ICKnt/MIEZ+o2XR
-	 9wt63/I5fQpjfWMRn/6LMmkwjKY7Tzc6FtCPtLFWac72zsBKinzYKMUgUD8XQ7IEo5p/T
-	 bhUJf4yyVOB1BemuX39e1Rbg7ir6/z7cPEy+yl6qrCNFW4AgqhKM6arcfSrzSGPtfqA==
+	t=1794529795;
+	b=HP44Y14ThlSAx2L3diK99D4j+rA1jaAwcxt46uOIfDGPgzH0v86tNMQkLXy+OU0BZ9uz
+	 cetd0ruooIAjtF6u0qwMl9QYzHQLKaO6p4F8hRJ3oo2izZMLUCQU3b9VfjbnXXCC0Fhd3
+	 CbeJ1EhlB7qBBivacVVvQDUs7f68nJY3g/YOacMrf9LV/Vzh51fMYSclsXNMshdJKiRX4
+	 zYhtiuS8EPJYPzebX7d0FpAJeg1TCxAuF0AjdlXGwjsssgMjcX3YKYmX+9vB9joZOx87Q
+	 QmR/gulCf0clbq+QrM+AyCmoMYKm3dyubT6o1lIoUaLMQlQUy+wPp/K8TNubM/ddxFQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794529320;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key;
-	bh=Hh3AiM4JMbQc/Rx8K3OAFBZ9qfGIYX00CL0MGMjf07Y=;
-	b=cEvtEfjVrlxtMROn57jncR4xu2gjcdK320xgwc8QB7eIml62fGw3EnweJpGdeu/9SYQD
-	 64kcx3yCDox21bbn/stH06DRv8JaIRSZGVpQKp0Qp/GLc3zT2+J5SIN08CBCQKBAvN//R
-	 ZgTGyjMF5V5MUKZ3YST/xAHdpcrgc5X073JdQ5Jn8ssT4mbwr99xp12P4VVjmwvL0lDsK
-	 TyzYYfJ3PvSsqj8MDTL/tx4Jv0123M9zmmo3WT/HY0Jh5VWNoM5GW7xip14Md7f7g4nKK
-	 /m1EjqaXcSk6J++koySD0bChf7c/pjdckZj+o0r/NKiqXFVkP4tmZDS4FMRIVmFD+tA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794529795;
+	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:To:Cc:References:Content-Language:From:
+	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Rspamd-Queue-Id;
+	bh=kly1dphe6qOW4e5YX7hHhTyUigNMvt10PqQybFX+FtY=;
+	b=kTzxncbCmbRUC1tNIL1sINcbXcJ2C8R2N5EHJHxN7jobJ8WXJxw7tCpYBisY2aOowhTE
+	 ErfwIOgcod/XrrG37r8/iZK9KZ67UayYhd/sGWcwtgfCEm0DGa9HPcsVu+uBIFBqnBdM/
+	 8FQDscJonKKdxlk78eDrprruXpYrQvBnmXS2CUR0GVV2gU9TwwTSLJplAL/uXu1m+sjCX
+	 /Mg+YPZG05Qv+CnIwYzbzZLS+B0DOP05o7dgPpPp4wHCQJN4KmiAkrd1CnNJSorNhWDm5
+	 UF8sw03ByTbbC/b+8tA4RzFOS96NV6jY/AbTy32YAzOGtfTuxJ/GcE+I+5Q/4qpzLbQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=toxicpanda.com;
-	spf=pass smtp.mailfrom=toxicpanda.com;
-	dkim=pass header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=CoKH7bZx;
-	arc=none smtp.remote-ip=209.85.219.46
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=none header.from=mandelbit.com;
+	spf=pass smtp.mailfrom=mandelbit.com;
+	dkim=pass header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=YXD22eqH;
+	arc=none smtp.remote-ip=195.10.208.42
+Received: from mout-b-112.mailbox.org (mout-b-112.mailbox.org [195.10.208.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E2F606A890
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 00:21:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F0E2F606A890
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CDE606A331;
+	Fri, 13 Nov 2026 00:29:53 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 19CDE606A331
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=CoKH7bZx
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91ea5600c9cso9512816d6.1
-        for <netdev@vger.kernel.org>; Thu, 12 Nov 2026 16:21:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1794529319; x=1795134119; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Hh3AiM4JMbQc/Rx8K3OAFBZ9qfGIYX00CL0MGMjf07Y=;
-        b=CoKH7bZxMqBdlejB81iUG2jTC4rRkDe8T3fyRPsnlsqO/CjkbXTXHKyGXW3r9QDIy/
-         SKMsLNwgAk9L8FgvAWCRoLknrB9f0ArrpEF+z0hB3bqH9MdlqGRhkxrjKLXUb04G3BYp
-         cfzmrY/USKYmymhu44Ur/Ae3P1eCCykIAPZ1a8g/bftuhpW0oOvEYTnS6ldUVGKToL0y
-         aqs+ewuyJ2IWCSZZ14uFM8ZLBmL4iIFdNqwp0JvoTz2zkj2A0OTp7183FSfAAj9ZHS1u
-         OzzNRtHRTnUtgeHIe+4K8tDwhCkyaNNeCgM8NgCQvNFCTU9eSrB//EkR7hnfypwI9PNg
-         75RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794529319; x=1795134119;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Hh3AiM4JMbQc/Rx8K3OAFBZ9qfGIYX00CL0MGMjf07Y=;
-        b=A9c4Z0aNx7th3cbN0PJHyY0y4shAVu8M5LNb9qJPGTJ6v1INejR2nRC0abmpfQ+Qnq
-         OOD/Zp6FSey9Y55x5doNJSfzRRujMnsjruYtSkx7O9iXxksz9rfajqPhSQmiCRguMnCU
-         6HEnDTgbAeHhX6a3eDdtRVygUzyn4YnbKkxIxwOT5AbEH4ZZiEzZxkyp2XeNGh+4wkjY
-         6kuF6Lh/P544V62Uffw9z/ivcfGBrPjJJCGf0R6uA7RMODHtuxh7WU9IFXn+sMcMI8nT
-         SfViPopMKo9e1IEwdXGdXUHa1SFL9xFF2+Y2hrR1AAWE+TwG0nXZQqezvNmXQ8G5knZI
-         Vwqw==
-X-Forwarded-Encrypted: i=1; AL+hErGrnHaIkGQoIQzDX3H2JnrHnmWRP0wBga5n70VWH4+iAjVHo4ZZS1JqLtHzi7OZH4GwYhnSZEI=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/o2MmvQ+U7/x33bk/NCbdDI6hacX92Z+WIkJ4cI9Qim6Ph/DJf
-	oVVgVu/EOM+OYz+MMJSePiiMT37k8vgMoXWteJCghmU1e5VXBN9h8TXiQ/PNxVDE3K8=
-X-Gm-Gg: AYBFou2lXk1YpGQ4IEX0YLqRxvDKur9zel2c/fSvcVOJzZbgpjJKycpoB1825vWn6TI
-	AuiS3LjRk8Tnm+4k2N/7RiHh4V3AYTi6MmSpOEjgvfCfLD4y5IEww5Fasbib9rHX/7y8VM0vRTO
-	+fW9xoWh1xiL/4mlx9W388YsVLQYsF78eoqVNXdFviLn3PNt7/b1GZ1er1lkSpAu9JkBmsa1U7g
-	XdbfNNqlZeXxgLImJsOSOYwQi8PVHGWlSAfMq9siWOaiz9BvMGESlMS9hJMm9rzZjHliPEmjO/B
-	LAG/H5EbxroGr41iZLk9rMvvV+bt9pHFeyTq79qQzk1iPMl3Sh9Sva2q/Mtqb552U5eOKxCgZd8
-	kk9VXWHEQ3u9iD2Xij4fynfG2mC4NlRugM5Sx3jFQIUE00QhKun/6GR1q2dzbOT2i7M2VX9XRmU
-	fgDhsz0YbnQS4tud+yDfqmryWwe42nNZGer1/Djqrlw+/fcCPiXBoh/SJjxWcwNTcVOrG4947V1
-	C7LSyUJY+n9wUEhWvlTGfZparGfPdEVkzwGeTKP1aPhXEmNR7Hxt9cuaQMEAdZnqbnm9uDApCna
-	edz9Ve9Q6fIiFncbEMUo5h93egipe/uq/9WpJwtZ5zFuNw==
-X-Received: by 2002:a05:6214:4521:b0:917:96b8:de25 with SMTP id 6a1803df08f44-91f24050652mr14586826d6.1.1794529318884;
-        Thu, 12 Nov 2026 16:21:58 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.248])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91f23c9ca2esm7986186d6.6.2026.11.12.16.21.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Nov 2026 16:21:58 -0800 (PST)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Fri, 13 Nov 2026 00:21:31 +0000
-Subject: [PATCH net-next 4/4] net: test more frag_list layouts without SG
+	dkim=pass (2048-bit key, unprotected) header.d=mandelbit.com header.i=@mandelbit.com header.a=rsa-sha256 header.s=MBO0001 header.b=YXD22eqH
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4jQdSF2fqzz5wkW;
+	Fri, 13 Nov 2026 01:29:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1794529789;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kly1dphe6qOW4e5YX7hHhTyUigNMvt10PqQybFX+FtY=;
+	b=YXD22eqHe0XWKdvnNSAIsZRYOB1bUDaBtmqQDypQq9xHzxs8QeHgityqSv8f4KUYE4eNdh
+	751WsfNFrlHOZyDP/jsnFcVranCzWPttB/MjSiJgkG8JZ9WWbComDfH+cN7+SKoVezTXrf
+	lLXtK7WJFXPnZmOpv98Vz5Qaq4LoGYak8fhxeTEpWCAvt/TZoCv/Ye6qZSVQdmMDUmOER0
+	1NqVb+IqYMXrZrBKGKjOPubehmHQEaYfvtLJUWgoflptJC94G6fFgFuBDoRtk1t3Ui5BZj
+	blhvH8R/gAB0Vd0VsCqbTTpa5bML+uZM6SC3rjDyq0YGTF2sCJtkZYhkxC4W0A==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of antonio@mandelbit.com designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=antonio@mandelbit.com
+Message-ID: <64d1a7c6-6c00-4cc1-9554-57ce96a6d4fb@mandelbit.com>
+Date: Fri, 13 Nov 2026 01:29:47 +0100
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -92,272 +66,218 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 1/2] tun: bound the NAPI receive queue
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, jasowangio@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
+ eperezma@redhat.com, shuah@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ maheshb@google.com, peterpenkov96@gmail.com, netdev@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20261111014208.1795777-1-antonio@mandelbit.com>
+ <20261111014208.1795777-2-antonio@mandelbit.com>
+ <willemdebruijn.kernel.1122b304c2dc4@gmail.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@mandelbit.com>
+Organization: Mandelbit SRL
+In-Reply-To: <willemdebruijn.kernel.1122b304c2dc4@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-b4-skb-segment-clone-fixes-v1-4-f777fb06f3e7@toxicpanda.com>
-References: <20261113-b4-skb-segment-clone-fixes-v1-0-f777fb06f3e7@toxicpanda.com>
-In-Reply-To: <20261113-b4-skb-segment-clone-fixes-v1-0-f777fb06f3e7@toxicpanda.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Fernando Fernandez Mancera <fmancera@suse.de>, 
- Mina Almasry <almasrymina@google.com>, 
- David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1794529294; l=8501;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=q9T8I8OUXiDYR7Yx72apFmZMUM3ac3UgkB8E6iwlgcw=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QJNZIyvMpBp1DLezKHBVSYjtEwzH+k2jEFA7VjTgjNY3/m+FjOM1c/H7CmeOMTEWwYBo10CFnQw
- m5u0H0rV+OAQ=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+X-Rspamd-Queue-Id: 4jQdSF2fqzz5wkW
 
-Add layouts that skb_segment() got wrong without SG, which have to be
-segmented now.
+On 13/11/2026 00:28, Willem de Bruijn wrote:
+> Antonio Quartulli wrote:
+>> With IFF_NAPI, tun_get_user() queues every written packet for NAPI on
+>> an unbounded list. When the poll runs asynchronously (threaded NAPI)
+>> and is slower than the writer, the queue grows until the system runs
+>> out of memory. An unprivileged user can do this from its own user and
+>> network namespaces, and the queued skbs are not charged to its memcg:
+>> in a test VM, a uid 1000 process limited to 128 MB caused a global OOM
+>> in ~6 seconds. The socket send buffer cannot bound this: tun sets it to
+>> INT_MAX, and the build_skb() and XDP batch paths do not check it.
+>>
+>> Drop packets once more than netdev_max_backlog of them are queued, like
+>> enqueue_to_backlog() does, and count them as rx_dropped, before
+>> allocating and copying them. This covers write(), sendmsg() and the
+>> batches of XDP buffers vhost-net passes to tun_sendmsg(), which share
+>> the queue. Zerocopy buffers of dropped packets are completed. The check
+>> is lockless, so concurrent writers can each still add one packet.
+>>
+>> The NAPI poll moved the whole queue out, processed up to its budget and
+>> put the rest back: while it ran, the queue looked empty to writers, so
+>> with the poll on another CPU the backlog could still grow without limit.
+>> Take at most budget packets instead, so that the queue never looks
+>> emptier than it is.
+>>
+>> Dropping because the queue is full also schedules NAPI. vhost-net sends
+>> with MSG_MORE while it has more packets, and tun_get_user() schedules
+>> NAPI only after the last one or once more than NAPI_POLL_WEIGHT are
+>> queued. With a netdev_max_backlog below that, the queue would not drain
+>> until vhost-net ran out of packets; with zerocopy, vhost-net never
+>> would, as it stops sending when too many queued buffers are pending.
+>>
+>> Reproducer, as an unprivileged user in a new user and network
+>> namespace, without kernel modifications or fault injection:
+>>    ip tuntap add t0 mode tun; ip addr add 10.11.0.1/24 dev t0
+>>    ip link add d0 type dummy; ip addr add 10.20.0.1/24 dev d0
+>>    ip link set t0 up; ip link set d0 up; sysctl net.ipv4.ip_forward=1
+>>    install ~500 iptables FORWARD rules and a MASQUERADE rule on d0
+>>    open t0 with IFF_TUN | IFF_NO_PI | IFF_NAPI
+>>    echo 1 > /sys/class/net/t0/threaded
+>>    write() 1400-byte IPv4 packets for 10.20.0.2 in a loop
+>>
+>> Tested in an x86-64 VM with 1 and 2 vCPUs: with the reproducer running
+>> for 15 seconds, with 1400 to 65000-byte packets, memory use stays flat
+>> and the forwarding rate is unchanged; the tun kselftest passes, as it
+>> does without the patch; and the tun_vhost kselftest added by the next
+>> patch, which drives the vhost-net batch, copy and zerocopy paths,
+>> passes, while it fails without the patch.
+>>
+>> Still open: the limit counts packets rather than bytes and applies per
+>> queue, so with large packets and many queues (IFF_MULTI_QUEUE works in a
+>> user namespace too) the queued skbs, which are not charged to the
+>> writer's memcg, can still add up to an OOM. This is hard to reach in
+>> practice: with large packets the writer's copy is slower than the NAPI
+>> poll, so the queue does not fill. With 64 KB writes the reproducer never
+>> reached the limit and memory use stayed flat.
+>>
+>> Found while analysing the performance of the tun write path, and tested,
+>> with the help of an AI coding assistant (Claude Code).
+>>
+>> Fixes: 943170998b20 ("tun: enable NAPI for TUN/TAP driver")
+>> Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+>> ---
+>>   drivers/net/tun.c | 59 ++++++++++++++++++++++++++++++++++++++++-------
+>>   1 file changed, 51 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>> index dcec7311e601..396e4295589f 100644
+>> --- a/drivers/net/tun.c
+>> +++ b/drivers/net/tun.c
+>> @@ -58,6 +58,7 @@
+>>   #include <linux/nsproxy.h>
+>>   #include <linux/virtio_net.h>
+>>   #include <linux/rcupdate.h>
+>> +#include <net/hotdata.h>
+>>   #include <net/net_namespace.h>
+>>   #include <net/netns/generic.h>
+>>   #include <net/rtnetlink.h>
+>> @@ -227,6 +228,16 @@ struct veth {
+>>   static void tun_flow_init(struct tun_struct *tun);
+>>   static void tun_flow_uninit(struct tun_struct *tun);
+>>   
+>> +/* In IFF_NAPI mode written packets wait in the tfile's sk_write_queue for the
+>> + * NAPI poll, which may run later in a kthread or ksoftirqd. Bound that queue
+>> + * like the per-CPU backlog of netif_rx().
+>> + */
+>> +static bool tun_napi_queue_full(const struct sk_buff_head *queue)
+>> +{
+>> +	return skb_queue_len_lockless(queue) >
+>> +	       READ_ONCE(net_hotdata.max_backlog);
+>> +}
+>> +
+>>   static int tun_napi_receive(struct napi_struct *napi, int budget)
+>>   {
+>>   	struct tun_file *tfile = container_of(napi, struct tun_file, napi);
+>> @@ -237,21 +248,24 @@ static int tun_napi_receive(struct napi_struct *napi, int budget)
+>>   
+>>   	__skb_queue_head_init(&process_queue);
+>>   
+>> +	/* Take at most budget skbs, so that the queue never looks emptier to
+>> +	 * writers than it is.
+>> +	 */
+>>   	spin_lock(&queue->lock);
+>> -	skb_queue_splice_tail_init(queue, &process_queue);
+>> +	if (skb_queue_len(queue) <= budget) {
+>> +		skb_queue_splice_tail_init(queue, &process_queue);
+>> +	} else {
+>> +		while (skb_queue_len(&process_queue) < budget &&
+>> +		       (skb = __skb_dequeue(queue)))
+>> +			__skb_queue_tail(&process_queue, skb);
+>> +	}
+>>   	spin_unlock(&queue->lock);
+>>   
+>> -	while (received < budget && (skb = __skb_dequeue(&process_queue))) {
+>> +	while ((skb = __skb_dequeue(&process_queue))) {
+>>   		napi_gro_receive(napi, skb);
+>>   		++received;
+>>   	}
+>>   
+>> -	if (!skb_queue_empty(&process_queue)) {
+>> -		spin_lock(&queue->lock);
+>> -		skb_queue_splice(&process_queue, queue);
+>> -		spin_unlock(&queue->lock);
+>> -	}
+>> -
+>>   	return received;
+>>   }
+>>   
+>> @@ -1856,6 +1870,24 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>>   			zerocopy = true;
+>>   	}
+>>   
+>> +	/* NAPI queue full: drop before allocating, and schedule NAPI, which a
+>> +	 * MSG_MORE sender may not have done yet. Lockless: concurrent writers
+>> +	 * can each still add one.
+>> +	 */
+>> +	if (tfile->napi_enabled &&
+>> +	    unlikely(tun_napi_queue_full(&tfile->sk.sk_write_queue))) {
+>> +		local_bh_disable();
+>> +		napi_schedule(&tfile->napi);
+>> +		local_bh_enable();
+>> +		if (msg_control) {
+>> +			struct ubuf_info *uarg = msg_control;
+>> +
+>> +			uarg->ops->complete(NULL, uarg, false);
+> 
+> call net_zcopy_put
+> 
+> even if the packet is dropped, the entire operation was without
+> fall-back to copying, so last argument is true.
+> 
+> also stops vhost-net from falling back onto copy mode
 
-For "net: skbuff: don't clone a nested frag_list member":
+good point! thanks for spotting this!
 
- - A nested frag_list with one more member after it.
- - The same with a last member that is never cloned, so that the walk
-   doesn't run out of members.
- - A nested member that is shorter than a segment.  It was never cloned,
-   so this case passes without the fix too.
+Regards,
 
-For "net: skbuff: don't clone a stale frag_list member", three layouts
-where a member that has been copied from is as long as a later segment.
-
-That patch leaves GSO_BY_FRAGS alone.  Add a GSO_BY_FRAGS layout with
-data pulled into the head, which fails with -EINVAL before and after.
-It would be cut in the wrong places if GSO_BY_FRAGS took the new test.
-
-Two fields say which cases nest the second member and which use
-GSO_BY_FRAGS, instead of a test for each id.
-
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- net/core/net_test.c | 141 +++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 129 insertions(+), 12 deletions(-)
-
-diff --git a/net/core/net_test.c b/net/core/net_test.c
-index 6a1aebac5874..19a12e1c048a 100644
---- a/net/core/net_test.c
-+++ b/net/core/net_test.c
-@@ -48,6 +48,13 @@ enum gso_test_nr {
- 	GSO_TEST_SHORT_FRAG_LIST,
- 	GSO_TEST_SHORT_GSO_BY_FRAGS,
- 	GSO_TEST_FRAG_LIST_NESTED_NO_SG,
-+	GSO_TEST_FRAG_LIST_NESTED_NEXT_NO_SG,
-+	GSO_TEST_FRAG_LIST_NESTED_TAIL_NO_SG,
-+	GSO_TEST_FRAG_LIST_NESTED_COPY_NO_SG,
-+	GSO_TEST_FRAG_LIST_STALE_TAIL_NO_SG,
-+	GSO_TEST_FRAG_LIST_STALE_HEAD_NO_SG,
-+	GSO_TEST_FRAG_LIST_STALE_FRAGS_NO_SG,
-+	GSO_TEST_GSO_BY_FRAGS_PULLED_NO_SG,
- 	GSO_TEST_SHORT_LINEAR_NO_SG,
- 	GSO_TEST_SHORT_LINEAR_STRADDLE_NO_SG,
- 	GSO_TEST_SHORT_FRAG_LIST_NO_SG,
-@@ -73,6 +80,12 @@ struct gso_test_case {
- 	unsigned int missing_len;
- 	/* segment without NETIF_F_SG */
- 	bool no_sg;
-+	/* the second frag_list member hangs off the first one's frag_list
-+	 * instead of off the head's
-+	 */
-+	bool nested;
-+	/* gso_size is GSO_BY_FRAGS */
-+	bool by_frags;
- 
- 	/* output as expected */
- 	unsigned int nr_segs;
-@@ -192,6 +205,7 @@ static struct gso_test_case cases[] = {
- 		 */
- 		.id = GSO_TEST_GSO_BY_FRAGS,
- 		.name = "gso_by_frags",
-+		.by_frags = true,
- 		.nr_frag_skbs = 4,
- 		.frag_skbs = (const unsigned int[]) { 100, 200, 300, 400 },
- 		.nr_segs = 4,
-@@ -271,11 +285,9 @@ static struct gso_test_case cases[] = {
- 		.err = -EINVAL,
- 	},
- 	{
--		/* the second frag_list member hangs off the first one's
--		 * frag_list instead of off the head's
--		 */
- 		.id = GSO_TEST_FRAG_LIST_NESTED,
- 		.name = "frag_list_nested",
-+		.nested = true,
- 		.linear_len = GSO_TEST_SIZE,
- 		.nr_frag_skbs = 2,
- 		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE },
-@@ -309,6 +321,7 @@ static struct gso_test_case cases[] = {
- 	{
- 		.id = GSO_TEST_SHORT_GSO_BY_FRAGS,
- 		.name = "short_gso_by_frags",
-+		.by_frags = true,
- 		.nr_frag_skbs = 2,
- 		.frag_skbs = (const unsigned int[]) { 100, 200 },
- 		.missing_len = 50,
-@@ -320,6 +333,7 @@ static struct gso_test_case cases[] = {
- 		 */
- 		.id = GSO_TEST_FRAG_LIST_NESTED_NO_SG,
- 		.name = "frag_list_nested_no_sg",
-+		.nested = true,
- 		.linear_len = GSO_TEST_SIZE,
- 		.nr_frag_skbs = 2,
- 		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE },
-@@ -327,6 +341,109 @@ static struct gso_test_case cases[] = {
- 		.nr_segs = 3,
- 		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE },
- 	},
-+	{
-+		/* a clone of the first member would lose the nested data, and
-+		 * the third member would go out in its place
-+		 */
-+		.id = GSO_TEST_FRAG_LIST_NESTED_NEXT_NO_SG,
-+		.name = "frag_list_nested_next_no_sg",
-+		.nested = true,
-+		.linear_len = GSO_TEST_SIZE,
-+		.nr_frag_skbs = 3,
-+		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE,
-+						      GSO_TEST_SIZE },
-+		.no_sg = true,
-+		.nr_segs = 4,
-+		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE,
-+						 GSO_TEST_SIZE, GSO_TEST_SIZE },
-+	},
-+	{
-+		/* the same, but the last member is never cloned, so the walk
-+		 * doesn't run out of members either
-+		 */
-+		.id = GSO_TEST_FRAG_LIST_NESTED_TAIL_NO_SG,
-+		.name = "frag_list_nested_tail_no_sg",
-+		.nested = true,
-+		.linear_len = GSO_TEST_SIZE,
-+		.nr_frag_skbs = 4,
-+		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE,
-+						      GSO_TEST_SIZE, 200 },
-+		.frag_skb_frags = (const unsigned int[]) { 0, 0, 0, 100 },
-+		.no_sg = true,
-+		.nr_segs = 5,
-+		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE,
-+						 GSO_TEST_SIZE, GSO_TEST_SIZE, 300 },
-+	},
-+	{
-+		/* the nested member is shorter than a segment, so it was never
-+		 * cloned
-+		 */
-+		.id = GSO_TEST_FRAG_LIST_NESTED_COPY_NO_SG,
-+		.name = "frag_list_nested_copy_no_sg",
-+		.nested = true,
-+		.linear_len = GSO_TEST_SIZE,
-+		.nr_frag_skbs = 3,
-+		.frag_skbs = (const unsigned int[]) { 500, 500, GSO_TEST_SIZE },
-+		.no_sg = true,
-+		.nr_segs = 3,
-+		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE },
-+	},
-+	{
-+		/* the copy doesn't move the walk past the 3 byte member, which
-+		 * then is as long as the last segment
-+		 */
-+		.id = GSO_TEST_FRAG_LIST_STALE_TAIL_NO_SG,
-+		.name = "frag_list_stale_tail_no_sg",
-+		.linear_len = GSO_TEST_SIZE,
-+		.nr_frag_skbs = 3,
-+		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, 3, GSO_TEST_SIZE },
-+		.no_sg = true,
-+		.nr_segs = 4,
-+		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE, 3 },
-+	},
-+	{
-+		/* half of the first member is copied along with the end of the
-+		 * head, and the member is as long as the next segment
-+		 */
-+		.id = GSO_TEST_FRAG_LIST_STALE_HEAD_NO_SG,
-+		.name = "frag_list_stale_head_no_sg",
-+		.linear_len = 2 * GSO_TEST_SIZE + 500,
-+		.nr_frag_skbs = 2,
-+		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE, 500 },
-+		.no_sg = true,
-+		.nr_segs = 4,
-+		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE,
-+						 GSO_TEST_SIZE, GSO_TEST_SIZE },
-+	},
-+	{
-+		/* the same with a frag on the member, which used to get its
-+		 * first bytes sent twice instead of an error
-+		 */
-+		.id = GSO_TEST_FRAG_LIST_STALE_FRAGS_NO_SG,
-+		.name = "frag_list_stale_frags_no_sg",
-+		.linear_len = 500,
-+		.nr_frag_skbs = 1,
-+		.frag_skbs = (const unsigned int[]) { GSO_TEST_SIZE },
-+		.frag_skb_frags = (const unsigned int[]) { 700 },
-+		.no_sg = true,
-+		.nr_segs = 3,
-+		.segs = (const unsigned int[]) { GSO_TEST_SIZE, GSO_TEST_SIZE, 200 },
-+	},
-+	{
-+		/* 16 bytes of the first member were pulled into the head.  The
-+		 * lengths come from a stale member too, and the first one
-+		 * divides the total, so this must not start to succeed with
-+		 * three segments of 1000 bytes.
-+		 */
-+		.id = GSO_TEST_GSO_BY_FRAGS_PULLED_NO_SG,
-+		.name = "gso_by_frags_pulled_no_sg",
-+		.by_frags = true,
-+		.linear_len = 16,
-+		.nr_frag_skbs = 3,
-+		.frag_skbs = (const unsigned int[]) { 1000, 1016, 968 },
-+		.no_sg = true,
-+		.err = -EINVAL,
-+	},
- 	{
- 		/* without SG it is skb_copy_bits() that runs out of data */
- 		.id = GSO_TEST_SHORT_LINEAR_NO_SG,
-@@ -357,6 +474,7 @@ static struct gso_test_case cases[] = {
- 	{
- 		.id = GSO_TEST_SHORT_GSO_BY_FRAGS_NO_SG,
- 		.name = "short_gso_by_frags_no_sg",
-+		.by_frags = true,
- 		.nr_frag_skbs = 2,
- 		.frag_skbs = (const unsigned int[]) { 100, 200 },
- 		.missing_len = 50,
-@@ -478,19 +596,18 @@ static void gso_test_func(struct kunit *test)
- 		skb->data_len += total_size;
- 		skb->truesize += total_true_size;
- 
--		if (tcase->id == GSO_TEST_GSO_BY_FRAGS ||
--		    tcase->id == GSO_TEST_SHORT_GSO_BY_FRAGS ||
--		    tcase->id == GSO_TEST_SHORT_GSO_BY_FRAGS_NO_SG)
-+		if (tcase->by_frags)
- 			skb_shinfo(skb)->gso_size = GSO_BY_FRAGS;
- 
--		if (tcase->id == GSO_TEST_FRAG_LIST_NESTED ||
--		    tcase->id == GSO_TEST_FRAG_LIST_NESTED_NO_SG) {
-+		if (tcase->nested) {
- 			struct sk_buff *first = skb_shinfo(skb)->frag_list;
-+			struct sk_buff *second = first->next;
- 
--			skb_shinfo(first)->frag_list = first->next;
--			first->next = NULL;
--			first->len += tcase->frag_skbs[1];
--			first->data_len += tcase->frag_skbs[1];
-+			first->next = second->next;
-+			second->next = NULL;
-+			skb_shinfo(first)->frag_list = second;
-+			first->len += second->len;
-+			first->data_len += second->len;
- 		}
- 	}
- 
+>> +		}
+>> +		dev_core_stats_rx_dropped_inc(tun->dev);
+>> +		return total_len;
+>> +	}
+>> +
+>>   	if (!frags && tun_can_build_skb(tun, tfile, len, noblock, zerocopy)) {
+>>   		/* For the packet that is not easy to be processed
+>>   		 * (e.g gso or jumbo packet), we will do it at after
+>> @@ -2561,6 +2593,17 @@ static int tun_xdp_one(struct tun_struct *tun,
+>>   		return -EIO;
+>>   	}
+>>   
+>> +	/* NAPI queue full: drop, and schedule NAPI so that it drains even if
+>> +	 * nothing in this batch gets queued
+>> +	 */
+>> +	if (tfile->napi_enabled &&
+>> +	    unlikely(tun_napi_queue_full(&tfile->sk.sk_write_queue))) {
+>> +		napi_schedule(&tfile->napi);
+>> +		put_page(virt_to_head_page(xdp->data));
+>> +		dev_core_stats_rx_dropped_inc(tun->dev);
+>> +		return 0;
+>> +	}
+>> +
+>>   	xdp_prog = rcu_dereference(tun->xdp_prog);
+>>   	if (xdp_prog) {
+>>   		if (gso->gso_type) {
+>> -- 
+>> 2.56.0
+>>
+> 
 
 -- 
-2.55.0
+Antonio Quartulli
+
+CEO and Co-Founder
+Mandelbit Srl
+https://www.mandelbit.com
 
