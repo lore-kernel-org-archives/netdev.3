@@ -1,79 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794557041;
-	b=kuerOzgeWAhMqB6GHgYVGaOvSRU8Sf6KXy1R1jgQG3PPOrlhDB/SpJ6UL8mCZKAZeFUB
-	 Pzx3bYIpOdW5JvZdC7hvXY9Am3AujhBSa4JFsgYg7H9/+Q7TPWH8YpQFkU/uamS9DpIDF
-	 36NGfFid7s75wl+DYYcj0aDZ/GxqBUYz7ehNTOzsWWiWhS8DXf93Kj/cNsJrpGu6nHBA+
-	 te3FZ2UJBVDohOYUKh/JMaAJQp7gw+kKOsNJSZ8fLlXxEmaTF5MYDEshbx+8F3kG7KRNJ
-	 D4wwOiuoRBPhdlvNbfS/rtOx6mqORhK+U9gSCh+LXgHD2iQ89VyuUxSM5RD+mRvpV4g==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794557041;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=9aTGmfKoZNcf7jTTJ6RvYLx/icbQQbPWjeg9zDfJi4c=;
-	b=kSEYZSTkwUOdJ5lVhZjWMqQG+j6yf72Ra/YFQ9hjSXza5WodAYkBPJjDTNRdzQOYZ/m+
-	 PFBsOk/SzhqdwsHJVacs+Wd+29LglANZcxTPX+cbRs3auZutY3HhHZt9cAAqcadM8JASI
-	 gvMpFZ530vfxaF6XSxi+kMxRDXPtPA761vcxi2OPfLUEYeQvWGRp5etgAzErACwNKo/xf
-	 xOKE6HBCdAxCLjFTgGeMAJPhzqzH3kS7ggu766L7vjpHhvCNZ/5omh9fApP+U+hg6Mr0k
-	 G7mHHANcRm5WhyJrDUKi0DZCc3USbk2VpYSiryXW7b5AVP3m5VUt6+jDgQEK1TcE00g==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lshj+DVG;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794557184;
+	b=v6TdMXiac732MHhTrLapKnHJwVlVy0use34H6ZsEg2gKdVckiQ/Nc2FbJnZMOtGIOMWx
+	 t5rfI1RPqViTHLjhHSlG5Tm0Fu4ZkF75L8LG69Rzq1XvMcUkHLeQFLlZEs9N97Lfo+YqM
+	 xpQwqVpqc3CjM82k3b2Dab1gNEt9fx/yUQkOkx2DXDVA7YaIRjUcOvVUdjx38wIyW07Ca
+	 TCgfRERnF0GtalBQpCUyZLoELGcbxYGX81HfLOkIZG/7DxerQbPeVO1lqprBppIvU8nBj
+	 sphYJGcZR2NZ3f7WJ00RW1J2E4bUTlGpmcKe2btlMxKMtZXgLug+hLeMF/X6l+TPURQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794557184;
+	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
+	 In-Reply-To:References:X-sashiko-severity:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=lb4Edw7yh0QJZr9z5jSn2QIVos+nFDc8neFuLj7Hbhw=;
+	b=Zl7Fc0tLxWgkPdNe8zWuZBlN74/tg+HpSeezH1eDRhjh0JpyNFuRuG2ZKC43EOqnYwJu
+	 cdYUgCY/kIVay7hHmCyABxRImcgLKXTHGW/Yknhkk/hgZqRbuoxnB7a/d9lPKnmlV8QyD
+	 DMlmkEX+0CmY4YTM+8BdjmDZ4uxw21R307HJWuQXN7TLJomEkuSBGD3PPzqTqY2/PCQAZ
+	 rX4U+j4hH/+NO+ITQx8V0r82g+4RjU4tQ8vlgK29+z4TG0T2Dd2YrZCTTDKElz7WXUqNP
+	 IuTzbTAUk9al4klYcu4UyRU14jDwFBrmpyXwbCObuiM8+bDDbeSyHdZpl/7msNtq2UQ==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UcHftlkA;
+	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E85606A31C;
-	Fri, 13 Nov 2026 08:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1017606A31C;
+	Fri, 13 Nov 2026 08:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lshj+DVG
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794557040;
-	b=aDZ11lWe/UBD4fk0CacR1o9ZDEaMZaFxyLQeAW7m47XJpMaSmngp4V3KeBQlSFz7mQS9
-	 ogatGEwlvzNIG2SQqCXWjEzicXtmEaOnUclk9cVskuioGs+ZPf11Lb8EowQ8k7Fu1wKNv
-	 DcBggL40GwPPRxmLUAApSKvdD6IWgYc6pZ6UBT+GK9+6Uixi3ls5gbA/4qW3Pi/BYCSsY
-	 8fWwwrjkcie/1SMPzesi+Kx5hHDkZnULp8nIu7/3PaG6N5NloDxJzQjtSE80o0eHizWpz
-	 c7pAnlZi3nCRZjZTgOFqzdOOKb2zBDIzxXrmEVmhF828ZW0fihmaOILmlsRGTVFM9Fw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794557040;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=9aTGmfKoZNcf7jTTJ6RvYLx/icbQQbPWjeg9zDfJi4c=;
-	b=CLb78VPBIaQiDt4pdhTp3RCeRt4CCy+yrW/3ycyIxsSLIz0rZFt39u1PHamF0Zb57Pab
-	 54tCQAJU+3ML/Iwv7wqA/GB/1JHu63fWP5GDja4s6lVcOhB7ikPjoa0YHxUvqfX++FFXA
-	 3raYk1H3+s5biXYqUn1f7E9d+FOisz1ChGW2adSy3pZQGb9tACUWU0bnfX6PwiLmG0tY2
-	 Ay/kdpYK/2BYlSDcnzpv5zfUpCPl+RQQHl04j1tyT/xucRlZU+ZI/Nqc4fAjS80t/Klq0
-	 eKZDAPnUaohQMzuoRjNjkdMwEVzPl+4PxkCkmVVMNBLVFrRJ2Lvz0RhccE+5TYq6Bgg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 2F37A1F000C4;
-	Fri, 13 Nov 2026 08:04:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UcHftlkA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986131F000C4;
+	Fri, 13 Nov 2026 08:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794557040;
-	bh=9aTGmfKoZNcf7jTTJ6RvYLx/icbQQbPWjeg9zDfJi4c=;
-	h=From:Date:Subject:To:Cc:Reply-To;
-	b=Lshj+DVGf0XV1Tpuw1oQGOhRWKoxja3uypxUI7JFYTfBY8+dtB37Fy2nLiMssT9K2
-	 SSdZ0e4mzTWtso4A41qtaq5r2MJGjo2dRlppLZ/nKEcNQze6rrPKCQv99zjmu56scS
-	 6ckA3oqx6lXVo32UlKzoVwlPMEpeQXBXU5XfKLm6r4okwVZvmSUSwic6icDeot4bgB
-	 SbHdlqMQ/optq5iGe6ToRR4KJiDoOVCfPJcuJkMQZ062lG10A8KvFmEl8EFlN2ysGu
-	 D2MLbp05W31lVL6hfXBMeo95h+m8kvfBzOELSa0Nech0lWYNAynbCS7YBa6pHJQkAx
-	 J60EE6L/W3G0w==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 81E564769E;
-	Fri, 13 Nov 2026 08:03:59 +0000 (UTC)
-From: Arun Iyengar via B4 Relay <devnull+aiyengar1990.gmail.com@kernel.org>
-Date: Fri, 13 Nov 2026 08:04:00 +0000
-Subject: [PATCH net-next] net: stmmac: dwmac-sun8i: Defer probe when the
- EPHY clock is not ready
+	s=k20260515; t=1794557183;
+	bh=lb4Edw7yh0QJZr9z5jSn2QIVos+nFDc8neFuLj7Hbhw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UcHftlkAxlMUoAHLH8VSPUOsFhelDvPy+o87pyiVN2VT7skEDm66aBi86qvxzVfBn
+	 +uURM/9tB/z+AHJ3mp+8euBYcJONXsvOPq5dXhQMYWwU6IFExLNl1yoEh7t2akUVpz
+	 1YyAtMwGiN/1Q8+DSlF5iby+eSDqHX19/Toj/sC3B08oXyRwKjnBRnBXKUBvJ4dgxh
+	 L3Ib6Ox0l61YU5c3aMXJJKgvhT34NHVy0dZIN90tjfOcGzFlkqIb2SeH5fYaMlEGVq
+	 oCrHR2gZNelltU6kLImqLDFuVjjgDJgSYal2qOitulw+Xq/WY+INtSYe2HRMWENZOA
+	 yQ4q1kaSDYaRA==
+Subject: Re: [PATCH net-next v4] net/mlx5e: advertise tcp-data-split support
+From: netdev-bot+sashiko@kernel.org
+To: dimitri.daskalakis1@gmail.com
+Cc: davem@davemloft.net, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, leon@kernel.org, andrew+netdev@lunn.ch,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, gal@nvidia.com,
+ cratiu@nvidia.com, dtatulea@nvidia.com, noren@nvidia.com, cjubran@nvidia.com,
+ bjorn@kernel.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+Date: Fri, 13 Nov 2026 08:06:22 +0000
+Message-ID: <179455718216.2199510.10119051325167179247@kernel.org>
+In-Reply-To: <20261111170558.1654691-1-dimitri.daskalakis1@gmail.com>
+References: <20261111170558.1654691-1-dimitri.daskalakis1@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,95 +64,121 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-b4-sun8i-emac-ephy-defer-v1-1-12a8591702fe@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQ6CMBAFf4Xs2U0obQj4K8ZDKQ9ZEyvpFoMh/
- LtVj5PJzE6KJFA6VzslvETlGQuYU0Vh9vEGlrEwNXXTGmMsD451jZ0wHj4wlvnNIyYkdl0dbG9
- 7h9ZTyZeESbbf+kIRmSO2TNe/0XW4I+TvmY7jAySUWp6GAAAA
-X-Change-ID: 20261113-b4-sun8i-emac-ephy-defer-480c39394e6a
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Corentin Labbe <clabbe.montjoie@gmail.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Arun Iyengar <aiyengar1990@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794557039; l=2284;
- i=aiyengar1990@gmail.com; s=20261110; h=from:subject:message-id;
- bh=3vOWWV9l/RPEbbthTMkW1C/XCstj8pm3YVWcUELiCkk=;
- b=Zh00xt2IqE0H4WmqmMEFzkuWSzcVdr9Qa1Qf6eTGMm86i/HvyogK5dSaE/9LQJc9xcVZIiy9D
- Q9zA4UQMzy0DKdbTShY1TsZo15qzneFaut3ohv/froP6aUhibJFsMIG
-X-Developer-Key: i=aiyengar1990@gmail.com; a=ed25519;
- pk=zXpRgUTrhaFe6jLyPqbBy3ccfkj04w0g2690Wv3mg+0=
-X-Endpoint-Received: by B4 Relay for aiyengar1990@gmail.com/20261110 with
- auth_id=1480
-X-Original-From: Arun Iyengar <aiyengar1990@gmail.com>
-Reply-To: aiyengar1990@gmail.com
-Content-Transfer-Encoding: 7bit
 
-From: Arun Iyengar <aiyengar1990@gmail.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-get_ephy_nodes() skips an internal PHY node on any of_clk_get() error.
-If the EPHY clock provider is not registered yet, the node is skipped,
-the function returns -ENODEV and the probe fails for good. The reset
-lookup right below already returns -EPROBE_DEFER in this case.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Return -EPROBE_DEFER for the clock too. Other clock errors still skip
-the node, as before.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 9f93ac8d4085 ("net-next: stmmac: Add dwmac-sun8i")
-Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
----
-Reported by the Sashiko review bot while it reviewed my MDIO mux error
-path fix for this driver:
-https://sashiko.dev/#/bug/linux-98384c14-541e-410e-a074-fff5e98b3820
+- [Medium] mlx5e_get_ringparam() now reports tcp-data-split as ENABLED
+  whenever SHAMPO is active, even when dev->cfg->hds_config is still…
+- [Low] The patch has no Fixes: tag, even though its commit message
+  describes regressions caused by commit 46bcce5dfd33 ("net/mlx5e:…
 
-Only the H3/H5 and V3s variants (soc_has_internal_phy) reach this code.
-With the in-tree device trees the EPHY clock comes from the same CCU as
-the EMAC clock and reset, so the EMAC probe already waits for that CCU
-and this cannot fail there. It matters when the EPHY clock comes
-from a provider that probes later. Build-tested only (W=1, arm64 and
-arm); I have no board with the internal PHY.
+--
 
-This patch was developed with Claude (Anthropic) as a coding assistant:
-it checked the report against the code and wrote the fix and the commit
-message. I reviewed it.
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+net/mlx5e: advertise tcp-data-split support
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 2ece7ba9dd73..8163e49fa7ad 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -801,8 +801,13 @@ static int get_ephy_nodes(struct stmmac_priv *priv)
- 		struct clk *ephy_clk;
- 
- 		ephy_clk = of_clk_get(iphynode, 0);
--		if (IS_ERR(ephy_clk))
-+		if (IS_ERR(ephy_clk)) {
-+			if (PTR_ERR(ephy_clk) == -EPROBE_DEFER) {
-+				of_node_put(mdio_internal);
-+				return -EPROBE_DEFER;
-+			}
- 			continue;
-+		}
- 		gmac->rst_ephy = of_reset_control_get_exclusive(iphynode, NULL);
- 		if (IS_ERR(gmac->rst_ephy)) {
- 			ret = PTR_ERR(gmac->rst_ephy);
+On devices that support HW-GRO, mlx5e_get_ringparam() now reports
+tcp-data-split as enabled when SHAMPO is active and as disabled otherwise.
+The patch also rejects disabling tcp-data-split while HW-GRO is on.
+mlx5e_fix_features() now keeps HW-GRO off when tcp-data-split is disabled.
 
----
-base-commit: 573af801552999954caa8347e4490b04cf4763f0
-change-id: 20261113-b4-sun8i-emac-ephy-defer-480c39394e6a
+> Since commit 46bcce5dfd33 ("net/mlx5e: Support ethtool tcp-data-split
+> settings"), mlx5 no longer reports tcp-data-split from
+> mlx5e_ethtool_get_ringparam() and the reply carries only the stored
+> config. With the default config (auto) the attribute is omitted, so the
+> device looks like it does not support tcp-data-split, even while HW-GRO
+> is on and SHAMPO is splitting headers.
 
-Best regards,
---  
-Arun Iyengar <aiyengar1990@gmail.com>
+[Severity: Low]
+This isn't a bug, but should this patch carry a Fixes: tag?
 
+The commit message names 46bcce5dfd33 as the cause. That commit removed
+the assignment of kernel_param->tcp_data_split from the SHAMPO state in
+mlx5e_ethtool_get_ringparam().
 
+Since then, rings_prepare_data() seeds the value from
+dev->cfg->hds_config. rings_fill_reply() only emits
+ETHTOOL_A_RINGS_TCP_DATA_SPLIT when the value is non-zero, so in auto mode
+the attribute is missing.
+
+46bcce5dfd33 also enforced only one direction in mlx5e_fix_features().
+This patch restores the reporting and adds the missing direction, so
+would this be appropriate:
+
+Fixes: 46bcce5dfd33 ("net/mlx5e: Support ethtool tcp-data-split settings")
+
+Without the tag, stable kernels that contain 46bcce5dfd33 would keep the
+missing attribute in auto mode.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> index 1f534051cdfe4..8e7c748caf2d2 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> @@ -388,6 +388,13 @@ static void mlx5e_get_ringparam(struct net_device *dev,
+>  	struct mlx5e_priv *priv = netdev_priv(dev);
+>  
+>  	mlx5e_ethtool_get_ringparam(priv, param, kernel_param);
+> +
+> +	if (dev->hw_features & NETIF_F_GRO_HW)
+> +		kernel_param->tcp_data_split =
+> +			priv->channels.params.packet_merge.type ==
+> +			MLX5E_PACKET_MERGE_SHAMPO ?
+> +			ETHTOOL_TCP_DATA_SPLIT_ENABLED :
+> +			ETHTOOL_TCP_DATA_SPLIT_DISABLED;
+>  }
+
+[Severity: Medium]
+With this change, tcp-data-split is reported as enabled whenever SHAMPO
+is active, even while dev->cfg->hds_config is still auto
+(ETHTOOL_TCP_DATA_SPLIT_UNKNOWN). Does this break the XDP cases in
+tools/testing/selftests/drivers/net/hds.py?
+
+With HW-GRO on, set_xdp() and ioctl_set_xdp() now see 'enabled' and set
+tcp-data-split back to 'unknown'. hds_config is already unknown, so
+ethnl_set_rings() sees no change and returns without calling the
+driver. HW-GRO and SHAMPO stay on.
+
+The core checks in dev_xdp_attach() and netif_xdp_propagate() only
+reject single-buffer XDP when hds_config is
+ETHTOOL_TCP_DATA_SPLIT_ENABLED. The request therefore reaches the driver,
+and mlx5e_xdp_allowed() rejects it:
+
+	if (params->packet_merge.type != MLX5E_PACKET_MERGE_NONE) {
+		netdev_warn(netdev, "can't set XDP while HW-GRO/LRO is on, disable them first\n");
+		return -EINVAL;
+
+That matches "not ok 9 hds.set_xdp" and "not ok 12 hds.ioctl_set_xdp" in
+the posted run. Before this patch, ioctl_set_xdp found the attribute
+missing in auto mode and skipped.
+
+In auto mode with HDS reported as on, the ring param also can't be used
+to turn HDS off. mlx5e_ethtool_set_tcp_data_split() now rejects
+'disabled' while HW-GRO is on.
+
+With HW-GRO off, enabled_set_xdp() and ioctl_enabled_set_xdp() call
+rings_set() with tcp-data-split set to 'enabled' and no exception
+handling. The driver now returns -EINVAL for that request.
+
+The "SKIP enabling of HDS not supported by the device" lines in the
+posted results don't seem to exist anywhere under
+tools/testing/selftests/. Did those results come from a locally modified
+hds.py?
+
+Because of the _hds_reset() logic in hds.py, some of these cases could
+already fail before this patch, depending on test order.
+
+Should hds.py be updated together with this change? If not, could the
+commit message mention the expected hds.py failures on mlx5?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111170558.1654691-1-dimitri.daskalakis1%40gmail.com
