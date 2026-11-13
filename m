@@ -1,79 +1,96 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794604002;
-	b=UnJqcXeYGjHsM4fK1u6iNjHWKbFdCsksaHHDa4h/w26nh7kpXy7JXSELXXuLW07G5jIE
-	 5wr+pfD4Y4UJ5x2LFvSZCEmgwsoq2NaytyLcq09HI9ZaJC+ftbzwefm4uxmJmAFjC54x5
-	 D0ZWenJqDuiTIaPInHMaFzG8LMNR/5MM0RLKOrmx9iGm996KS5JHUX3COKM+QpgGzb2Qu
-	 ShrF9ZhWesK3JdCkwZhWK8T6xAvwM2rbGV6CmT1OoK96kMNQ21WGR7FWDTh1zIeItpW1L
-	 iprQPDBnqvZvvJPRdZDdE9UXZIdYHQQdPaJCqD/oDqWl8Jemf2XBtGqBKeoJtzvLdjQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794604002;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=h/4SHi4LN8fNNp2z6R0vX1bx1HpB7Z0CG0RIgc56EBM=;
-	b=p4DjfRZ04HvXK5yHspam4NVAqH7mPIrYbZ9lBi4mOt/YSongSEbN4GKWi1AKHTF6ySBc
-	 h3u3S/o/4fIEoQtKupLTfDnzYbysYq6O6O3ib2Ut4BMmSRFN9LPjp9lzbpcKuHJKXn8Y8
-	 ePGlFBWK0cVaUrWMLQTAjzFLQXEP6mZFrmcbWskW6Q61FzUgjN4u/otMC4Pxx7ma9xRG8
-	 xQnvyy0RM4ZTIfZFQWQkR7ykbhx0wIjl/DUzjKzeDf9SCXdynaS+xnPRlQw7XUcG3L1bO
-	 N18jR/NLPnQ/Nh5TecIgeyI9y6vtsWy4E55HhOytJdrySRBOWFrQ9GNE7g/Gxm+3NOw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hsf450GX;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CED606A33F;
-	Fri, 13 Nov 2026 21:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hsf450GX
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794604002;
-	b=kRpJN0uA/3n1s8UnLRdIgi5ir+FWXK9BehSn1sprnq2efdHGDmURwfDR7xN1Ttxc78kk
-	 LPaZj17jpVaUI1oWgy7Op2ZoC8rw6umKe3ZYyU3aO1UO36nPi2OvOs1bd8mqRAhRZ6wLy
-	 ffkgDWleyHeHxk2CkcfYpTyI1rqXqBA/+gPULzm9Lm3kXwuRmpvU3DfwxEb4ukVo0Dade
-	 2+pee6zZbTFV91fJllSNdLdIPkfUOUexgQArEqtCqSmq9roxV2F7Kefta5x2L/IAYyUSH
-	 vuNQArxnSuWTvSalLzEQWBakasr4fsDM11ptgotP5nngXk1XT93UGcPdaHy0uKgQOIw==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794604002;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=h/4SHi4LN8fNNp2z6R0vX1bx1HpB7Z0CG0RIgc56EBM=;
-	b=CD+5toAq40kSOEgG5juLembnQK2xBDkUiWVreurLPM27bfWnr0HDMbXUdif1Mp0FHNec
-	 9KzERPF9Oj3rtTGFwtsY15xecroW/8xsnUUNzBPiPQ10zvD4FEEEvCaVU0mbDR66d+H/h
-	 wBtYswalYk7g9BgkQs+YZ9ZpARR0IHQi8QQ2y9TrtrshQzu/BqRkYqnmC1vneiOM6oKvW
-	 UsIBpoPjHrQMi1zQS1b8bz1alirESH7iXfzUKVr6fcpAL59nc1ZYy0Sg8rFbN+emg8rEr
-	 0djEriq0y4f37B5zQOg2mL4034wjbjpvx1B3WhiJognXh8+Yxn469WSx36rut223UfQ==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.167.180
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794604425;
+	b=2i/UkHOlxlhk0UIBxtC8qUadwj0IdnpK7Sa2HhTDDHjBgOM3FJa1KJpoIN0FA/l4FNKH
+	 mjvzl5SHkrH22BxdQ7fK5oYDEjhy9RBQHQWfNoq7uejaAnkBlLHvbRQZrkfHuLe2CVb1M
+	 MFUmf+GZR9X5GaAweVEC+NZ4WDS12VEinDnBo1ClJyU/j1qwBicEO0K0b+Onm/8I9jh9L
+	 P8MMGI07QewrksrVMEOJlyuGvg5zXkWmuGEn1wIT6nNm8Edb7kxJVZSWghdJA22uT8R/W
+	 c8Nf32X8lfFj+xHZcwemBr9cfrR7VLn+ZicjV911KMHVvOnqF6FMPlKZxjWL48TIDOA==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794604425;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=0dHmRdnk/ATqwo/EsTbTcwWoDXKXa9dTSpvherQIWhM=;
+	b=dPFpPZBDL23ZvT+28fH409QGdYqu6y6CjxeG3a0OEwl+sUxrw3z45uFGxFbRUyYckYkd
+	 IqdTT8cPGAR/e9MDI0IGqQ8skxAu97+KPVKOSxr22xwNV9peQLl+3FYIdG1XyX9naedEv
+	 cWUL8PjMAIKw/54+qeH2V1+amNUw1jL+DOp6AE/duobdUreblYfNx5HqGKUdAJZeXGo8g
+	 Ffovnzu85Gy9p/Gcpv2gZLVJpYXnQbrqxMYPtfi3ngYmQmz2fGbVbU2St3cJIBJdmqakO
+	 Kd+v4RRLjAMYC4Ez7EkQ/E/mIZED9KgCoAdGm63jKUfuZjQboo6nr4jPxgQyA6yFu1Q==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=openai.com;
+	spf=pass smtp.mailfrom=openai.com;
+	dkim=pass header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=DvEoY+AP;
+	arc=none smtp.remote-ip=209.85.167.180
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 022C91F000C8;
-	Fri, 13 Nov 2026 21:06:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794604002;
-	bh=h/4SHi4LN8fNNp2z6R0vX1bx1HpB7Z0CG0RIgc56EBM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=hsf450GXnmYA9U2gkl3JelKBL0QEvTMTeF4ao/LNgod1BNO7mis7sBmGZwA3Sr7az
-	 i4iPbFvmwqV+AzdYXOo3xNzVecofbgpQR0vQL/9r5gQBSKlAGTXOAsTTGHkE2OACQT
-	 CrOvA0z7kQGwinZLc3Rzgr291uchZdbPGs0YXXk5QqSpGkfv8Y7Rt6FTrHqgW9NMSn
-	 2f7ItWPVHMcxj+rQCGEW88+cMReeM5GLAULeS5us+OLJu1mGDfLsUlyBG97EFkzgLH
-	 q2uo0y5v1TBTZZtkCk1gD2uUHisMeW0ZW62xyrFE29ewGYBDZwpfZLifrjDTDGdqnx
-	 3rtYJ/C4Hdujg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 85D7C49B02;
-	Fri, 13 Nov 2026 21:06:40 +0000 (UTC)
-From: Igor Velkov via B4 Relay <devnull+iav.iav.lv@kernel.org>
-Date: Fri, 13 Nov 2026 21:06:38 +0000
-Subject: [PATCH net v6 4/4] net: phy: postpone PHY interrupts during sleep
- with MAC-managed PM
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106A4606A336
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 21:13:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 106A4606A336
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=openai.com header.i=@openai.com header.a=rsa-sha256 header.s=google header.b=DvEoY+AP
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4d7034a99a9so1737931b6e.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 13:13:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1794604424; x=1795209224; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0dHmRdnk/ATqwo/EsTbTcwWoDXKXa9dTSpvherQIWhM=;
+        b=DvEoY+AP82+e8/1Co2xXayhA3H7nJwC/dDd+BsFkjRRoDnpkxsuzrJua9vVISSTSZZ
+         f/yB5hdOz4TaF/WlCJelG1kVtSqhP02Q3JTYiBqWTltK/hJ70+ViDrQJiry+gPVi423w
+         hgIsIHYyBoOZKZPd4jU9PriRbr76K0LUOXwDw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794604424; x=1795209224;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0dHmRdnk/ATqwo/EsTbTcwWoDXKXa9dTSpvherQIWhM=;
+        b=g8OxdRh5lJT+x8zfc9aUw+qh3f+ASomz0xa9lOvmdJXRh6dB9wad77eo+AQoxXnWeA
+         jedfVlyf3ud3ydqLaYGLs3iQ/MGXkOAHpeGHa8WgFCDZ6sm8jxUWihV/gtzUSUK2JvsD
+         69/nT5Hu5UoPlLl4RKL1WbYiiydcZspTbTbWU0REuIx6y8fyJ0TUvbTO4gLc8zOyX3+y
+         WqZqSe0sdaNv3BfF3H860lArq+ZOKYhfywKe5qFiBCqeuM+HmIpi2U9e9+Higk3+bzBE
+         BZ3zYlqMER+C9EPrvAb8nVjGScIy4tNJ+X4K4dPFbw2KQeZGOz0XSP92OchLJaZ9qblF
+         IHFg==
+X-Forwarded-Encrypted: i=1; AL+hErExh/L0QVLoYK4up6UlZpBd9yBBwWELMF5K/wSzuDHVIi/vBIP4qT0Yhx1thKEaC/JN5kipKLQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+Sl/LQ6RtQu+9EAdOupnUyxZcYE4/q4igrUEaowKfi72vgbWKw
+	KHNDlV6237jHulFmkW+Cqqmxvwj6PdtTDJYihGaytv2fSAKa97D21l/qorkMiB+VMadLLXv9G9t
+	dP/p3rEw=
+X-Gm-Gg: AYBFou3L5NJpUE2g4QWKj+gJBG+TJNA9wYcFerLZdpa7hmDzCuDfFXoyTYcnndE3AX2
+	d7MdhXVI6SbxvKARpoLLQNsh1/YkU81qdObDsVZrfaftZsSy4uP7u5pPNaL/skqPYKJ8C+d4chs
+	ZROZL2gvIaBXcgdnBSqE1vsi85fZaDdQQ7Ig08JmdHw/rBVBaToi/Ahy0xvWMcTwh0jYoMjFRig
+	qrYxMebGr0YEI+lXQ4A/w2J4hug9ivC2vG+42YlvKONYi4XHPWD6TYAwEK+sfdtIedajxWPgoVh
+	4iH872AaQPkOJpbgdAqimM1sqQACP4/GOG/bryBsMuhCA6f5wJ2nEo0YdZ/Y2QO5TC/dpYLNN27
+	YYIJV0TONugZLd3RVXCzJ4T/nMmkrJhbgbxglbVIYcIgGurW3bQjef04uYFdLwtDEDMB6S9UKHp
+	8cEt206FvbelNW8hBdMMDsbFfu2BVRqcLNFnLe6IQx9cGBnGHBqsI4L/rma74UXW4NLxbIQ0TUx
+	bPI2Un118BhoycrHHb3B+F5a5Hux9cEjhSJ+3KkLVi3YXgdSxkChCaom6vsZguksG988L+HtYbs
+	O52fcArwaQzmSYcZKIjJ4LDiCs6YWWgm2mENQu3xTxfMZG3TmCfbTQWpdON4vgfZ+VQgwmQJOY5
+	NJ/Xs9sGy/psvdUISI5M5zPqhiEiscg==
+X-Received: by 2002:a05:6808:1a03:b0:56b:4351:49bd with SMTP id 5614622812f47-56e647dfc6dmr3129683b6e.52.1794604423720;
+        Fri, 13 Nov 2026 13:13:43 -0800 (PST)
+Received: from com-75606.corp.openai.org ([199.47.143.1])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-56e71262becsm2809890b6e.17.2026.11.13.13.13.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 13 Nov 2026 13:13:43 -0800 (PST)
+From: Kyle Zeng <kylebot@openai.com>
+To: linux-afs@lists.infradead.org
+Cc: dhowells@redhat.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	Kyle Zeng <kylebot@openai.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3] rxrpc: Serialize client connection IDR updates
+Date: Fri, 13 Nov 2026 13:11:30 -0800
+Message-ID: <20261113211130.86092-1-kylebot@openai.com>
+X-Mailer: git-send-email 2.55.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,169 +100,175 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-b4-phylib-mac-pm-irq-v3-v6-4-05af2503cb23@iav.lv>
-References: <20261113-b4-phylib-mac-pm-irq-v3-v6-0-05af2503cb23@iav.lv>
-In-Reply-To: <20261113-b4-phylib-mac-pm-irq-v3-v6-0-05af2503cb23@iav.lv>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Lukas Wunner <lukas@wunner.de>, 
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
- Wei Fang <wei.fang@nxp.com>, 
- =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
- Paul Barker <paul@pbarker.dev>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Doug Berger <opendmb@gmail.com>, 
- Thangaraj Samynathan <Thangaraj.S@microchip.com>, 
- Shenwei Wang <shenwei.wang@nxp.com>, 
- Haoning Cheng <Haoning.CHENG@cn.bosch.com>, netdev@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Igor Velkov <iav@iav.lv>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5828; i=iav@iav.lv;
- h=from:subject:message-id;
- bh=KDaI5LsTyEkMYG1JUyhMv85ZeBt5+gr1aiFFihz2t4o=;
- b=owGbwMvMwCVmNH1q96v4SmbG02pJDFnfq+/rXhd4sfc9n1j0CsbnGydY7Z3Lp5YY/K1aPfVgX
- NImzY1HO0pZGMS4GGTFFFkmHNK4lbHk6l9/D/MHMHNYmUCGMHBxCsBELugw/NP7EZwvn+PYWFzT
- vEWxZU/xIs7+mjW1b7ex6R8LcaxxZGX4Hy9vb7l/qx/znfwo6xW/msX65jYu0fwdHnXtTvpn6YY
- CRgA=
-X-Developer-Key: i=iav@iav.lv; a=openpgp;
- fpr=90C228DA68A4D5FD4F4837E03297958BEA5F7903
-X-Endpoint-Received: by B4 Relay for iav@iav.lv/default with auth_id=1060
-X-Original-From: Igor Velkov <iav@iav.lv>
-Reply-To: iav@iav.lv
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-From: Igor Velkov <iav@iav.lv>
+Service connections use peer-selected CIDs and do not own client IDR
+entries, but the common destructor removes those IDs. This can delete a
+live client connection or race allocation and corrupt the IDR and its
+RCU callbacks. Client destruction can also repeat an earlier removal
+and delete a reused ID.
 
-mdio_bus_phy_suspend() and mdio_bus_phy_resume() return early when the
-MAC driver manages PHY PM, so the PHY never gets irq_suspended and
-phy_interrupt() runs the PHY driver's handler at any point of the sleep
-transition. If the MAC driver powers the MDIO bus down, the MDIO access
-in that handler can stall the CPU. This happens on both sides:
+Restrict client cleanup to clients. Restore a per-local writer lock and
+an ownership flag so each ID is released once. Retire IDs even if the
+bundle slot was replaced, preventing deferred final puts from leaving
+the IDR nonempty at endpoint teardown. Keep IDs until retirement to
+preserve active calls and terminal retransmissions. Unlock before the
+existing leak BUG() so later destructors cannot get stuck.
+Client-only cleanup also corrects nr_client_conns and restores the
+intended expiry selection.
 
-- suspend: the MAC's suspend callback stops the PHY, the link goes
-  down, and the handler runs while the MAC powers down;
-- resume: resume_device_irqs() re-enables a pending interrupt before
-  the MAC resumes.
+The issue was found by an LLM.
 
-On Helios64 (dwmac-rk, RTL8211F with its interrupt line described in DT)
-both hang the board: the handler reads INSR while the GMAC clocks are
-off, after rk_gmac_suspend() or before rk_gmac_resume(). The commit in
-the Fixes tag added the postponing after the early return for
-MAC-managed PHY PM, and stmmac has set mac_managed_pm since commit
-f151c147b3af ("net: stmmac: Enable mac_managed_pm phylink config").
-
-Set irq_suspended for these PHYs too. The PHY device is a child of its
-MDIO bus, so mdio_bus_phy_resume() runs after the resume callbacks of
-the bus and its parents (with stmmac, the MAC) and replays the postponed
-interrupt then. The PM core resumes children of a device whose resume
-callback failed, and phylib cannot tell: if the MAC fails to power the
-bus up, the replay still reaches the bus. phy_suspend(), phy_resume()
-and the state machine stay with the MAC driver, and no MAC driver needs
-a change. Doing this in phylink_suspend() instead would miss macb, which
-sets mac_managed_pm but suspends with phylink_stop().
-
-A postponed interrupt cannot read the PHY, so it cannot tell Wake-on-LAN
-from a link change. A PHY without MAC-managed PM reports what
-phy_interrupt() reports today. A PHY with MAC-managed PM reports no
-wakeup: the MAC can change the link in its suspend callback, as stmmac
-lowers the link speed through phylink_suspend() when the PHY may wake
-the system, and a PHY that leaves its link interrupt unmasked would
-abort every suspend. Its postponed interrupt still disables the line,
-which may then stay masked until resume, so such a PHY may not wake the
-system from that sleep, and a magic packet that arrives during the
-transition does not abort it.
-
-Tested on Helios64 with 7.3.4, s2idle with the link up:
-- no Wake-on-LAN, GMAC clocks off in suspend: 10 of 10 cycles suspended
-  and resumed; on 7.3 without this series the same test hung or reset
-  the board after the link went down 10 of 10 times;
-- MAC power/wakeup enabled, no Wake-on-LAN: 3 of 3 slept;
-- Wake-on-LAN in the PHY, so phylink_suspend() also drops the link
-  speed: a magic packet woke the board 4 of 4 times, no suspend
-  aborted.
-
-Fixes: 1758bde2e4aa ("net: phy: Don't trigger state machine while in suspend")
-Signed-off-by: Igor Velkov <iav@iav.lv>
+Fixes: 9d35d880e0e4 ("rxrpc: Move client call connection to the I/O thread")
+Fixes: 3cec055c5695 ("rxrpc: Don't hold a ref for connection workqueue")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
 ---
-Haoning Cheng's Tested-by on v5 is not carried: MAC-managed PHYs no
-longer report a wakeup.
----
- drivers/net/phy/phy.c        |  5 ++++-
- drivers/net/phy/phy_device.c | 11 ++++++++---
- include/linux/phy.h          |  4 ++--
- 3 files changed, 14 insertions(+), 6 deletions(-)
+v3:
+  - Unlock conn_ids_lock before the existing leak BUG().
+  - Add the Fixes tag for the earlier service/client accounting bug.
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 8e03c99fce8f..ccf0658c4d10 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -1419,7 +1419,10 @@ static irqreturn_t phy_interrupt(int irq, void *phy_dat)
- 	if (IS_ENABLED(CONFIG_PM_SLEEP) && READ_ONCE(phydev->irq_suspended)) {
- 		struct net_device *netdev = phydev->attached_dev;
+v2: https://lore.kernel.org/r/20261110062221.96452-1-kylebot@openai.com
+v1: https://lore.kernel.org/r/20261030042129.73690-1-kylebot@openai.com
+
+I have a reproducer for this issue and can share via DM
+
+ net/rxrpc/ar-internal.h  |  2 ++
+ net/rxrpc/conn_client.c  | 22 ++++++++++++++++++----
+ net/rxrpc/conn_object.c  |  3 ++-
+ net/rxrpc/local_object.c |  1 +
+ 4 files changed, 23 insertions(+), 5 deletions(-)
+
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 865f05fe37ab..5e49fe0f4a6f 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -377,6 +377,7 @@ struct rxrpc_local {
+ 	bool			dead;
+ 	bool			service_closed;	/* Service socket closed */
+ 	struct idr		conn_ids;	/* List of connection IDs */
++	spinlock_t		conn_ids_lock;	/* Lock for conn_ids */
+ 	struct list_head	new_client_calls; /* Newly created client calls need connection */
+ 	spinlock_t		client_call_lock; /* Lock for ->new_client_calls */
+ 	struct sockaddr_rxrpc	srx;		/* local address */
+@@ -472,6 +473,7 @@ enum rxrpc_call_completion {
+  * Bits in the connection flags.
+  */
+ enum rxrpc_conn_flag {
++	RXRPC_CONN_HAS_IDR,		/* Has a client conn ID assigned */
+ 	RXRPC_CONN_IN_SERVICE_CONNS,	/* Conn is in peer->service_conns */
+ 	RXRPC_CONN_DONT_REUSE,		/* Don't reuse this connection */
+ 	RXRPC_CONN_PROBING_FOR_UPGRADE,	/* Probing for service upgrade */
+diff --git a/net/rxrpc/conn_client.c b/net/rxrpc/conn_client.c
+index 48519f0de185..2da6460472a7 100644
+--- a/net/rxrpc/conn_client.c
++++ b/net/rxrpc/conn_client.c
+@@ -40,12 +40,16 @@ static void rxrpc_activate_bundle(struct rxrpc_bundle *bundle)
+ }
  
--		if (netdev) {
-+		/* With MAC-managed PM, a postponed interrupt cannot tell
-+		 * Wake-on-LAN from a link change the MAC causes.
-+		 */
-+		if (netdev && !phydev->mac_managed_pm) {
- 			struct device *parent = netdev->dev.parent;
+ /*
+- * Release a connection ID for a client connection.
++ * Release a client connection ID exactly once.  The final reference may be
++ * dropped outside the local endpoint's I/O thread.
+  */
+ static void rxrpc_put_client_connection_id(struct rxrpc_local *local,
+ 					   struct rxrpc_connection *conn)
+ {
+-	idr_remove(&local->conn_ids, conn->proto.cid >> RXRPC_CIDSHIFT);
++	spin_lock(&local->conn_ids_lock);
++	if (test_and_clear_bit(RXRPC_CONN_HAS_IDR, &conn->flags))
++		idr_remove(&local->conn_ids, conn->proto.cid >> RXRPC_CIDSHIFT);
++	spin_unlock(&local->conn_ids_lock);
+ }
  
- 			if (netdev->ethtool->wol_enabled)
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 39e232a3144a..c043071784f5 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -369,11 +369,14 @@ static __maybe_unused int mdio_bus_phy_suspend(struct device *dev)
- 	struct phy_device *phydev = to_phy_device(dev);
- 	int ret;
+ /*
+@@ -56,15 +60,18 @@ static void rxrpc_destroy_client_conn_ids(struct rxrpc_local *local)
+ 	struct rxrpc_connection *conn;
+ 	int id;
  
-+	/* An interrupt can fire while the MAC has the MDIO bus powered
-+	 * down, whether or not the MAC manages PHY PM.
-+	 */
-+	mdio_bus_phy_suspend_irq(phydev);
-+
- 	if (phydev->mac_managed_pm)
- 		return 0;
++	spin_lock(&local->conn_ids_lock);
+ 	if (!idr_is_empty(&local->conn_ids)) {
+ 		idr_for_each_entry(&local->conn_ids, conn, id) {
+ 			pr_err("AF_RXRPC: Leaked client conn %p {%d}\n",
+ 			       conn, refcount_read(&conn->ref));
+ 		}
++		spin_unlock(&local->conn_ids_lock);
+ 		BUG();
+ 	}
  
--	mdio_bus_phy_suspend_irq(phydev);
--
- 	/* We must stop the state machine manually, otherwise it stops out of
- 	 * control, possibly with the phydev->lock held. Upon resume, netdev
- 	 * may call phy routines that try to grab the same lock, and that may
-@@ -406,8 +409,10 @@ static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
- 	struct phy_device *phydev = to_phy_device(dev);
- 	int ret;
+ 	idr_destroy(&local->conn_ids);
++	spin_unlock(&local->conn_ids_lock);
+ }
  
--	if (phydev->mac_managed_pm)
-+	if (phydev->mac_managed_pm) {
-+		mdio_bus_phy_resume_irq(phydev);
- 		return 0;
+ /*
+@@ -162,15 +169,20 @@ rxrpc_alloc_client_connection(struct rxrpc_bundle *bundle)
+ 	if (!conn)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	spin_lock(&local->conn_ids_lock);
+ 	id = idr_alloc_cyclic(&local->conn_ids, conn, 1, 0x40000000,
+ 			      GFP_ATOMIC | __GFP_NOWARN);
++	if (id >= 0) {
++		conn->proto.cid = id << RXRPC_CIDSHIFT;
++		set_bit(RXRPC_CONN_HAS_IDR, &conn->flags);
 +	}
++	spin_unlock(&local->conn_ids_lock);
+ 	if (id < 0) {
+ 		kfree(conn);
+ 		return ERR_PTR(id);
+ 	}
  
- 	if (!phydev->suspended_by_mdio_bus)
- 		goto no_resume;
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 96d14b6b544f..3238432989c3 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -649,8 +649,8 @@ struct phy_oatc14_sqi_capability {
-  * @mdix_ctrl: User setting of crossover
-  * @pma_extable: Cached value of PMA/PMD Extended Abilities Register
-  * @interrupts: Flag interrupts have been enabled
-- * @irq_suspended: Flag indicating PHY is suspended and therefore interrupt
-- *                 handling shall be postponed until PHY has resumed
-+ * @irq_suspended: Flag indicating a system sleep transition, so interrupt
-+ *                 handling shall be postponed until the PHY has resumed
-  * @irq_rerun: Set by the postponed interrupt that disabled the line
-  * @default_timestamp: Flag indicating whether we are using the phy
-  *		       timestamp as the default one
+ 	refcount_set(&conn->ref, 1);
+-	conn->proto.cid		= id << RXRPC_CIDSHIFT;
+ 	conn->proto.epoch	= local->rxnet->epoch;
+ 	conn->out_clientflag	= RXRPC_CLIENT_INITIATED;
+ 	conn->bundle		= rxrpc_get_bundle(bundle, rxrpc_bundle_get_client_conn);
+@@ -682,6 +694,9 @@ static void rxrpc_unbundle_conn(struct rxrpc_connection *conn)
+ 	if (conn->flags & RXRPC_CONN_FINAL_ACK_MASK)
+ 		rxrpc_process_delayed_final_acks(conn, true);
+ 
++	/* A replaced connection is no longer in the bundle. */
++	rxrpc_put_client_connection_id(bundle->local, conn);
++
+ 	bindex = conn->bundle_shift / RXRPC_MAXCALLS;
+ 	if (bundle->conns[bindex] == conn) {
+ 		_debug("clear slot %u", bindex);
+@@ -689,7 +704,6 @@ static void rxrpc_unbundle_conn(struct rxrpc_connection *conn)
+ 		bundle->conn_ids[bindex] = 0;
+ 		for (i = 0; i < RXRPC_MAXCALLS; i++)
+ 			clear_bit(conn->bundle_shift + i, &bundle->avail_chans);
+-		rxrpc_put_client_connection_id(bundle->local, conn);
+ 		rxrpc_deactivate_bundle(bundle);
+ 		rxrpc_put_connection(conn, rxrpc_conn_put_unbundle);
+ 	}
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index 0ece717db0f8..bae95cadd72b 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -332,7 +332,8 @@ static void rxrpc_clean_up_connection(struct work_struct *work)
+ 	rxrpc_purge_queue(&conn->rx_queue);
+ 	rxrpc_free_skb(conn->tx_response, rxrpc_skb_put_response);
+ 
+-	rxrpc_kill_client_conn(conn);
++	if (rxrpc_conn_is_client(conn))
++		rxrpc_kill_client_conn(conn);
+ 
+ 	conn->security->clear(conn);
+ 	key_put(conn->key);
+diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
+index 169f9dfdaa77..5a7acd595e11 100644
+--- a/net/rxrpc/local_object.c
++++ b/net/rxrpc/local_object.c
+@@ -140,6 +140,7 @@ static struct rxrpc_local *rxrpc_alloc_local(struct net *net,
+ 		memcpy(&local->srx, srx, sizeof(*srx));
+ 		local->srx.srx_service = 0;
+ 		idr_init(&local->conn_ids);
++		spin_lock_init(&local->conn_ids_lock);
+ 		get_random_bytes(&tmp, sizeof(tmp));
+ 		tmp &= 0x3fffffff;
+ 		if (tmp == 0)
 
+base-commit: 2800868f63227c8237d70c41e70d441c919620d6
 -- 
-2.43.0
-
+2.55.0.openai.911.g06873a30d2f3
 
