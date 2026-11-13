@@ -1,63 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.74
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=91.218.175.99
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794533565;
-	b=ipUZEf/Nvaf1v+krpWe5TDa36PrVNeGY/lXJf5HkOaBOV7Wpxpjk9LcPHU67PSU233re
-	 rWWEpOIwpMhjEQ6OG1o8+kLFAzZNC+xypieK6431pJ34xvyUEMCXEwKNojW817HyCvPQw
-	 BYx0WaB3CMVhvXdtF9c1usFieM2B9RpAWmEPFDgFmuBiuaMG478XFTkDFy1QqWBSTnTry
-	 3a+S/1HYq/lfvE3q1Wu9s4QyqZKO1DPTH8PD9ZWFKFBmJviJFIaQq6M1Q4p39IcVnf4sF
-	 MM7C+G+8pZDhffJ8ysRVyqO14C2/g44ugmeHJWxdpBadFQTDrrAEAIcc3CcHe3Vx6lQ==
+	t=1794536202;
+	b=yhhBsniS71Qg/fnebr+US83zet7SS5es7Tjl8LMG5ZXJVyjpdOx2+RZTQ6Zwv+EB/1M5
+	 1QcY8For4D6Nwv+vTx479G+P9xgeSSTTnKLamR3dNBx75JX1A3o3cU7+KA+LRkwOENfLl
+	 98HqTJieHPj264umPeta31RLKAy7dQUaRR1YhdR6kdFTFhmplp4zE4ckMwfAx2JWg9rXs
+	 eFakwtU0FFRV1jPzVRt6oxlYlQQbOz/tJx3AjdNUOyNSnmo9TpOaA5+6FFQcZKhphxSsK
+	 YxT6vrP4pCU7a5aR7SOOE58R/1d+VtonY8h3Aul/4Mp2fjVbCkVEgD99ZyWScv4Iwyw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794533565;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794536202;
 	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
 	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=/AIb3So9MCT2SbD2Scd+/HlVguvx2ln4M2C5vvxMyjs=;
-	b=npZGgguUoQzNwtzBfN7jDv9KG7mWFmH5HKr9YzcTJ77dEgTAR6HcEC8dso03OHyZDtUi
-	 Zju+AqTAL2zem3vzoIbWiCVQ5GRwzHxhVlETULs9HG8G7jY8jNDMi9NTnEn7esW6Ki1dj
-	 8oE3LSMvLe+04iOVmd3K4QTzT8RZ7pW9paPCX+6RbWcVGYoxpFuiGFVLHTJETcS4lZBT9
-	 aDu/weZ3oIJPYLk7pjE6Bu9jQdKku9+VoBJQW6JbCXTW5GzxCgbp4MVxjNR/qTH1zMqBx
-	 0/l5auzm/cZvSzWW86yofTIYMPG1VQGmN+qoTms1HpMTEha4DD7aRhiZh13iMiwQunw==
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=bpQRDrxx2bpL2VvnttbeWwutzp0HVnsNMS4rnwfsbp8=;
+	b=ppFixlPPe6i3JpDS/0jwExzli4BjSQt/ZUDnZl5tyD226QfCIAoZFgguOk1KhGKR8WfC
+	 o4rPF7gDXt7bS5/Rakeh8qP5ZNnFjXw0WdcdfnmWcn+EfCj9b2smEzsZzgIF6fKBM6H3u
+	 n1CmPVBSXsQkSqW1N3XX2hW8ogTuAkDbfQsERAUHg6NYamTSt0oLKlxUSyzikoJg8DCfR
+	 IDHRuU23Bl7FhFGxCsH/slnfrQru3lIYAQwj9M1ZSs6J8A9kipGYqh9fuxaya1/XdNCzp
+	 PccNnnnBwCYP+dgqKbxcWQ+IAwvBX5h6l7cREeBVLz3NLyJg8fgQ1oeu9tui1HjKUsQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.dev;
 	spf=pass smtp.mailfrom=linux.dev;
-	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Pbu9Pnn9;
-	arc=none smtp.remote-ip=95.215.58.74
-Received: from mta1.migadu.com (out-74.mta1.migadu.com [95.215.58.74])
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=i+QQ5ES0;
+	arc=none smtp.remote-ip=91.218.175.99
+Received: from mta0.migadu.com (out-99.mta0.migadu.com [91.218.175.99])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9470606A31C
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:32:44 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9470606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658D5606A32E
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 02:16:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 658D5606A32E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Pbu9Pnn9
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=i+QQ5ES0
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=XBRHkQX7a1dXHxnR1u1SHo8udwsy2HxO8jafhHb8B3A=;
+DKIM-Signature: a=rsa-sha256; bh=GBveLCadS9QGGlTaphsN8yzGhqi5dq+SICTfuAMy8R0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794533562; v=1; x=1795138362;
- b=Pbu9Pnn9Q3hPVIZKH7d+wEAFxQomQqe4/SQEZtECuWupCXdnE8D+6zFBKRAqcicVWBx0iXVD
- JKxPusirVbpYVsJh5VZkosxwvWIOa4HBIC3JtcPgBCdsvvTRuqW78u90PK6f49NUcT8fCJChURB
- Aswh1ef8jgoDAnjbXv5sd5x4=
+ t=1794536199; v=1; x=1795140999;
+ b=i+QQ5ES0rHDKnte1cicMTe5YSN5SngMxI3xlFB7tZnDE3SBo0vakj7fQk2FAyWJwOO3sm6St
+ Jc9Y41oQsxDL0xzN/wsmuoaX9ZBkjq8NyWG2FJ67gs32H2K7TSX4/o1uLbOpH+VKBYUZWt1y3Wh
+ Y79bSpv+JL+VzhWpXigHZz60=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id 79730afe89d0038b;
-	Fri, 13 Nov 2026 01:32:42 +0000
-X-Mizu-Trace-ID: 79730afe89d0038b
+Received: by mta11.migadu.com with ESMTPS id 6b9387c472035193;
+	Fri, 13 Nov 2026 02:16:39 +0000
+X-Mizu-Trace-ID: 6b9387c472035193
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 13 Nov 2026 09:32:25 +0800
+Date: Fri, 13 Nov 2026 10:16:28 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
-To: netdev-bot+sashiko@kernel.org, idosch@nvidia.com
+To: Ido Schimmel <idosch@nvidia.com>
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
 	pabeni@redhat.com, edumazet@kernel.org, jv@jvosburgh.net,
 	andrew+netdev@lunn.ch, razor@blackwall.org, aahila@google.com
-Subject: Re: [PATCH net-next 1/2] bonding: 3ad: Receive packets in COLLECTING
- state
-Message-ID: <avZoqePFtrM6kEIV@fedora>
+Subject: Re: [PATCH net-next 2/2] selftests: bonding: Add a test for 802.3ad
+ with coupled control disabled
+Message-ID: <avZy_LUjqfnHJ498@fedora>
 References: <20261111171947.2816258-1-idosch@nvidia.com>
- <179451491706.2199510.1058504888559496420@kernel.org>
+ <20261111171947.2816258-2-idosch@nvidia.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -67,134 +66,243 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179451491706.2199510.1058504888559496420@kernel.org>
+In-Reply-To: <20261111171947.2816258-2-idosch@nvidia.com>
 
-Hi Ido,
-On Thu, Nov 12, 2026 at 08:21:57PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
+On Wed, Nov 11, 2026 at 07:19:47PM +0200, Ido Schimmel wrote:
+> Test that with coupled control disabled, a port in COLLECTING state
+> receives packets.
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> In this mode, a port only transitions from COLLECTING to DISTRIBUTING
+> state if its partner sets the Collecting bit in its LACPDUs. Therefore,
+> keep the port in COLLECTING state by clearing the Collecting bit in
+> received LACPDUs.
 > 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
+> Also test that ping works once the port moves to DISTRIBUTING state.
 > 
-> - [Medium] The fix clears 'inactive' only when ad_enable_collecting()
->   runs.
-> - [Low] The patch fixes a real, user-visible bug but has no Fixes: tag.
+> Use VRFs rather than network namespaces so that the test could be run
+> with a veth pair or a pair of physically connected ports.
 > 
-> --
+> Output without "bonding: 3ad: Receive packets in COLLECTING state":
 > 
-> bonding: 3ad: Receive packets in COLLECTING state
+>  # ./bond_lacp_independent_control.sh
+>  TEST: Receive in COLLECTING state                                   [FAIL]
+>          Packets not received in COLLECTING state
+>  TEST: Ping in DISTRIBUTING state                                    [ OK ]
 > 
-> With coupled control disabled, an 802.3ad port in COLLECTING state should
-> receive packets, but the RX path only delivers from slaves whose inactive
-> flag is cleared. This patch makes bond_set_slave_rx_enabled_flags() clear
-> slave->inactive in addition to slave->rx_disabled.
+> Output with the fix:
 > 
-> > When coupled control is disabled, a port in COLLECTING state is supposed
-> > to receive packets, but it does not. The bond only delivers packets from
-> > slaves whose 'inactive' flag is cleared, whereas
-> > bond_set_slave_rx_enabled_flags() only clears 'rx_disabled'.
-> >
-> > Fix by clearing 'inactive' as well.
+>  # ./bond_lacp_independent_control.sh
+>  TEST: Receive in COLLECTING state                                   [ OK ]
+>  TEST: Ping in DISTRIBUTING state                                    [ OK ]
 > 
-> [Severity: Low]
-> Should this carry a Fixes: tag?
+> Reviewed-by: Petr Machata <petrm@nvidia.com>
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+>  .../selftests/drivers/net/bonding/Makefile    |   1 +
+>  .../bonding/bond_lacp_independent_control.sh  | 144 ++++++++++++++++++
+>  .../selftests/drivers/net/bonding/config      |   6 +
+>  3 files changed, 151 insertions(+)
+>  create mode 100755 tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
 > 
-> bond_set_slave_rx_enabled_flags() was added by commit 240fd405528b
-> ("bonding: Add independent control state machine"), and that commit only
-> cleared rx_disabled. The RX gate in bond_should_deliver_exact_match()
-> checks only bond_is_slave_inactive(), so the bug goes back to that commit.
+> diff --git a/tools/testing/selftests/drivers/net/bonding/Makefile b/tools/testing/selftests/drivers/net/bonding/Makefile
+> index e337c099fb40..46d9fede5918 100644
+> --- a/tools/testing/selftests/drivers/net/bonding/Makefile
+> +++ b/tools/testing/selftests/drivers/net/bonding/Makefile
+> @@ -7,6 +7,7 @@ TEST_PROGS := \
+>  	bond-eth-type-change.sh \
+>  	bond-lladdr-target.sh \
+>  	bond_ipsec_offload.sh \
+> +	bond_lacp_independent_control.sh \
+>  	bond_lacp_prio.sh \
+>  	bond_lacp_strict.sh \
+>  	bond_macvlan_ipvlan.sh \
+> diff --git a/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
+> new file mode 100755
+> index 000000000000..c29712e01e49
+> --- /dev/null
+> +++ b/tools/testing/selftests/drivers/net/bonding/bond_lacp_independent_control.sh
+> @@ -0,0 +1,144 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +# +-------------------------+ +-------------------------+
+> +# | H1 (vrf)                | | H2 (vrf)                |
+> +# |  + bond1 (802.3ad)      | |  + bond2 (802.3ad)      |
+> +# |  | coupled_control off  | |  |                      |
+> +# |  | 192.0.2.1/28         | |  | 192.0.2.2/28         |
+> +# |  |                      | |  |                      |
+> +# |  + $h1                  | |  + $h2                  |
+> +# +--|----------------------+ +--|----------------------+
+> +#    |                           |
+> +#    +---------------------------+
+> +
+> +# shellcheck disable=SC2034,SC2329
+> +ALL_TESTS="
+> +	collecting
+> +	distributing
+> +"
+> +NUM_NETIFS=2
+> +REQUIRE_MZ=no
+> +lib_dir=$(dirname "$0")
+> +# shellcheck disable=SC1091
+> +source "$lib_dir"/../../../net/forwarding/lib.sh
+> +
+> +lacp_state_get()
+> +{
+> +	local dev=$1; shift
+> +
+> +	ip -d -j link show dev "$dev" | \
+> +		jq '.[].linkinfo.info_slave_data.ad_actor_oper_port_state'
+> +}
+> +
+> +# The actor state of a port in ATTACHED state is 0x0f: Activity (0x01),
+> +# Timeout (0x02), Aggregation (0x04) and Synchronization (0x08). The
+> +# Collecting (0x10) bit is added in COLLECTING state (0x1f) and the
+> +# Distributing (0x20) bit in DISTRIBUTING state (0x3f).
+> +lacp_state_wait()
+> +{
+> +	local dev=$1; shift
+> +	local state=$1; shift
+> +
+> +	slowwait "$WAIT_TIMEOUT" until_counter_is "== $state" \
+> +		lacp_state_get "$dev" > /dev/null
+> +}
+> +
+> +partner_state_clear()
+> +{
+> +	local bits=$1; shift
+> +
+> +	tc filter replace dev "$h1" ingress pref 1 handle 101 protocol 0x8809 \
+> +		flower skip_hw action pedit munge offset 18 u8 set 0 \
+> +		retain "$bits"
+> +}
+> +
+> +h1_create()
+> +{
+> +	adf_ip_link_add bond1 type bond mode 802.3ad lacp_rate fast \
+> +		coupled_control off
+> +	adf_ip_link_set_master "$h1" bond1
+> +	adf_simple_if_init bond1 192.0.2.1/28
+> +
+> +	tc qdisc add dev "$h1" clsact
+> +	defer tc qdisc del dev "$h1" clsact
+> +
+> +	tc qdisc add dev bond1 clsact
+> +	defer tc qdisc del dev bond1 clsact
+> +
+> +	tc filter add dev bond1 ingress pref 1 handle 101 proto ip \
+> +		flower skip_hw src_ip 192.0.2.2 dst_ip 192.0.2.1 \
+> +		ip_proto icmp type 8 action pass
+> +	defer tc filter del dev bond1 ingress pref 1 handle 101 flower
+> +}
+> +
+> +h2_create()
+> +{
+> +	adf_ip_link_add bond2 type bond mode 802.3ad lacp_rate fast
+> +	adf_ip_link_set_master "$h2" bond2
+> +	adf_simple_if_init bond2 192.0.2.2/28
+> +}
+> +
+> +setup_prepare()
+> +{
+> +	h1=${NETIFS[p1]}
+> +	h2=${NETIFS[p2]}
+> +
+> +	adf_vrf_prepare
+> +
+> +	h1_create
+> +	h2_create
+> +}
+> +
+> +collecting()
+> +{
+> +	local pkts
+> +
+> +	RET=0
+> +
+> +	# Clear the Synchronization (0x08) and Collecting (0x10) bits in the
+> +	# partner's state to move $h1 to ATTACHED state and then only clear
+> +	# the Collecting bit to move it to COLLECTING state.
+> +	partner_state_clear 0x18
+> +	defer tc filter del dev "$h1" ingress pref 1 handle 101 flower
+> +	lacp_state_wait "$h1" 0x0f
+> +	check_err $? "Port did not reach ATTACHED state"
+> +
+> +	partner_state_clear 0x10
+> +	lacp_state_wait "$h1" 0x1f
+> +	check_err $? "Port did not reach COLLECTING state"
+> +
+> +	# $h1 cannot reply to ARP requests in COLLECTING state.
+> +	ip neigh add 192.0.2.1 lladdr "$(mac_get bond1)" dev bond2 \
+> +		nud permanent
+> +	defer ip neigh del 192.0.2.1 dev bond2
+> +
+> +	ping_do bond2 192.0.2.1
+> +	pkts=$(tc_rule_handle_stats_get "dev bond1 ingress" 101)
+> +	((pkts >= PING_COUNT))
+> +	check_err $? "Packets not received in COLLECTING state"
+> +
+> +	log_test "Receive in COLLECTING state"
+> +}
+> +
+> +distributing()
+> +{
+> +	RET=0
+> +
+> +	lacp_state_wait "$h1" 0x3f
+> +	check_err $? "Port did not reach DISTRIBUTING state"
+> +
+> +	ping_do bond2 192.0.2.1
+> +	check_err $? "Ping failed"
+> +
+> +	log_test "Ping in DISTRIBUTING state"
+> +}
+> +
+> +trap cleanup EXIT
+> +
+> +setup_prepare
+> +setup_wait
+> +
+> +tests_run
+> +
+> +exit "$EXIT_STATUS"
+> diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
+> index b62c70715293..71c6d69d98a1 100644
+> --- a/tools/testing/selftests/drivers/net/bonding/config
+> +++ b/tools/testing/selftests/drivers/net/bonding/config
+> @@ -1,13 +1,17 @@
+>  CONFIG_BONDING=y
+> +CONFIG_BPF_SYSCALL=y
+>  CONFIG_BRIDGE=y
+> +CONFIG_CGROUP_BPF=y
+>  CONFIG_CONFIGFS_FS=y
+>  CONFIG_DUMMY=y
+>  CONFIG_INET_ESP=y
+>  CONFIG_INET_ESP_OFFLOAD=y
+>  CONFIG_IPV6=y
+> +CONFIG_IPV6_MULTIPLE_TABLES=y
+>  CONFIG_IPVLAN=y
+>  CONFIG_MACVLAN=y
+>  CONFIG_NET_ACT_GACT=y
+> +CONFIG_NET_ACT_PEDIT=m
+>  CONFIG_NET_CLS_FLOWER=y
+>  CONFIG_NET_CLS_MATCHALL=m
+>  CONFIG_NETCONSOLE=m
+> @@ -15,7 +19,9 @@ CONFIG_NETCONSOLE_DYNAMIC=y
+>  CONFIG_NETCONSOLE_EXTENDED_LOG=y
+>  CONFIG_NETDEVSIM=m
+>  CONFIG_NET_IPGRE=y
+> +CONFIG_NET_L3_MASTER_DEV=y
+>  CONFIG_NET_SCH_INGRESS=y
+> +CONFIG_NET_VRF=y
+>  CONFIG_NLMON=y
+>  CONFIG_VETH=y
+>  CONFIG_VLAN_8021Q=m
+> -- 
+> 2.56.0
 > 
-> The notes say this targets net-next because it never worked, and that
-> makes sense. A tag would still let stable and distro maintainers link the
-> fix to the original commit:
-> 
-> Fixes: 240fd405528b ("bonding: Add independent control state machine")
 
-Makes sense to me.
-
-> 
-> > diff --git a/include/net/bonding.h b/include/net/bonding.h
-> > index 598d56b1bc970..cb89aff437f44 100644
-> > --- a/include/net/bonding.h
-> > +++ b/include/net/bonding.h
-> > @@ -594,6 +594,7 @@ static inline void bond_set_slave_active_flags(struct slave *slave,
-> >  static inline void bond_set_slave_rx_enabled_flags(struct slave *slave,
-> >  					       bool notify)
-> >  {
-> > +	slave->inactive = 0;
-> >  	slave->rx_disabled = 0;
-> >  }
-> 
-> [Severity: Medium]
-> With this change, inactive is only cleared when ad_enable_collecting()
-> runs. Can a COLLECTING port still be left with inactive=1 and
-> rx_disabled=0?
-> 
-> bond_option_all_slaves_active_set() can still set inactive without
-> touching rx_disabled when all_slaves_active goes from 1 to 0:
-> 
-> drivers/net/bonding/bond_options.c:bond_option_all_slaves_active_set() {
->     ...
-> 	bond_for_each_slave(bond, slave, iter) {
-> 		if (!bond_is_active_slave(slave)) {
-> 			if (newval->value)
-> 				slave->inactive = 0;
-> 			else
-> 				slave->inactive = 1;
-> 		}
-> 	}
->     ...
-> }
-> 
-> A COLLECTING port matches !bond_is_active_slave(). This is because
-> ad_disable_distributing()->__disable_distributing_port()->
-> bond_set_slave_tx_disabled_flags() left it in BOND_STATE_BACKUP.
-> 
-> The steady-state COLLECTING recheck in ad_mux_machine() only looks at
-> rx_disabled:
-> 
-> drivers/net/bonding/bond_3ad.c:ad_mux_machine() {
->     ...
-> 					if (aggregator->is_active &&
-> 					    bond_is_slave_rx_disabled(slave)) {
-> 						ad_enable_collecting(port);
-> 						*update_slave_arr = true;
-> 					}
->     ...
-> }
-> 
-> Since rx_disabled stays 0, the recheck never fires. Until the next mux
-> transition, bond_should_deliver_exact_match() keeps returning true, and
-> every non-LACPDU frame on that port gets RX_HANDLER_EXACT.
-> 
-> The notes list this as known issue 1 and describe COLLECTING as
-> transient. However, the companion selftest ("selftests: bonding: Add a
-> test for 802.3ad with coupled control disabled") keeps a port in
-> COLLECTING indefinitely by clearing the partner's Collecting bit. So a
-> partner that never sets LACP_STATE_COLLECTING would keep the port
-> dropping traffic.
-
-If the partner does not set LACP_STATE_COLLECTING, it is not supposed to
-send any packets.
-
-> Would it work to also check bond_is_slave_inactive(slave) in the recheck,
-> for example:
-> 
->     bond_is_slave_rx_disabled(slave) || bond_is_slave_inactive(slave)
-> 
-> That would let the port recover on the next state machine tick.
-
-I'm fine with or without this checking. But having this check looks better.
-Up to you.
-
-Thanks
-Hangbin
+Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
