@@ -1,92 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794602508;
-	b=4S2Eur+5ixowjj7v8sq5YDFTq851ivMpY1tut89o1ueL6fSiR8KWDLzLZACHK7IZGuBS
-	 ZbQdza3WZY17wZ4ygJux3Zs0v+g2HOUAfynKmjxKF/GvlKhNL1t7qA8aFeTl4tH3GFIb3
-	 Ezf5aGnbEr+6KduemD7yd59va9yjQP9XuKJyhpYtfst2P0kc8GlIvqceJJI5qQ3SswU1m
-	 FR8dpguB2SsvKzYvKtTLlVoDMezZvHuSybshlaTUXIvCXOyeSAmtkZwtISN5CHr9on+2j
-	 3yyIbZ+C67iQNW86Gt9a5FdbNKJwtudA6uHjd9xjJEx6O7yjMhC28M3hHdLXiOaQi0A==
+	t=1794602517;
+	b=ODg/VV7MwNpfWrSv3PN/WfKbo00xWYwFcbwMn3HcImZRJkKo1tsUIRy861ztc0yB6eGH
+	 sBmOefSdiOpX5PMPHfoWBkPNsJFrfLTPb44yRFo4ZKUBLJhpuV8F119bYt+HV8jNbUgaX
+	 jdEoXJSZcQcWO1aGmrzLnFDDMLlBZHhcAaSUlmvgop8cptiMhzz//QIKSCWLF+C2BDwze
+	 bCTjBcOsOswe0lL9R30Ui20/5gP6vKnyvQ5nOZW1Mc1KN9Im50SiBRZJODEYc4MiS33cm
+	 MUn7UqfMll71fopUoGDIFVRXWwRDP1RvwLGWXP4x9ggwjCWpdevX7OJ+SyfnJWPF8Hw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794602508;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794602517;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:Subject:From:To:Cc:
 	 Date:Message-ID:In-Reply-To:References:User-Agent:MIME-Version:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=XFYKcNYAKxl786+CJvE8W6uCAcdD35HszmgAQI+Ryxg=;
-	b=Ez8MJm4r8HhLLh41I9JsL5yPJaXP4hxAGaNZTrF2uE0fILuaJiZAbn0Q7/pnhAaeUVgd
-	 GMFobxkCC+u+OrrHHwcSgYDPP8jjcDGDP3d3eAFuvToR6ZSdK6tOCDjcX/6aVFPXGmmaw
-	 FXUVp5kGBOzQgdn6HR5SP1mCgxQr1AIR60R88jcya6NoOzFH5NSXinxOQxYBCRhmMOUD1
-	 GWBnS2OTUv8hAcoGtitEaoV8ReBLSprXG19BZevxdbIPxFp2V57wtdO4vYrl0GLx/Y7Gb
-	 +NMUNT4fE5jlubM7rAcmhho2iH7z4G2tTDrcbqfwrcehJhHveIqGnFtji+Fw4WgJT1w==
+	bh=+ycpCc/+WGN6IE3EdqBfw73uboGNGqUXn9gFvgoGme4=;
+	b=q+JuTEXLPw2lxAszfoJLEOlnr6fJK8gdNMii4YmBTERt9bcSUgQ6MsVsE2eHaFnQT4Js
+	 XYEueJYtcxzV3lp4PHTG0jdoDpOV6oE+BDKgubhqtInbL01K1wkm7SL1mt00+E73+yNdb
+	 H43t347ZXXj6+hpZsS2vQ5g8HqAkXHSk497kBoHi2RhgsQTk39BvjM2ZDxHX0rXFK/aAv
+	 ZxuFHrN7WfYNLDC+uP6bWyax8MVj4QnPoAZg1ATwHqSmtvQqVyasoPBRkMAcEiF0d3NQi
+	 ldAHigAVO7QiXgyJQx68PUpXTDi1xnh29VJcfI7FyxeZcEa6+TR+okSL/1GYwAYKxeA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=svAmgVSK;
-	arc=none smtp.remote-ip=209.85.214.174
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aFOJlyh7;
+	arc=none smtp.remote-ip=209.85.216.44
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1FF606A33E
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:41:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BA1FF606A33E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B90606A323
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:41:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 01B90606A323
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=svAmgVSK
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ed1b9e8f43so9401055ad.1
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:41:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aFOJlyh7
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3b0ae87069dso1109232a91.2
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 12:41:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794602507; x=1795207307; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1794602516; x=1795207316; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=XFYKcNYAKxl786+CJvE8W6uCAcdD35HszmgAQI+Ryxg=;
-        b=svAmgVSKDYPTjJNOcSImjNaIFivBvYoE6U8oTIOWfUzwN7w8ccH4aLQLr6xiS0cazs
-         IEN0zN599WeSmYxsm+I7EaaeHpVCB9Zr1IyrhmDqidA9peAU4D8DydDSV45DYGjY1UZR
-         yK84DP+WRBkamukqmO5IooA9YOny5LGidoBqOO2IDYEB17dnbx/ffNZmkBx+J9vxzyVy
-         zKy0opDCCAi57tIqu9Be+jq+MjNFzxXGZK1QEdhUNsas+48j5o1QkGUDO7LOPv0PC7t0
-         YoxXC0NvRTj2gs4X0XGLEKET5l7PK8UmkZUI5GM/4TMtB/zNePS6T/kWGvf+x+QK2dr7
-         2KVg==
+        bh=+ycpCc/+WGN6IE3EdqBfw73uboGNGqUXn9gFvgoGme4=;
+        b=aFOJlyh74pZHwu95GwtsPU7WypFP+qeSwJKfMbjUQbX0c0Rr87t3WniX7rn3ZpI6Y3
+         xo9a2Cn3U4cvEolJVl9iuaW0sF3tfbMQNudf11oyO5IITcQLhYOpkVYuYl4wzLfuRpN+
+         Zl7cr+xMbgLVaXLRHDzEPEh2Fi4VUPkKgsy30fpIn5iGw/A+rm1xBZIJpZk1Vh2k2WNB
+         AxpevnsLIgISGatVRSkDQWe1ddssVrbCtFZ4JVj6lLouJ3L7oOXdWfgrmicqUGYofwAO
+         B5cC0MoiwiUrPJXpaooFm/jc2d17H993JO7aMGqxh+e5guZBxZWfvTo/ZACI5g7TsfhM
+         8ctg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794602507; x=1795207307;
+        d=1e100.net; s=20260707; t=1794602516; x=1795207316;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XFYKcNYAKxl786+CJvE8W6uCAcdD35HszmgAQI+Ryxg=;
-        b=rPLqNBVl29YUmYHrsi40OzrSokaPBTNGXoe+iCHDITXU6appRYp3zhLYAKk4C5SdrA
-         de9Ryu+b5P5UJOpfzTLSdxf8CmuPdVWL6RpHp1htkVHoROshjfDfepTmGcR5GedSWXrx
-         tZCcoWDArrNo4f+s6FeI+Tp4Ko2udgwmmBIIlpwIqK1DppoakpRQUK2OzzV17Ib0qqHt
-         KNrXLBoMjkjb6xF1T2n5lnIncBJpYAwyUZjIzhHdMIi0zxv1F3ncw0xjSKn5juYuP47o
-         M2iAIyfYKRfRUQ1a4pWX2MSUA6dyfkiQsxKStxIznENqI6AWq5sXzFbHZNWYSKbaDnoL
-         k96Q==
-X-Gm-Message-State: APuU4Z8UORwovhIBtXQfBiu5nnm/xTiOzazsdTi8TJBVXRap62PNWsGF
-	Du2YxTawLzvcmxjIsQsz9F16Ao5Gwf6iqQcggHFB3NCd2Z1B6vLsiFjW
-X-Gm-Gg: AYBFou2UnIGhwYbd1VaZHn2we9u87JXm9GiVMFXJb4mU6n4U/rDz2zVQnys5OkZKiIw
-	zitRJkFaTNT51kjMBqm43YVecY8mqAEjXHEiti/GKY1tyblOZeduqYrJlErmNy8G3vp/X8aQ7Cf
-	wZhOyFgsjVCWd9b8kJiqIXBlhpvLoElA9QpVJ/wmq3CmnODYimrJC0+hU+RIC9rDeNewnVvfViu
-	yrKd9vq9rVTMEompdLhsIznSLoAEyk299gHpz7bRXm81nYp795ZzsgJRea5qeIji+955vA9C68g
-	8oWRrLC2tz+Nr5nVSlIBynp/TDOz/JJg9djD3pwekwzMAwDYWH5DEqam9rhnFVKBzvMhB7a3OQt
-	LKbcsLSHxuydm9WFC8JVUKP4/dLVTtLuZHbR56EL8IGeZmQRy5e15g/wypWZuhJVW9TudPu7l6L
-	0t1KADXRof8pV5PHL4d4GT0KTqb29PA/fu2xtjsLcDxLE2J1wRp39N1cdWVb1KZ3OG0m/AQ4sWe
-	XpyxCJrlS1bFbjxMovuodlkXLrwlf5IB+cq6RJTNgypTAnL5o8c0xCFRchR1LSMx/awXScms/FY
-	FJO0uSb8rvr7VMDTYRynoTP4h5Mf1Le7pZHI84r0uOJtLJV/mqFF5uio8xDe6yyw/IKX68hDNCO
-	MGpIKmrFImvLKAUY3jEBizwZHUlpodoDTBa7s/4PRhiHojg==
-X-Received: by 2002:a17:902:db05:b0:2ed:18cc:d3b3 with SMTP id d9443c01a7336-2ee0da33623mr34132975ad.6.1794602506870;
-        Fri, 13 Nov 2026 12:41:46 -0800 (PST)
+        bh=+ycpCc/+WGN6IE3EdqBfw73uboGNGqUXn9gFvgoGme4=;
+        b=FZMcaezzbcNj3lro+4VuPlPTNJt0chOgn+B0pC2MMCA9nZ7Tc4vGsRraDRN9eZrWoZ
+         gySJumf2Kk533/mixUo8h4RVDM21KCLx4OwvrjdlGHnsBly5YU7iBZzi2SCf9c/X3LM5
+         jIGAERHNINs5Tp9R1O7DqTLo/S8ix+DTOZemPjS33xtxwyscUdsA1L6z0SlML0lhN66i
+         jCQktuTlD1uv6dsosQ67rpHv2VhzMJgnxj4UjbvmNALArHDhCexnzSv87as8XBQ0i7hj
+         kTN9xMU6rPaN/Uw9r8+8vLBMb3U5guTuHYfbatSI3kZEJVD7KHEyd+VSs7FMDjqgy488
+         8ftA==
+X-Gm-Message-State: APuU4Z+Cn3sMLOMJjFI8EqL0Pm8ZF0Q2cYzY/IE/hjEZSJqeRvl5GlS4
+	9yvjPa2K5FbxwbCSxYSEr4OCwGrHwb+i4qXfxhrmpMk0DlIo2WCu3EFu
+X-Gm-Gg: AYBFou1DsQMpF7J706ibnzp0G10RyBvIhEhASW7dhR5z+FOZFfWL3AMGoidkjTmvc0I
+	lU4z5HrbC5eJ0IbEds/iiHQY9fuqJ3/s4AbnkXyOPA369+Sd3DFr6aCjdgtORLraWSiE1MOu7GQ
+	dtoSjZPD+XmfXUk2tOLVdy2bQiYhI21shHE36sYZ26nWruqBWYNDh+k2gjIwYUi2/CTxkBRPSZR
+	HsfOs+hu4tEoV9yBEYJDd3dy2rVEgICjB4yUNqAmWkpI7bQbsS7bDJPtCWjeDaxwjklnGVHzV81
+	kJ9gs0hK8qeFgPFrsGqYpqPQtMNDHKdMSQRUrviyBwGIUNONPNAmDMVyM1FZQDM0ct4aBQa5TzI
+	k+DxIiq3DQcKwsHaok3GHhwlPepNtaqHjvGB5TM9ZHKeC1+GOm65YpEZQIZ2+FKibpjQIwnGAkI
+	eA4rEbZjiXq/XXTK5/57DzcSl1PHPjNotvaWDdDf5Geh73j74AimpRwlOgiyHc6ob25cE/Jo/8s
+	N7JLl637W3gPDSKpzFi1HxPpTmr3TL78IZKNKYQAlnlqZHJ+PJQ9/3+HGKuR3b8lrWLujLNs3vn
+	3ev9KB9Y0oIZGihJWBIvoPNKjsI6xpvJ1tm+IRNyddNoHcNSY8avZfgwJbyTTgtW5ffw3YttNVh
+	mx4W8Rko4tqvY15+C9XuO3Gau6XE2IVLwuVbkrSmY8Gg8WA==
+X-Received: by 2002:a17:90b:33cc:b0:3b0:92b2:2e74 with SMTP id 98e67ed59e1d1-3b1b0b5e516mr3035403a91.62.1794602516311;
+        Fri, 13 Nov 2026 12:41:56 -0800 (PST)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c1:38c:400:22f5:2de:b9c3:f27c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ee0f4ad50dsm15109905ad.7.2026.11.13.12.41.44
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cddc160a17esm1943316a12.3.2026.11.13.12.41.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 12:41:45 -0800 (PST)
-Subject: [net PATCH 3/6] fbnic: Cover all of the HW stats with the stats lock
+        Fri, 13 Nov 2026 12:41:54 -0800 (PST)
+Subject: [net PATCH 4/6] fbnic: Initialize and reset the HW stats before they
+ can be read
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  horms@kernel.org, kernel-team@meta.com, kuba@kernel.org, pabeni@redhat.com
-Date: Fri, 13 Nov 2026 12:41:43 -0800
+Date: Fri, 13 Nov 2026 12:41:52 -0800
 Message-ID: 
- <179460250360.8819.2203630667210523871.stgit@ahduyck-xeon-server.home.arpa>
+ <179460251204.8819.12233374584808838528.stgit@ahduyck-xeon-server.home.arpa>
 In-Reply-To: 
  <179460241885.8819.7179935130629202331.stgit@ahduyck-xeon-server.home.arpa>
 References: 
@@ -106,160 +107,132 @@ Content-Transfer-Encoding: 7bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-The hw_stats lock covers the PHY, TMI, TTI, RPC, RXB, queue and PCIe
-stats, but the MAC stats are left to RTNL: the fbnic_reset_hw_stats
-function resets them outside the lock and asserts RTNL, on the grounds
-that the ethtool API is their only other user and holds RTNL. That is no
-longer the case. ethtool only takes RTNL on the Netlink path for the
-operations a driver lists in op_needs_rtnl, and fbnic lists only the
-pause getter among the stats ones, so the eth-mac, eth-ctrl and rmon
-getters update the MAC stats with only the netdev instance lock held,
-racing each other and the reset.
+The HW stats are kept as running totals that advance by the difference
+between each counter and the value last read, so the last values have
+to be captured before the first read, and rebased whenever the hardware
+counters are reset. Three paths get the ordering wrong.
 
-Take the stats lock around the MAC stats updates in those getters and in
-the reset, and drop the RTNL assertion. Take it in the pause getter as
-well: it still runs under RTNL, but that no longer serializes it against
-the reset once the reset does not rely on RTNL. The PCIe stats debugfs
-read never needed RTNL, as the fbnic_get_hw_stats function updates those
-stats under the stats lock, so drop it there too. The values are printed
-from their 64-bit fields without the lock, as the counters keep changing
-during the read anyway.
+The fbnic_probe function creates the debugfs directory, including the
+pcie_stats file, before it calls the fbnic_init_hw_stats function. A
+read in that window takes the stats lock before it has been initialized,
+and accumulates deltas against baselines that have not been captured.
 
-The issue was found by code review.
+On resume, the __fbnic_pm_attach function rebases the stats only after
+it has returned early for a device in init failure mode, though such a
+device still exposes the PCIe stats through debugfs. And during PCI
+error recovery it runs from the resume callback, after the
+__fbnic_pm_resume function has already restored MMIO access from the
+slot_reset callback, so a debugfs read in between takes its delta
+against the values from before the reset and the totals jump by close
+to the full width of each counter.
 
-Fixes: 45079e00133e ("net: ethtool: optionally skip rtnl_lock on Netlink path for GET ops")
+Initialize the stats before the debugfs directory and the devlink
+instance are registered. Rebase them in the __fbnic_pm_resume function,
+in the same stats lock section that restores MMIO access, so no read can
+see the reset counters first, ahead of its init failure check.
+
+The issue was found by code review, and the recovery case confirmed by
+hardware testing with forced AER/DPC recovery.
+
+Fixes: 25ba596d137d ("eth: fbnic: add PCIe hardware statistics")
+Fixes: 9f61eb2d185b ("eth: fbnic: add locking support for hw stats")
+Fixes: 05ec5504ff69 ("fbnic: Fix service task races with ndo_stop and PM suspend")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c  |    3 ---
- drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c  |    8 ++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c |   13 +------------
- 3 files changed, 9 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c |   11 +++++++++--
+ drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h |    1 +
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c      |   16 ++++++++++------
+ 3 files changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c b/drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c
-index f9e879be254d..65bea571c0cc 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_debugfs.c
-@@ -3,7 +3,6 @@
- 
- #include <linux/debugfs.h>
- #include <linux/pci.h>
--#include <linux/rtnetlink.h>
- #include <linux/seq_file.h>
- 
- #include "fbnic.h"
-@@ -607,7 +606,6 @@ static int fbnic_dbg_pcie_stats_show(struct seq_file *s, void *v)
- {
- 	struct fbnic_dev *fbd = s->private;
- 
--	rtnl_lock();
- 	fbnic_get_hw_stats(fbd);
- 
- 	seq_printf(s, "ob_rd_tlp: %llu\n", fbd->hw_stats.pcie.ob_rd_tlp.value);
-@@ -626,7 +624,6 @@ static int fbnic_dbg_pcie_stats_show(struct seq_file *s, void *v)
- 		   fbd->hw_stats.pcie.ob_rd_no_cpl_cred.value);
- 	seq_printf(s, "ob_rd_no_np_cred: %llu\n",
- 		   fbd->hw_stats.pcie.ob_rd_no_np_cred.value);
--	rtnl_unlock();
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-index e774740fcb5d..b300017b53d4 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-@@ -1867,12 +1867,14 @@ fbnic_get_pause_stats(struct net_device *netdev,
- 
- 	mac_stats = &fbd->hw_stats.mac;
- 
-+	spin_lock(&fbd->hw_stats.lock);
- 	fbd->mac->get_pause_stats(fbd, false, &mac_stats->pause);
- 
- 	pause_stats->tx_pause_frames = mac_stats->pause.tx_pause_frames.value;
- 	pause_stats->rx_pause_frames = mac_stats->pause.rx_pause_frames.value;
- 	tx_ps_events = mac_stats->pause.tx_pause_storm_events.value;
- 	pause_stats->tx_pause_storm_events = tx_ps_events;
-+	spin_unlock(&fbd->hw_stats.lock);
- }
- 
- static void
-@@ -1928,6 +1930,7 @@ fbnic_get_eth_mac_stats(struct net_device *netdev,
- 	mac_stats = &fbd->hw_stats.mac;
- 	mac = fbd->mac;
- 
-+	spin_lock(&fbd->hw_stats.lock);
- 	mac->get_eth_mac_stats(fbd, false, &mac_stats->eth_mac);
- 
- 	fbnic_set_counter(&eth_mac_stats->FramesTransmittedOK,
-@@ -1956,6 +1959,7 @@ fbnic_get_eth_mac_stats(struct net_device *netdev,
- 			  &mac_stats->eth_mac.BroadcastFramesReceivedOK);
- 	fbnic_set_counter(&eth_mac_stats->FrameTooLongErrors,
- 			  &mac_stats->eth_mac.FrameTooLongErrors);
-+	spin_unlock(&fbd->hw_stats.lock);
- }
- 
- static void
-@@ -1968,12 +1972,14 @@ fbnic_get_eth_ctrl_stats(struct net_device *netdev,
- 
- 	mac_stats = &fbd->hw_stats.mac;
- 
-+	spin_lock(&fbd->hw_stats.lock);
- 	fbd->mac->get_eth_ctrl_stats(fbd, false, &mac_stats->eth_ctrl);
- 
- 	eth_ctrl_stats->MACControlFramesReceived =
- 		mac_stats->eth_ctrl.MACControlFramesReceived.value;
- 	eth_ctrl_stats->MACControlFramesTransmitted =
- 		mac_stats->eth_ctrl.MACControlFramesTransmitted.value;
-+	spin_unlock(&fbd->hw_stats.lock);
- }
- 
- static const struct ethtool_rmon_hist_range fbnic_rmon_ranges[] = {
-@@ -2003,6 +2009,7 @@ fbnic_get_rmon_stats(struct net_device *netdev,
- 
- 	mac_stats = &fbd->hw_stats.mac;
- 
-+	spin_lock(&fbd->hw_stats.lock);
- 	fbd->mac->get_rmon_stats(fbd, false, &mac_stats->rmon);
- 
- 	rmon_stats->undersize_pkts =
-@@ -2018,6 +2025,7 @@ fbnic_get_rmon_stats(struct net_device *netdev,
- 		rmon_stats->hist[i] = mac_stats->rmon.hist[i].value;
- 		rmon_stats->hist_tx[i] = mac_stats->rmon.hist_tx[i].value;
- 	}
-+	spin_unlock(&fbd->hw_stats.lock);
- 
- 	*ranges = fbnic_rmon_ranges;
- }
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-index 8084a63dd807..307d5e737848 100644
+index 307d5e737848..966c2d0fb27a 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-@@ -1,8 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright (c) Meta Platforms, Inc. and affiliates. */
- 
--#include <linux/rtnetlink.h>
--
- #include "fbnic.h"
- 
- static void fbnic_hw_stat_rst32(struct fbnic_dev *fbd, u32 reg,
-@@ -559,17 +557,8 @@ void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
- 	fbnic_reset_rxb_stats(fbd, &fbd->hw_stats.rxb);
- 	fbnic_reset_hw_rxq_stats(fbd, fbd->hw_stats.hw_q);
- 	fbnic_reset_pcie_stats_asic(fbd, &fbd->hw_stats.pcie);
--	spin_unlock(&fbd->hw_stats.lock);
--
--	/* Once registered, the only other access to MAC stats is via the
--	 * ethtool API which is protected by the rtnl_lock. The call to
--	 * fbnic_reset_hw_stats() during PCI recovery is also protected
--	 * by the rtnl_lock hence, we don't need the spinlock to access
--	 * the MAC stats.
--	 */
--	if (fbd->netdev)
--		ASSERT_RTNL();
- 	fbnic_reset_hw_mac_stats(fbd, &fbd->hw_stats.mac);
-+	spin_unlock(&fbd->hw_stats.lock);
+@@ -547,9 +547,10 @@ static void fbnic_reset_hw_mac_stats(struct fbnic_dev *fbd,
+ 	mac->get_rmon_stats(fbd, true, &mac_stats->rmon);
  }
  
- void fbnic_init_hw_stats(struct fbnic_dev *fbd)
+-void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
++void __fbnic_reset_hw_stats(struct fbnic_dev *fbd)
+ {
+-	spin_lock(&fbd->hw_stats.lock);
++	lockdep_assert_held(&fbd->hw_stats.lock);
++
+ 	fbnic_reset_phy_stats(fbd, &fbd->hw_stats.phy);
+ 	fbnic_reset_tmi_stats(fbd, &fbd->hw_stats.tmi);
+ 	fbnic_reset_tti_stats(fbd, &fbd->hw_stats.tti);
+@@ -558,6 +559,12 @@ void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
+ 	fbnic_reset_hw_rxq_stats(fbd, fbd->hw_stats.hw_q);
+ 	fbnic_reset_pcie_stats_asic(fbd, &fbd->hw_stats.pcie);
+ 	fbnic_reset_hw_mac_stats(fbd, &fbd->hw_stats.mac);
++}
++
++void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
++{
++	spin_lock(&fbd->hw_stats.lock);
++	__fbnic_reset_hw_stats(fbd);
+ 	spin_unlock(&fbd->hw_stats.lock);
+ }
+ 
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
+index caea4be46762..5eb1e8b29ef9 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
+@@ -154,6 +154,7 @@ struct fbnic_hw_stats {
+ 
+ u64 fbnic_stat_rd64(struct fbnic_dev *fbd, u32 reg, u32 offset);
+ 
++void __fbnic_reset_hw_stats(struct fbnic_dev *fbd);
+ void fbnic_reset_hw_stats(struct fbnic_dev *fbd);
+ void fbnic_init_hw_stats(struct fbnic_dev *fbd);
+ void fbnic_get_hw_q_stats(struct fbnic_dev *fbd,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index 09ae797b1f0d..cb0191b65204 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -350,13 +350,13 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 */
+ 	fbnic_fw_log_enable(fbd, true);
+ 
++	/* Capture snapshot of hardware stats so netdev can calculate delta */
++	fbnic_init_hw_stats(fbd);
++
+ 	fbnic_devlink_register(fbd);
+ 	fbnic_devlink_otp_check(fbd, "error detected during probe");
+ 	fbnic_dbg_fbd_init(fbd);
+ 
+-	/* Capture snapshot of hardware stats so netdev can calculate delta */
+-	fbnic_init_hw_stats(fbd);
+-
+ 	fbnic_hwmon_register(fbd);
+ 
+ 	if (!fbd->dsn) {
+@@ -498,10 +498,16 @@ static int __fbnic_pm_resume(struct device *dev)
+ 	struct fbnic_net *fbn;
+ 	int err;
+ 
+-	/* Restore MMIO access */
++	/* Restore MMIO access and rebase the HW stats in one step, so that
++	 * no stats read can take its delta from counters the reset cleared
++	 * against the values read before it.
++	 */
+ 	iomap_table = pcim_iomap_table(to_pci_dev(dev));
++	spin_lock(&fbd->hw_stats.lock);
+ 	fbd->uc_addr0 = iomap_table[0];
+ 	fbd->uc_addr4 = iomap_table[4];
++	__fbnic_reset_hw_stats(fbd);
++	spin_unlock(&fbd->hw_stats.lock);
+ 
+ 	/* Rerequest the IRQs */
+ 	err = fbnic_alloc_irqs(fbd);
+@@ -582,8 +588,6 @@ static void __fbnic_pm_attach(struct device *dev)
+ 	rtnl_lock();
+ 	netdev_lock(netdev);
+ 
+-	fbnic_reset_hw_stats(fbd);
+-
+ 	if (netif_running(netdev))
+ 		fbnic_up(fbn);
+ 
 
 
