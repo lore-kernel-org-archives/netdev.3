@@ -1,109 +1,109 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794590171;
-	b=atTpPNAokuwG14lMQZwC3rATDFc80AqcdXgHi2G49hdRz43dZhX1e7plmyrQOJb5QKk7
-	 4Ji1IbjUnJNRMFak6S1KymkYCMnwVx7fSzaewHHFrxRuCxQnL3l2Vg6M7mwhGjCAiyMIg
-	 ZBJZAYkOLEF0eBPFcW77LRfJooyGYCFbfn08jKqLa8/K3vwK7/fMK+l4AOSB9AeeUyY3q
-	 nJjvxpqOx1lIiKy2nWJzDbEyaafnag0CuEW3LTvy8c/D1JqTeSBsdeE4+D8PSEwgvXIZI
-	 Af5erL16q0NTIhNKs4SbM8DH1QVAe6JHMS5Yf21S0aFaRTuBWlp64oRs+sBhw/bcQpg==
+	t=1794590176;
+	b=q32TPgs79wn0J2ILYQpKgugu9/EUQVbpoVeYaXE8fr6eKPhd/twzasiaK8HtpLF8tn/z
+	 GBif3e96Roq/c1+VgpeiKG1UcD/8+xQX7bmy0jvpU17XuJo4yeQYLryziNivLQe2SD6Yq
+	 oCjWRzTf1RhRGSzek4+FAvjaPkDzb9dhM9/yqPSdB42TBGxR2ZJYJ/u6/d+ZEwURKaKFP
+	 llFB1+C8NSsePWWuiY73nM9JIXaPDeMO4HVv5ceuUbkPJd02+tlSi9LGU/uqteBrEqOOU
+	 NwK82W7RVu3uDZleyCdDtm7Av7SlO4v9l+GerYPkjIC0jeU9wMOh80BPqixR5o7d3/w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794590171;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794590176;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
 	 X-Received:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=TzwipR1LCMAEarIzxU+ebA22tLIFqbxvhpauSxtFZxw=;
-	b=siWQiwBC7n9chqXIs67ulKoU/Xl1XgubMnf0WX03hdUIlXth7Z5kGJC+OpvXKUWPSpLh
-	 RMFgBZCpWrc/9aHuVIGf72RdCQlvQcQWFk94sH8CqsP3arA1KNLkf5i9I4YWSz8uJSC1Z
-	 ZQW45TmC1yq6f+x86HKRBX+BKna3Y1iDZt19r5qFpRsX2ayGk66kPs9kg93+Kn0MwlqCX
-	 8uVzkA87GpgbF9tznVYlUMOe3SNonBjQ+UychfjjYR8gdLlItfuzhGht2Tk9epJr/+B5w
-	 ORd0GDE0gkNml1mgsjwi5rjX61h5KnggdjMIDL++x6OM7u11qPfVwdR8r57QgCRplcA==
+	bh=kRsJjjCDtc2CMBY4DZcEpFvNQQYyCSaW8arjfgYBJKM=;
+	b=GRTmv6FxXIPjtEoW0hwfNwhDcc35EFD2YIRh6o8Xiw+usciVVSwkSDU3gZ1DD/JI7G2Q
+	 oNkCesWg/45F5gTAmY5CNa1kQfg6FOmKUl+bMqhrPMBTFiPBJKDakrOgJQ80nAmkh90KA
+	 qXMol0x4jjHzh+ltHybfJ+esAKqjYOfbVhn6HINkTSuXk0ZGU5OUOKyBtrtiuqtdx1N97
+	 YdFXhoFavdOw2yRynWgahVfbK/ETqvNxff3tw/i7kWTncWIAtha9Zb7DuYdgFJyc4BHQm
+	 DtQW2a3EtYLtHWKxX4/deL3q3cKNw7ftyZ2y5NBzlEEoBbFLsWKIFXCqRHELezbJDoQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a8QdYgDN;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=I4BbvWGO;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PJTCOLzl;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=aFVOnZPz;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD201606E656
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 17:16:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AD201606E656
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935C160703DD
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 17:16:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 935C160703DD
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a8QdYgDN;
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=I4BbvWGO
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PJTCOLzl;
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=google header.b=aFVOnZPz
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794590169;
+	s=mimecast20190719; t=1794590174;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TzwipR1LCMAEarIzxU+ebA22tLIFqbxvhpauSxtFZxw=;
-	b=a8QdYgDN8AudaG5YD+oJ1jjouCKb66LW+eR52d+htCnqs60amomEeKzM3kbe2ld0P+7QCV
-	wzCyEHMJ6B0po+LcfA/N/aSnIRYgp+9CtoKzAoURSPVO+a69KCbOTDihdYfcVwu0DCqp/+
-	FGCo5bkw4Fsy7JPew7PowrEIldWCP2o=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=kRsJjjCDtc2CMBY4DZcEpFvNQQYyCSaW8arjfgYBJKM=;
+	b=PJTCOLzl96eWyaWHA8nWyiWySbuhwuBNht6tp4dEeJzfiGRKexCt3T6btq37IMRVSAnHhA
+	biQGNd1kWVoh/9jE0JrKfAAzxKti9ZQG6T8cWv0c4yDptSKIOwO0tUCtFq/eWdmvUTI0Yv
+	35gvBWW41UW34cSO2JVPNywePADSv2Y=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-k1guWwNqPxWoXTBiiLt9vw-1; Fri, 13 Nov 2026 12:16:08 -0500
-X-MC-Unique: k1guWwNqPxWoXTBiiLt9vw-1
-X-Mimecast-MFC-AGG-ID: k1guWwNqPxWoXTBiiLt9vw_1794590167
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-49187ad6a72so612297f8f.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:16:08 -0800 (PST)
+ us-mta-108-OTISeRcrNM2lo5eCr87n4g-1; Fri, 13 Nov 2026 12:16:13 -0500
+X-MC-Unique: OTISeRcrNM2lo5eCr87n4g-1
+X-Mimecast-MFC-AGG-ID: OTISeRcrNM2lo5eCr87n4g_1794590172
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4afef353dd2so10022005e9.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:16:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1794590167; x=1795194967; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1794590172; x=1795194972; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TzwipR1LCMAEarIzxU+ebA22tLIFqbxvhpauSxtFZxw=;
-        b=I4BbvWGOfYndeQ1dQu+Cwn4LN3kfkeQuDwhk7oRe/EaXpDHgqrVq6Y7IpgC+dlbgre
-         dNBmVA/ywe0ZDjNkwrzseq3Y9eFayMnZ+wwvRhaxQaWbWXQiOvjYp6ja7l0pcDqi1/pQ
-         eLeFbN44k77L+T+OqzHYEjnBUHwmmb1uQORl6oHaKbn5SeNM2nRNEN8XvAhklg2DtdRx
-         cMgAC7dYJajQa24yaAuytFovZVdqnCKKc+SqQtQIgH+Iy88dBvSIZEZj7T9ulQ83AU8K
-         K1v+OfJQCVoCRuJLIr9QJZg2VZcbu0gCvsBq2laN5B26ESyg0SrIJCopPA5yfmDEmuj9
-         WzMA==
+        bh=kRsJjjCDtc2CMBY4DZcEpFvNQQYyCSaW8arjfgYBJKM=;
+        b=aFVOnZPzyFkUQb3T9gqlZNGBR39FflH+kFfhBtZtarHB+sk/2FaRgLMPnNYpAwZumr
+         JbbdJanZqhfht9sgiQgJaUxQQToIcdlnPsf12Ry8HAwDcGyAnCWgu6Ty2dRaX4MCHl7O
+         nHUjeJGGNXp5NwQ7bF4jx4FgK2Y4BkWk7o9s/O8LQBIrWn9JxLbXcztOxZRcOEholsod
+         cIP6dQWIS359kPWaIhIbBicIgEghEURuSv2kofViLrI0udyv8hayxhKdWyVjH5yl+n24
+         4Jb4/HJQx4odMMF5j5ueMMOpylIFrfBwBvwoLeMm0s51kMh4gZUeUQJp/RDFf3qEcm8N
+         uNGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794590167; x=1795194967;
+        d=1e100.net; s=20260707; t=1794590172; x=1795194972;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TzwipR1LCMAEarIzxU+ebA22tLIFqbxvhpauSxtFZxw=;
-        b=rYFBdyyYhCupc17YLQf13zrHMUYY6BF75gSrAU6C9+LM8BORj8xYGZsRj6W/juFBMT
-         uK1eo/Q72FEwo2a4bx02XFujnup5PLJk6mybQI1abdJBniuYsGC0rNW1iiGVMjfI+7B6
-         nCgF1yyEXyazCa0R7OHrLe1PSNvZD/d5uQxDTbz5HXVVSOvgDZYLR5LomWOvPRtcLEzE
-         wc9OFuW5qRxQ2snYJKz7u/6SQ5CPWkoD/sXHQIafM6J4mkQrzdEnnGzY3uYOwnIFV2FU
-         z7rFABQ/uBdyTZPDiiGSjbZ7OWJ+0/DFLGc0kL+Z+eSew1xOWcJ7KoAInrK1fU2hNdTq
-         iwNA==
-X-Forwarded-Encrypted: i=1; AL+hErHKhbeJGR6MaPiYosboYIhhGMgNpBERAfmda+Ly3jQ++iS5wjdptOTTgxszCjO8T9h6CCNkyf0=@vger.kernel.org
-X-Gm-Message-State: APuU4Z9lW3kFRu/f0WENGYussyshxGxKv6qT9jyRQbuIuQRaFxncwquF
-	w4xbr76LmhSSOkf6hs1CI0Usa5EwlKlxxQ/DOmg3sjwngau+HxGYs8Mte6slqehn6NsWCUfwg8m
-	xJ/gcvqSlI6Ql04lLdOD+k1D8f9/bCwKNLr2NpGiTxG1J2HhhGACOPXKRzQ==
-X-Gm-Gg: AYBFou2sFVLHujYu9kiHWrXlI1egWdglQpuD1NE7l1IQNMo8WPP9Pab9ImK6YcP1AJ+
-	spO2HYyfWfAJLjz5PuNPDJlTFi9F8PHRSOLGQKtCNodLlNNs/6+mlVmY8JC5H+fFIzR4cvrxL+k
-	AX8KOCc5cRdy2bpvWaGCXO7ZWPsVCKBi+r6vuh/JUmGPDWBB6alh5owzzxNtadLTLa/UUSpmmuQ
-	irUfylu435O4Ej92qMHG6uG1PtwU2WzvmFGnF6lpYwkd+VhCRpw7pGdW3hRlYuK7IEofw3n48/K
-	LPvpMQS9AAqZkJeVwrQ+vCRaNk7r0RVQQ7FfpGq/l5qY54pGpCH4sCKLpQJZBRUF5X7HnYRE75E
-	iiKd5hv8K8zVdLYbgmf01u+72d4YRwPWAQhjElEJHweKbSI37oU+pYqijKAVnvvyOj5k7L34ufB
-	VlP2mD2tMsiDE=
-X-Received: by 2002:a05:6000:490a:b0:48e:353b:9f28 with SMTP id ffacd0b85a97d-49c6dc01369mr7027335f8f.1.1794590167308;
-        Fri, 13 Nov 2026 09:16:07 -0800 (PST)
-X-Received: by 2002:a05:6000:490a:b0:48e:353b:9f28 with SMTP id ffacd0b85a97d-49c6dc01369mr7027274f8f.1.1794590166887;
-        Fri, 13 Nov 2026 09:16:06 -0800 (PST)
+        bh=kRsJjjCDtc2CMBY4DZcEpFvNQQYyCSaW8arjfgYBJKM=;
+        b=mrt5rihtkGp11/UmWmoXeTBQZV3JPRXUUZLFSOtUyaZlQGwomw1X/jWUmY5lsQ0D4U
+         Q0yIPJN8l5cOF/F1ltt8AiYXnWPFpkELHezQ/AZ6XEM53FQg7H844Tt6mIUor90Xvem9
+         0uN2+87S2kNrolwMH0wpa0IVHV6OdX8VhtBj+qXuNe2tHWyoO92xS2L5GHq7qDnhimrN
+         DWrd/apHqQRvERO6HdfcSlymlmaStAKS7Z9XG9le7dMoqZbJxRZZ6qIy5OnfRlLrpFbE
+         ln8JLyllRtQ6FzqZ8TFS2nqOVyKApfFWZXrC9AX77+ne4rXrOu0VG+4hiHqDf09XWka4
+         Ir3g==
+X-Forwarded-Encrypted: i=1; AL+hErFf7lRNZaVTF0084/CpAk5BNxG5JROAMD0ZhjA1PiBk1hBGF5OBwIxoBi3Ru82//MMFBzgOv/Y=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9PrabRAMMVQ9s18pNjXG+PRIuMCexkZV7OcOucKZdYVaJyrobB
+	HXL5+Q4sEXYNY1A7xDWPGdNOwbJ7s8ogzftBpcdHhy8wOyjkpqtE/vuHyFz/shR/L9vsoyj2E51
+	NSWffeEWr75MeUmlltCpiFWE+IH4meQRjbnEwiUp88jWPMypeCMeOw0ltGA==
+X-Gm-Gg: AYBFou3JVwcTjoiQ5H+a3z6EIdiP506/m4B6wnrFfdPURpibTcTRGA9EhmUL7I3iOBB
+	3rGcpi11Ro7Ub+QpZBiMoN7dP0WYXG7nOBab2OLxGjOUonhrgoB7bY9BZc0gYgJ7KTrTkPyYExM
+	LHCuP0qNJROl1LnxKHubxQP2OkDgjKcVhF1RxdLmT2tASCQfrBhMRazcbvs5euaehV6p8vrGmUd
+	OOx+ej/rsw/Mtoo03IPdV3fuuyc6xXKE8Q4k9SMpgaWde4/Zp39GajdnlkYvfjuEsf4c7/wbNtW
+	KCqWHciPmPejtxoJyofQWFY+VJtpZDSCED3t/hoi0CpISbJE+a3ffh3ulskQdnVVryDh+P7ZWVk
+	s6HFyqGDhqp3c3lVRgDnZvo8l8BmtXTEGb1upqiPysZaRJ4PqhghPG4h9ERmR02AJTfm2c/cgfr
+	xyU5facBotKy4=
+X-Received: by 2002:a05:600c:482:b0:4a5:75d2:c104 with SMTP id 5b1f17b1804b1-4bb55a59c9dmr52778635e9.22.1794590172155;
+        Fri, 13 Nov 2026 09:16:12 -0800 (PST)
+X-Received: by 2002:a05:600c:482:b0:4a5:75d2:c104 with SMTP id 5b1f17b1804b1-4bb55a59c9dmr52778145e9.22.1794590171733;
+        Fri, 13 Nov 2026 09:16:11 -0800 (PST)
 Received: from [192.168.0.19] (217.red-88-4-146.dynamicip.rima-tde.net. [88.4.146.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c7da37b19sm5811907f8f.5.2026.11.13.09.16.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c7da37b19sm5811907f8f.5.2026.11.13.09.16.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 09:16:06 -0800 (PST)
+        Fri, 13 Nov 2026 09:16:10 -0800 (PST)
 From: Sergio Lopez <slp@redhat.com>
-Date: Fri, 13 Nov 2026 18:15:42 +0100
-Subject: [PATCH RFC v3 2/8] vsock: report datagram receive and send queue
- state
+Date: Fri, 13 Nov 2026 18:15:44 +0100
+Subject: [PATCH RFC v3 4/8] vsock/virtio: negotiate datagram support on the
+ guest
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -115,7 +115,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-vsock-dgram-support-v3-2-1523c8e9b27e@redhat.com>
+Message-Id: <20261113-vsock-dgram-support-v3-4-1523c8e9b27e@redhat.com>
 References: <20261113-vsock-dgram-support-v3-0-1523c8e9b27e@redhat.com>
 In-Reply-To: <20261113-vsock-dgram-support-v3-0-1523c8e9b27e@redhat.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, 
@@ -138,137 +138,153 @@ Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
  linux-hyperv@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
  linux-doc@vger.kernel.org, Sergio Lopez <slp@redhat.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4270; i=slp@redhat.com;
- h=from:subject:message-id; bh=DAGnzS4beIxvhBc5LWV62Y4RCwEPeEYebUU+gVLqZ9Q=;
- b=owEBbQKS/ZANAwAKAfRpJ40vDAI1AcsmYgBq90XIreajZ9sPLqnxrRyNPvzJRU0Io7e2OxtiN
- 6rwdgMKWyyJAjMEAAEKAB0WIQS+1fz3US2GgJFC6KL0aSeNLwwCNQUCavdFyAAKCRD0aSeNLwwC
- NaHAEACQ95E153IO/phwfTijz24avrBMLZWaj9Ed8fBh5YY68WHbWnE1aCms+dqMaB24KPyE7wb
- X0zpl1q3dDmzYvkvYgR8YOFtwOxgj5Ga22RREE4aoqjaE9BILwVLCjbHTljdK3N23nW0z5OIJJU
- KM9V4A9rgbHVKYAERIKfcI9+4fB4C5DUsWE4HKbhfxYkvN/BT/gAPKFaF/L80BlN7fyoEtp+OV8
- UEYPaEm5QiV3f5TgHRFkmp8535mnJfXbMEQC7qU3/3SAdjqjN2OIWsR2eBT3b8/iFWrAtYXN+P3
- IJYjf/LIMYiWXOyYLx5j77BIpX8JiCgeO+G6YdqmNKcA5DO5qVUI91DL+5t/XfIJGKYROrGcwvb
- Oaob46SOwl4/+c6ic3yTyEp5d1lGaXn1NDaXCKySFZ0YlMhJJ0BjpKIVmF8ovJ7KeEEI52BN2ej
- RwDQmuqdcFYIPIFqsRcfjTM6noI91hyS3XnFOdVCz4O3w+nCEaRPi/X5cFA8NKJiVlTzVKft/OD
- R7nDEQsMsBOd+vzZSpfzd2lhx2zhcp5nkfX6EIU6GToqnbnpmALJJMn0dVBb+sh5iVBICPyfiHT
- Z8unW8scI/2K34XYCpyHvlEnze02bpd1ka1UG2EGtWlGoaNmv0dI3FK9vdKArxiDF5unKDxrfHL
- bMHFCEaNYrenSvA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4746; i=slp@redhat.com;
+ h=from:subject:message-id; bh=iq6ep5+lpyNre87c+82+rRsIkGG2RBevg46oczOnz0k=;
+ b=owEBbQKS/ZANAwAKAfRpJ40vDAI1AcsmYgBq90XKvfm0hTTG6KsZStQJuRB62faAzxwGpGWU8
+ ILOUbyp246JAjMEAAEKAB0WIQS+1fz3US2GgJFC6KL0aSeNLwwCNQUCavdFygAKCRD0aSeNLwwC
+ NVdXD/47YUNIzBO/XENYFXoxqGPmqN+8yVZHcyoNUMMah35eGC6B53jAKm9RQU/0+E7kK47Sdfu
+ gO4o4evEqajRNvW4/JOPh7i6l67FhTUujzADMrwKNUWNAovE6UP/M4+PQoA9UcsWlygIDMjAMj0
+ iWQDFbq7s8cEZizQjZQaDzN8sow9UhjTQK8u1gImlXBQ9qj2MelvgZx/yDRozXziSKYExv2lh9j
+ Y5kllkMR/kAeh6dRLnBOaKZHy8ahVMHIHqsEwa9umUpxWTLaEkhlt5SIbwZwji2EoaiNkON6xZD
+ 7UmlQpATXdRkBIRyHZemx5NkxWmOnAGPx588b1DbouVIZhB+yhEMOvBk08eFUopwuHHWZezNsi3
+ vwXmFQytj9hjaLpf8veYIB9Py+4f3+xmEeCg4XM0l1IoYVNFOyFDRhpA3Hb2htQRcWFem9+gpor
+ 5bR9RCjfp2fdccHdUak3TECEtG2w511JFRzUKZ0jNnkCJURHRQOCaXvmM4j0U00xHVxfAfJLY9t
+ ySy1NrdB2QtRWCbcz1pc8oEdwWZjrXEJbvpmdg4ALHuJFUDY8RHFt58DGHngu/3Gdv+66hrdLKD
+ PtZdss3zxmACCa6YgdSsuTS/+x02M8KJ5WhfCoEG6mzgvqxXlv90P3diEHIUL7OTb4AoNrPdn6R
+ zCi6/vQWhtZSNaA==
 X-Developer-Key: i=slp@redhat.com; a=openpgp;
  fpr=BED5FCF7512D86809142E8A2F469278D2F0C0235
 
-Datagram receive queues hold whole messages, and transports may charge
-queued datagrams to the socket send buffer. Report the size of the
-next datagram payload for SIOCINQ under the receive-queue lock, so
-concurrent recvmsg() cannot free the skb during the query. Let
-transports override the length calculation to exclude headers such as
-VMCI's.
+Advertise VIRTIO_VSOCK_F_DGRAM and record whether the device
+negotiated it. Gate datagram socket initialization and destination
+checks on the negotiated feature and the transport's supported network
+namespace mode.
 
-Report datagram write readiness only while the send buffer has space.
-Set the asynchronous no-space flag when it is full so freeing pending
-send buffers can wake poll waiters.
+Perform device capability checks at socket creation without requiring
+a remote address, which is not yet known for an unconnected datagram
+socket. The common virtio implementation provides the datagram data
+path.
+
+Discard received datagrams when the device has not negotiated support,
+including when a socket was initialized through another transport.
+Reject packets addressed to a different CID using the full 64-bit wire
+value before bound-socket lookup narrows it or matches a wildcard.
 
 Signed-off-by: Sergio Lopez <slp@redhat.com>
 ---
- include/net/af_vsock.h         |  2 ++
- net/vmw_vsock/af_vsock.c       | 32 ++++++++++++++++++++++++--------
- net/vmw_vsock/vmci_transport.c |  9 +++++++++
- 3 files changed, 35 insertions(+), 8 deletions(-)
+ net/vmw_vsock/virtio_transport.c | 50 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 47 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index ac061115ed30..e4fbea3b0e46 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -124,6 +124,8 @@ struct vsock_transport {
- 	int (*dgram_enqueue)(struct vsock_sock *, struct sockaddr_vm *,
- 			     struct msghdr *, size_t len);
- 	bool (*dgram_allow)(struct vsock_sock *vsk, u32 cid, u32 port);
-+	/* Optional payload length override, called with the receive queue locked. */
-+	size_t (*dgram_payload_len)(const struct sk_buff *skb);
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 4f9aa9c4c3aa..fd10f20d7611 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -57,6 +57,7 @@ struct virtio_vsock {
  
- 	/* STREAM. */
- 	/* TODO: stream_bind() */
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index d5cf240d4ece..8a271eb66860 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -1359,16 +1359,20 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 		mask |= vsock_poll_shutdown(sk, peer_shutdown);
+ 	u32 guest_cid;
+ 	bool seqpacket_allow;
++	bool dgram_allow;
  
- 		/* For datagram sockets we can read if there is something in
--		 * the queue and write as long as the socket isn't shutdown for
--		 * sending.
-+		 * the queue and write if the send buffer has space and the
-+		 * socket isn't shutdown for sending.
- 		 */
- 		if (!skb_queue_empty_lockless(&sk->sk_receive_queue) ||
- 		    (sk->sk_shutdown & RCV_SHUTDOWN)) {
- 			mask |= EPOLLIN | EPOLLRDNORM;
- 		}
+ 	/* These fields are used only in tx path in function
+ 	 * 'virtio_transport_send_pkt_work()', so to save
+@@ -547,6 +548,18 @@ bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
  
--		if (!(sk->sk_shutdown & SEND_SHUTDOWN))
--			mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
-+		if (!(sk->sk_shutdown & SEND_SHUTDOWN)) {
-+			if (sock_writeable(sk))
-+				mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
-+			else
-+				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
-+		}
- 
- 	} else if (sock_type_connectible(sk->sk_type)) {
- 		const struct vsock_transport *transport;
-@@ -1632,10 +1636,22 @@ static int vsock_do_ioctl(struct socket *sock, unsigned int cmd,
- 			break;
- 		}
- 
--		n_bytes = vsock_stream_has_data(vsk);
--		if (n_bytes < 0) {
--			ret = n_bytes;
--			break;
-+		if (sk->sk_type == SOCK_DGRAM) {
-+			struct sk_buff *skb;
+ static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
+ 					     u32 remote_cid);
++static bool virtio_transport_dgram_allow_check(struct vsock_sock *vsk,
++					       u32 cid, u32 port);
 +
-+			spin_lock_bh(&sk->sk_receive_queue.lock);
-+			skb = skb_peek(&sk->sk_receive_queue);
-+			if (skb && vsk->transport->dgram_payload_len)
-+				n_bytes = vsk->transport->dgram_payload_len(skb);
-+			else
-+				n_bytes = skb ? skb->len : 0;
-+			spin_unlock_bh(&sk->sk_receive_queue.lock);
-+		} else {
-+			n_bytes = vsock_stream_has_data(vsk);
-+			if (n_bytes < 0) {
-+				ret = n_bytes;
-+				break;
-+			}
- 		}
- 		ret = put_user(n_bytes, arg);
- 		break;
-diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index 1f186e8f8364..2b9493e987d1 100644
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -1761,6 +1761,14 @@ static int vmci_transport_dgram_enqueue(
- 	return err - sizeof(*dg);
++static int virtio_transport_socket_init(struct vsock_sock *vsk,
++					struct vsock_sock *psk)
++{
++	if (sk_vsock(vsk)->sk_type == SOCK_DGRAM &&
++	    !virtio_transport_dgram_allow_check(vsk, 0, 0))
++		return -ESOCKTNOSUPPORT;
++
++	return virtio_transport_do_socket_init(vsk, psk);
++}
+ 
+ static bool virtio_transport_has_remote_cid(struct vsock_sock *vsk, u32 cid)
+ {
+@@ -561,7 +574,7 @@ static struct virtio_transport virtio_transport = {
+ 		.get_local_cid            = virtio_transport_get_local_cid,
+ 		.has_remote_cid           = virtio_transport_has_remote_cid,
+ 
+-		.init                     = virtio_transport_do_socket_init,
++		.init                     = virtio_transport_socket_init,
+ 		.destruct                 = virtio_transport_destruct,
+ 		.release                  = virtio_transport_release,
+ 		.connect                  = virtio_transport_connect,
+@@ -571,7 +584,7 @@ static struct virtio_transport virtio_transport = {
+ 		.dgram_bind               = virtio_transport_dgram_bind,
+ 		.dgram_dequeue            = virtio_transport_dgram_dequeue,
+ 		.dgram_enqueue            = virtio_transport_dgram_enqueue,
+-		.dgram_allow              = virtio_transport_dgram_allow,
++		.dgram_allow              = virtio_transport_dgram_allow_check,
+ 
+ 		.stream_dequeue           = virtio_transport_stream_dequeue,
+ 		.stream_enqueue           = virtio_transport_stream_enqueue,
+@@ -629,6 +642,25 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
+ 	return seqpacket_allow;
  }
  
-+static size_t vmci_transport_dgram_payload_len(const struct sk_buff *skb)
++static bool
++virtio_transport_dgram_allow_check(struct vsock_sock *vsk, u32 cid, u32 port)
 +{
-+	if (skb->len < sizeof(struct vmci_datagram))
-+		return 0;
++	struct virtio_vsock *vsock;
++	bool dgram_allow;
 +
-+	return skb->len - sizeof(struct vmci_datagram);
++	if (!vsock_net_mode_global(vsk))
++		return false;
++
++	dgram_allow = false;
++	rcu_read_lock();
++	vsock = rcu_dereference(the_virtio_vsock);
++	if (vsock)
++		dgram_allow = vsock->dgram_allow;
++	rcu_read_unlock();
++
++	return dgram_allow;
 +}
 +
- static int vmci_transport_dgram_dequeue(struct vsock_sock *vsk,
- 					struct msghdr *msg, size_t len,
- 					int flags)
-@@ -2075,6 +2083,7 @@ static struct vsock_transport vmci_transport = {
- 	.connect = vmci_transport_connect,
- 	.dgram_bind = vmci_transport_dgram_bind,
- 	.dgram_dequeue = vmci_transport_dgram_dequeue,
-+	.dgram_payload_len = vmci_transport_dgram_payload_len,
- 	.dgram_enqueue = vmci_transport_dgram_enqueue,
- 	.dgram_allow = vmci_transport_dgram_allow,
- 	.stream_dequeue = vmci_transport_stream_dequeue,
+ static void virtio_transport_rx_work(struct work_struct *work)
+ {
+ 	struct virtio_vsock *vsock =
+@@ -677,6 +709,14 @@ static void virtio_transport_rx_work(struct work_struct *work)
+ 				continue;
+ 			}
+ 
++			/* Check the full wire CID before socket lookup truncates it. */
++			if (le16_to_cpu(hdr->type) == VIRTIO_VSOCK_TYPE_DGRAM &&
++			    (!vsock->dgram_allow ||
++			     le64_to_cpu(hdr->dst_cid) != vsock->guest_cid)) {
++				kfree_skb(skb);
++				continue;
++			}
++
+ 			if (payload_len)
+ 				virtio_vsock_skb_put(skb, payload_len);
+ 
+@@ -835,6 +875,9 @@ static int virtio_vsock_probe(struct virtio_device *vdev)
+ 	if (virtio_has_feature(vdev, VIRTIO_VSOCK_F_SEQPACKET))
+ 		vsock->seqpacket_allow = true;
+ 
++	if (virtio_has_feature(vdev, VIRTIO_VSOCK_F_DGRAM))
++		vsock->dgram_allow = true;
++
+ 	vdev->priv = vsock;
+ 
+ 	ret = virtio_vsock_vqs_init(vsock);
+@@ -932,7 +975,8 @@ static struct virtio_device_id id_table[] = {
+ };
+ 
+ static unsigned int features[] = {
+-	VIRTIO_VSOCK_F_SEQPACKET
++	VIRTIO_VSOCK_F_SEQPACKET,
++	VIRTIO_VSOCK_F_DGRAM,
+ };
+ 
+ static struct virtio_driver virtio_vsock_driver = {
 
 -- 
 2.56.0
