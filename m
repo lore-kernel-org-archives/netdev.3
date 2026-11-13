@@ -1,99 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.43
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794591103;
-	b=4gh0xtn73PIFWg1bO2NeSk72FoOUgBN2lJfjJ5dUqxsugqZCIWCwgTpoRgXW4OJtAmpc
-	 DWTdlTn54RCVDIlXCqdH9tc1NJ60ocSrYPY8lCwGfzH/Av5T2Jt/lVAGj2hAA1wpb0cZ4
-	 O08O6ZIaYQScPbLbyRkWuKQW/EbolOPHME7T8BAywqQn06j7doEN8dF8ADCRjk1+RxDaB
-	 CrTkdJ7tIF566oxbRMK6XWXfFAaOLd/7jFJ8tkiawlsgDw5lbFBdc5W3oqLd8+U2FPQB4
-	 A9CYgtTSftaiOV3CveoX4xxFMPEDbFHv1Be37rtGM6NskwpqAl7gEQmp4Ee/oR7vocw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794591103;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
-	 Message-ID:Subject:To:Cc:Content-Type;
-	bh=EtswxBGyiXS8JSPC03lPz9UgjYYoAr3Fyq32GpLBvdM=;
-	b=jkUZXk1mnqo4K+P7uI/CRVhrjZ8sfcFY02ys7ccmj9AwFWJSL7g+nrjkoOcavuHIsVIT
-	 TAeDgVAC0aSdt0DWJwOr4XJLM9lNRGAUelrsiLBOO13UsT9apEUrItmcRGipJJGFVE4gZ
-	 9VqarKijuWxASJVumcJWclVPUqJIO0+LJopOj7aOvB4LCfZ4qKwkBTlEDbuJdImPbIgm9
-	 m4OuKPpfFfSAUoTFycJzSsyae05Ob094TixGIGUGmkkFKSNOl7K8ndpEF3/HCGLRao8IX
-	 1XJFuDsdOLl4CpJ/0rpUByuMPECw7UvnM6m2vJPl0RlFN3u0QaawHRX8YAO35yvZEoA==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=le7K08J2;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=74.125.224.43
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794591145;
+	b=MRxT5ZgK/S6cY2MqbtYxIx/fiJuvOA+1dQdHxK/teo2iRYLH2QRuQ8qGcclv2UxyQaSh
+	 gRqDsZD8VrRlUBc3S7Dq7zbNW/7g6f+rueX7+AgxGUkqM6tNtAmtpVF6G0LEIagDHNbid
+	 KvdTUqEgp+Xh7nvPdxiPPa3HA7IFIbYdUrw5dCO1v9NQnfHypJ1i1WszR/seVjF9f6eQf
+	 IVmiihhk8jX7+vE3oJ3r9DRP9O1fTKIgEtjE/v/4RLrZL37eYV/KRl5VUEiQz/knZ5r69
+	 EyHTrqNP9BLhabD0RQXFP22hO/HMneAT76HrotUKI1+aAukDH4eOjTD1mYwwmmWT+xg==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794591145;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Subject:
+	 Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=aZajIEoZXqWFJXvTqWoCp65x1Q98la7ofaqE3h8juPA=;
+	b=ytRtyhmWXJxQ0W+Ze1Ofh0LR9KXFjHxXo2JvP7l3FqMrpg6F5XO8KRO+ZftrRPTSKjzm
+	 K5Tv47SrN/Vm2gtrC0Xfc2wnn8ACx26AzePAWSsI6LciOxOHzDO9GFmwhxrfzF+Q4Zpey
+	 1OKiTMljnE+wa3R5I5qgiNQ4nqPM5NV20vpLkdHKGyiQCCwFwRgudQD3x6Lc3MotSFf5f
+	 ILRmFso2xbjO9sAeAj5mV5rVc+ABFNe1UXAwfCTSg+LhzU07CTEbPYCAcqE5iRRIAbifi
+	 BvuggD/DntrRTUFBcCvhivR08LzOuObXXhgfv6EneJUEsQ3GIOkQiO+jIqoXSWuOaUg==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="JGW/Mp/b";
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E506074B06
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 17:31:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77E506074B06
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC90606BD3D
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 17:32:24 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7AC90606BD3D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=le7K08J2
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-67c0bd676eeso1077820d50.3
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:31:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794591102; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ofxNAX2IOgm1LyPDUF9vSBq4hPP/U6eImp1HnW9AwTL8CJ04ChwV9pC2Y7Ytb8fnwK
-         xG/TjFKq+oTcTQ2f0Tn79fEuZMO1WNzpwmBosdOAPkVMFQcXAyMtl58SP8izkUFU/Wiq
-         LYHcEyKKHDjS/2VvzSRxKzqur0HsoJzoDTGwCMAwCFt01b2KlvYFs8zcfy/HC3rVrBWg
-         VolnLeM/9nZSOIDTGHsRpAW/ZTXvRDGEVJ7l1AJMmpg5zHzBGLIeeMi4BYAbAm3sygr1
-         LXNkmsv+RHrI5+uZB3PfwsmvwFRzZ1Py0PBRJUVv6uzU21PxT4V4d+WTZfqHSVcqswKN
-         Vvsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=EtswxBGyiXS8JSPC03lPz9UgjYYoAr3Fyq32GpLBvdM=;
-        fh=Nm7nsdSynxdNIc8xG+GOekIv/H+TS4nl1wfe6TEOGMc=;
-        b=HkSsZeeEu2y/o3v+V6BiKr3aBAXTRWTnf66ZGsQZkK1w0AC2egKYY0ypUD+MBHvEkV
-         LgNbBvcB2hZZH/kOP8gc/ZYuT/IjkA7XNpwDSeWwmGBZTXYUIu0LNnFrucHJInfc6XZn
-         /I84Q0k77wA9Xni3FM3aT4e413+785TkrCJXSc8LnSKVY/ZYwrLBZITFK7fyUZ4pvAsG
-         ysDvkTuS+2WrZyY9K9o77dCBMGyLq+Yd8wqpvxzWigXCKBiKfRLY12F7OIX7XWSnY9V+
-         coHzF2e9Y7IF9Rl8Kj7l+cb0YhJtWNWP+Y9hc5g005FAnYBRipej205WWSfOCW/nkrbM
-         NUFw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794591102; x=1795195902; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EtswxBGyiXS8JSPC03lPz9UgjYYoAr3Fyq32GpLBvdM=;
-        b=le7K08J2bA9Hr/68cdqwbf46C9tMiphP0VQXGYffptEgLGcYlBKFs1xCYmmjfWjy2E
-         XIszWAT/7Xhu4ghnVl3bc/lkD3OXCS+X+Sm9CF+iBsK3mKNKSdMaYb/9r7sGzSB1TqX4
-         00vaf2a2WnZQMW1Xe61TFGa6iALCGdNBSUY/M2ghQlI3neAa9DiyMLIG7WIID9pwE+XF
-         M/t3wHfr+NXVnw+PnTtamguLyZXa/fpwaLUAg4I4Frca9/0u8MW0fZ0xPj0dCGmRxMrp
-         OeKijB7gk77FddFRj8+DPtNF3nc5508pL9LOQe+rsb5MZGk+5Fd5fWLJtsbl2ke2sY/d
-         uMvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794591102; x=1795195902;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=EtswxBGyiXS8JSPC03lPz9UgjYYoAr3Fyq32GpLBvdM=;
-        b=HLreLsJMAxhPRKone/SZZDODalXiLGu0rWMUqlD9LSShMPjDw7fNWT7kiyPFKtTnYp
-         pI8To/sTuXwCMUecddtqJLbzhTcTT/hmPhBmEWGYmoKEKfeeUjbvcoZdlqXEput2SE2W
-         RSWDerjeqphXIrERsDiutdzgr8g5dVZCNrfSlbwIrz+g6DzgBwvwAHBm00bi9sW0zlDy
-         jiHxZkr+EL3lppTPeBubdLpWs/mKAT2lpU0QlyJnJcwxpyERjRg+EktF8906KNfEzPhd
-         1TFC+t1GhkQsOS1gN4+4yxo22BpwrmlkMOnjlGJqrHnFiB5QCmW9GmaLmxgCbvdAqxZs
-         gCsg==
-X-Forwarded-Encrypted: i=1; AL+hErHEsaVU+SIVahkuf5FsIwWBPABbJEnXreuq7yxvG8dUPTDa6v6IWNFsY3jDd+Lu2T04VgaFuH8=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/lsuEnpsDRPljP/YP4DE8VpontSVseqVf1smUpgSznS3U5IkZ9
-	WbFL6C2NgtjgDioj6uyRbKeH38GMab4GyHS7otskGPF8taWQVb4NHTAfJ8xr4o2BLAT9LcI9pWg
-	bKsrF/2V3cmHsxzU6TvkLdvxP6zIIUk8=
-X-Gm-Gg: AYBFou0pBaS9AerzzWlVttQT3fEM2Rb6XRYQ+kl4xmog6bovg10Tc0aJwL37po4QCLS
-	XRg3OEP/b2/iNaoQZkmC5UD330kGQWkGaypcPuQI90ZPLV2QKCqhUOpvbz9xAhdr4nd/BLHRKq0
-	8fMKeNkJt+D4UPco2VUnFC7ycuA2rLiSvdnkbw2101LUUKOTgaiCuBIIFrXYCtCv4k3qFxL69e8
-	tdMHc95DgGhrEsyCVnpaD3dQJTfkuTqDyK3vLutppsBRq92F1jGeR+LeYJht97eKdzfkpdaoacJ
-	F/ZmP1jUfxEjAaiax0nIVdpB8FdqCqsTElxMmfy9izn67vCaw5oeJoNHHG1J3VSvDqgeKClnJd+
-	mh/UH67RwIc3zZgImE8T8GgTjfw/lwh4sLiFY/ak5znLv+t1/2+zpCb7UDPK/Pc4RH45m
-X-Received: by 2002:a05:690e:4510:20b0:675:47ba:2183 with SMTP id
- 956f58d0204a3-67d89709f2dmr1486987d50.53.1794591102378; Fri, 13 Nov 2026
- 09:31:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=JGW/Mp/b
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CCA681A1647;
+	Fri, 13 Nov 2026 17:32:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 96EED60015;
+	Fri, 13 Nov 2026 17:32:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0FE9C11BC1273;
+	Fri, 13 Nov 2026 18:32:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1794591141; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=aZajIEoZXqWFJXvTqWoCp65x1Q98la7ofaqE3h8juPA=;
+	b=JGW/Mp/bizxmIsFsoB+s3nsCg4AyaJOXdqaGLnpUfGTZ4duybZm6fs9n2YoWOs5jFgEr1a
+	PZ3o3EE9zX37zPRrdUtWmS5FFhBlkjFGVyeA8F+AKIe+yQrQqF9Vorsfr4je2mNDqzpGrD
+	8TQ/gov7V4mOJ9bUdD3Yo4hthyY43OraqBdCVQvMcsejPtui7sq/TLemQRIYXOG+WuI10C
+	dah9KNU4oRYQgqwfG87gtMr1omkxI9pyz64pPROcTddV28RvxLD/mFsewik23kPyNZtOZU
+	LAZR8CGBVr5wGTCTii3lkaPQN+G1qLNpq1bfiPuFad6t44hopSU2Kkdql8HE4g==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: [PATCH net-next v6 0/2] net: macb: implement ethtool set channels
+ count operation
+Date: Fri, 13 Nov 2026 18:32:01 +0100
+Message-Id: <20261113-macb-set-channels-v6-0-5de59d9e7f02@bootlin.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -103,61 +63,162 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261113003217.197757-1-ansuelsmth@gmail.com> <20261113003217.197757-11-ansuelsmth@gmail.com>
- <737e3c57-9aad-4081-ac75-f79cb2084349@kernel.org>
-In-Reply-To: <737e3c57-9aad-4081-ac75-f79cb2084349@kernel.org>
-From: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
-Date: Fri, 13 Nov 2026 18:31:31 +0100
-X-Gm-Features: AclHuK_T9pn_LFNwcoFkFSy1mvqcLyRF0a8TMF1gVMEOv5saT-u9fzFGXIXxZrg
-Message-ID: <CA+_ehUxzPo--g+Ksd_0xJZo7_bhYZ-B17wG3OyGtU=3aa6B+WA@mail.gmail.com>
-Subject: Re: [PATCH net-next v19 10/15] net: Document PCS subsystem
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJJJ92oC/33PwW7DIAwG4FepOI/JQIBkp73HtAMYsyK1UIUo6
+ lTl3UdzmDIl2vHXb3+WH6zSmKiyt9ODjTSnmkpuwbycGJ5d/iKeQstMgjSgQPOrQ88rTfxZZ7p
+ Urn00BDYqaYG1vdtIMd1X84PlNpnpPrHP1pxTncr4vR6bxdr/486CA5c9KTcYpwKqd1/KdEn5F
+ ct19Wa5MYQ4MmQzhl6aQTkRdcS9obaGOjJUM9AYb20vQvD93ui2hj0yumYIH7rYxYgR3d7Qv4Y
+ AYY4M/fwFkADB92T1X2NZlh/AGcC1zgEAAA==
+X-Change-ID: 20260305-macb-set-channels-5bf6e07f3270
+To: Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>, Paolo Valerio <pvalerio@redhat.com>, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ Gregory CLEMENT <gregory.clement@bootlin.com>, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Il giorno ven 13 nov 2026 alle ore 11:52 Matthieu Baerts
-<matttbe@kernel.org> ha scritto:
->
-> Hi Christian,
->
-> Thank you for the patch.
->
-> On 13/11/2026 01:32, Christian Marangi wrote:
-> > Add extensive documentation of the new PCS subsystem and the fwnode
-> > implementation with producer/consumer API.
-> >
-> > Also update the sfp-phylink migration guide.
->
-> FYI, the Netdev CI seems to have issues with this patch when building
-> the documentation, because a new warning is visible:
->
->
-> /srv/nipa-builds-contest/testing/wt-doc-build/Documentation/networking/pcs.rst:3:
-> WARNING: Duplicate C declaration, also defined at networking/kapi:486.
->
-> When executing:
->
->   https://github.com/linux-netdev/nipa/blob/main/contest/tests/build-doc.sh
->
-> Logs:
->
->   https://netdev-ctrl.bots.linux.dev/build/doc-build/results/909345/
->
+Add support for changing the active number of queues.
+Tested on Mobileye EyeQ5.
 
-Hi Matt,
+Now that context swapping landed, update this series and use the feature
+on ethtool_ops.set_channels() requests.
 
-thanks for checking this... Yep I manage to reproduce and I fixed it.
+ - We move num_queues from bp to ctx.
 
-Will be present in v20.
+ - All readers of the bp->num_queues value now need to pick between:
+   bp->max_num_queues / bp->configured_num_queues / bp->ctx->num_queues.
+
+ - The context swapping in set_channels can fail because
+   netif_set_real_num_queues can fail. Update macb_context_swap_end()
+   to allow taking NULL as new context argument. If that is received,
+   it restarts the interface with the same context as before.
+
+This highlights a few callbacks that are pretty broken if accessed while
+interface is down, because they access hardware registers while runtime
+suspended. Most importantly stats and taprio. We don't attempt to fix
+them in this series! I am mentioning this here to prompt Sashiko. :)
+
+Have a nice day,
+Thanks,
+Théo
+
+[0]: https://lore.kernel.org/netdev/20261113-macb-caps-v1-0-42e0984b2f09@bootlin.com/
+
+---
+Changes in v6:
+- Rebase onto latest net-next/main (573af8015529). This means rebasing
+  onto context swapping, which is now used on set_channels requests.
+- Move the QUEUE_DISABLE caps patch out into a separate series [0].
+- Drop kunit tests. Thanks Jakub.
+- Fix the TAPRIO gate test if qdisc is destroyed while the interface is
+  down (because bp->taprio_gated_queues was stall in that case).
+  Thanks Nicolai.
+- Link to v5: https://patch.msgid.link/20261016-macb-set-channels-v5-0-90ce0c0b8e75@bootlin.com
+
+Changes in v5:
+- New patch: add missing MACB_CAPS_QUEUE_DISABLE to 3 compatibles based
+  on publicly available datasheets. That means they can benefit from
+  the set_channels implementation.
+- set_channels patch:
+  - Refuse set_channels if it disables a queue with active TAPRIO.
+  - Use TBQP.QUEUE_DISABLE bit to also disable transmit; previously we
+    only disabled the receive engine.
+  - Migrate code to newly introduced macb_queue_isr_clear() helper.
+  - Adapt to newly introduced macb_quiesce_start(), where we want to
+    synchronize_irq() on all queues, even the disabled ones.
+  - IRQ handler now self-disarms on disabled queues.
+  - Drop `old_count` unused stack variable.
+  - Only allow TAPRIO rules on active queues.
+  - Fix comments style and text in macb_set_channels(); in particular
+    mention we'll use context-swapping once it is available.
+- Distribute SRAM segments patch:
+  - Introduce GEM_TXQSEGALLOC_MASK(q) and use field_prep|get() macros.
+  - Introduce capability for this feature, as many publicly available
+    GEM datasheets don't document the registers.
+  - Remove upper register support. Lower register is enough to handle 8
+    queues, which is the max we support.
+  - Add edge case kunit for num_segments=128.
+  - Introduce static_assert(MACB_MAX_QUEUES == 8) in
+    gem_sram_distribute_segments() to signal that code will need
+    updating if/when the constant changes.
+- Update To/Cc list: drop Nicolas and Claudiu, add Conor and Nicolai.
+- Rebase onto latest net-next/main (6b3e73774815).
+- Link to v4: https://patch.msgid.link/20260317-macb-set-channels-v4-0-1bd4f4ffcfca@bootlin.com
+
+Changes in v4:
+- macb_set_channels(): drop `count == old_count` check, it is redundant
+  with both netlink and ioctl codepaths. See early returns in
+  ethnl_set_channels() and ethtool_set_channels(). Discussion @ V2.
+- Rebase to latest net-next (8737d7194d6d); nothing to report.
+- Link to v3: https://patch.msgid.link/20260313-macb-set-channels-v3-0-c66b7781ddb8@bootlin.com
+
+Changes in v3:
+- Makefile: fix compilation of kunit tests. This bug was hidden before
+  because everything was builtin so it ended up linked together anyway.
+  Now macb.o is the amalgation of macb_{main,ptp,utils}.o and
+  macb_test.o is the amalgation of macb_{kunit,utils}.o.
+- Kconfig CONFIG_MACB_KUNIT_TEST entry:
+  - Turn into tristate; no good reason to restrict to bool.
+  - Drop "depends on MACB". We do not need to compile the full MACB
+    driver to test gem_sram_distribute_segments().
+- Add usual MODULE_*() macros to macb_kunit.c.
+- Drop unused init value of `ret` in macb_set_channels().
+- Rebase to latest net-next; nothing to report.
+- Link to v2: https://patch.msgid.link/20260311-macb-set-channels-v2-0-982693a1f5fc@bootlin.com
+
+Changes in v2:
+- Move gem_sram_distribute_segments() from macb_main.c to macb_utils.c
+  and kunit tests from macb_main.c to macb_kunit.c.
+- macb_set_channels():
+  - Add comment about MACB_CAPS_QUEUE_DISABLE.
+  - Refuse operation if netif_running(), with code comment.
+  - Drop useless sanity checks on ch->{combined,rx,tx}_count.
+- Add help text to CONFIG_MACB_KUNIT_TEST.
+- Fix `checkpatch --max-line-length=80` warnings.
+- Rebase onto latest net-next; nothing to report.
+- Link to v1: https://lore.kernel.org/r/20260305-macb-set-channels-v1-0-28e3a96a3dc3@bootlin.com
+
+To: Conor Dooley <conor.dooley@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: David S. Miller <davem@davemloft.net>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Paolo Valerio <pvalerio@redhat.com>
+Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+Cc: Gregory CLEMENT <gregory.clement@bootlin.com>
+Cc: Benoît Monin <benoit.monin@bootlin.com>
+Cc: Tawfik Bayouk <tawfik.bayouk@mobileye.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+
+---
+Théo Lebrun (2):
+      net: macb: implement ethtool_ops.get|set_channels()
+      net: macb: distribute evenly Tx SRAM segments
+
+ drivers/net/ethernet/cadence/macb.h      |  21 +-
+ drivers/net/ethernet/cadence/macb_main.c | 355 ++++++++++++++++++++++++-------
+ 2 files changed, 294 insertions(+), 82 deletions(-)
+---
+base-commit: 573af801552999954caa8347e4490b04cf4763f0
+change-id: 20260305-macb-set-channels-5bf6e07f3270
+
+Best regards,
+--  
+Théo Lebrun <theo.lebrun@bootlin.com>
+
