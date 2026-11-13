@@ -1,76 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=95.215.58.74
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794533385;
-	b=ToWq7qeuccBeub+nyRjRUaaPuFAswM+5iMJxswbTJkgFRBT7a6IHi0cFH09TVzON+Fn6
-	 bvsVM1diK9M3VnbFHhH2+QGXof3fgGoPh83SJ16R6PIvbVM1BEVwGjdgyfQsyX94PSAHc
-	 CUAF3wAw7KT9YgogE/Y/UE672d2zvF7WomHNkZmAyy6tRTbQjlzMAlY4+C2kwv34i/ZXi
-	 25R9b8M854KjnEgpn58RxcHaerxHHyKYlTQmmGBYwkON2YJ1G08p3ky+2VtZC6vjGRqNl
-	 e4IhZqQqCzEvNiPi4rdqZn6VmXNDPgH7bLIQgwCpnQyTjtLni2EaatT3mXYU0kucODg==
+	t=1794533565;
+	b=ipUZEf/Nvaf1v+krpWe5TDa36PrVNeGY/lXJf5HkOaBOV7Wpxpjk9LcPHU67PSU233re
+	 rWWEpOIwpMhjEQ6OG1o8+kLFAzZNC+xypieK6431pJ34xvyUEMCXEwKNojW817HyCvPQw
+	 BYx0WaB3CMVhvXdtF9c1usFieM2B9RpAWmEPFDgFmuBiuaMG478XFTkDFy1QqWBSTnTry
+	 3a+S/1HYq/lfvE3q1Wu9s4QyqZKO1DPTH8PD9ZWFKFBmJviJFIaQq6M1Q4p39IcVnf4sF
+	 MM7C+G+8pZDhffJ8ysRVyqO14C2/g44ugmeHJWxdpBadFQTDrrAEAIcc3CcHe3Vx6lQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794533385;
-	h=DMARC-Filter:X-UUID:X-CID-P-RULE:X-CID-O-INFO:X-CID-META:X-CID-BVR:
-	 X-CID-BAS:X-CID-FACTOR:X-CID-RHF:X-UUID:X-User:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=eEm4Qix6NtzscQvmZFr8J73RisDDpJq+6mqvimED2UE=;
-	b=yuwCA3/jaljxSvWIUkTDMkySBR7wGDYEz7BoACRXjTGcVpAOYi4peI33Q/3FNZEqaG6O
-	 blKkZk51dqB7Pltd0jvgdqsTv/FZkFGoYg+bmJbstzNDKBmWBPCeaPxtQSUxf/Zx94KLv
-	 Rr8mh+jFWz9nhjyFg0zDEaBgV80SOR7zy+gflb2lplmr8aNTKqxwNvgQTThJNu7Fn+VHP
-	 M+uZYErTwohvoK7GjPX2ebeuMOLXA3JE+ucrytX9tje71HDvC8Tn0AcmejipVaf3EXQCd
-	 NJTaBETfq5m292sRywk5+RqKtU9APn7+rlQ/X7JHGUboAxUvEhN22JqGAUOYDDKagzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794533565;
+	h=DMARC-Filter:X-Envelope-To:DKIM-Signature:X-Envelope-To:Received:
+	 X-Mizu-Trace-ID:X-Migadu-Flow:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To;
+	bh=/AIb3So9MCT2SbD2Scd+/HlVguvx2ln4M2C5vvxMyjs=;
+	b=npZGgguUoQzNwtzBfN7jDv9KG7mWFmH5HKr9YzcTJ77dEgTAR6HcEC8dso03OHyZDtUi
+	 Zju+AqTAL2zem3vzoIbWiCVQ5GRwzHxhVlETULs9HG8G7jY8jNDMi9NTnEn7esW6Ki1dj
+	 8oE3LSMvLe+04iOVmd3K4QTzT8RZ7pW9paPCX+6RbWcVGYoxpFuiGFVLHTJETcS4lZBT9
+	 aDu/weZ3oIJPYLk7pjE6Bu9jQdKku9+VoBJQW6JbCXTW5GzxCgbp4MVxjNR/qTH1zMqBx
+	 0/l5auzm/cZvSzWW86yofTIYMPG1VQGmN+qoTms1HpMTEha4DD7aRhiZh13iMiwQunw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=kylinos.cn;
-	spf=pass smtp.mailfrom=kylinos.cn;
-	arc=none smtp.remote-ip=124.126.103.232
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=linux.dev;
+	spf=pass smtp.mailfrom=linux.dev;
+	dkim=pass header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Pbu9Pnn9;
+	arc=none smtp.remote-ip=95.215.58.74
+Received: from mta1.migadu.com (out-74.mta1.migadu.com [95.215.58.74])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ACA606A330;
-	Fri, 13 Nov 2026 01:29:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B0ACA606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: b20f2cacdf0111f19a56ed5b684f684d-20261113
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:a1393f79-c721-4503-9941-82aec3f6bac4,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:78c18e35f9b39b416e800ddba86a14e3,BulkI
-	D:nil,BulkQuantity:0,SF:80|81|82|83|102|123|865|898,TC:nil,Content:0|15|50
-	|99,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
-	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b20f2cacdf0111f19a56ed5b684f684d-20261113
-X-User: zhaoguohan@kylinos.cn
-Received: from ubuntu.. [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zhaoguohan@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 453346072; Fri, 13 Nov 2026 09:29:40 +0800
-From: zhaoguohan@kylinos.cn
-To: mst@redhat.com
-Cc: bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	eperezma@redhat.com,
-	hpa@zytor.com,
-	jasowang@redhat.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	netdev@vger.kernel.org,
-	tglx@kernel.org,
-	virtualization@lists.linux.dev,
-	x86@kernel.org,
-	zhaoguohan@kylinos.cn
-Subject: Re: [PATCH RFC] vhost: set dirty log bits without pinning pages on x86
-Date: Fri, 13 Nov 2026 09:29:37 +0800
-Message-ID: <20261113012937.40818-1-zhaoguohan@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
-References: <af7f05bf637337d35fdd10f3e0dbb5e39d7780e7.1794480795.git.mst@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9470606A31C
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:32:44 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C9470606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Pbu9Pnn9
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=XBRHkQX7a1dXHxnR1u1SHo8udwsy2HxO8jafhHb8B3A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794533562; v=1; x=1795138362;
+ b=Pbu9Pnn9Q3hPVIZKH7d+wEAFxQomQqe4/SQEZtECuWupCXdnE8D+6zFBKRAqcicVWBx0iXVD
+ JKxPusirVbpYVsJh5VZkosxwvWIOa4HBIC3JtcPgBCdsvvTRuqW78u90PK6f49NUcT8fCJChURB
+ Aswh1ef8jgoDAnjbXv5sd5x4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 79730afe89d0038b;
+	Fri, 13 Nov 2026 01:32:42 +0000
+X-Mizu-Trace-ID: 79730afe89d0038b
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 13 Nov 2026 09:32:25 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: netdev-bot+sashiko@kernel.org, idosch@nvidia.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+	pabeni@redhat.com, edumazet@kernel.org, jv@jvosburgh.net,
+	andrew+netdev@lunn.ch, razor@blackwall.org, aahila@google.com
+Subject: Re: [PATCH net-next 1/2] bonding: 3ad: Receive packets in COLLECTING
+ state
+Message-ID: <avZoqePFtrM6kEIV@fedora>
+References: <20261111171947.2816258-1-idosch@nvidia.com>
+ <179451491706.2199510.1058504888559496420@kernel.org>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -80,94 +67,134 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <179451491706.2199510.1058504888559496420@kernel.org>
 
-On Thu, Nov 12, 2026 at 05:53:47AM -0500, Michael S. Tsirkin wrote:
-> vhost had a TODO to replace page pinning with a version
-> of set_bit that works on userspace memory, since forever.
->
-> It is really best to avoid GUP on fast path entirely.
-> Implement set_user_bit and use it in vhost, to do just that.
-[...]
-> lightly tested. pls test and resubmit with your tool.
+Hi Ido,
+On Thu, Nov 12, 2026 at 08:21:57PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The fix clears 'inactive' only when ad_enable_collecting()
+>   runs.
+> - [Low] The patch fixes a real, user-visible bug but has no Fixes: tag.
+> 
+> --
+> 
+> bonding: 3ad: Receive packets in COLLECTING state
+> 
+> With coupled control disabled, an 802.3ad port in COLLECTING state should
+> receive packets, but the RX path only delivers from slaves whose inactive
+> flag is cleared. This patch makes bond_set_slave_rx_enabled_flags() clear
+> slave->inactive in addition to slave->rx_disabled.
+> 
+> > When coupled control is disabled, a port in COLLECTING state is supposed
+> > to receive packets, but it does not. The bond only delivers packets from
+> > slaves whose 'inactive' flag is cleared, whereas
+> > bond_set_slave_rx_enabled_flags() only clears 'rx_disabled'.
+> >
+> > Fix by clearing 'inactive' as well.
+> 
+> [Severity: Low]
+> Should this carry a Fixes: tag?
+> 
+> bond_set_slave_rx_enabled_flags() was added by commit 240fd405528b
+> ("bonding: Add independent control state machine"), and that commit only
+> cleared rx_disabled. The RX gate in bond_should_deliver_exact_match()
+> checks only bond_is_slave_inactive(), so the bug goes back to that commit.
+> 
+> The notes say this targets net-next because it never worked, and that
+> makes sense. A tag would still let stable and distro maintainers link the
+> fix to the original commit:
+> 
+> Fixes: 240fd405528b ("bonding: Add independent control state machine")
 
-Thanks, this is much simpler than my version. Two comments on
-set_bit_user() before I resubmit:
+Makes sense to me.
 
-> +	int __err = 0;							\
-> +	__uaccess_begin();						\
-> +	asm volatile("\n"						\
-> +		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
-> +		     "2:\n"						\
-> +		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-> +					   %[errout])			\
-> +		     : [errout] "=r" (__err),				\
-> +		       [ptr] "+m" (*(u8 __user *)(addr))		\
+> 
+> > diff --git a/include/net/bonding.h b/include/net/bonding.h
+> > index 598d56b1bc970..cb89aff437f44 100644
+> > --- a/include/net/bonding.h
+> > +++ b/include/net/bonding.h
+> > @@ -594,6 +594,7 @@ static inline void bond_set_slave_active_flags(struct slave *slave,
+> >  static inline void bond_set_slave_rx_enabled_flags(struct slave *slave,
+> >  					       bool notify)
+> >  {
+> > +	slave->inactive = 0;
+> >  	slave->rx_disabled = 0;
+> >  }
+> 
+> [Severity: Medium]
+> With this change, inactive is only cleared when ad_enable_collecting()
+> runs. Can a COLLECTING port still be left with inactive=1 and
+> rx_disabled=0?
+> 
+> bond_option_all_slaves_active_set() can still set inactive without
+> touching rx_disabled when all_slaves_active goes from 1 to 0:
+> 
+> drivers/net/bonding/bond_options.c:bond_option_all_slaves_active_set() {
+>     ...
+> 	bond_for_each_slave(bond, slave, iter) {
+> 		if (!bond_is_active_slave(slave)) {
+> 			if (newval->value)
+> 				slave->inactive = 0;
+> 			else
+> 				slave->inactive = 1;
+> 		}
+> 	}
+>     ...
+> }
+> 
+> A COLLECTING port matches !bond_is_active_slave(). This is because
+> ad_disable_distributing()->__disable_distributing_port()->
+> bond_set_slave_tx_disabled_flags() left it in BOND_STATE_BACKUP.
+> 
+> The steady-state COLLECTING recheck in ad_mux_machine() only looks at
+> rx_disabled:
+> 
+> drivers/net/bonding/bond_3ad.c:ad_mux_machine() {
+>     ...
+> 					if (aggregator->is_active &&
+> 					    bond_is_slave_rx_disabled(slave)) {
+> 						ad_enable_collecting(port);
+> 						*update_slave_arr = true;
+> 					}
+>     ...
+> }
+> 
+> Since rx_disabled stays 0, the recheck never fires. Until the next mux
+> transition, bond_should_deliver_exact_match() keeps returning true, and
+> every non-LACPDU frame on that port gets RX_HANDLER_EXACT.
+> 
+> The notes list this as known issue 1 and describe COLLECTING as
+> transient. However, the companion selftest ("selftests: bonding: Add a
+> test for 802.3ad with coupled control disabled") keeps a port in
+> COLLECTING indefinitely by clearing the partner's Collecting bit. So a
+> partner that never sets LACP_STATE_COLLECTING would keep the port
+> dropping traffic.
 
-errout is only written on the fixup path, so it needs "+r", as in
-__try_cmpxchg_user_asm(). With "=r" gcc drops the initialisation; here
-(gcc 13.3, x86_64_defconfig) it even shares a register with mask:
+If the partner does not set LACP_STATE_COLLECTING, it is not supposed to
+send any packets.
 
-     1a3:	lock or %dl,(%rax)
-     1a9:	test   %edx,%edx
-     1ab:	jne    1bd <log_write+0x5d>
-     ...
-     1bd:	mov    $0xfffffff2,%eax
+> Would it work to also check bond_is_slave_inactive(slave) in the recheck,
+> for example:
+> 
+>     bond_is_slave_rx_disabled(slave) || bond_is_slave_inactive(slave)
+> 
+> That would let the port recover on the next state machine tick.
 
-so every call returns -EFAULT, and log_write() stops after the first
-page.
+I'm fine with or without this checking. But having this check looks better.
+Up to you.
 
-> +	__uaccess_begin();						\
-
-No access_ok() here. vhost checks the log range when it is set up and
-I couldn't find a way around that, but GUP used to reject kernel
-addresses by itself. user_access_begin() would keep the check (and the
-nospec barrier) local. Something like this, build-tested on x86_64 and
-i386 only:
-
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -597,19 +597,23 @@ _label:									\
- /* set_bit() on a byte of user memory; returns -EFAULT on fault. */
- #define set_bit_user(nr, addr)					\
- ({									\
--	int __err = 0;							\
--	__uaccess_begin();						\
--	asm volatile("\n"						\
--		     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"		\
--		     "2:\n"						\
--		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
--					   %[errout])			\
--		     : [errout] "=r" (__err),				\
--		       [ptr] "+m" (*(u8 __user *)(addr))		\
--		     : [mask] "q" ((unsigned char)BIT(nr))		\
--		     : "memory", "cc");				\
--	__uaccess_end();						\
--	__err ? -EFAULT : 0;						\
-+	u8 __user *__p = (addr);					\
-+	int __err = -EFAULT;						\
-+	if (user_access_begin(__p, sizeof(*__p))) {			\
-+		__err = 0;						\
-+		asm volatile("\n"					\
-+			     "1: " LOCK_PREFIX "orb %[mask], %[ptr]\n"	\
-+			     "2:\n"					\
-+			     _ASM_EXTABLE_TYPE_REG(1b, 2b,		\
-+						   EX_TYPE_EFAULT_REG,	\
-+						   %[errout])		\
-+			     : [errout] "+r" (__err),			\
-+			       [ptr] "+m" (*__p)			\
-+			     : [mask] "q" ((unsigned char)BIT(nr))	\
-+			     : "memory", "cc");			\
-+		user_access_end();					\
-+	}								\
-+	__err;								\
- })
- 
- /*
-
-If this looks right, I'll fold it in, run my test in a VM and resubmit
-with the test as a second patch.
-
-Thanks,
-Khan
+Thanks
+Hangbin
