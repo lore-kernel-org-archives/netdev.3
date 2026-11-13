@@ -1,87 +1,63 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794532114;
-	b=XBx+SdWVLhYd/EJTytZzSViLPN75/6i8KBv/ioIRZllKA/Tr6bgQ57iuTgRqZHiXCF+3
-	 3df25j5+vfEndAyfYNEbbyXlKkGdl2kTHLcmoRvZPggjCIvXgFizvKtzKIaXDXTvWnEA6
-	 2u8X7GxdCWacRadOQj9ncJSVeFN3KY49LbBfNo2BZF64WFHYPYD6aiNwZaz5YnvXR3yvq
-	 P3+uPBjZEeZ1s+8eNlVvcVSYzSAThZtFV8AW76WzmfJLIK9Hge5zfOlA2IHNPDDFgRWcN
-	 eVLlbn84BENmNxF7c5UNeCdhreOJe84HyQxVo/PrIbjlPCSmkVLIzVn49M5FbZrxk0Q==
+	t=1794532377;
+	b=f2OeUdaCP3nb2MyhrotDQkGu/8F+8F2AAEWpWzKUfiJSJmKn659IEBhDFLHdgCW4IVpy
+	 92CZ4gDf/ihs5MUAPCrGZo/VxFjvrmQRXMliL8fUR8w76ROjXQI1DM3+GgodcmoVAAI1j
+	 n7xc7JYFDcfWAt/QMQgQMHciUp1qtJL/MQU7in2OwCzU8p6DNlJRBIjJxC2Bu2WjeGrxq
+	 exeelPL59wYgbKvIjJz9BJ+J/zRNp/Lp3EUUUR75CtgMWi+KZGwF1pYcMDDPJygBjvHO5
+	 VV8JvKvEvVfwjmebzxYIaBpQ4tprDggJF6NhsmJ2aKLq05bZ+KKSBNwJf0T2OAMAPsg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794532114;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=6mKfsE2m1surULkycD7HQgfLz0qt2LKkwV1QgEcEtLM=;
-	b=SZQ7yFeFyFhjsdiGwZL3yyNUwmWw1j1Af156hxHPhzmB0a/Z1akWwfiP4Nszodxp473S
-	 cyUvQi44EoMSoW6IlECKcBtC/wZG5sS0gM1h6+WT9zQsZxvz4z6bRi5wdSWNlvlBFBxo1
-	 XxxdKdGYrmM3K6XTMlEXtB89rLGkZ70DzyFyh0shvtnIYUfUCVzp8Mrr756RZkE4stN6K
-	 dfHSKZTW8V+4HiNIF0tat6YCWom4joGJRZSYELja6hQ2tQ8QrJJO+TvjMa3utyb46wBhB
-	 EfF/b9GsWp/63KHme2QPZygdAb5ZSgHioYJozWm2qII0Bk5YmqJyv60Kwzxs7Hv4pMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794532377;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 In-Reply-To:References:Auto-Submitted:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	bh=QRKjoaIFdZcdNI6xhQFS3ddkteDcVtqc9gdnFl/fkT8=;
+	b=GFCHWPU2GBpJNRc4n0peOGiVMrihDofG1C3gABsktNwI/+wd7uzZ9qOWJY7WR3Ql71CT
+	 o2u5ZVJ+mxOY6bRJuaAKscj9mgd/NOucXiRwmgdYHOwrW3NL3l6Iu29MS+w/HKr5fiv+a
+	 4yxYLtrDy30SEgV7PDBQostp32K9F3med+7INvCpIEn2DjjyCVRz03FyzkbrGWvTAaGmD
+	 ZQiC5ramoPEob65c/qeUcSEu2JBFJnIxLD7H/gOfwpK+0fog93sfQSW5O/VzkNWjz46Bk
+	 gp91wLHopqZhriFzq+xz5K0XBTztRKVXvAtEft/9sCXtBg/WQ9oZNrqwxGr1+fzGWOQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=intel.com;
-	spf=pass smtp.mailfrom=intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="j0/nUGqK";
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TZYHFhah;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A62606A333;
-	Fri, 13 Nov 2026 01:08:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C2A62606A333
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F06606A321
+	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=j0/nUGqK
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794532114; x=1826068114;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=69Y+r+H1NTvSh/GiYErO30dYltN2QSlJy2tThmel4rA=;
-  b=j0/nUGqKYfAENZuR94gFwQxiUQotCx/0c8znP+ptJJBAyhZMquFca2rw
-   lQdVPJeYM4J4FhOwOqoEwOi0XaV+RHYRFaYD4m/01PPH1cuYMLCrqpbsN
-   /xRmfbQ5cYGyKOOSMOxaXuXxleIIHD3RJVav6frBzXmWynZG9i3NxhCjN
-   YtFIEcnL3dyqNyoljzYXoBdeUwfvl7+S6ZAehVd6tMl+1PqOPzp/5BlW4
-   IgnrB0vgNw2m4cplaLw0ir39+KdS1eyjn4jMbcnKzc6f4Cxf0r/a+RLqt
-   oZua25mYhP/X26n8VZqpURPFCUUDr9GVbdaPv9DN68P3cdkDyGBK8lhUa
-   A==;
-X-CSE-ConnectionGUID: gAxqCI6hS4ar/pwEJ7NhlQ==
-X-CSE-MsgGUID: HMBK/7wCQJaP0a2pJmYiPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11964"; a="3252596"
-X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="3252596"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 17:08:31 -0800
-X-CSE-ConnectionGUID: ekFHjqcYSaSHfQPNSl5zPw==
-X-CSE-MsgGUID: z+eNeXrNSOKtR+6eLppP8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,210,1787036400"; 
-   d="scan'208";a="9214835"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa007.fm.intel.com with ESMTP; 12 Nov 2026 16:58:29 -0800
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	anthony.l.nguyen@intel.com,
-	tj@kernel.org,
-	skunkolee@gmail.com,
-	nsvatoslav515@gmail.com,
-	stable@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net 2/3] igb/igbvf: disable work items before device removal
-Date: Thu, 12 Nov 2026 16:58:19 -0800
-Message-ID: <20261113005823.130021-3-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20261113005823.130021-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TZYHFhah
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE071F000C4;
+	Fri, 13 Nov 2026 01:12:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794532377;
+	bh=QRKjoaIFdZcdNI6xhQFS3ddkteDcVtqc9gdnFl/fkT8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TZYHFhahqmElA5MW2pQ6ZQ2qOg+lf/IYVwyL/n5aQ2eWzMT7TAk4ouf7Ae8UIhxuQ
+	 QEGndXlwnASTEI2oZaUtLpqaV0JwJbOmuRIymQ79hZWtGrEAmLIJZekM2klU6G/9Hk
+	 Uephg7ESa4Onh+knber4yDnnIjiJujkQM8DotLkcJ4yHqIjt5GsjKwsgSiKUmp/LkP
+	 ve1Qtj4aXhGwaVXuFENVPJ02AZha19GaR/0kJRy70R57y4eTeaAeVbaQaNHRxaPJti
+	 2HFRvE9I+/CMRerPV5TkcUnEghpH6LKTmsLS131JepVhxJFcLF8hi66YYsQSK/HsJm
+	 haqC+gSoKk+kQ==
+From: netdev-bot+sinfo@kernel.org
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ Ivy Lopez <skunkolee@gmail.com>, dima.ruinskiy@intel.com,
+ luoxuanqiang@kylinos.cn, nsvatoslav515@gmail.com,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Moriya Kadosh <moriyax.kadosh@intel.com>
+Subject: Re: [PATCH net 1/3] e1000e: fix incorrect modified flag check in
+ e1000_read_nvm_spt()
+Date: Fri, 13 Nov 2026 01:12:55 +0000
+Message-ID: <179453237593.2168702.4296888375202263590@kernel.org>
+In-Reply-To: <20261113005823.130021-2-anthony.l.nguyen@intel.com>
 References: <20261113005823.130021-1-anthony.l.nguyen@intel.com>
+ <20261113005823.130021-2-anthony.l.nguyen@intel.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -91,65 +67,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Hi!
 
-A watchdog work item that is already running can queue the reset work after
-the remove path has canceled it. The netdev Tx timeout handler can also
-queue the reset work until unregister_netdev() shuts the interface down.
-In igb, device reset interrupts provide another enqueue path. The reset
-work may then run after free_netdev(), resulting in access to the freed
-adapter memory.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Although igb_reset_task() checks __IGB_DOWN, checking the bit already
-dereferences the adapter and therefore cannot protect its lifetime.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Disable the watchdog work first and the reset work second in both drivers.
-Disabling the work items also prevents racing attempts to queue them during
-device removal.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by LLM and not proven at runtime). If it was triggered
+   please include the symptoms, like the stack trace or kernel messages.
 
-Fixes: 760141a53e5d ("igb[v],ixgbe: don't use flush_scheduled_work()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/igb/igb_main.c | 4 ++--
- drivers/net/ethernet/intel/igbvf/netdev.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index d4a897a8c82c..933dd1c29950 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -3887,8 +3887,8 @@ static void igb_remove(struct pci_dev *pdev)
- 	timer_delete_sync(&adapter->watchdog_timer);
- 	timer_delete_sync(&adapter->phy_info_timer);
- 
--	cancel_work_sync(&adapter->reset_task);
--	cancel_work_sync(&adapter->watchdog_task);
-+	disable_work_sync(&adapter->watchdog_task);
-+	disable_work_sync(&adapter->reset_task);
- 
- #ifdef CONFIG_IGB_DCA
- 	if (adapter->flags & IGB_FLAG_DCA_ENABLED) {
-diff --git a/drivers/net/ethernet/intel/igbvf/netdev.c b/drivers/net/ethernet/intel/igbvf/netdev.c
-index c686ee120a14..125876a18b5c 100644
---- a/drivers/net/ethernet/intel/igbvf/netdev.c
-+++ b/drivers/net/ethernet/intel/igbvf/netdev.c
-@@ -2901,8 +2901,8 @@ static void igbvf_remove(struct pci_dev *pdev)
- 	set_bit(__IGBVF_DOWN, &adapter->state);
- 	timer_delete_sync(&adapter->watchdog_timer);
- 
--	cancel_work_sync(&adapter->reset_task);
--	cancel_work_sync(&adapter->watchdog_task);
-+	disable_work_sync(&adapter->watchdog_task);
-+	disable_work_sync(&adapter->reset_task);
- 
- 	unregister_netdev(netdev);
- 
--- 
-2.47.1
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
