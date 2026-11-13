@@ -1,55 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=111.22.67.135
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794560407;
-	b=lNKpaTtLOp6onS5wemfy6zdqZRuZCmxWgI5qwnr5jf67+ISl8ecExMiT4AGpcjltTiiI
-	 hKL3uNEnlAPpaw2ZjMvpwtzsK4ObNm+BMRi+IYfpY9d75TmWN51PfSZzW41SYsUggo/p4
-	 GSB+oq+/gYKwWhxo0diP1aoDg+PJxRTLe7K9SEsWcH6WzK7lY7eYACufT3+4TEVI1I0P6
-	 fUrLNrREIQKDMTl5HL9OO2Nzb+srgPFlpKSBCg26k4ouuD1MZo+KAFIp4pREdGLN7H/L/
-	 XO4eF8RmsbIIhbf6mOw3HQ149q4/z3rKtcx8t/5CI1tbT5MVnEWBk69s30EYRGIhNuw==
+	t=1794560490;
+	b=ZeGGOt9vpZD8nLAblmmlcrxj/m4n6cVFJOcntD7BfbIX7KOEbohYPn+/lWoTGkXuCBCC
+	 VW2BV1JWR6g0VLCHJ9aLu6+luRmxSopzk/3UoDhUGhLIEoMmlsJfggIjkNXnTbwyHu5Kf
+	 vtpsCr8ipqSg/cHkdZ7hU1BpUBBPGGo98A6iTQxdOIRLHRkgzCiJJHK1Irj1wDMN94itK
+	 F8QS7jXYKCi9VjzdI4pti+MlvsT/juyHgTall1R9cMQtsd9dGxYAMKUALE2GE9J0qUBJb
+	 Umd6MT4KpzCBAZKEtf0hunvtXEsuySN3mTYItoMkQoRMQ7pcJUDWaSeKEaoDFnDSpfw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794560407;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=nDmZz/9Lu+rwI73C7kuZiJ5O7j/5N39qJGbbT04Ep/k=;
-	b=1V49UhAgbyHLom7uaP+7+q9IYIAAWWWeGjG+G/rbUTqZRZ+OLYieFr27tyf9ftRL5awB
-	 aUoRD98zlzs7JnlTSTOJVoa80ipM5thgDrNH01qAHyQUUrBvKcPAgqd0tftgmp8698Ls9
-	 5/SViwiUR94CFkn8p9CuY2jqsP2iLoyJ6Y+K4wBk5pCcGzPBcdxL2g13zVcUSp8/JN4hf
-	 /kTXKt0gH3bh2RgplckenHM8WsCfDybMXvlFfzCLiiYvWXR19owLd7P7ZDRLhoEBWOGY0
-	 wQrNh5i3oBErKDSs005VrQ4i0WzpX3L6jjY7O2qJOXeiyCgtBhntD7mgiPYD1TvyMcw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794560490;
+	h=DMARC-Filter:DKIM-Signature:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:
+	 X-RM-TRANSID:X-RM-TagInfo:X-RM-SPAM-FLAG:Received:X-RM-TRANSID:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=FQCbRlPwcdgGqjavqN5PuhdDIKeapOrS6kVQSOGe7JU=;
+	b=iu6lFP8IKhaRk5SA7LLIzp8J62HBzcSclk5aqYpulY3WpDz+FUBnSgGCIcvv2p+IdvLa
+	 aLw4xqtk2wrM5gSWDUwX8CplZMff8fCXx3JWKEhnAHUG+WK0BlT+dr42uBrAtNWtbS4Mw
+	 +tzH3/vGSh4INamdDroxHmokrwPfsJZiGKbjWlnUXzb8XJX2tZoXCInGvvR/BF3PJGaVZ
+	 jTP7e+h7tJ6orgxxfqSQp47pOR+avnw1CVHxzNAIY0L9N7QbMMWkcaTMj78tmLN3zEZhE
+	 hl5eYauNZgFvN/D8C5nXVcN8qfu9lA9tTJKy3W/MpNePhx4ep5fPqzrY9jTI8iOZFSA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="LfSwP/kq";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DCD606A32E
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:00:07 +0000 (UTC)
+	dmarc=pass header.from=cmss.chinamobile.com;
+	spf=pass smtp.mailfrom=cmss.chinamobile.com;
+	dkim=pass header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XCGb7FJl;
+	arc=none smtp.remote-ip=111.22.67.135
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5A8606A33A;
+	Fri, 13 Nov 2026 09:01:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BD5A8606A33A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LfSwP/kq
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170BE1F000CC
-	for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 09:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794560407;
-	bh=nDmZz/9Lu+rwI73C7kuZiJ5O7j/5N39qJGbbT04Ep/k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LfSwP/kqup8ZV1V5xTHwhz73bxZLsYinXaPWO/+z7CnpWPuuuK4n9XIYAMiJ6hoDG
-	 nMarxgh7j+Y0rEQJNBn+K0xjzwGcftlXNrWn+LKMYJJOWXdSXyqcc21QisiOfJZCMq
-	 end+/zcXMDJFvMAXke36CuIp5g5DtWHMU1Z+WIMLqX/IZI7Vso3GZUfWCu9v427J0W
-	 WeINJ0WzQIKpm+oGv9rPA8ZJ5yQo5eOyGrHJV/R+w0y+PJZlarNtCqp7KDCmf6+EK8
-	 xOCM3wB3zvYfAkBZ1DQC6+LPub+BnwpgdW1cwmLVzGftC35j1PbEqk/43kxf9pQcQb
-	 Qo6+FOWwEtn3A==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6dde81a6820so887137eaf.2
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 01:00:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErEMonkgkYcHAyR+56UTiNNdxAOwdlQLQqkRA9NhS001MlIhs7gc+OKGofb0a5c93o4hB5sCVJ4=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+vE7WeKlry6T9Ow7+nWnxSE7iqoX/bDTbO3gOzhSoDZKUekLy3
-	Y7rGiehJkaHoeVEzqUJXDb70QbIuFJVB0uJg8trz3s8G1C04Apsv13BvkyWjj7upbLLAwliq0z1
-	17j41IJmDqu498i2sefXBxjXX2+Tc9NQ=
-X-Received: by 2002:a05:6820:1608:b0:719:1627:6c0b with SMTP id
- 006d021491bc7-71ab4f0c1d5mr1095396eaf.15.1794560406139; Fri, 13 Nov 2026
- 01:00:06 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.a=rsa-sha256 header.s=default header.b=XCGb7FJl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=XCGb7FJllbslpYYu9bYY/WMjlvLUqDIGRaBkHy0vubCxTl8Yo0kw/dlI4zYLd6Yqk5izKUBbEXq34
+	 HhedsFnfsjZES6wyRRRlbpdiGAA8XEWm/Gm9RlhPNsWcR/u/m1Ugl8AqmTzUNCQ+YGJl0nTCreZDJM
+	 vaAOfGtZXOWmdEqs=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee36af6d1e40d7-b6ab7;
+	Fri, 13 Nov 2026 17:01:25 +0800 (CST)
+X-RM-TRANSID:2ee36af6d1e40d7-b6ab7
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.net (unknown[223.64.115.200])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16af6d1e30e4-1f973;
+	Fri, 13 Nov 2026 17:01:25 +0800 (CST)
+X-RM-TRANSID:2ee16af6d1e30e4-1f973
+From: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+To: Jiri Pirko <jiri@resnulli.us>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	sunwenbo@cmss.chinamobile.com,
+	1342116488@qq.com
+Subject: [PATCH net v3] team: validate the length of U32 and S32 option data
+Date: Fri, 13 Nov 2026 17:01:08 +0800
+Message-Id: <20261113090108.175889-1-sunwenbo@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.33.0
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -59,165 +75,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <avMkfJrXhCFXn8M_@v4bel> <179450310167.2199510.18107423940014989443@kernel.org>
-In-Reply-To: <179450310167.2199510.18107423940014989443@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 13 Nov 2026 09:59:54 +0100
-X-Gmail-Original-Message-ID: <CAL4WiioP-25nYs19MiNAjnzbvi-H870uem1W+jY5jTJb=DKn+g@mail.gmail.com>
-X-Gm-Features: AclHuK9NNSpFmdpVPLO-9WPIlgqsMexzOEss1wg0JOnZXh8zBeNfDDnJO3kSg4I
-Message-ID: <CAL4WiioP-25nYs19MiNAjnzbvi-H870uem1W+jY5jTJb=DKn+g@mail.gmail.com>
-Subject: Re: [PATCH net v2] tcp: fix NULL pointer dereference when restarting
- a Fast Open listener
-To: netdev-bot+sashiko@kernel.org
-Cc: imv4bel@gmail.com, ncardwell@google.com, kuniyu@google.com, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le jeu. 12 nov. 2026 =C3=A0 18:05, <netdev-bot+sashiko@kernel.org> a =C3=A9=
-crit :
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] The patch is meant to stop request_socks from being stranded in
->   rskq_rst_head while they hold a listener reference, but another path=E2=
-=80=A6
->
-> --
->
-> tcp: fix NULL pointer dereference when restarting a Fast Open listener
->
-> This patch makes inet_csk_listen_stop() always take fastopenq.lock and
-> detach rskq_rst_head while holding it. That serializes the drain against
-> reqsk_fastopen_remove() adding entries to the RST list. The goal is to
-> stop request_socks from being stranded on rskq_rst_head while holding a
-> listener reference, and to avoid the NULL rskq_rst_tail dereference seen
-> when listen() is called again.
->
-> > diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection=
-_sock.c
-> > index 37cc8606d6835..9ca59dca5d184 100644
-> > --- a/net/ipv4/inet_connection_sock.c
-> > +++ b/net/ipv4/inet_connection_sock.c
-> > @@ -1533,17 +1533,15 @@ void inet_csk_listen_stop(struct sock *sk)
->
-> [ ... ]
->
-> > +     /* Free all the reqs queued in rskq_rst_head. */
-> > +     spin_lock_bh(&queue->fastopenq.lock);
-> > +     req =3D queue->fastopenq.rskq_rst_head;
-> > +     queue->fastopenq.rskq_rst_head =3D NULL;
-> > +     spin_unlock_bh(&queue->fastopenq.lock);
-> > +     while (req !=3D NULL) {
-> > +             next =3D req->dl_next;
-> > +             reqsk_put(req);
-> > +             req =3D next;
-> >       }
-> >       WARN_ON_ONCE(sk->sk_ack_backlog);
-> >  }
->
-> [Severity: High]
-> Is this fix complete? The commit message says:
->
->     With this synchronization, reqsk_fastopen_remove() either inserts the
->     request_sock before inet_csk_listen_stop() acquires the lock, in whic=
-h
->     case inet_csk_listen_stop() reclaims it, or sees that the listener is
->     not in TCP_LISTEN and does not insert anything.
->
-> That argument only holds if every exit from TCP_LISTEN goes through
-> inet_csk_listen_stop(). The failure path in inet_csk_listen_start()
-> does not:
->
-> net/ipv4/inet_connection_sock.c:inet_csk_listen_start() {
->     ...
->         reqsk_queue_alloc(&icsk->icsk_accept_queue);
->     ...
->         inet_sk_state_store(sk, TCP_LISTEN);
->         err =3D sk->sk_prot->get_port(sk, inet->inet_num);
->         if (!err) {
->                 ...
->                 err =3D sk->sk_prot->hash(sk);
->
->                 if (likely(!err))
->                         return 0;
->         }
->
->         inet_sk_set_state(sk, TCP_CLOSE);
->         return err;
-> }
->
-> Take a listener that went through shutdown(SHUT_RD) or connect(AF_UNSPEC)
-> while an accepted Fast Open child was still in SYN_RECV. Then listen() is
-> called on it again. If an RST for that child arrives after TCP_LISTEN is
-> stored, reqsk_fastopen_remove() passes this check under fastopenq->lock:
->
->         if (!reset || lsk->sk_state !=3D TCP_LISTEN) {
->
-> It then links req onto rskq_rst_head/rskq_rst_tail without calling
-> reqsk_put().
->
-> Now suppose get_port() fails afterwards, for example with EADDRINUSE
-> because another SO_REUSEADDR socket started listening on the port, or
-> hash() fails. The socket goes back to TCP_CLOSE and rskq_rst_head is neve=
-r
-> drained.
->
-> A later close() will not reclaim the list, because __tcp_close() only
-> calls inet_csk_listen_stop() when sk_state =3D=3D TCP_LISTEN. A later
-> successful listen() just overwrites the list in reqsk_queue_alloc():
->
->         queue->fastopenq.rskq_rst_head =3D NULL;
->         queue->fastopenq.rskq_rst_tail =3D NULL;
->
-> Does this leak the request_sock? If so, it also leaks the listener
-> reference taken in reqsk_alloc_noprof(), which only
-> sock_put(req->rsk_listener) in __reqsk_free() drops. That would pin the
-> listener sock and its netns reference too.
->
-> This looks like the same leak the commit message describes, reached
-> through a different TCP_LISTEN -> TCP_CLOSE transition.
->
-> Should the inet_csk_listen_start() error path also drain fastopenq under
-> fastopenq.lock? Alternatively, could the drain move to a place that cover=
-s
-> both paths?
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/avMkfJrXhCFXn8M_%40v4bel
+In team_nl_options_set_doit(), the policy for TEAM_ATTR_OPTION_DATA in
+team_attr_option_nl_policy is NLA_BINARY because the payload layout
+varies with the option type.
 
-This looks legitimate, but it is a separate and pre-existing issue,
-not something added or made worse by this patch.
+For TEAM_OPTION_TYPE_U32 and TEAM_OPTION_TYPE_S32, the payload is
+read directly with nla_get_u32(attr_data) and nla_get_s32(attr_data)
+without checking its attribute length. When userspace supplies a
+truncated attribute (0 to 3 bytes), nla_get_u32() or nla_get_s32()
+performs an out-of-bounds read past the attribute buffer. Conversely,
+oversized payloads (> 4 bytes) would also have trailing bytes
+silently ignored instead of being rejected as invalid input.
 
-inet_csk_listen_start() sets TCP_LISTEN before get_port()/hash() and
-goes back to TCP_CLOSE on failure without purging rskq_rst_head, so an
-RST for a Fast Open child accepted in a previous life of the listener
-can queue a request there during that window. Nothing reclaims it
-afterwards.
+Validate that nla_len(attr_data) equals sizeof(u32) or sizeof(s32)
+for TEAM_OPTION_TYPE_U32 and TEAM_OPTION_TYPE_S32 respectively, and
+return -EINVAL otherwise, consistent with how NLA_U32/NLA_S32
+attributes are validated and similar to commit 5bef3ac184b5 ("team:
+better TEAM_OPTION_TYPE_STRING validation").
 
-It needs listen() to fail (e.g. -EADDRINUSE because another
-SO_REUSEADDR socket started listening on the port) with the RST
-landing while get_port() runs, so the window is quite small.
+This issue was identified with the assistance of an LLM-based code
+review of Netlink option handlers in the team driver, confirmed by
+sending malformed U32 (notify_peers_count) and S32 (priority) option
+attributes on a UML kernel, and verified after the patch that
+invalid lengths (0..3, 5, and 8 bytes) are rejected with -EINVAL while
+valid 4-byte options still work as expected.
 
-Hyunwoo, no need to respin, your v2 is fine as is for the
-inet_csk_listen_stop() side.
+Built with W=1 on UML, x86_64 allmodconfig, and x86_64 allyesconfig with
+zero new warnings or errors.
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
+Fixes: 69821638b274 ("team: add signed 32-bit team option type")
+Signed-off-by: Wenbo Sun <sunwenbo@cmss.chinamobile.com>
+---
 
-I will send a follow-up on top of it, moving the purge to a helper
-that is also called from the inet_csk_listen_start() error path.
+Changes in v3:
+- Add Fixes: 69821638b274 ("team: add signed 32-bit team option type") for
+  the TEAM_OPTION_TYPE_S32 check, as suggested by Hangbin Liu.
+- Rebase onto latest mainline (7e1392a42ea2) with no functional code
+  changes.
+- Link to v2: https://lore.kernel.org/r/20261112090030.172342-1-sunwenbo@cmss.chinamobile.com
 
-Thanks.
+Changes in v2:
+- Check exact length (!= sizeof(u32) / != sizeof(s32)) instead of
+  only rejecting truncated payloads (<), as suggested by Hangbin Liu.
+- Extended the UML test to also cover oversized option payloads.
+- Link to v1: https://lore.kernel.org/r/20261111085924.360720-1-sunwenbo@cmss.chinamobile.com
+
+ drivers/net/team/team_core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index cfb833c307c1..65ac25e97ae3 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -2834,6 +2834,10 @@ int team_nl_options_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 			ctx.info = opt_inst_info;
+ 			switch (opt_type) {
+ 			case TEAM_OPTION_TYPE_U32:
++				if (nla_len(attr_data) != sizeof(u32)) {
++					err = -EINVAL;
++					goto team_put;
++				}
+ 				ctx.data.u32_val = nla_get_u32(attr_data);
+ 				break;
+ 			case TEAM_OPTION_TYPE_STRING:
+@@ -2853,6 +2857,10 @@ int team_nl_options_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 				ctx.data.bool_val = attr_data ? true : false;
+ 				break;
+ 			case TEAM_OPTION_TYPE_S32:
++				if (nla_len(attr_data) != sizeof(s32)) {
++					err = -EINVAL;
++					goto team_put;
++				}
+ 				ctx.data.s32_val = nla_get_s32(attr_data);
+ 				break;
+ 			default:
+-- 
+2.33.0
+
+
+
