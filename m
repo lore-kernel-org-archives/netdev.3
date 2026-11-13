@@ -1,70 +1,69 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794565209;
-	b=fDP2LEcIKjwQSmDqqeU4fPA+ZHk2cUEnZiCA6GqxBJE2fbAeg/jjypIerN2nHcmIyvhc
-	 LrPTR0DY519ynZrWBl+Ealyhf2f4Jvsp80q5uJ0a/f1MS314ZoXFv2TpewdM5hICgtUI7
-	 D9PTeBrnnlzGEcsamQdvkpf0I1IfFkVVA4st6qLu+1D7avwRwI8+nfopsu9s8B83J3EuK
-	 HYL8VILhhpdViHVfqKRdDm+Dbyrfi+pWFeGpC1qdTifAsf9FIHF/4mISwUGXJGIb873Hi
-	 vl3rZYV6i5VxOwjW8au9bWywdbwKFeKstRZztqR0eWugM6CL5hoZRapREoPed3h4/vg==
+	t=1794565206;
+	b=3W0QGJXD4kNKWDVBCUYT5+y5iQT/t3PrYe/FY/CXtu5YVjynJNApABaFeeguC1Hio/PQ
+	 zQVsEZusqGG+qSTuo6LJitlQ7dAaCx8zYs75cWuX/dAnRhrqJn1DCaVerwMm9PObJrBNs
+	 gjk4jLeAQU0g25DlkFcgBmRR2FGnlXHpTlps1q4XiX2uflLVFjh+RBhjTMA/3rAgDan/q
+	 2LqOX3lIdcMc4/cL4fWEgpnsIM0AQ74rzjtvFOZU83zfX/mmEK9QtnlIxdW1aAakLtvor
+	 G53b5sWmrULioVDF5S7D/cbvo6Hk5ZqI0LPLOreEV4WvPKPokbyrwlgW472NL4ljpuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794565209;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794565206;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-ID:References:In-Reply-To:To:CC:X-Mailer;
-	bh=LUws8lXCCGM09vIpNQlZrRYUhT+HqT4ptKRv1Dr8cMg=;
-	b=eiT0bliFdwTV0STEFrWgFbeMK45mGlHqNEJkgNHu4ntagQqL80LXNaNS71hNpZpg5B+C
-	 ob5Y35xbcqXpoKcUinGOqm51ikatM82bnH8ADrdwHnxqO3r2mfymFtg/20DtfPAcxvPUC
-	 6u17Nclu8JqnrutnFNJUf/GMPzF9SF6yvlmii0X7mxpgmjk9QOMlup451ulVaCfiNnA0b
-	 xSn2fecu6MD4Q/I0h7Z17Mf495r2qjL31W0dEAUqqNBdB/CITadz1Nd1x6bbmYOh0nmwa
-	 mh4aqiy88yLq2p7tetFiD+zQwNclrzVJnReo/5PTzGhbpAXXc5bRDD4iLuBwfA0hYBw==
+	bh=wmZTKP8AkFpo88yYS9lI1c1Yb1KHZ45faZHvkLABff0=;
+	b=o9kCObvjjHJy542rHzr9xThn55r8+fmQy8bw4Yu+w63D1AlAqYyeVGcAIyBF8EPzsx95
+	 QRE6pm9+ec9cn/1W2qavTWbo7eY9lfMR98wKnqKnnJSzFjgnOzmCcaDXgc98RrUZiLmdR
+	 nhWFNkc6gSxdcjF2UhgLrSMZ3ZNPtgK5618VMHqX9qf18+YmC5xPPJA08xXQg4i/2VpFT
+	 KijBC5YKJ8nMlmQuiZi7QpxO5uFEk7dIzv9E3kBtOg4iUBL+jFy+mMYCW43hXCgv7wDkc
+	 iofVI/58k3uZgzgVv2tV8x8ReYIkXFDNpIiL9T+Pl5EgJOIWkTErSv6KITx+Vobj/nA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=microchip.com;
 	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=aZzlmmTR;
+	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=X1491Fen;
 	arc=none smtp.remote-ip=68.232.153.233
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82D4606A8A1;
-	Fri, 13 Nov 2026 10:20:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B82D4606A8A1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED49606A88D;
+	Fri, 13 Nov 2026 10:20:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3ED49606A88D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=aZzlmmTR
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=X1491Fen
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794565209; x=1826101209;
+  t=1794565205; x=1826101205;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=0ppGaxYzHhTZMYLmZQhGZ4gh2uWFyqmCABcMwC7v9t8=;
-  b=aZzlmmTRTY4ik3nfgey8MvB4Nk7cdUlf7a4R/kXgJezyvjyZuf15cT9M
-   lYYAvRwzfC9MBcswtpAD7ahfBDC+b+LFglk+Y2E9NItKMybhSlj3bUemU
-   hhjlX08wMj/3jkI+2yotd10Qg+WL7mFeJdo9CbDXb5levs1+72130XkqJ
-   kYM8iBJ2rWm8ZK5zlDBzmaHGNT4qnjZRc1JFlDW00G5o3pFbIfiO5N/mb
-   HWroMqx5UKlzwe7SOIyVnfLNUDVtP8EnOvo6Ij00iRBVRC0HNJfrK77pQ
-   xcWLMh3XAySTfBrkUlS3JCStcZ5m7zYaxRtEV74O8cbP5TX7On6AI3n61
-   Q==;
-X-CSE-ConnectionGUID: WfAZ6DLcQXe5zG6XNnaJUg==
-X-CSE-MsgGUID: 5QQM5uEsSvu7pMKFBEJ5vQ==
+  bh=KHzBl8IqRRN8d0OWf58A1H+V0NtTw3LAiHJ4yCsHqRA=;
+  b=X1491FenNgx5RcpKN6c/jna3/eSNQuOYShT3azNUdYNt4fpa6LYCiJ7k
+   l4uzfe2PUpy2HJ83Cj+Qf1dRzWBUjczzo4rrt26mMUQdXD/SGcr4k3nqh
+   /lkhbiA4M1v4rwLeAlWQ2UNkFEaZ70952W6QQGZThfwdZJKbC63imzCz3
+   wR5VjDjmoA4dsSWnsEOR326ZzCvQujBJDUUzk9ehPOFGyvmP4ypHsoaL+
+   H9Tmw/Yk8xze6OcmCsYnQtaHfRBMGvY0dDIRHh1wP2OqxzE6YyrLsytUQ
+   suwVXVyFTiUUOGwVQXKtuBc/hU0TwJFyQlS7UxRBNWw9FUXHv+sXjG+PS
+   g==;
+X-CSE-ConnectionGUID: YE4i8/bMQBio6/YwFK363A==
+X-CSE-MsgGUID: 8nzJ/0UoRn6kBa+fUPonlQ==
 X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="66461927"
+   d="scan'208";a="77158701"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2026 03:20:08 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Nov 2026 03:20:04 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Fri, 13 Nov 2026 03:20:07 -0700
+ 15.1.2507.58; Fri, 13 Nov 2026 03:20:05 -0700
 Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 13 Nov 2026 03:20:05 -0700
+ 15.1.2507.58 via Frontend Transport; Fri, 13 Nov 2026 03:20:02 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Fri, 13 Nov 2026 11:19:41 +0100
-Subject: [PATCH net-next 2/4] net: sparx5/lan969x: enable the switch core
- after clock setup
+Date: Fri, 13 Nov 2026 11:19:40 +0100
+Subject: [PATCH net-next 1/4] net: lan969x: add the core PLL registers
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -76,7 +75,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261113-lan969x-core-skew-v1-2-b9b02b863d38@microchip.com>
+Message-ID: <20261113-lan969x-core-skew-v1-1-b9b02b863d38@microchip.com>
 References: <20261113-lan969x-core-skew-v1-0-b9b02b863d38@microchip.com>
 In-Reply-To: <20261113-lan969x-core-skew-v1-0-b9b02b863d38@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -88,51 +87,128 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kernel@vger.kernel.org>
 X-Mailer: b4 0.14.3
 
-sparx5_init_switchcore() ends by setting HSCH_RESET_CFG.CORE_ENA, so the
-switch core and queue system are already running when
-sparx5_init_coreclock() configures the core clock afterwards. That is
-fine for the dividers it sets on sparx5, but a later patch makes it also
-program the lan969x core PLL, which should be done before the queue
-system is enabled.
-
-Move the CORE_ENA write to mchp_sparx5_probe(), right after
-sparx5_init_coreclock(), so the core is enabled once its clock is set
-up.
-
-CORE_ENA also tells sparx5_init_switchcore() that the switch memories
-are already initialized. The switch is only reset once, when the reset
-controller probes, so after an unbind and bind CORE_ENA is still set
-and the core clock is configured with the queue system running.
+Add the CHIP_TOP registers required to configure the lan969x core PLL,
+and map the CHIP_TOP target. They are used in a later patch of this
+series.
 
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../ethernet/microchip/sparx5/lan969x/lan969x.c    |  1 +
+ .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 82 ++++++++++++++++++++++
+ 2 files changed, 83 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-index 68c80c63f9087..93a7cb89493c4 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-@@ -471,9 +471,6 @@ static int sparx5_init_switchcore(struct sparx5 *sparx5)
- 	spx5_wr(ANA_AC_STAT_RESET_RESET_SET(1), sparx5, ANA_AC_STAT_RESET);
- 	spx5_wr(ASM_STAT_CFG_STAT_CNT_CLR_SHOT_SET(1), sparx5, ASM_STAT_CFG);
+diff --git a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
+index c02499d1b297a..df211e608056a 100644
+--- a/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
++++ b/drivers/net/ethernet/microchip/sparx5/lan969x/lan969x.c
+@@ -13,6 +13,7 @@ static const struct sparx5_main_io_resource lan969x_main_iomap[] =  {
+ 	{ TARGET_CPU,                   0xc0000, 0 }, /* 0xe00c0000 */
+ 	{ TARGET_FDMA,                  0xc0400, 0 }, /* 0xe00c0400 */
+ 	{ TARGET_GCB,                 0x2010000, 1 }, /* 0xe2010000 */
++	{ TARGET_CHIP_TOP,            0x2020000, 1 }, /* 0xe2020000 */
+ 	{ TARGET_QS,                  0x2030000, 1 }, /* 0xe2030000 */
+ 	{ TARGET_PTP,                 0x2040000, 1 }, /* 0xe2040000 */
+ 	{ TARGET_ANA_ACL,             0x2050000, 1 }, /* 0xe2050000 */
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
+index 1bf7dabf622e6..071d2f013a195 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main_regs.h
+@@ -26,6 +26,7 @@ enum sparx5_target {
+ 	TARGET_ANA_L2 = 7,
+ 	TARGET_ANA_L3 = 8,
+ 	TARGET_ASM = 9,
++	TARGET_CHIP_TOP = 10,
+ 	TARGET_CLKGEN = 11,
+ 	TARGET_CPU = 12,
+ 	TARGET_DEV10G = 17,
+@@ -2636,6 +2637,87 @@ extern const struct sparx5_regs *regs;
+ #define ASM_RAM_INIT_RAM_CFG_HOOK_GET(x)\
+ 	FIELD_GET(ASM_RAM_INIT_RAM_CFG_HOOK, x)
  
--	/* Enable switch-core and queue system */
--	spx5_wr(HSCH_RESET_CFG_CORE_ENA_SET(1), sparx5, HSCH_RESET_CFG);
--
- 	return 0;
- }
- 
-@@ -928,6 +925,9 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
- 		goto cleanup_config;
- 	}
- 
-+	/* Enable switch-core and queue system */
-+	spx5_wr(HSCH_RESET_CFG_CORE_ENA_SET(1), sparx5, HSCH_RESET_CFG);
++/* LAN969X ONLY */
++/* CHIP_TOP:HW_STAT:HW_STAT */
++#define CHIP_TOP_HW_STAT                                                       \
++	__REG(TARGET_CHIP_TOP, 0, 1, 92, 0, 1, 4, 0, 0, 1, 4)
 +
- 	for (idx = 0; idx < sparx5->port_count; ++idx) {
- 		config = &configs[idx];
- 		if (!config->node)
++#define CHIP_TOP_HW_STAT_REFCLK_SEL              BIT(1)
++#define CHIP_TOP_HW_STAT_REFCLK_SEL_SET(x)\
++	FIELD_PREP(CHIP_TOP_HW_STAT_REFCLK_SEL, x)
++#define CHIP_TOP_HW_STAT_REFCLK_SEL_GET(x)\
++	FIELD_GET(CHIP_TOP_HW_STAT_REFCLK_SEL, x)
++
++/* LAN969X ONLY */
++/* CHIP_TOP:CORE_PLL_CFG:CORE_PLL_CFG */
++#define CHIP_TOP_CORE_PLL_CFG                                                  \
++	__REG(TARGET_CHIP_TOP, 0, 1, 212, 0, 1, 8, 0, 0, 1, 4)
++
++#define CHIP_TOP_CORE_PLL_CFG_REF_CLK_SEL        GENMASK(29, 28)
++#define CHIP_TOP_CORE_PLL_CFG_REF_CLK_SEL_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_CFG_REF_CLK_SEL, x)
++#define CHIP_TOP_CORE_PLL_CFG_REF_CLK_SEL_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_CFG_REF_CLK_SEL, x)
++
++#define CHIP_TOP_CORE_PLL_CFG_DIVACK             BIT(27)
++#define CHIP_TOP_CORE_PLL_CFG_DIVACK_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_CFG_DIVACK, x)
++#define CHIP_TOP_CORE_PLL_CFG_DIVACK_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_CFG_DIVACK, x)
++
++#define CHIP_TOP_CORE_PLL_CFG_NEWDIV             BIT(26)
++#define CHIP_TOP_CORE_PLL_CFG_NEWDIV_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_CFG_NEWDIV, x)
++#define CHIP_TOP_CORE_PLL_CFG_NEWDIV_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_CFG_NEWDIV, x)
++
++#define CHIP_TOP_CORE_PLL_CFG_FILTER_RANGE       GENMASK(25, 23)
++#define CHIP_TOP_CORE_PLL_CFG_FILTER_RANGE_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_CFG_FILTER_RANGE, x)
++#define CHIP_TOP_CORE_PLL_CFG_FILTER_RANGE_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_CFG_FILTER_RANGE, x)
++
++#define CHIP_TOP_CORE_PLL_CFG_DIVQ               GENMASK(22, 8)
++#define CHIP_TOP_CORE_PLL_CFG_DIVQ_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_CFG_DIVQ, x)
++#define CHIP_TOP_CORE_PLL_CFG_DIVQ_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_CFG_DIVQ, x)
++
++#define CHIP_TOP_CORE_PLL_CFG_DIVR               GENMASK(7, 2)
++#define CHIP_TOP_CORE_PLL_CFG_DIVR_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_CFG_DIVR, x)
++#define CHIP_TOP_CORE_PLL_CFG_DIVR_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_CFG_DIVR, x)
++
++#define CHIP_TOP_CORE_PLL_CFG_ENA_CFG            BIT(1)
++#define CHIP_TOP_CORE_PLL_CFG_ENA_CFG_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_CFG_ENA_CFG, x)
++#define CHIP_TOP_CORE_PLL_CFG_ENA_CFG_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_CFG_ENA_CFG, x)
++
++#define CHIP_TOP_CORE_PLL_CFG_LOCK_STAT          BIT(0)
++#define CHIP_TOP_CORE_PLL_CFG_LOCK_STAT_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_CFG_LOCK_STAT, x)
++#define CHIP_TOP_CORE_PLL_CFG_LOCK_STAT_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_CFG_LOCK_STAT, x)
++
++/* LAN969X ONLY */
++/* CHIP_TOP:CORE_PLL_CFG:CORE_PLL_FREQ_CFG */
++#define CHIP_TOP_CORE_PLL_FREQ_CFG                                             \
++	__REG(TARGET_CHIP_TOP, 0, 1, 212, 0, 1, 8, 4, 0, 1, 4)
++
++#define CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFI         GENMASK(30, 24)
++#define CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFI_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFI, x)
++#define CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFI_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFI, x)
++
++#define CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFF         GENMASK(23, 0)
++#define CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFF_SET(x)\
++	FIELD_PREP(CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFF, x)
++#define CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFF_GET(x)\
++	FIELD_GET(CHIP_TOP_CORE_PLL_FREQ_CFG_DIVFF, x)
++
+ /* SPARX5 ONLY */
+ /* CLKGEN:LCPLL1:LCPLL1_CORE_CLK_CFG */
+ #define CLKGEN_LCPLL1_CORE_CLK_CFG                                             \
 
 -- 
 2.34.1
