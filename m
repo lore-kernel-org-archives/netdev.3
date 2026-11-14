@@ -1,56 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794622543;
-	b=n8y69Fpp11zWDj12oUQoh0lpjFOrHJ88vm+D3rfCElSAh92zPKGsncvuhMssyYgTvX4/
-	 mZFZmNzHW4wK6sc8uI/vjn5Xt2TkVomCfVq26PMpY99a6qEyEQZhmSrsPR2S5K9a2rV8b
-	 L3LzeRpPNWHlbDTk3gC8rlST/XSbnLCZIfTq6+Bk5M/4vbaL/LCC6ZeU7nTz5mOKRkg74
-	 zN5lZR1vJ+LPVcx9Gk/Vbk26HIEK/8IfdRC0pQHwwwERFGSZinZP4wpcpzdXi231gyTix
-	 w3Xu5wuxNvWQWd36GZnEw4zy7j4OPQD4JhFUegCcP4WEQTAsMQuNcnrcTooReEbwI4w==
+	t=1794622544;
+	b=OAY6oz2u/+otcom3hH7op5UcuEZOZX2yoSXpOFFOM0Lo7AQ6ZtlmYlIJFslSccVyyQtw
+	 WGScQzcYRoLlmXSjMqWhqxyTpbAk/+RSz5JDkhmGvVjQk/Az4ZMECkx1hzvFZlQ7eh2FJ
+	 S19KyllpjJYQH+KxrL83Q6XrTf27Y0RTx4deGszSqu7jPAe05wPaRyUuD/KzxrPkR5CPM
+	 ouqQffceJERLxpJneQ1OxEM65zMowHdb4+tAcRhnolS8sB7eyBtbIYn9BuushawNSJF8Q
+	 fD/U0vsTnA38OPiUgLicCV/ehNJyFjK0DzUX4kdW6JIqWYBBw+t22shGf2+bwjLR/gA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794622543;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794622544;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=7McMDbOIQ4W/arVxJ2j2bXQ1Ce5dX3OQSA31MNX80Oo=;
-	b=cfyoiGdTj9UI4nTh0uCc1MUGZtg9kelfg38+W4yx6+Pl1luRWVQIVtDreJhjiqPObGMg
-	 ZCGSkKnjQw47bE4YcztQBU0TQ6V7fyfSY17ixICJeSSN1RC3Qf6vsicx2gHXYn2yqmZH9
-	 4vuO+7AKK8vjtlMGELN2oO5cPJk5zDrgaqXLKCoXrH4Japc84fiWKwZ2wCiMznjzQLAR5
-	 pVhFWy/qhkWEoqDf2vAlcT77lXirR7mR7QQLauZiruZ3Qjexmmm+vO/YsLr/wsqJ5JgZJ
-	 IXn+rtPepsmhBNFt87rZEskV6mAyUnkNF6lQalXe8KmBC2CfqjwKi/Pkqd4V7chtVWA==
+	bh=q32++NpuSBVXrZq1yEkuGL5U2LuT40oHUIbLOJp8kTQ=;
+	b=oe/2gbQsn4T9dBlb/+te6poMPyx3Tx9w3yiz+KxN/yvmMGTiuiQX8xXRMFu/kvFmgjEQ
+	 OLOljG5EW5vo9O2FGJJBH8fbm3YThUQTWvE66/8XgNjoTu71UtX2FmXNLFTrdRordbZr7
+	 SiLFYqu+w0kSqD5fa3l6m8De3fAsuOl/L9Ms5Kb+JMuH7H2RKKb3SGCIzqrH7Gz71FuCV
+	 IBRrZzqArcq7UUBXfQn9LRGtaACIyqwutm603afUm8fvgBHs6qJS9yqvxLsCSLSdObPYc
+	 Ul9NKQkQIgtmFgfXz8gc8UiMj2r1FDbULTcd2o/cn/MJTJvPHv154DdEybRORtWdXwQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="oqF/AhwN";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b5HuSM05;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5EF606A88C;
-	Sat, 14 Nov 2026 02:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03ED606A89E;
+	Sat, 14 Nov 2026 02:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oqF/AhwN
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4F01F000CB;
-	Sat, 14 Nov 2026 02:15:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b5HuSM05
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3251F000C4;
+	Sat, 14 Nov 2026 02:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794622543;
-	bh=7McMDbOIQ4W/arVxJ2j2bXQ1Ce5dX3OQSA31MNX80Oo=;
+	s=k20260515; t=1794622544;
+	bh=q32++NpuSBVXrZq1yEkuGL5U2LuT40oHUIbLOJp8kTQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oqF/AhwN8StSNxgJuATfgMBCjYRRW7fGOmFaMpouDRR2tXEpOwL73Zn/Qh5gqJyXN
-	 lpkledPALWtFkq0CEPNleeNTxJIFejMXuDa4UCjnGjNGPzSs1Y6y2aIEea6PFAdkIa
-	 js8s60QezviAcps8zepykp0SoXBNsLL0rgiJ4mMqZw8MDcXry738vE8BDaUFzUfIcJ
-	 wZ0VSwme+VLEUcKc00kq6i0iQFRf6kpP5Qix+vW2eteL0M4bS/4+fIAsTpoOOIJW1o
-	 ltxBZBcTCuRhGFrtdpHQBNQC6KPVKOMmooOEqKR2VTVQDxtVfoRSRYeOgMW7JT0M54
-	 krbyDUg7yXo2A==
-Subject: Re: [PATCH net 05/15] ipvs: reject FTP control ports as data ports
+	b=b5HuSM05eHq/yPW/eax2d8ltu4SvwSaM24GXEzsPhAbjEzpCQ4nXLFXDdjUV2Jg5s
+	 /hcN1XZBrdyFJFQU2/u10oQfcj/wDDLH5mCmwJ5njt9QCx8vxjV1MUPNAQjESeOEm3
+	 FggVW66uIPtQpuuUbDZQ8UnD9V7jxxz2wI8KUqebXtFYTsQCT7uHw61voBKR9jSJPw
+	 yanMxbdBELg5QbWzoTCM1fxJgsuxq+kWFNmKQrtl1TdeAmEYLLYVMb9AsiHSP2Nyju
+	 qPNRafGl7GCyL1HE0hlcetFazz54mXEH0GowSqGox+OLMc1AF7n6a0eY9VhnwS5n//
+	 jbrCKXnm/uFtg==
+Subject: Re: [PATCH net 07/15] ipvs: ftp: add seqadj extension before linking
+ the expectation
 From: netdev-bot+sashiko@kernel.org
 To: pablo@netfilter.org
 Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
  netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
  edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Date: Sat, 14 Nov 2026 02:15:42 +0000
-Message-ID: <179462254263.2199510.8837041620739510741@kernel.org>
-In-Reply-To: <20261113011447.2357709-6-pablo@netfilter.org>
-References: <20261113011447.2357709-6-pablo@netfilter.org>
-X-sashiko-severity: Medium
+Date: Sat, 14 Nov 2026 02:15:43 +0000
+Message-ID: <179462254370.2199510.3740508632458892922@kernel.org>
+In-Reply-To: <20261113011447.2357709-8-pablo@netfilter.org>
+References: <20261113011447.2357709-8-pablo@netfilter.org>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -66,7 +67,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -74,95 +75,122 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The two new rejection checks in ip_vs_ftp_in() and
-  ip_vs_ftp_out() return 0.
+- [High] The fix is incomplete.
 
 --
 
-ipvs: reject FTP control ports as data ports
+ipvs: ftp: add seqadj extension before linking the expectation
 
-This patch adds is_control_port() to the IPVS FTP helper and uses it to
-refuse a zero port, or a configured FTP control port, as a data port.
-ip_vs_ftp_out() refuses such ports in PASV/EPSV replies. ip_vs_ftp_in()
-refuses PORT/EPRT commands that carry a zero port, or where vport - 1 is
-a control port.
+This patch adds the seqadj extension to an unconfirmed conntrack in
+ip_vs_ftp_out() before the payload is mangled and before the expectation
+is linked. The goal is to keep ip_vs_update_conntrack() from reallocating
+ct->ext while the helper's expectation list still points into it.
 
 > diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-> index 9e3e005a82635..4822a1a75212d 100644
+> index 44de99f4d187f..81c3a2fd27b39 100644
 > --- a/net/netfilter/ipvs/ip_vs_ftp.c
 > +++ b/net/netfilter/ipvs/ip_vs_ftp.c
 
 [ ... ]
 
-> @@ -319,6 +330,10 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
->  		return 1;
->  	}
->  
-> +	/* Do not redirect data to control ports */
-> +	if (!port || is_control_port(ntohs(port)))
-> +		return 0;
-> +
->  	/* Now update or create a connection entry for it */
->  	{
->  		struct ip_vs_conn_param p;
-> @@ -529,6 +544,9 @@ static int ip_vs_ftp_in(struct ip_vs_app *app, struct ip_vs_conn *cp,
->  		return 1;
->  	}
->  
-> +	if (!port || is_control_port(ntohs(cp->vport) - 1))
-> +		return 0;
-> +
-
-[Severity: Medium]
-Does returning 0 here stall the whole FTP control connection, rather than
-only refusing the data connection?
-
-The pkt_in/pkt_out contract in include/net/ip_vs.h treats 0 as an error:
-
-    Return: 0=Error, 1=Payload Not Mangled/Mangled but checksum is ok,
-
-On the inbound side, tcp_dnat_handler() passes that result up:
-
-    if (!(ret = ip_vs_app_pkt_in(cp, skb, iph)))
-        return 0;
-
-ip_vs_nat_xmit() then takes the tx_error path and frees the skb. The
-segment that carries the PORT/EPRT command is dropped.
-
-cp->vport is fixed for the life of the connection, and ip_vs_ftp_in()
-keeps no state for this case. Every retransmission of that segment is
-parsed the same way and dropped again. Nothing after it in the TCP stream
-gets through until the client's TCP gives up (tcp_retries2).
-
-If vport - 1 is also in the ports module parameter (for example
-ports=2120,2121), would active mode hang for every client of that service?
-A client that sends PORT/EPRT with port 0 would hang its own session the
-same way.
-
-The check added to ip_vs_ftp_out() above behaves similarly. It returns 0
-while cp->app_data is still IP_VS_FTP_PASV or IP_VS_FTP_EPSV, and
-tcp_snat_handler() passes that up:
-
-    if (!(ret = ip_vs_app_pkt_out(cp, skb, iph)))
-        return 0;
-
-handle_response() then drops the 227/229 reply. The server retransmits
-it, the same port is parsed again, and the reply is dropped again.
-
-The existing ret = 0 path at the end of ip_vs_ftp_out() sets
-cp->app_data = IP_VS_FTP_ACTIVE before it returns, so it never re-parses
-the reply. The ip_vs_conn_new() failure return is transient, which fits
-the existing "hopefully it will succeed on the retransmitted packet"
-comment. The new checks reject the same input every time.
-
-Could ip_vs_ftp_in() return 1 here without creating the data connection,
-since nothing is mangled on that path anyway? And could ip_vs_ftp_out()
-set cp->app_data to IP_VS_FTP_ACTIVE before rejecting, so that only the
-data connection fails?
-
->  	/* Passive mode off */
->  	cp->app_data = (void *) IP_VS_FTP_ACTIVE;
+> @@ -384,19 +385,25 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
 >
+>  	ct = nf_ct_get(skb, &ctinfo);
+>  	if (ct && !nf_ct_is_template(ct)) {
+> -		bool mangled;
+> +		bool mangled = false;
+>
+>  		/* If mangling fails this function will return 0
+>  		 * which will cause the packet to be dropped.
+>  		 * Mangling can only fail under memory pressure,
+>  		 * hopefully it will succeed on the retransmitted
+>  		 * packet.
+> +		 *
+> +		 * Add the seqadj extension before the expectation is
+> +		 * linked into the helper extension: adding it later
+> +		 * reallocates ct->ext under the expectation list.
+>  		 */
+> -		mangled = nf_nat_mangle_tcp_packet(skb, ct, ctinfo,
+> -						   ipvsh->len,
+> -						   start - data,
+> -						   end - start,
+> -						   buf, buf_len);
+> +		if (nf_ct_is_confirmed(ct) || nfct_seqadj(ct) ||
+> +		    nfct_seqadj_ext_add(ct))
+> +			mangled = nf_nat_mangle_tcp_packet(skb, ct, ctinfo,
+> +							   ipvsh->len,
+> +							   start - data,
+> +							   end - start,
+> +							   buf, buf_len);
+>  		if (mangled) {
+>  			ip_vs_nfct_expect_related(skb, ct, n_cp,
+>  						  ipvsh->protocol, 0, 0);
+
+[Severity: High]
+Does this fully close the use-after-free? The expectation is still linked
+into nfct_help(ct)->expectations while ct is unconfirmed, and that list
+head lives inside ct->ext. Pre-adding seqadj only stops one later
+extension add from moving ct->ext.
+
+nf_ct_expect_insert() does:
+
+    hlist_add_head_rcu(&exp->lnode, &master_help->expectations);
+
+so exp->lnode.pprev now points into the current ct->ext block.
+
+Later hooks on the same packet can still grow ct->ext. One example is a
+MASQUERADE rule in POSTROUTING, which runs for this IP_CT_NEW conntrack
+after the IPVS out hook:
+
+  nf_nat_inet_fn()
+    nf_nat_masquerade_ipv4()
+      nf_ct_nat_ext_add()
+        nf_ct_ext_add(ct, NF_CT_EXT_NAT, GFP_ATOMIC)
+          krealloc(ct->ext, alloc, gfp)
+
+Here is one layout where this moves the block. With
+CONFIG_NF_CONNTRACK_TIMESTAMP=y and an ecache extension present
+(nf_conntrack_events=1), the extensions are header 16, ecache 32, help
+56 and seqadj 24. That adds up to exactly 128 bytes, which is the
+NF_CT_EXT_PREALLOC object size. Adding NAT gives a newlen of 132-136.
+__do_krealloc() then goes to alloc_new and the old block is freed.
+nf_conntrack_acct=1 gives the same arithmetic.
+
+After that, ext->help.expectations.first in the new block points to
+exp->lnode. But exp->lnode.pprev still points into the freed block. When
+the expectation or conntrack is removed, nf_ct_unlink_expect_report()
+calls:
+
+    hlist_del_rcu(&exp->lnode);
+
+This writes through the stale pprev, which looks like the same KASAN
+report quoted in the commit message. In this layout the seqadj add would
+not have moved the block even before the patch, so the patch does not
+help in this case.
+
+Other extension adds on an unconfirmed ct are also reachable later in
+the same traversal:
+
+  nft_ct_set_eval() with NFT_CT_EVENTMASK -> nf_ct_ecache_ext_add()
+  nft_ct_timeout_obj_eval() -> nf_ct_timeout_ext_add()
+
+The commit message says this is reachable with CAP_NET_ADMIN in a user
+namespace. That context can configure MASQUERADE, nft ct rules, the acct
+sysctl and ctnetlink listeners.
+
+Would it be better to not link the expectation while the conntrack's ext
+can still grow? Two options are deferring the link until confirmation,
+or making ct->ext stable first. Pre-adding one more extension does not
+seem to cover these other paths.
+
+None of the later patches in the series appear to touch ip_vs_ftp.c,
+ip_vs_nfct.c, nf_conntrack_extend.c, nf_nat_core.c, nf_nat_masquerade.c
+or nf_conntrack_expect.c.
+
+>  			if (skb->ip_summed == CHECKSUM_COMPLETE)
+>  				skb->ip_summed = CHECKSUM_UNNECESSARY;
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261113011447.2357709-2-pablo%40netfilter.org
