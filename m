@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794626243;
-	b=X4UdqlbFImpcfMPxcGHEXMoa7voLamTO+KTubUwxbF7tNP7IvDIBGllICHWpGbmRJ0T3
-	 bZsK3ytrSzETFJ7krhV1JGJlPcjdKRsezjGsKVUzIWnbsNe9PdOrjquPmmRpSe2aMRTzh
-	 Vd6AZejEOoXWpmwk/055XmQXlNUtJ+xRinlTk1px9v3dtFK3VoqBCU2b0CKbZdssap3CX
-	 P398bCM6N/CqaIHK4tgJ16QkWnCA3LKAiE2V4aIH53Y+B5CNfXL+8bs3IBKu1daA/c6ow
-	 33vexfbJj5sJT/ohKxwrDcoO4GUbr4uNIQjotJG399XYElNTkakUxWZ7gQi95WzUYlw==
+	t=1794626245;
+	b=3hHHxOB4vCH+9gKs/2UvBr8u8EsYT5WMpQplpEJc0LLRFhcKU/N6TJfytzUm1XQcrwSK
+	 oji8VE8GXRBQsJ3PY9XtKcNfvBUjwIffC7lztIttbgdyJAFf8zVQ7vO/H1IIGdgJnNQb7
+	 tGXqFzIwhFmN2JndxckZ2c+N9Wckft88RufP2nfdOQSDkPtzWNdFYFFmlMywcBFc/IrYI
+	 Y44in1/D9mM8Vsxpa5Ts13V5scVrXpyjNji3z+v1PoqIAEpnwHLLHaL5VKtkxJ2oJphJU
+	 CI7GIMVzGzvgdUvKJMa0kKTTyge2yJM+frmqLE0CFep5uW/6gfx8XcfComvt6eCQaXQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794626243;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794626245;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=OeguhAR6tr/+2Ritf0VsevI/Iplx6NkFE+EAgh0CL/Q=;
-	b=ymu5r2n0Jk+f9YB44kCnw4VDYpE/wtq9k+/e4qLlI2UtJB7VeFeXBF9DWaoQX5QQYNKt
-	 xaznhP9i4kGaeyAEnTNpl/lyVi8Tmfz9aW4pe7+6gddn/Bzogs6JjXg98aeyNx2XJrll3
-	 Y126SvhzvdncmUz0SDW0HNRkFEiFzuYNeGMpOJyqaFfzV75gkAFYXSHfjhoh0dzGK3Hv7
-	 ZTsKHEiPNlzKjF4L3yTo/6V2yodwcLGa0MdXQgnZ3feu4snH8h69JLjU9nEY6C12gwb0G
-	 FA3GMmfQ/bZ/vAyw+h4OypbafsYCxKW/uvqYR3LeC5pfi9cArHI5eBvGMxiDgBFakhA==
+	bh=UeUmQlHI016FWc2GtU+omrnUDG8yr9QFHyk54TJrDgM=;
+	b=1E0dhAu/PtEYlhhheXAnnWf4HsmP4DsSYVWtXfE6L6tbYhFyIFfUCXPIdl4zeTcwbrvD
+	 DJs+bh9+ekhXFv5vrpyeyg654Zy11czXklMm5Y1BrB6hTSmrQE9Bj55KgMKu7Gtk3r1KK
+	 p1YVEaVaw8SvUj26vHtBBvfoeQuY/VDTi520DODVe6qylY6EnUTsA6WSE6QBb20+IPif4
+	 z1KOhlEEgl8ojINiInHWt8A6tMUcUqL2pdPsByOW+g1nUwbGmXDpKLHhWjtiyb1vvZlPS
+	 ZXI/es/noGOHaKu8EWfXYKkP4q11IUGdZd2a6XIQuifjJVawCbGUW3Dx/xv34N8yEDQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d6IFN8Ly;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mpGArjdt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C7F606A323;
-	Sat, 14 Nov 2026 03:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4C5606A880;
+	Sat, 14 Nov 2026 03:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d6IFN8Ly
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BBF1F000C4;
-	Sat, 14 Nov 2026 03:17:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mpGArjdt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C841F000C4;
+	Sat, 14 Nov 2026 03:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794626243;
-	bh=OeguhAR6tr/+2Ritf0VsevI/Iplx6NkFE+EAgh0CL/Q=;
+	s=k20260515; t=1794626244;
+	bh=UeUmQlHI016FWc2GtU+omrnUDG8yr9QFHyk54TJrDgM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=d6IFN8LyYSyftJUR+YzfVzDFjth9SEfMAeWe82gouRlQI+tJ6knbBON3NrZgK53Dw
-	 cXkSi+82Cfkztn9jrK+jAvMAzr5dW5FRyN1d27SUv+GYZTckIX2ElxdBQ5c48tenm3
-	 SWrdjZuAvg3ntTuQ2Ac1IrsjHjCCJuMb0/RxiMzRHizp0oiGf1wDxppn1QyZqmS9uG
-	 +mIlzoKD1cKdTdzQEmZfC76stYXxaVwN7S6UZ61wlcywxp6paFnuR/q4WsYhZAyFXt
-	 RPnnK8d+CBpusvsyJDdk/x/RtWYH8ZEBcln7em2H584tBtVg953vU7Dljo2XhjV8/k
-	 eUTXpvN8/8tHw==
-Subject: Re: [PATCH v4 net 3/4] net: hns3: fix interface stuck after OOM with
- full hardware rx queue
+	b=mpGArjdtKnV/cOSeWxM8hccBn42b+WGWl8ZM8EJi+Rk7xv82LYXFCcUM1Pxmt5ZfE
+	 E5C8sLQ8cVa8B6PYe8eLjeb4bVLl4/9X7o/2YCbvFrcx5kIiwG8zeGeRT3Z4ZvrHcU
+	 HfbtwGdbB4GIrlDOqr6t9zBvHm2h8aPKob28ygnAjWXe/nG+mLs1KXKQP9Wg1b8Rl0
+	 3dVtV2AR9Cz15Oif0ygswJLou15J/+zYzUA1UpKKs7GOtL1Wuqj2t3k+ElOYS2Wuwf
+	 HLlJvi1YRGTvxKHAOqn1gRTrKXIXNHg6hI6TsbWDcap13iH7enq8S6ina9EsZcCrG+
+	 b0Poh6UXJxwOQ==
+Subject: Re: [PATCH v4 net 4/4] net: hns3: fix use-after-free in debugfs read
+ during reset/unload
 From: netdev-bot+sashiko@kernel.org
 To: shaojijie@huawei.com
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, andrew+netdev@lunn.ch, shenjian15@huawei.com,
  liuyonglong@huawei.com, chenhao418@huawei.com, yangshuaisong@h-partners.com,
  ningwei15@huawei.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sat, 14 Nov 2026 03:17:22 +0000
-Message-ID: <179462624232.2199510.16700149583019655532@kernel.org>
-In-Reply-To: <20261111125810.3359030-4-shaojijie@huawei.com>
-References: <20261111125810.3359030-4-shaojijie@huawei.com>
+Date: Sat, 14 Nov 2026 03:17:23 +0000
+Message-ID: <179462624369.2199510.9731791501410411401@kernel.org>
+In-Reply-To: <20261111125810.3359030-5-shaojijie@huawei.com>
+References: <20261111125810.3359030-5-shaojijie@huawei.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,10 +65,10 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -76,240 +76,200 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch adds a new private `ethtool -S` per-queue string,
-  "rx_oom_cnt", at hns3_rxq_stats[] in hns3_ethtool.c line 65.
-- [Medium] net: hns3: rx_ring_oom_bm freed before cancelling oom_task on
-  init error
-- [Low] In hns3_clean_rx_ring() (hns3_enet.c around lines 4499-4533), the
-  commit message says that because the exit refill is always attempted,…
-- [Low] When HNS3_NIC_STATE_DOWN is set, hns3_oom_task() clears
-  priv->rx_ring_oom_bm with the non-atomic bitmap_zero()…
+- [Medium] The patch serializes teardown against debugfs readers with
+  dbg_mutex, but the reset re-init path still hands the new resources to…
+- [Low] The patch changes debugfs behaviour in ways the commit message
+  does not describe.
+- [Low] hns3_set_ringparam() runs under RTNL (ethtool core) and now calls
+  mutex_lock(&h->dbg_mutex) without first telling in-flight debugfs…
 
 --
 
-net: hns3: fix interface stuck after OOM with full hardware rx queue
+net: hns3: fix use-after-free in debugfs read during reset/unload
 
-This patch adds a 250ms delayed_work that schedules NAPI again for RX
-rings that hit allocation failures. The interface can then recover after
-OOM even when the full hardware ring stops raising RX interrupts. It
-replaces the return-budget busy-poll recovery in hns3_clean_rx_ring() and
-adds a per-ring rx_oom_cnt ethtool counter.
+This patch adds a dbg_mutex to struct hnae3_handle. The enet-layer
+debugfs show callbacks take it, and so do the client uninit path, the
+reset uninit path and the ring reallocation in hns3_set_ringparam().
+The readers also re-check the INITED and RESETTING state bits on each
+iteration and return -EBUSY when the device is busy.
 
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> index dbf32c00bb7f3..90f0a8ac9295c 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+Closes: https://lore.kernel.org/all/a0853cd9-cab5-441d-b181-8ba97f2f58b0@huawei.com/
 
-[ ... ]
-
-> @@ -4451,6 +4454,35 @@ static int hns3_handle_rx_bd(struct hns3_enet_ring *ring)
->  	return 0;
->  }
+> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+> index 1347edac76993..a58ca42dbcd97 100644
+> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+> @@ -389,6 +389,12 @@ static const char * const dim_state_str[] = { "START", "IN_PROG", "APPLY" };
+>  static const char * const
+>  dim_tune_stat_str[] = { "ON_TOP", "TIRED", "RIGHT", "LEFT" };
 >  
-> +static void hns3_oom_task(struct work_struct *work)
+> +static bool hns3_dbg_is_device_busy(struct hns3_nic_priv *priv)
 > +{
-> +	struct hns3_nic_priv *priv = container_of(work, struct hns3_nic_priv,
-> +						  oom_task.work);
-> +	struct hnae3_handle *h = priv->ae_handle;
-> +	struct hns3_enet_ring *ring;
-> +	u16 i;
+> +	return !test_bit(HNS3_NIC_STATE_INITED, &priv->state) ||
+> +	       test_bit(HNS3_NIC_STATE_RESETTING, &priv->state);
+> +}
 > +
-> +	if (test_bit(HNS3_NIC_STATE_DOWN, &priv->state)) {
-> +		bitmap_zero(priv->rx_ring_oom_bm, h->kinfo.num_tqps);
 
 [Severity: Medium]
-The commit message says oom_task is cancelled in
-hns3_nic_uninit_vector_data(), which every teardown path reaches
-before the bitmap is freed. Does that hold on the init error unwind
-paths?
+dbg_mutex now serializes readers against the uninit writers. Is the
+re-init side of reset covered as well?
 
-hns3_client_init() calls hns3_nic_init_vector_data(), which does the
-INIT_DELAYED_WORK(), before hns3_init_all_ring(), which allocates
-rx_ring_oom_bm. The error unwind therefore runs in the opposite
-order:
+hns3_reset_notify_init_enet() reallocates priv->ring, priv->tqp_vector,
+priv->vector_num and ring->desc without taking dbg_mutex. It then
+publishes them with a plain bitop:
 
-    out_init_phy:
-        hns3_uninit_all_ring(priv);
-    out_init_ring:
-        hns3_nic_uninit_vector_data(priv);
+hns3_reset_notify_init_enet() {
+    ret = hns3_get_ring_config(priv);
+    ...
+    ret = hns3_nic_alloc_vector_data(priv);
+    ...
+    ret = hns3_init_all_ring(priv);
+    ...
+    set_bit(HNS3_NIC_STATE_INITED, &priv->state);
+}
 
-hns3_reset_notify_init_enet() is laid out the same way:
+Later, hns3_reset_notify_up_enet() does a plain
+clear_bit(HNS3_NIC_STATE_RESETTING, &priv->state).
 
-    err_init_irq_fail:
-        hns3_uninit_all_ring(priv);
-    err_uninit_vector:
-        hns3_nic_uninit_vector_data(priv);
+On the reader side, hns3_dbg_is_device_busy() uses plain test_bit().
+The callers then load priv->ring, priv->tqp_vector and ring->desc.
 
-On both paths hns3_uninit_all_ring() frees rx_ring_oom_bm and sets
-it to NULL before cancel_delayed_work_sync(&priv->oom_task) runs. If
-oom_task is pending or running at that point, hns3_oom_task() calls
-bitmap_zero() or test_and_clear_bit() on a freed or NULL pointer.
+The reader's mutex_lock() only pairs with the unlock in the uninit
+path. The init path never takes the mutex.
 
-Can the work be pending there? In hns3_client_init(),
-register_netdev() can open the device from a NETDEV_REGISTER
-notifier, for example net_failover_slave_register() calling
-netif_open(). An RX allocation failure in that window reaches
-hns3_oom_task_schedule() and queues oom_task. If
-register_netdevice() then fails, the device is closed through
-hns3_nic_net_stop(), which sets HNS3_NIC_STATE_DOWN but does not
-cancel the work. hns3_client_init() then unwinds from
-out_reg_netdev_fail through out_init_phy and frees the bitmap while
-the work can still fire.
+On a weakly ordered CPU such as arm64, can a reader see INITED set and
+RESETTING clear, but still load the post-uninit values of those
+pointers?
 
-The reset path looks harder to hit, but it has the same ordering, and
-both contradict the invariant the commit message relies on.
+If that happens, priv->ring would be NULL, because
+hns3_put_ring_config() clears it. This patch also removes the
+if (!priv->ring) checks from hns3_dbg_rx_queue_info() and
+hns3_dbg_tx_queue_info().
 
-This is a cold error path, but the result is a NULL dereference or a
-use-after-free write from the workqueue. Would it be better to cancel
-oom_task in hns3_uninit_all_ring() just before bitmap_free()? Or
-could the bitmap allocation and free move next to
-INIT_DELAYED_WORK() and the cancel in hns3_nic_init_vector_data()
-and hns3_nic_uninit_vector_data(), so the two are always torn down
-in the right order?
+priv->tqp_vector would be stale, because hns3_nic_dealloc_vector_data()
+frees it with devm_kfree() and never sets it to NULL. In that case
+hns3_dump_coal_info() would read freed memory.
 
-[Severity: Low]
-Is it safe to clear rx_ring_oom_bm with the non-atomic bitmap_zero() here?
-Every other writer uses atomic bitops: test_and_set_bit() in
-hns3_ring_set_oom_state() and test_and_clear_bit() below. bitmap_zero() is
-a plain store or a memset.
+The writer issues many full barriers before clear_bit(RESETTING), so
+this is hard to hit in practice.
 
-A writer can run while DOWN is set in at least two ways.
+Would either of these close the window?
 
-First, hns3_nic_net_stop() sets DOWN before hns3_nic_net_down() reaches
-napi_disable():
-
-    if (test_and_set_bit(HNS3_NIC_STATE_DOWN, &priv->state))
-        return 0;
-
-hns3_nic_common_poll() checks DOWN only on entry. A poll that is already
-running can still reach hns3_ring_set_oom_state() from hns3_add_frag() or
-from hns3_oom_task_schedule().
-
-Second, the ethtool loopback self-test calls hns3_clean_rx_ring() directly
-while DOWN is set:
-
-hns3_lb_check_rx_ring()
-    hns3_clean_rx_ring(ring, budget, hns3_lb_check_skb_data);
-
-Wouldn't KCSAN report this plain store racing with test_and_set_bit() on
-the same word?
-
-There is a separate problem: the test_bit(DOWN) check and bitmap_zero()
-are not atomic with respect to an ifup. Suppose the worker is preempted
-between them, the interface comes back up, and a NAPI poll sets a bit and
-queues the work again. The resumed worker then zeroes the new bit:
-
-hns3_oom_task()
-    test_bit(HNS3_NIC_STATE_DOWN) -> true
-    <preempted>
-                                    ifup clears DOWN
-                                    hns3_clean_rx_ring()
-                                      hns3_oom_task_schedule()
-                                        test_and_set_bit(queue_index)
-                                        schedule_delayed_work()
-    bitmap_zero()
-
-When the work runs again it finds no bits set and does not schedule NAPI
-for that ring.
-
-Could this lose the only recovery kick for the ring? The commit message
-calls both outcomes harmless, but it does not cover this case.
+  - set INITED under dbg_mutex in the init path
+  - use release/acquire bitops: smp_mb__before_atomic() before
+    set_bit(), and test_bit_acquire() in the reader
 
 [ ... ]
 
-> @@ -4490,10 +4525,12 @@ int hns3_clean_rx_ring(struct hns3_enet_ring *ring, int budget,
->  	 * FBD number with head pointer
->  	 */
->  	if (unused_count > 0)
-> -		failure = failure ||
-> -			  hns3_nic_alloc_rx_buffers(ring, unused_count);
-> +		failure |= hns3_nic_alloc_rx_buffers(ring, unused_count);
->  
-> -	return failure ? budget : recv_pkts;
-> +	if (unlikely(failure || hns3_ring_is_oom_state(ring)))
-> +		hns3_oom_task_schedule(ring);
+> @@ -779,6 +806,11 @@ static int hns3_dbg_dev_info(struct seq_file *s, void *data)
+>  static void hns3_dump_page_pool_info(struct hns3_enet_ring *ring,
+>  				     struct seq_file *s, u32 index)
+>  {
+> +	if (!ring->page_pool) {
+> +		seq_printf(s, "%-10u %s\n", index, "page pool not initialized");
+> +		return;
+> +	}
 > +
-> +	return recv_pkts;
+>  	seq_printf(s, "%-10u%-14u%-14d%-21u%-7u%-9d%uK\n",
+>  		   index,
+>  		   READ_ONCE(ring->page_pool->pages_state_hold_cnt),
+> @@ -796,28 +828,27 @@ static int hns3_dbg_page_pool_info(struct seq_file *s, void *data)
+>  	struct hns3_enet_ring *ring;
+>  	u32 i;
+>  
+> +	mutex_lock(&priv->ae_handle->dbg_mutex);
+>  	if (!priv->ring) {
+> -		dev_err(&h->pdev->dev, "priv->ring is NULL\n");
+> -		return -EFAULT;
+> -	}
+> -
+> -	if (!priv->ring[h->kinfo.num_tqps].page_pool) {
+> -		dev_err(&h->pdev->dev, "page pool is not initialized\n");
+> -		return -EFAULT;
+> +		mutex_unlock(&priv->ae_handle->dbg_mutex);
+> +		return -EBUSY;
+>  	}
 
 [Severity: Low]
-The commit message says:
+This changes the result of reading page_pool_info when page pools are
+not set up, which has nothing to do with reset. It applies when the
+module is loaded with page_pool_enabled=0, or when page_pool_create()
+fails in hns3_alloc_page_pool().
 
-    The exit refill is still attempted, so the descriptors cleaned
-    by this poll stay armed.
+Before this patch, the read failed with -EFAULT and logged "page pool
+is not initialized". Now it succeeds and prints one "page pool not
+initialized" row per queue.
 
-Is that accurate? The refill inside the loop in hns3_clean_rx_ring() is
-unchanged:
+The patch also changes some error codes:
 
-    if (unused_count >= RCB_NOF_ALLOC_RX_BUFF_ONCE) {
-        failure = failure ||
-            hns3_nic_alloc_rx_buffers(ring, unused_count);
-        unused_count = 0;
-    }
+  - the per-iteration error goes from -EPERM to -EBUSY in
+    hns3_dbg_rx_queue_info(), hns3_dbg_tx_queue_info() and
+    hns3_dbg_page_pool_info()
+  - the priv->ring == NULL error here goes from -EFAULT to -EBUSY
 
-After the first failure inside the loop, the || short-circuits. Even so,
-unused_count is still reset to 0 each time it reaches 16. The exit refill
-above therefore covers only what accumulated since the last reset, not
-every descriptor consumed in this poll.
+The commit message only says:
 
-Before this patch, returning budget forced an immediate repoll, which
-recomputed hns3_desc_unused(). Now recv_pkts is returned, so
-hns3_nic_common_poll() can complete NAPI while that deficit is still
-outstanding.
+    Userspace-visible change: debugfs reads under
+    /sys/kernel/debug/hns3/*/ that race with reset, driver unload, or
+    ethtool ring resize now return -EBUSY instead of potentially reading
+    freed or zero-filled memory.
 
-After a transient allocation failure, couldn't up to roughly a budget's
-worth of consumed descriptors stay unarmed until the next RX interrupt or
-the 250ms oom_task kick? That would include reuse_flag descriptors that
-need no allocation, and it would happen even if memory recovers right
-away.
+These changes are only explained in the v3/v4 changelog notes, which
+won't be part of the commit. Could the commit message mention them?
 
 [ ... ]
 
 > diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-> index 7b92a3c73ef6d..14642f81efe1a 100644
+> index 14642f81efe1a..7005d8b2d010b 100644
 > --- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
 > +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-> @@ -62,6 +62,7 @@ static const struct hns3_stats hns3_rxq_stats[] = {
->  	HNS3_TQP_STAT("non_reuse_pg", non_reuse_pg),
->  	HNS3_TQP_STAT("frag_alloc_err", frag_alloc_err),
->  	HNS3_TQP_STAT("frag_alloc", frag_alloc),
-> +	HNS3_TQP_STAT("rx_oom_cnt", rx_oom_cnt),
+> @@ -1252,6 +1252,7 @@ static int hns3_set_ringparam(struct net_device *ndev,
+>  	if (if_running)
+>  		ndev->netdev_ops->ndo_stop(ndev);
+>  
+> +	mutex_lock(&h->dbg_mutex);
+>  	hns3_change_all_ring_bd_num(priv, new_ringparam.tx_desc_num,
+>  				    new_ringparam.rx_desc_num);
+>  	hns3_change_rx_buf_len(ndev, new_ringparam.rx_buf_len);
 
-[Severity: Medium]
-Does this new ethtool -S string duplicate the standard per-queue
-rx-alloc-fail qstat (struct netdev_queue_stats_rx.alloc_fail)? The netdev
-netlink spec documents that counter as "Number of times skb or buffer
-allocation failed on the Rx datapath".
+[Severity: Low]
+hns3_set_ringparam() runs under RTNL. The only state change it makes
+before taking dbg_mutex is ndo_stop() -> hns3_nic_net_stop(), which
+sets HNS3_NIC_STATE_DOWN.
 
-Every increment of rx_oom_cnt comes from an RX allocation failure. Either
-napi_alloc_skb() fails in hns3_add_frag(), or hns3_oom_task_schedule()
-runs after hns3_handle_rx_bd() returns -ENOMEM or
-hns3_nic_alloc_rx_buffers() fails.
+hns3_dbg_is_device_busy() only checks INITED and RESETTING. A reader
+already inside a show callback therefore never gets -EBUSY on this
+path.
 
-The commit message says:
+For example, hns3_dbg_bd_info_show() -> hns3_dbg_tx_bd_info() walks all
+ring->desc_num entries, up to HNS3_RING_MAX_PENDING (32760), with one
+seq_printf() per descriptor. Meanwhile:
 
-    It counts OOM episodes rather than individual allocation failures,
-    so it is not the standard rx-alloc-fail counter.
+ethtool -G
+  rtnl_lock()
+  hns3_set_ringparam()
+    ndo_stop()                   /* sets DOWN only */
+    mutex_lock(&h->dbg_mutex)    /* waits for the whole dump */
 
-However, hns3_oom_task() clears each ring's bit every time it runs:
+Doesn't this hold RTNL for a full show() call, blocking every other
+RTNL user in the meantime?
 
-    if (test_and_clear_bit(i, priv->rx_ring_oom_bm)) {
+The per-iteration checks bound the reset path's wait, but not this
+writer's. The commit message covers readers that arrive during
+set_ringparam, which are blocked by the mutex. It doesn't cover readers
+already in flight.
 
-The next poll that fails sets the bit again and increments the counter in
-hns3_ring_set_oom_state():
+Would it help to set a state bit that hns3_dbg_is_device_busy() checks
+before set_ringparam takes dbg_mutex?
 
-    if (!test_and_set_bit(ring->queue_index, priv->rx_ring_oom_bm))
-        hns3_ring_stats_update(ring, rx_oom_cnt);
-
-Under a prolonged OOM, wouldn't rx_oom_cnt increase about once per 250ms
-per ring? That makes it a rate-limited count of allocation failures, not
-a count of episodes.
-
-hns3 does not implement netdev_stat_ops/get_queue_stats_rx yet. Could this
-be reported as alloc_fail through the standard qstats interface rather
-than as a private ethtool string?
-
-This patch also carries a Fixes: tag. Would it be better to leave the new
-user-visible counter out of the fix?
+> @@ -1270,6 +1271,7 @@ static int hns3_set_ringparam(struct net_device *ndev,
+>  		for (i = 0; i < h->kinfo.num_tqps * 2; i++)
+>  			hns3_fini_ring(&tmp_rings[i]);
+>  	}
+> +	mutex_unlock(&h->dbg_mutex);
+>  
+>  	kfree(tmp_rings);
+>
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261111125810.3359030-1-shaojijie%40huawei.com
