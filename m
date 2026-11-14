@@ -1,59 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794624123;
-	b=LPb49Q+wqwf2jocgCRxbjHdtiYspj7yEW1FFXOQ9PuB43MFMpw4HlU25nXuHJYuTi7x0
-	 1yjchNhqiasmrCZ1gloMxKGGPdVuUPZ24SwThFi1r/SIJSnEb2+xpjiuz9Ev820SVIwbI
-	 M8BMKf6nAgBGSR+Cp9rKNX/IcHGnWD737F7R4cHknztB36D7mt4iBG/KvTnY4l5VeOp0u
-	 doJga96MJjUgpls6frnCz6ppWXq+VdOP76iS/dPD/pKuUss4mtfVy7M/MlPlh05NGQzfi
-	 HLCPIHoSkfBBmVWR/S+8rzeCFt85UT7gVx0f/sx6EbX7D9OZ+mjxiRfuiUOm8ovwzeA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794624123;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=wAC+JdlNSh6ZSzeM4G6YrlNMLlUw7L1HmDhHG3TaP6A=;
-	b=GFfY1Ht/4H1BUOcW7rBbhthU4B/f73MFOq9JbJA0NWmBvYuUHMrzDrxGYwrnKZtXveVy
-	 AFaCn3ucYVBdIh7pv7dbFoHUQedIeB0HuRjQOjzouLsT/fYlK4CoEPCe/vTDjcDEYtFO2
-	 kKTXY1B9vxiHzAS0wJ2Uw9SR/8usi1Oks5xPqGE4Hh/JY9QaCGWmvAbPdY3ZNccsbkn4X
-	 Rp1a4vkU2HUPYa0CA0c2G5gbqeMB6uq17ZgnVGNwLiDz7SjdrvDCuFB2Zrc3mzK2BKA+8
-	 PgKwZL+eewOOC/ethrV5NCYdy+ZULb4w1P+1P0G/E4g6s8SNcoByftJwPfm5DuJDG7g==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="mu/Q+Gy+";
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.176
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794624487;
+	b=vRhTHfwVdjS0Rd7XyruZOlkoV+dGBWKLAX0ZJxWedyn5IvTW5CWSKWFNHDdCfzj9lQeg
+	 6abqsa++nmDdwRlth4wXDSAuSCZTCOGFRxxB5aaxCvtwB5zu6vQ1edAibq62Zvoq8fIak
+	 YpMWcLH235OEDAliSkOG88tqZnIP2W1UEFobXK2pnOA9bfdmQuhiA98iM+sSNssUDwMVX
+	 Y8a3mRVa6OqX5t+brq/NcYKIYv9cVJXqCNOnR2m6FeKNMANrQ7wPLg3t7H7R+C9B6X639
+	 jJ5hzYsY/lzaN5EUivkcmskcLnoJeLA/G7f7rBP+H27i85fQYzrOpQrtRmqwZ8N5GgQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794624487;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gm-Features:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=eALZf4jDPuuFCN4fJbBtQv0/lExBZLf7fNwf9X1G3mw=;
+	b=iWtIxj7Zv9T5x9dtU6cTyp8oi5uU1gKuHAqKo6ZAwCIGvkGtBSRXW2mSXdAjsZjdcohf
+	 g4mvrM5YTqzHnTb1XOoUBXXjlv8Iucg7mUVemQGp+BBkPN4duI2wNmREvyJ7K1AgO/RMk
+	 xmvcwqBKav2QTxUS9xTu4+2wh6uJxa+2oYfMI0CS2BldeJwJLy8Hnt+8C/89pAFVRUHO7
+	 oEaQopkvRbhEfjwWc5fPY4v3HR8FumEXtOzPb93jVnPtLmP4PJ7+5N9ENp26ulvuuLNIu
+	 I9o/SC14y6cwr5q+mJeLPFsxf5g9jYISN6F9as5CfsTlAF2YHAZTy6CXVuVonJ12yNg==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=A4FyeRk1;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.210.176
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC235606A330;
-	Sat, 14 Nov 2026 02:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DFF606A330
+	for <netdev@vger.kernel.org>; Sat, 14 Nov 2026 02:48:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 51DFF606A330
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mu/Q+Gy+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30BE1F000C4;
-	Sat, 14 Nov 2026 02:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794624123;
-	bh=wAC+JdlNSh6ZSzeM4G6YrlNMLlUw7L1HmDhHG3TaP6A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mu/Q+Gy+KUxU7r2a0mdyC0L6ZKirxmajY0ZhtMxXdzcz9jcKBEYfrG2yOK0+2IzSr
-	 a38P9tXzyF+mBryWgUMudnMjSfF9DC548DQCzmZY+dOsWUKOXz/WIESpb/pDqdn25H
-	 a+FqTEA/wWtKU55L2Gwy9+7qQWyeqgAhq76iOX2vQLjjfM+pdMySoBwCCFOt5Dr//f
-	 X7HMpaEQU6IEtw0azdyqutAZiZF+t1EoVjZMCC01xkchVh0mutsOnw3hjBI4Q0nQcW
-	 EpWVodcgQ+Bxt4qXraRX4vld6duQL7bwYde94bj+ei3GgoEdOMefUy79kAmK5b9n22
-	 1lTe/Sm2m7K2g==
-Date: Fri, 13 Nov 2026 18:42:02 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <andrew+netdev@lunn.ch>, <ast@kernel.org>,
- <daniel@iogearbox.net>, <davem@davemloft.net>, <edumazet@kernel.org>,
- <hawk@kernel.org>, <john.fastabend@gmail.com>, <pabeni@redhat.com>,
- <sdf@fomichev.me>, <sgoutham@marvell.com>, Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH v21 net-next 2/2] octeontx2: add mqprio bandwidth
- offload for NIX TX schedulers
-Message-ID: <20261113184202.678ed2f7@kernel.org>
-In-Reply-To: <20261109033154.2161803-3-rkannoth@marvell.com>
-References: <20261109033154.2161803-1-rkannoth@marvell.com>
-	<20261109033154.2161803-3-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=A4FyeRk1
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8a058315c79so1189194b3a.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 18:48:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794624487; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WrQxyuJuA+rTnx3OYzherPgnq8BZwqO3ejlYsHBnaNV8Qk7XZmn4LxzoVsv3+pdHus
+         9jWmli6XURKp6jq51sX5n4+RyeBLGZoh3M/OblTDq5QKl36rCAjzZ02I2W8P8LErG4B+
+         GiVbrNX9tt5xNzkRedu8TjBdJuOYA6gqZvBBz8tG8NqYy4Tj54sE9ADy1GemW/dF36bV
+         FZVyo8pB6lBC7047GZYWFDSK9vzoS1/5QJ2Kqu1OOHv1h+LkFV63bWqIaWIZfN8bTodV
+         iucZTmV0h480kkYhk1/sbBejYHJMqIzq89joBRy5rD2gJ5dfYoEGQezV+kQ7XdqlBvM8
+         ZGjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eALZf4jDPuuFCN4fJbBtQv0/lExBZLf7fNwf9X1G3mw=;
+        fh=W9tEeCzAnfmthGc5YEQTPOq2pz9k5BTpzjN5eVm6Yhw=;
+        b=gUt4+cD+2YZ5S+8RUZS5RtkhZcOZ52PcmriaA+YCRssDiW6G9Hb/zHVlh2/hpZYAxe
+         jNtkFBejBTwtMJ8RVvGxAxpbsIoeCJK0N7jESZxgpiGbSYO9e4Agm1XiusXiIjTQ8rjr
+         3QFGHAwHUoHJHcWPcIxRkyf0moeMIhq4KAx3jRmDtgMgRWryrzayJBXQsnMRdoNQsgIK
+         nomKh37zlpmUHS8hHDiLoQFKs47I4IcDVmM7xw09hDAuvSyho7EpqPdc11+XiknFNyJf
+         MJW7HSHpun3YimdZ366aZTQBGKiZJbOt7jQRPNDsoNfDZGMDY454u//N5sI0SbbLF5Xx
+         6m/Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794624487; x=1795229287; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eALZf4jDPuuFCN4fJbBtQv0/lExBZLf7fNwf9X1G3mw=;
+        b=A4FyeRk1XJ5lhp5+6l9ZBKBqUwvWOsBjbrCJLUbQu3jAbgp3KA8uyNP9pHrdpAYGiL
+         ClQpGQdJJv0C5mBcC7vU1bNi6pGxXQyhQxdbqaz6tpfYab7WuvqXLp7x+AYglubSPGnO
+         9Ph7vDuPVlRTSU3GlIAltSQRxMWr7X1I3sWjOwdugucoFiaDEQvM2ZfJklAR3h2u5Lh3
+         p0Y/PCrCqrJDHLchOYoGd+PC4TMiLrIIM9Up2g3BEljJMM/FJa4tH948Rt0wkUzEpnca
+         ntTkmQD7qIGBr8BsiqeT2jS2tRf7XH8DIEAvHD/dIjOMRQb2fLcDh+qvrIOCiC7k6ct2
+         25yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794624487; x=1795229287;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eALZf4jDPuuFCN4fJbBtQv0/lExBZLf7fNwf9X1G3mw=;
+        b=tjX+jBH45tdTaervb/R3AUDC3NEIz99ivylyQFJ+JDNXl0LCd5xNs8xeMsUrtre9z8
+         84vorqvfT28EbjZS+jXWz9WVKQpJqqfW1Hwp/ixH1m1cjKs8rXNNd2h4/IsorDlR5+W6
+         OlekyRaTSOyWDXOOw/uLy8zlxWZAowPN+b2U6pVtmVV8SiiVvHqnUEzkL1tEKuPqaGZV
+         U5NO2QngoUgExnX+0NIV6fVsUr6XlZ+HZyfgmtbEosEZ4AnaIiuXGqk+tQSPioJ3FrBq
+         sBCfpOQ7ebsyauBLisoSBK9pWjNLhLcP9Jc8MotVyl6NZe3m/s34f5oZvAs8f0UUEBmd
+         AFaw==
+X-Gm-Message-State: APuU4Z9htth5UAQlsQF2n3v2ebFVGWgvxXZN+/FUV2bcqZo4q6YCmTx3
+	ABMlp2+ugL6CnDVMaZHTFthFYR20+9HGH1p1rcK7rVy/BPJOVXu1KPzZ0D3+Bgxo0wHHdOMDREd
+	oJr8MLxC5ZYW9uELyjnK8Os2gZDyYJAA=
+X-Gm-Gg: AYBFou3FMgpP5w195bchSepvHpLyrJ4YD5pwsO+JEOT1ToxA7WLnTMODofspPCdsiRD
+	fsRW4EqWphlRK3/7H6isNX43lHNYMS/LjSJTOKovM5nKyuKkMSxaPTcJcGcwLkB/LXYFQdxl6Jk
+	dapX4crjzpDEI9qJOiIlWeSDcRLLNbS9T14F4Vcoj88d+f1sc3aV9R33z+q9svU9T8aZSRVOcYf
+	MRhOQazAQs3uuvUPCeUE4KSXsHYVVZo6VNcQlWSz6awJF5F/LHKo1RYAUhF6NbIyaYz/NvzMos0
+	VtyZLPbZxbVZlCqRmQTSZubf0MTyz9njOcTG5dAllu38liySBe/qEWCNH1uDjNfs6LbzQVHUTTO
+	jAuxtfDQs1d1Qo3yMLeRpAeXgZXRq1mI9hRs+q20d6ebN30dWnMfLoI5pUCh8frQyg6JztRtF7Y
+	ryU/d8O/wyPypn2CB9Xk14X+598u+JEgTsYWIid9uoc6FXW0H7/Vs=
+X-Received: by 2002:a17:90b:1d03:b0:3ab:c80:9365 with SMTP id
+ 98e67ed59e1d1-3b1b0b4cdf7mr3736445a91.42.1794624486524; Fri, 13 Nov 2026
+ 18:48:06 -0800 (PST)
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -63,208 +104,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20261109193048.1006986-1-maciej.fijalkowski@intel.com>
+ <20261111155748.11b92b7b@kernel.org> <DMSSYAEKE9XD.Q3C9CEHH7KTL@gmail.com>
+In-Reply-To: <DMSSYAEKE9XD.Q3C9CEHH7KTL@gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 13 Nov 2026 18:47:55 -0800
+X-Gm-Features: AclHuK_GHHLj0tkZe8WQWt60_PoP1RTBPF_tvkYqhr7jC6EW5BMLLyA_qSZQp1M
+Message-ID: <CAADnVQJtT=iXRh3OP=-6KdZnZJQQHs1V0KWNtZxYz-KRsMOY_w@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next 0/4] selftests: move the AF_XDP test suite
+ from bpf to net
+To: Jakub Kicinski <kuba@kernel.org>, Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>
+Cc: Network Development <netdev@vger.kernel.org>, "Karlsson, Magnus" <magnus.karlsson@intel.com>, 
+	Stanislav Fomichev <stfomichev@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Tushar Vyavahare <tushar.vyavahare@intel.com>, Jason Xing <kerneljasonxing@gmail.com>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	bpf <bpf@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 9 Nov 2026 09:01:53 +0530 Ratheesh Kannoth wrote:
-> Add TC_SETUP_QDISC_MQPRIO offload with TC_MQPRIO_SHAPER_BW_RATE on PF and
-> VF netdevs. Program per-queue MDQ CIR/PIR via the NIX TX scheduler mailbox;
-> when active, allocate one SMQ per non-QoS queue under TL4[0].
-> 
-> The TX scheduler cannot be reprogrammed live, so add/replace/delete and
-> failed setup bounce the netdev through ndo_stop()/ndo_open(). Cache rates
-> in software and restore them from otx2_mqprio_up() on open, failing closed
-> on error.
-> 
-> Stage tc replace in mq_offload_snap snapshots committed on TC_ROOT_GRAFT or
-> replaced-qdisc teardown.
-> 
-> Require a running interface with CIR+PIR support. Reject offload with PFC,
-> XDP, HTB, SDP representors, per-TC rates on multi-queue classes, and
-> ethtool channel changes while active.
-> 
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-> ---
->  .../marvell/octeontx2/nic/otx2_common.c       | 143 ++-
->  .../marvell/octeontx2/nic/otx2_common.h       |  34 +
->  .../marvell/octeontx2/nic/otx2_dcbnl.c        |   6 +
->  .../marvell/octeontx2/nic/otx2_ethtool.c      |   8 +
->  .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  34 +-
->  .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 936 ++++++++++++++++++
->  .../ethernet/marvell/octeontx2/nic/otx2_vf.c  |  28 +-
->  .../net/ethernet/marvell/octeontx2/nic/qos.c  |  11 +
->  8 files changed, 1179 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-> index f4047b0d5d96..b4a738cf9a8b 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-> @@ -615,6 +615,139 @@ void otx2_get_mac_from_af(struct net_device *netdev)
->  }
->  EXPORT_SYMBOL(otx2_get_mac_from_af);
->  
-> +static int
-> +otx2_nix_tmq_reg_write(struct otx2_nic *pfvf, int cnt,
-> +		       u64 reg_addr[MAX_REGS_PER_MBOX_MSG],
-> +		       u64 reg_val[MAX_REGS_PER_MBOX_MSG])
-> +{
-> +	struct mbox *mbox = &pfvf->mbox;
-> +	struct nix_txschq_config *req;
-> +	int i, err;
-> +
-> +	mutex_lock(&mbox->lock);
-> +	req = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
-> +	if (!req) {
-> +		mutex_unlock(&mbox->lock);
-> +		return -ENOMEM;
-> +	}
-> +
-> +	req->lvl = NIX_TXSCH_LVL_MDQ;
-> +	req->num_regs = cnt;
-> +
-> +	for (i = 0; i < cnt; i++) {
-> +		req->reg[i] = reg_addr[i];
-> +		req->regval[i] = reg_val[i];
-> +	}
-> +
-> +	err = otx2_sync_mbox_msg(mbox);
-> +	mutex_unlock(&mbox->lock);
-> +
-> +	return err;
-> +}
-> +
-> +int otx2_nix_tm_clear_queue_shaper(struct otx2_nic *pfvf)
-> +{
-> +	u64 reg_addr[MAX_REGS_PER_MBOX_MSG];
-> +	u64 reg_val[MAX_REGS_PER_MBOX_MSG];
-> +	int err, smq, i, cnt = 0;
-> +
-> +	for (i = 0; i < pfvf->hw.txschq_cnt[NIX_TXSCH_LVL_SMQ]; i++) {
-> +		smq = pfvf->hw.txschq_list[NIX_TXSCH_LVL_SMQ][i];
-> +
-> +		reg_addr[cnt] = NIX_AF_MDQX_PIR(smq);
-> +		reg_val[cnt] = 0;
-> +		cnt++;
-> +
-> +		reg_addr[cnt] = NIX_AF_MDQX_CIR(smq);
-> +		reg_val[cnt] = 0;
-> +		cnt++;
-> +
-> +		if (cnt < MAX_REGS_PER_MBOX_MSG - 1)
-> +			continue;
-> +
-> +		err = otx2_nix_tmq_reg_write(pfvf, cnt,
-> +					     reg_addr, reg_val);
-> +		if (err)
-> +			goto fail;
-> +		cnt = 0;
-> +	}
-> +
-> +	if (cnt) {
-> +		err = otx2_nix_tmq_reg_write(pfvf, cnt,
-> +					     reg_addr, reg_val);
-> +		if (err)
-> +			goto fail;
-> +	}
-> +
-> +	return 0;
-> +fail:
-> +	return err;
+On Wed, Nov 11, 2026 at 4:23=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+>
+> On Wed, Nov 11, 2026 at 03:57 PM Jakub Kicinski <kuba@kernel.org> wrote:
+> > BPF folks, I made a tag for both of us to merge / pull to avoid
+> > Makefile conflicts in selftests, the original series is here:
+> > https://lore.kernel.org/all/20261109193048.1006986-1-maciej.fijalkowski=
+@intel.com/
+> > PR text follows. Please LMK if / how you'd like to proceed.
+>
+> Take it into net-next.
+> We don't need to take them into bpf-nex atm.
+> There are no conflicts today and we don't plan to touch those files or ne=
+arby.
+> If selftests/bpf/Makefile conflicts it should be easy to resolve,
+> if not we'll pull later.
 
-just return err; why the label ?
+"we'll pull later" ... is now.
+pulled into bpf-next too.
+Just to avoid thinking about possible conflicts.
 
-
-> +struct mq_offload_snap {
-> +	u64 min_rate[TC_QOPT_MAX_QUEUE];
-> +	u64 max_rate[TC_QOPT_MAX_QUEUE];
-> +	u32 flags;
-> +	__u8 num_tc;
-> +	__u16 count[TC_QOPT_MAX_QUEUE];
-> +	__u16 offset[TC_QOPT_MAX_QUEUE];
-> +	__u8 prio_tc_map[TC_QOPT_BITMASK + 1];
-
-Why is this using __u types?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-> index 4fe473d9ea0d..5428b3d1b332 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-> @@ -287,6 +287,14 @@ static int otx2_set_channels(struct net_device *dev,
->  		return -EINVAL;
->  	}
->  
-> +	if (pfvf->mqprio.rate_limit &&
-> +	    (channel->tx_count != pfvf->hw.tx_queues ||
-> +	     channel->rx_count != pfvf->hw.rx_queues)) {
-> +		netdev_info(dev,
-> +			    "Not permitted to change channel count while MQ prio is active\n");
-
-Why? This seems quite limiting.
-User has to remove the root qdisc to change the queue count?
-
-> +		return -EINVAL;
-> +	}
-> +
->  	if (if_up)
->  		dev->netdev_ops->ndo_stop(dev);
-
-> +	if (prog && pf->mqprio.rate_limit) {
-> +		netdev_err(dev,
-> +			   "XDP: cannot attach while mqprio bandwidth offload is active\n");
-
-Again - why?
-
-> +		return -EOPNOTSUPP;
-> +	}
-> +
->  	if (prog && dev->mtu > MAX_XDP_MTU) {
->  		netdev_warn(dev, "Jumbo frames not yet supported with XDP\n");
->  		return -EOPNOTSUPP;
-
-> +static void otx2_mqprio_free_cache(struct otx2_nic *pfvf)
-> +{
-> +	devm_kfree(pfvf->dev, pfvf->mqprio.min_rate);
-> +	devm_kfree(pfvf->dev, pfvf->mqprio.max_rate);
-
-devm_kfree() is a red flag, either this is something tied to the
-lifetime of the driver, or you need to clean this up. Saying that
-something "doesn't leak because it was devm_kmalloc()ed" is invalid.
-Drivers don't get re-probed in real life, memory parked in devm_ is 
-as bad as leaked.
-
-> +static int otx2_mqprio_restart_netdev(struct net_device *netdev, bool rate_limit)
-> +{
-> +	struct otx2_nic *pfvf = netdev_priv(netdev);
-> +	const struct net_device_ops *ops = netdev->netdev_ops;
-> +	bool running = netif_running(netdev);
-> +	int err;
-> +
-> +	/* TODO: Explore live TX scheduler reprogramming to avoid a full
-> +	 * ndo_stop()/ndo_open() bounce on every mqprio change.
-> +	 */
-> +	netdev_dbg(netdev,
-> +		   "mqprio: restarting interface to reprogram TX scheduler\n");
-> +
-> +	if (running) {
-> +		clear_bit(__LINK_STATE_START, &netdev->state);
-
-Messing with internal netdev state like this from the driver is
-obviously unacceptable.
-
-> +		smp_mb__after_atomic(); /* Commit netif_running(). */
-> +	}
-
-> +	/* TODO: per-TC TL4 shapers or equal per-queue MDQ split for multi-queue TC rates. */
-> +	netdev_err(netdev,
-> +		   "mqprio: %s rate for tc %d not supported with %u queues\n",
-> +		   name, tc, qcount);
-> +	NL_SET_ERR_MSG_FMT_MOD(extack,
-> +			       "mqprio: tc %d rate needs 1 queue (has %u)",
-> +			       tc, qcount);
-
-Doubling out output to extack and dmesg is not okay, user space should
-look at the extack. And a decade after it was added it mostly does.
-
-You are at v21 this is nowhere near the acceptable quality. You should
-probably give up.
+Thanks!
