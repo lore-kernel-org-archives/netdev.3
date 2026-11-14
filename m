@@ -1,74 +1,74 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794628871;
-	b=hp7iD59DItXkc8TiaYXjGj2ZAwVMKLZkX9g1/t23EHeoimahWNCCHLQi1TevsOEowZmp
-	 ksat2jsuKarauw26eT/uHVmbT8weLVJRVQf5pYZjp/EFeNyRU4XW2IVnpyB9OTh1s/60q
-	 +nFqtN+wuPVNBh4+6g6mRP+MyQ5T3L45P2KSey5hLCWGW1nP82/9d7QORv+tYR/e9gxfX
-	 6gpVOOPUGAovBI+nfAiXRmRBo+CSGkaSAGmfZY6J+kbor9UgrZX8nwIttkwS4k0E/HLZ1
-	 tmjudLcQCx1GwLEW9H1BH5mz7Zb/WBmzKox05bzw1pnk0t4XU511UjD47OnX1HzcsgQ==
+	t=1794628868;
+	b=1flUSngfT6zPJUsrq9bDoeQYE7bbJotDpC3I7NsE6m1AoZQ793toxgAPJ81h1ZRbCQ/6
+	 pcDaxa8NVcL/F4gHP/TLAnteRypn26ly0cbAXpq3tcMwPmDvknmtNbVErkdV8B1ZajXfJ
+	 wmvCVB7IKXu2HZQzilB7pSkbPZQJz4VcHCSfLBj+uaocco140iAo2JQUreIO38qbFVAYD
+	 jRndyZqMUyNPXChRBQXSl9/W1JQ5Ru8Uuj2eEqX+HEI/i9OOlzccYwaR9huB2CDh/1oSt
+	 ByqxIBBbAJa7sjwhFXSSs+NydZhZVDonB2rSeoPhVl6LA+wF7YHxRmTG0YVrIYinElg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794628871;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794628868;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=OEFLWV/jNzEhHP9ltrmzYG75eB3RgpJ5WuUSRLn3T7E=;
-	b=gFeMUMVkwiSwq4adVsD+1j69PyxPKuBPG2QPjUtfjZck2b+aK0xPaq3NiKcYHdIxeOQh
-	 sZjP5tVywnMhPA4Kmkh9nuZCchTpnU0VWGQW4MVfSNPg4SBpVXN9q8qxrs+1oYrf78PYt
-	 C6FRRRP7awXHIsvjjoASKCkH6sk6qWG+Vig2QBPaaqhIw6lJaz7fKg3kupfw9cf5443ES
-	 paCIy81p2jPd0J6Eqb/AgHZVSqm+RPBEw8VjEHBUry8RIujKzONLUxKb8O734J6VLaZJC
-	 6wMBAQk5dS4SFS+qAYcxCyhYO9qZJOUrMwFcot2lWfi2T1Aq+qiyoPfBKljzj2VUGYw==
+	bh=BN9IctddKIieganRx1MQ7ZF4ilx8imwl4pBmCAWf8gQ=;
+	b=HReJPVpd96Iu1eUG3R6soy6pKSxBaMof2Z7F5MYdW2aKdc4mwGzl7rqvGX1jmRkrinan
+	 2z0LtQdwj1uwJCGwVCBVKJQde5QgEeSDIEMdg+NS7kL2y9t0cSBju7cECVa0BUrjlBzEh
+	 fszm8l/kl0bC2+lRSe8NEvmJBAhkWUAxn3IyjzlCeQfeRHLPWE0rxMKvvcH/RZMvrBgXv
+	 gA4aYNGH0/i65F1cNnX3Twbk/YE+UI3rSBo/7EVB8dXpc9AZzawTCUvLAFTHVBeqDaTJA
+	 hEe7p+9KXLz2yE+kQbvQ0nZFLfQjNiT2p3XC1rRutwJJWi7NCDxvYiBjYF22ysln+sA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=G8uL1wb4;
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZVqZDssz;
 	arc=none smtp.remote-ip=209.85.210.199
 Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41D5606A8B4
-	for <netdev@vger.kernel.org>; Sat, 14 Nov 2026 04:01:10 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C41D5606A8B4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BEB606A894
+	for <netdev@vger.kernel.org>; Sat, 14 Nov 2026 04:01:07 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 61BEB606A894
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=G8uL1wb4
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8b647bbf8a9so1970302b3a.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:01:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ZVqZDssz
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8b32efd7ec4so1650915b3a.3
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:01:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794628870; x=1795233670; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794628867; x=1795233667; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OEFLWV/jNzEhHP9ltrmzYG75eB3RgpJ5WuUSRLn3T7E=;
-        b=G8uL1wb4Lz4MJvzrzwKe5jZ6/FKTKCEOy+sv/uNaoATOflWuR0FS4dsWxc8MMilJ+k
-         kmnzVKKQAZ8KGtCbjEi80TlKWvvndaiRGKXAuClpNggh8tCblUh7GDDsUiSGpwf5X2Hf
-         O8bUmgjO3s/m7Nm8EF/jpjOh1oF452UjDCWuEPa8AKIyr/iIo+KpfOFTKme+soVkOfa3
-         yy3BRUpPD6aAZs4HkxM+/Hm6rqWiqSzmYbWeA7L4MuZMaHlJQUytAgYIvyY/y18ll7Ui
-         ANeRh7FXqysVlRv5KKjWiPtfnWCMLhxe+QCESaHVH6Xnydwzc3jQF2d5Sde2Z69NMknr
-         E2kw==
+        bh=BN9IctddKIieganRx1MQ7ZF4ilx8imwl4pBmCAWf8gQ=;
+        b=ZVqZDsszswdx+mO81JtkmxbulOlpLsSUBmQcYxCI9SsV3h+aUbdTik5o/oWWEfKgc1
+         nBQ8oLchTg1TE6yVFVwfNX/jhr8ckGVwxiCHtMMfVa5TSz6qMSwFsdByTaq5NeyoY1+t
+         ffUZ71Sjnz/m0KaVqwuRmDsXt6tq8JbfJuIRAbQ3r6F8jKDJDtEXJr+UqdfpFVXNXLkZ
+         BkmbPfPl37JnepHi+g27BDKMH5a3Xu/wvXsILvwqlohycKjEAWq/GE0PV3dBl9RF/rb0
+         V/Hg4xF2MF+tY6O1xYBaqvQrGDN5n/yQ1kIvtO+vA/Vq/PBo7dLF4wbD+lRvK5wYCZMJ
+         fv5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794628870; x=1795233670;
+        d=1e100.net; s=20260707; t=1794628867; x=1795233667;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OEFLWV/jNzEhHP9ltrmzYG75eB3RgpJ5WuUSRLn3T7E=;
-        b=EOwyYSlEy9mmHo2wDM7H9e/za3EProWfFvLPvPerYdU3ZBe6gnQcHR9crxpuivHQho
-         8DEbq0zk3S2dGymJqEoa1l9DlnGn+YHEkw+8pURCy7DKp7o3eBHsBlSESMV9lYzl81tJ
-         A39tN1T4BFxP3HQMLsc5e0PsJB4PmoBdZuM4e0abwtsbh+UgvXvCuiLQ5lBya45PtJ+W
-         8VUeax8OLQYErMFixMF4jdEGspDfRbK/YC1JVUoCQJIqQl0NkgJYhirFw9ne+Asggt1S
-         zuGCEV/N9pTelmR8K0kwY7C2Rfxum4Kf3NOSKkJ3lM0BeaL67Oio/a/dT8RdqwVagpg+
-         5Krw==
-X-Forwarded-Encrypted: i=1; AL+hErHm5DkOigBJdnsnZLW3mSKs9reVuqnWnl1Y/rSkw2hUindzMBq3YPtNRPqG3NNNPEDZsL/QZIc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/ERD+hBrUa3wxMUmAz5KWDYsc9kosDycXTXIMcDL+owNMmBDAK
-	E8/HoKgF1WF5apFl9V2kHskneRTrKhCiLMrx6mQ5xGmBpza0oUZciM3CoiSy+uYbjJhtishP7bS
-	ZZqh9Cg==
-X-Received: from pfdu2-n2.prod.google.com ([2002:a05:6a00:c002:20b0:88e:f55:207e])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a212:b0:89f:3053:9ac1
- with SMTP id d2e1a72fcca58-8beb609d4c6mr4450606b3a.17.1794628869683; Fri, 13
- Nov 2026 20:01:09 -0800 (PST)
-Date: Sat, 14 Nov 2026 04:00:51 +0000
+        bh=BN9IctddKIieganRx1MQ7ZF4ilx8imwl4pBmCAWf8gQ=;
+        b=s9WQqZmcT+FjuqMRpLFv4h9U+P0au1z4d+p5AlnCw0LcJyr49e8Pu8kiwqr+r8CAcP
+         o0iEWKxCXoAHuReO8IaBWKzA8niCZvcSp6UDRU5ixEkLq6lJxf1nkSMoRyNE9A68JVWj
+         wDqqeGI3hXCWZ6GCsQE53oa5Ixkg8i/WHtdMCHREGlgJELZwTTGeVJ9m/XHK/FPPxado
+         UYXbtzV9bvcz7/qO/PkzeVG1YQyfh235ayQ0NmQY861F7IiWOnAgr7z0mG75SGTg8Zhv
+         VVSol7wra1Sis9qB38icEE0CTJzbiCpGGx0a1Df1OAxlu1/AAIVc72NoS1e2YjWEslfx
+         F8xw==
+X-Forwarded-Encrypted: i=1; AL+hErG+wKEmUQaI0kVXOTU63sWY3mjCxU6ymvyZ39dTbuYUm7JhoF4AKnvZWqVuR4w3L4NNCFo7viQ=@vger.kernel.org
+X-Gm-Message-State: APuU4Z9axXz8ROW2iQyPmr5Od1eUQJBsygu8r4+jmFU3CkK9+ncqrM9u
+	onlsSUBXHrNpy7gdaEbobvLBIrC3epndhjA1qARBTdRiItPFfkw3d++PG1vMkMHHCm2LtDk3n8a
+	XdJ5FOg==
+X-Received: from pfdc23.prod.google.com ([2002:aa7:8c17:0:b0:89d:3267:4348])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:22c6:b0:898:9b2:605b
+ with SMTP id d2e1a72fcca58-8beb7b1affamr4542982b3a.56.1794628866461; Fri, 13
+ Nov 2026 20:01:06 -0800 (PST)
+Date: Sat, 14 Nov 2026 04:00:47 +0000
 In-Reply-To: <20261114040101.1043546-1-kuniyu@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261114040101.1043546-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
-Message-ID: <20261114040101.1043546-9-kuniyu@google.com>
-Subject: [PATCH v1 net-next 8/8] selftest: packetdrill: Add test for tcp_collapse().
+Message-ID: <20261114040101.1043546-5-kuniyu@google.com>
+Subject: [PATCH v1 net-next 4/8] net: Move SKB_SMALL_HEAD_CACHE_SIZE to skbuff.h.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
 	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -90,204 +90,99 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-tcp_collapse() now does not collapse high-density skbs and a
-low-density skb sandwitched by hihg-density skbs.
+The next patch needs SKB_SMALL_HEAD_CACHE_SIZE to precalculate
+skb truesize for tcp_collapse().
 
-tcp_collapse.pkt verifies the behaviour by
-
-1. set a large SO_RCVBUF
-2. send one high-density skb with 100 bytes read()
-3. send one high-density skb
-4. send one low-density skb
-5. send one high-density skb
-6. send 30 low-density skbs
-7. set a small SO_RCVBUF
-8. send a small data to trigger tcp_collapse()
-9. check TcpExtTCPRcvCollapsed via nstat
-
-Without the series, the first high-density skb is collapsed.
-In addition, the first low-density skb drags the following
-high-density skb into collapsing, consuming more memory.
-
-If we remove sk_forced_mem_schedule() without this series,
-sk->sk_forwad_alloc becomes negative at the end of tcp_collapse().
-
-Note that 30 segments are to make the memory savings large
-enough so that the margin can absorb minor size delta of
-struct sk_buff or L1_CACHE_BYTES across configs.
-
-skb truesize, TCP_COLLAPSE_MAX_SIZE, TCP_COLLAPSE_SCALING_RATIO
-depend on PAGE_SIZE being 4K, so the test is skipped if getconf
-returns non-4K PAGE_SIZE.
+Let's move SKB_SMALL_HEAD_CACHE_SIZE and its dependencies to
+skbuff.h.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- .../selftests/net/packetdrill/ksft_runner.sh  |   9 ++
- .../net/packetdrill/tcp_collapse.pkt          | 135 ++++++++++++++++++
- 2 files changed, 144 insertions(+)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_collapse.pkt
+ include/linux/skbuff.h | 18 ++++++++++++++++++
+ include/net/gro.h      |  3 ---
+ include/net/tcp.h      |  1 -
+ net/core/skbuff.c      | 13 -------------
+ 4 files changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/tools/testing/selftests/net/packetdrill/ksft_runner.sh b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-index 0a97d5ae3469..250d143bb9f7 100755
---- a/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-+++ b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
-@@ -44,6 +44,15 @@ if [ -z "$(which packetdrill)" ]; then
- 	exit "$KSFT_SKIP"
- fi
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 1d6832878930..d36fbb88b3f6 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -269,6 +269,24 @@
+ #define SKB_MAX_HEAD(X)		(SKB_MAX_ORDER((X), 0))
+ #define SKB_MAX_ALLOC		(SKB_MAX_ORDER(0, 2))
  
-+page_size=$(grep -E '^--define="?PAGE_SIZE=' $script | sed -E 's/.*PAGE_SIZE="?([0-9]+)"?.*/\1/')
-+if [[ -n "$page_size" ]]; then
-+	cur_page_size=$(getconf PAGESIZE 2>/dev/null)
-+	if [[ "$cur_page_size" != "$page_size" ]]; then
-+		ktap_skip_all "requires PAGE_SIZE=$page_size (current: ${cur_page_size:-unknown})"
-+		exit "$KSFT_SKIP"
-+	fi
-+fi
++#define MAX_TCP_HEADER	L1_CACHE_ALIGN(128 + MAX_HEADER)
 +
- declare -a optargs
- failfunc=ktap_test_fail
++/* This should be increased if a protocol with a bigger head is added. */
++#define GRO_MAX_HEAD (MAX_HEADER + 128)
++#define GRO_MAX_HEAD_PAD (GRO_MAX_HEAD + NET_SKB_PAD + NET_IP_ALIGN)
++
++#define SKB_SMALL_HEAD_SIZE SKB_HEAD_ALIGN(max(MAX_TCP_HEADER,		\
++					       GRO_MAX_HEAD_PAD))
++
++/* SKB_SMALL_HEAD_CACHE_SIZE is the size used for the skbuff_small_head
++ * kmem_cache. The non-power-of-2 padding is kept for historical reasons and
++ * to avoid potential collisions with generic kmalloc bucket sizes.
++ */
++#define SKB_SMALL_HEAD_CACHE_SIZE			\
++	(is_power_of_2(SKB_SMALL_HEAD_SIZE) ?		\
++	 (SKB_SMALL_HEAD_SIZE + L1_CACHE_BYTES) :	\
++	 SKB_SMALL_HEAD_SIZE)
++
+ /* return minimum truesize of one skb containing X bytes of data */
+ #define SKB_TRUESIZE(X) ((X) +						\
+ 			 SKB_DATA_ALIGN(sizeof(struct sk_buff)) +	\
+diff --git a/include/net/gro.h b/include/net/gro.h
+index 7a19d4486456..4eb755c33a26 100644
+--- a/include/net/gro.h
++++ b/include/net/gro.h
+@@ -11,9 +11,6 @@
+ #include <net/udp.h>
+ #include <net/hotdata.h>
  
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_collapse.pkt b/tools/testing/selftests/net/packetdrill/tcp_collapse.pkt
-new file mode 100644
-index 000000000000..90e8be86968f
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_collapse.pkt
-@@ -0,0 +1,135 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+// Test that tcp_collapse() only collapses bloated skb runs, skips leading
-+// and trailing high-density skbs, skips isolated bloated skbs when collapsing
-+// them would not shrink truesize, and properly recovers receive buffer space.
-+
-+--mss=1000
-+--define="PAGE_SIZE=4096"
-+
-+`./defaults.sh`
-+
-+// Establish a connection with a large receive buffer.
-+// __sock_set_rcvbuf() doubles, so 2000000
-+   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 setsockopt(3, SOL_SOCKET, SO_RCVBUF, [1000000], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 32792 <mss 1000,nop,nop,sackOK,nop,wscale 7>
-+   +0 > S. 0:0(0) ack 1 win 65535 <mss 1460,nop,nop,sackOK,nop,wscale 4>
-+   +0 < . 1:1(0) ack 1 win 65535
-+
-+   +0 accept(3, ..., ...) = 4
-+
-+// 1. Queue two high-density 62,000 B segments (each adds 15 pages of frag
-+// truesize with enough margin across NET_SKB_PAD, L1_CACHE_BYTES, and
-+// MAX_SKB_FRAGS configs).
-+// Read 100 bytes from the first one so before(skb->seq, tp->copied_seq) is true.
-+   +0 < P. 1:62001(62000) ack 1 win 65535
-+    * > .  1:1(0) ack 62001
-+   +0 read(4, ..., 100) = 100
-+
-+   +0 < P. 62001:124001(62000) ack 1 win 65535
-+    * > .  1:1(0) ack 124001
-+
-+// 2. Queue an isolated bloated 1,000 B segment.
-+   +0 < P. 124001:125001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 125001
-+
-+// 3. Queue another high-density 62,000 B segment.
-+   +0 < P. 125001:187001(62000) ack 1 win 65535
-+    * > .  1:1(0) ack 187001
-+
-+// 4. Queue a run of 30 bloated 1,000 B segments.
-+   +0 < P. 187001:188001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 188001
-+   +0 < P. 188001:189001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 189001
-+   +0 < P. 189001:190001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 190001
-+   +0 < P. 190001:191001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 191001
-+   +0 < P. 191001:192001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 192001
-+   +0 < P. 192001:193001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 193001
-+   +0 < P. 193001:194001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 194001
-+   +0 < P. 194001:195001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 195001
-+   +0 < P. 195001:196001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 196001
-+   +0 < P. 196001:197001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 197001
-+   +0 < P. 197001:198001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 198001
-+   +0 < P. 198001:199001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 199001
-+   +0 < P. 199001:200001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 200001
-+   +0 < P. 200001:201001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 201001
-+   +0 < P. 201001:202001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 202001
-+   +0 < P. 202001:203001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 203001
-+   +0 < P. 203001:204001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 204001
-+   +0 < P. 204001:205001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 205001
-+   +0 < P. 205001:206001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 206001
-+   +0 < P. 206001:207001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 207001
-+   +0 < P. 207001:208001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 208001
-+   +0 < P. 208001:209001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 209001
-+   +0 < P. 209001:210001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 210001
-+   +0 < P. 210001:211001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 211001
-+   +0 < P. 211001:212001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 212001
-+   +0 < P. 212001:213001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 213001
-+   +0 < P. 213001:214001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 214001
-+   +0 < P. 214001:215001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 215001
-+   +0 < P. 215001:216001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 216001
-+   +0 < P. 216001:217001(1000) ack 1 win 65535
-+    * > .  1:1(0) ack 217001
-+
-+// 5. Queue a trailing high-density 62,000 B segment.
-+   +0 < P. 217001:279001(62000) ack 1 win 65535
-+    * > .  1:1(0) ack 279001
-+
-+// Reset SNMP counters.
-+   +0 `nstat -n`
-+
-+// Shrink SO_RCVBUF so sk_rcvbuf (320,000) is smaller than current
-+// sk_rmem_alloc (334,592 on x86_64 default), but larger than sk_rmem_alloc
-+// after collapsing the 30 bloated skbs (300,288 on x86_64 default).
-+   +0 setsockopt(4, SOL_SOCKET, SO_RCVBUF, [160000], 4) = 0
-+
-+// Inject the next 1,000 B segment with a changed window to bypass
-+// header prediction.  This triggers tcp_prune_queue() -> tcp_collapse().
-+// Only the 30 bloated segments should be collapsed; the high-density
-+// segments and the isolated bloated segment are skipped.  sk_rmem_alloc
-+// shrinks below sk_rcvbuf, so tcp_can_ingest() succeeds and the packet
-+// is accepted.
-+   +0 < P. 279001:280001(1000) ack 1 win 65534
-+    * > .  1:1(0) ack 280001
-+
-+// Verify exactly 30 skbs were collapsed.
-+   +0 `nstat -s | grep TcpExtTCPRcvCollapsed | grep -q " 30 "`
-+
-+// Verify no packets were dropped.
-+   +0 `test -z "$(nstat -s | grep TcpExtTCPRcvQDrop)"`
-+
-+// Read all remaining queued data to verify data integrity.
-+   +0 read(4, ..., 300000) = 279900
+-/* This should be increased if a protocol with a bigger head is added. */
+-#define GRO_MAX_HEAD (MAX_HEADER + 128)
+-
+ struct napi_gro_cb {
+ 	union {
+ 		struct {
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 25d11fab1b03..9fcc5e5223f8 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -67,7 +67,6 @@ static inline void tcp_orphan_count_dec(void)
+ 
+ void tcp_time_wait(struct sock *sk, int state, int timeo);
+ 
+-#define MAX_TCP_HEADER	L1_CACHE_ALIGN(128 + MAX_HEADER)
+ #define MAX_TCP_OPTION_SPACE 40
+ #define TCP_MIN_SND_MSS		48
+ #define TCP_MIN_GSO_SIZE	(TCP_MIN_SND_MSS - MAX_TCP_OPTION_SPACE)
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 2e81aacc998b..421776e3526e 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -105,19 +105,6 @@
+ static struct kmem_cache *skbuff_ext_cache __ro_after_init;
+ #endif
+ 
+-#define GRO_MAX_HEAD_PAD (GRO_MAX_HEAD + NET_SKB_PAD + NET_IP_ALIGN)
+-#define SKB_SMALL_HEAD_SIZE SKB_HEAD_ALIGN(max(MAX_TCP_HEADER, \
+-					       GRO_MAX_HEAD_PAD))
+-
+-/* SKB_SMALL_HEAD_CACHE_SIZE is the size used for the skbuff_small_head
+- * kmem_cache. The non-power-of-2 padding is kept for historical reasons and
+- * to avoid potential collisions with generic kmalloc bucket sizes.
+- */
+-#define SKB_SMALL_HEAD_CACHE_SIZE					\
+-	(is_power_of_2(SKB_SMALL_HEAD_SIZE) ?			\
+-		(SKB_SMALL_HEAD_SIZE + L1_CACHE_BYTES) :	\
+-		SKB_SMALL_HEAD_SIZE)
+-
+ #define SKB_SMALL_HEAD_HEADROOM						\
+ 	SKB_WITH_OVERHEAD(SKB_SMALL_HEAD_CACHE_SIZE)
+ 
 -- 
 2.56.0.611.g1030f0b940-goog
 
