@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794616811;
-	b=MS9h3Pjh+/DShRy3Zz1+uOvO+nfS98KJWNphQddR+WHZEhmXdN+DKe1ZMRr4Hvm+Lmp6
-	 XCttBWKVRJAsKo5M5/B9q3AKqCGubXqfMBwIqySeUJ5uZ9YIDjPUGswb+RRfn5LPrIJ1I
-	 JnJE/bxc54I0ZtLBZTCQq/p5E2WPpGmQqAU7mAsMyh0vVHf3DkTo6UefiygaUZb5r/BpF
-	 hsCiRnwwNjNwT+ZucNsA2RgmeETUToflaaNfNLCNkN5+igttaLwMDLsIGR9EEZT2qmm8T
-	 +hhKBVRWKqsH7GGVzL1DPlYCA7xp9PZtgYSTmyY5D18+d6yZFaaha6ZCRarymnhqwbw==
+	t=1794617406;
+	b=4xrCYLwpEQSiDSO0sauEbVzOSKrlWC5DaAl1xlTnjeEWU8Y3POZVTYetVLoDrnYpv3KH
+	 CkUezuyd5ggdwL7HbZdGK2NFubGOI9pxS8xid3TZ2RRzNqjTs1pxd1wjhwb2Z0se56I44
+	 bzAp/bDO1R20WMXfxXTweQaDQBzbKCRsAyfM11hHov0pWycjpFlW+d460oQf15umcNMKm
+	 MRBvcvsgtCMzohLEkgOqmXEwkxxYU8Enb5jRBwwBcvMPW+AFBsx4RKsssZ7AYbg1Yf6eK
+	 XgOyrgy6iY3fJ7tp5Jlfn/JbcKjCJc4dF3dgMmg22PMl9CYKL1ZWKlpL59SWt97TTcw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794616811;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794617406;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=av1K61twRr3YmYkxqE3loSPySCWqt28yd74ZsgUfme4=;
-	b=jfm2gJCdy2D61W2+G1kWxtHAn4ednnqiCAP9Fw2nRMxDYfkNQSowQveQPbha4AbwdEK3
-	 +R/tYHstvPVU7dlmmirljnkMf7FZAY0ydof/RpOGcpSJxMtrvaw97h+C2PHRQj8eBiKLb
-	 tpcYvHKUup+xP51FESPC1UAyJBZ2KN97aUr2V0/y5TFj9B4jqETD60gdfYgxtyjVNpPss
-	 BcCBgYyYGNd9HfKf81dzpU4828AqcZ4kpPLT+W/IGBFIDBTLDbiXgDZA41/D2L+xp+ikl
-	 KWfch/rb66ZjswEtT6qSxO0t5Kh6tLzPrxzcApUlfVPeXJcBpm4wBba/r37U6nPKtjg==
+	bh=krgEQzCkQPTxCESL2Fj+P00Ja5AOl6zwVzAKWjLVZdY=;
+	b=oD6KxEhCbulR8VhVD+DLvH7QXQKYCauArvr3CI9YbNm3Up0D7e5I/ldjYxGbMF8brWxV
+	 MFQ+1bA9A14QK2YKXKQrlkbOZzJCxl8oPmrRBJusbn3HjPfj+p+P1aJR5q5kclk1XKVHF
+	 qj3BXqYI5FTM/NQmXed3t12qZSezt/F1WUqNVI+HIWKng1mXILyGTjLdotjzK8vBfrzP6
+	 iIJJmpsAb5o+9sanQmSEnESOSVNb0u7cxsVqwVddWAZOvpt44zn1/7L62PdX2h+amYIyl
+	 5LkaBO4bixcauJ5D9EwDaoUO2nnG3r8SgyEYf+vqmKBEr73t1t4kccC/bxYqf69F08Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LlDq+DeU;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fx+MH0Nv;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6861F606A327;
-	Sat, 14 Nov 2026 00:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B028606A336
+	for <netdev@vger.kernel.org>; Sat, 14 Nov 2026 00:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LlDq+DeU
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437141F000C5;
-	Sat, 14 Nov 2026 00:40:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fx+MH0Nv
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4572F1F000C5;
+	Sat, 14 Nov 2026 00:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794616811;
-	bh=av1K61twRr3YmYkxqE3loSPySCWqt28yd74ZsgUfme4=;
+	s=k20260515; t=1794617406;
+	bh=krgEQzCkQPTxCESL2Fj+P00Ja5AOl6zwVzAKWjLVZdY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LlDq+DeUZiAI+BHUrcyL5l3n7ruZ86Zv03rxJbgLG7XNgBHwZaozunN4+zeWWv38y
-	 uFk4AH2sjXAfrI8zYqTFEmHM0U/YbABuHOWvaf/7M2HLE5vCm0rqMkxVa+Iv5Vzxp6
-	 H0crPCraQw1k4V5a16UHmh48Y7GzAJwWheOxq0Kz9sj5rzK5VuJiqjQDZ2YddKFvpm
-	 RlLHmHiviI2QOyURRZLQHlLqvObxjwisjNgNnAzJINnxFDFr+5Fa7jemjyKMoytIzz
-	 xzIm6/QNU99fHuRqqM4JtqqbxjEu2lptaiMSTdqJgEHc3XbAWidNr/0EfnmIW0VZPu
-	 SQeP1uctW2XIA==
+	b=Fx+MH0Nv6daqYCHXuCuNMXiXQrYyT/BOrXso4NYQQghlaQsAP3B8GQuuhkjR0MxpQ
+	 D8QPqvL4iKAPymJzhHVESDOFdEZdTBSURcjTMsavCGlmlcjW7dKK2Cc3pAtn2+gnVr
+	 Xsh/LFRgYlrk6IOGhnPOYOyx3nvzfgI1v2UimUNN3ziW3XJpw4sPN4BZhU8onSDmZ/
+	 rdlLgvDaHbsMj+Kh6uRJ9j5PyFuqCBW04O+oOlQKCQZaPMxa/CBDThy+UXxnbb2IUe
+	 JTrP2NLiv/RpTHe6cu2H/jUeUemwEkdnE0tGULAHOsxBPt4sVM+brWV+79JcRV/HmH
+	 autAh9lmJi/9w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3CB380821F;
-	Sat, 14 Nov 2026 00:40:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A4FA380821F;
+	Sat, 14 Nov 2026 00:50:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,41 +54,42 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: stmmac: dwmac-rk: only read the delays the
- MAC applies
+Subject: Re: [PATCH net v2] tcp: fix NULL pointer dereference when restarting
+ a
+ Fast Open listener
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179461680977.1918448.16146594996456604743.git-patchwork-notify@kernel.org>
-Date: Sat, 14 Nov 2026 00:40:09 +0000
-References: <20261110-stmmac-dwmac-rk-delays-v1-1-87abb6592921@gmail.com>
-In-Reply-To: <20261110-stmmac-dwmac-rk-delays-v1-1-87abb6592921@gmail.com>
-To: Arun Iyengar <aiyengar1990@gmail.com>
-Cc: heiko@sntech.de, maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-kernel@vger.kernel.org
+ <179461740503.1921910.16398134935524697394.git-patchwork-notify@kernel.org>
+Date: Sat, 14 Nov 2026 00:50:05 +0000
+References: <avMkfJrXhCFXn8M_@v4bel>
+In-Reply-To: <avMkfJrXhCFXn8M_@v4bel>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 10 Nov 2026 07:13:55 +0000 you wrote:
-> From: Arun Iyengar <aiyengar1990@gmail.com>
+On Tue, 10 Nov 2026 23:04:44 +0900 you wrote:
+> When a valid RST is received for a Fast Open child accepted before the
+> three-way handshake completes, reqsk_fastopen_remove() adds the
+> request_sock to the listener's RST list if the listener is in TCP_LISTEN.
 > 
-> The tx_delay and rx_delay properties are only used for the directions in
-> which the MAC inserts the RGMII clock delay itself: both for "rgmii",
-> TX for "rgmii-rxid" and RX for "rgmii-txid". For "rgmii-id" (the PHY
-> adds both delays, the recommended setup) and for RMII they are ignored
-> by rk_gmac_powerup().
+> An application can call shutdown(SHUT_RD) on a listener socket.
+> inet_csk_listen_stop() checks rskq_rst_head without holding
+> fastopenq.lock. If rskq_rst_head is NULL, it does not acquire the lock
+> and therefore does not synchronize with an insertion by
+> reqsk_fastopen_remove() after that function has passed the TCP_LISTEN
+> check.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net: stmmac: dwmac-rk: only read the delays the MAC applies
-    https://git.kernel.org/netdev/net-next/c/6b8e9712d031
+  - [net,v2] tcp: fix NULL pointer dereference when restarting a Fast Open listener
+    https://git.kernel.org/netdev/net/c/aa40afa831eb
 
 You are awesome, thank you!
 -- 
