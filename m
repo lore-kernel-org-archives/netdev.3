@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794616810;
-	b=gWDxwu0uOxyUkN0uWxQxnRDyz3hntHvHhlNEabgX999t8blDCVvwqeAySmhphbEAn5/E
-	 R06IkrlJ+lhYeIXFXhYBh11jT9e1Rg9HN5ZlNY64Ou9yoemcMUc/rs2LlXMnz443iR8oV
-	 7bDkj0kenfCFWjxEoD3s57jQOx4fWtQym7HEvceZABJo5a37Ycwhr/HWq+MxO8I6RLBQc
-	 vCagTj+u9I/R5OALdjKi/KiQUEQ2cge0MPCPGqpFwAYX+kQUQZXk0B6w0IpApCIKUMZSz
-	 fO8V9hFg7hgSP+w8o5OLaT9EowJCWA896Agan7cHe/XAGrKZ+3ZaIfe2u2Z1B6vbLTQ==
+	t=1794616811;
+	b=MS9h3Pjh+/DShRy3Zz1+uOvO+nfS98KJWNphQddR+WHZEhmXdN+DKe1ZMRr4Hvm+Lmp6
+	 XCttBWKVRJAsKo5M5/B9q3AKqCGubXqfMBwIqySeUJ5uZ9YIDjPUGswb+RRfn5LPrIJ1I
+	 JnJE/bxc54I0ZtLBZTCQq/p5E2WPpGmQqAU7mAsMyh0vVHf3DkTo6UefiygaUZb5r/BpF
+	 hsCiRnwwNjNwT+ZucNsA2RgmeETUToflaaNfNLCNkN5+igttaLwMDLsIGR9EEZT2qmm8T
+	 +hhKBVRWKqsH7GGVzL1DPlYCA7xp9PZtgYSTmyY5D18+d6yZFaaha6ZCRarymnhqwbw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794616810;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794616811;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=HlpN+6N4wdz+X9YKdUIv7dUef/LnUlg+4JxFAzxEzCo=;
-	b=CEudSFZbA/kfJ8K67YGygTIaxyTDaHTDGU6NIZosNSMwiu73zq+mT6ngMFzhSfnKqz6W
-	 mGujfEYtcSOpE3q/6X/U47hokuJl2l9R1q3dmWVQ54a5JVYMjpBVwEBMY2yj8A95MIIyx
-	 CBrdpKtfaf0bK0EyT2TAJiaCiqaUMgm9W+qalnymvb/ihZRkZzA5LMQKNNtM7yt4wiUyT
-	 uRtdYGjxdyo3VRdiFyxWRlrVH6XQms3hl4+oXYswhHoGv389WkM/o1cajXRFozr+r23cb
-	 u7D8PtSuL5lCmxXObk9DyRTY9CLZq60zxLl2SJY7KLBSYEE6XzFFv0I8DFvQdI0BDlQ==
+	bh=av1K61twRr3YmYkxqE3loSPySCWqt28yd74ZsgUfme4=;
+	b=jfm2gJCdy2D61W2+G1kWxtHAn4ednnqiCAP9Fw2nRMxDYfkNQSowQveQPbha4AbwdEK3
+	 +R/tYHstvPVU7dlmmirljnkMf7FZAY0ydof/RpOGcpSJxMtrvaw97h+C2PHRQj8eBiKLb
+	 tpcYvHKUup+xP51FESPC1UAyJBZ2KN97aUr2V0/y5TFj9B4jqETD60gdfYgxtyjVNpPss
+	 BcCBgYyYGNd9HfKf81dzpU4828AqcZ4kpPLT+W/IGBFIDBTLDbiXgDZA41/D2L+xp+ikl
+	 KWfch/rb66ZjswEtT6qSxO0t5Kh6tLzPrxzcApUlfVPeXJcBpm4wBba/r37U6nPKtjg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yaul+esp;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LlDq+DeU;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5476F606A336;
-	Sat, 14 Nov 2026 00:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6861F606A327;
+	Sat, 14 Nov 2026 00:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yaul+esp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE26C1F000C4;
-	Sat, 14 Nov 2026 00:40:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LlDq+DeU
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437141F000C5;
+	Sat, 14 Nov 2026 00:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794616809;
-	bh=HlpN+6N4wdz+X9YKdUIv7dUef/LnUlg+4JxFAzxEzCo=;
+	s=k20260515; t=1794616811;
+	bh=av1K61twRr3YmYkxqE3loSPySCWqt28yd74ZsgUfme4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Yaul+espwDc1EwlcYxOdjs9e1WIh9eoTYWSlfPxQqCr3CrvsKNelto/8tiU6TNtyu
-	 vceW37JRAl9rXKFNhGn8BbSj7zo3i+hQBD/tzmM2fMuvQcP49m2flnNOXVmn8YcVjc
-	 OGLjtpkNSCULAg/inqFaAuGxmUH2kWSqi2gqL5EkGYqr9yNt23BUQ9xVoS4Xvo89Cz
-	 /CqxdQ96GEGToP/TbtO4ec+MPJFymqIcFNkPGIeZiVzlsvK9REOyTRsZ+Ayi7kR+w7
-	 y4THZFwvZfEdqoT8ZoLJ2lkr8db590GyNrqA+Bcu6FIV1uRzQ3KsBP/3W33andPvhs
-	 Mu81NZHddAlhw==
+	b=LlDq+DeUZiAI+BHUrcyL5l3n7ruZ86Zv03rxJbgLG7XNgBHwZaozunN4+zeWWv38y
+	 uFk4AH2sjXAfrI8zYqTFEmHM0U/YbABuHOWvaf/7M2HLE5vCm0rqMkxVa+Iv5Vzxp6
+	 H0crPCraQw1k4V5a16UHmh48Y7GzAJwWheOxq0Kz9sj5rzK5VuJiqjQDZ2YddKFvpm
+	 RlLHmHiviI2QOyURRZLQHlLqvObxjwisjNgNnAzJINnxFDFr+5Fa7jemjyKMoytIzz
+	 xzIm6/QNU99fHuRqqM4JtqqbxjEu2lptaiMSTdqJgEHc3XbAWidNr/0EfnmIW0VZPu
+	 SQeP1uctW2XIA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B455C380821F;
-	Sat, 14 Nov 2026 00:40:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3CB380821F;
+	Sat, 14 Nov 2026 00:40:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,42 +54,41 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v5 0/2] net: usb: lan78xx: do not use
- uninitialized
- data after short reads
+Subject: Re: [PATCH net-next] net: stmmac: dwmac-rk: only read the delays the
+ MAC applies
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179461680827.1918448.12775877038726661990.git-patchwork-notify@kernel.org>
-Date: Sat, 14 Nov 2026 00:40:08 +0000
-References: <20261111013454.34542-1-law.wei.jie@gt.tech.gov.sg>
-In-Reply-To: <20261111013454.34542-1-law.wei.jie@gt.tech.gov.sg>
-To: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
-Cc: Thangaraj.S@microchip.com, UNGLinuxDriver@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, woojung.huh@microchip.com,
- netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, 98lawweijie@gmail.com
+ <179461680977.1918448.16146594996456604743.git-patchwork-notify@kernel.org>
+Date: Sat, 14 Nov 2026 00:40:09 +0000
+References: <20261110-stmmac-dwmac-rk-delays-v1-1-87abb6592921@gmail.com>
+In-Reply-To: <20261110-stmmac-dwmac-rk-delays-v1-1-87abb6592921@gmail.com>
+To: Arun Iyengar <aiyengar1990@gmail.com>
+Cc: heiko@sntech.de, maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 11 Nov 2026 09:34:52 +0800 you wrote:
-> lan78xx_read_reg() and lan78xx_read_stats() accept a control transfer
-> that returns fewer bytes than requested and then use the uninitialized
-> rest of their kmalloc()ed buffers. A device that sends short replies can
-> get stale heap contents used as the MAC address of the interface, and makes
-> ethtool -S report them to unprivileged users, including kernel text and
-> direct map pointers.
+On Tue, 10 Nov 2026 07:13:55 +0000 you wrote:
+> From: Arun Iyengar <aiyengar1990@gmail.com>
+> 
+> The tx_delay and rx_delay properties are only used for the directions in
+> which the MAC inserts the RGMII clock delay itself: both for "rgmii",
+> TX for "rgmii-rxid" and RX for "rgmii-txid". For "rgmii-id" (the PHY
+> adds both delays, the recommended setup) and for RMII they are ignored
+> by rk_gmac_powerup().
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v5,1/2] net: usb: lan78xx: do not update statistics after a failed read
-    https://git.kernel.org/netdev/net-next/c/faf25c2bc6af
-  - [net-next,v5,2/2] net: usb: lan78xx: reject short register and statistics transfers
-    https://git.kernel.org/netdev/net-next/c/ecb8113b5b32
+  - [net-next] net: stmmac: dwmac-rk: only read the delays the MAC applies
+    https://git.kernel.org/netdev/net-next/c/6b8e9712d031
 
 You are awesome, thank you!
 -- 
