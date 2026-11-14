@@ -1,57 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794622544;
-	b=OAY6oz2u/+otcom3hH7op5UcuEZOZX2yoSXpOFFOM0Lo7AQ6ZtlmYlIJFslSccVyyQtw
-	 WGScQzcYRoLlmXSjMqWhqxyTpbAk/+RSz5JDkhmGvVjQk/Az4ZMECkx1hzvFZlQ7eh2FJ
-	 S19KyllpjJYQH+KxrL83Q6XrTf27Y0RTx4deGszSqu7jPAe05wPaRyUuD/KzxrPkR5CPM
-	 ouqQffceJERLxpJneQ1OxEM65zMowHdb4+tAcRhnolS8sB7eyBtbIYn9BuushawNSJF8Q
-	 fD/U0vsTnA38OPiUgLicCV/ehNJyFjK0DzUX4kdW6JIqWYBBw+t22shGf2+bwjLR/gA==
+	t=1794622540;
+	b=xQ5tIBQHUIPLBDegKnQ7OSLn2hKekQLbwHWJcw+/JR1+e2kDSPCaZV+wsZyFP1+UVlrj
+	 ZzeSSm+/QbO7e1zL7I8CYQQUrgqbTXeqnnjGzJtaQ/k6KKNJjB1Z8l1gpPteh3ZcRTNAc
+	 JQs4skdiOpC4yx+Kdj8TQ6Dz1jZ2Mv4kD8KUQU+0xGhSH1hmFSSJK9MnQdhtJfM36j1Yz
+	 v9UhFxdUMfdGjiwL4vfg8PL9Mwt9X8MqU5xlWU04TkL/G2BRNBrt+uXn8GD3kVJfpTDB+
+	 TYeU3iwk+C+D9z2Y+O+eIvaQiZZ3cjNpQHFxPgvp60t0HflW0iBUW4B6gnETTAxo7sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794622544;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794622540;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=q32++NpuSBVXrZq1yEkuGL5U2LuT40oHUIbLOJp8kTQ=;
-	b=oe/2gbQsn4T9dBlb/+te6poMPyx3Tx9w3yiz+KxN/yvmMGTiuiQX8xXRMFu/kvFmgjEQ
-	 OLOljG5EW5vo9O2FGJJBH8fbm3YThUQTWvE66/8XgNjoTu71UtX2FmXNLFTrdRordbZr7
-	 SiLFYqu+w0kSqD5fa3l6m8De3fAsuOl/L9Ms5Kb+JMuH7H2RKKb3SGCIzqrH7Gz71FuCV
-	 IBRrZzqArcq7UUBXfQn9LRGtaACIyqwutm603afUm8fvgBHs6qJS9yqvxLsCSLSdObPYc
-	 Ul9NKQkQIgtmFgfXz8gc8UiMj2r1FDbULTcd2o/cn/MJTJvPHv154DdEybRORtWdXwQ==
+	bh=EqQXRsyfObfIra+HPLhLXSrqab8hQOhQc1sQ/2Aja7A=;
+	b=TPt9j2qFu0qZDr2ZMunGQ4P/nNQwsQ4eRn3s5vVbvitsXJJBLxdcUeXMXPMHW9d3cAfb
+	 MaUouSDhGAv/PclRwMFxJNrITqjvxrMQ6+3sxbRNVxilpfSOq4gqxv3GoyK7YWw5OyOM/
+	 4Bt7mHFOJo0gbaMUZa6E3DH1JvUbBSRtlqLQOBo5IAU1dNRnpw2Tml52XiF0AItQMalsJ
+	 L7axiSgR8U+GltGNIYawWunkPTtHC1tNXOnZEsRRje1chGOGA5oiqMOilSEjfPToTXAn3
+	 OOzZFjzTkA7eIERCv1xltoVN0Y9cbO8LG4XGRvPQiNc+qeEa1ubmQuuS6VxqJQoVeyA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b5HuSM05;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoM9Nd29;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03ED606A89E;
-	Sat, 14 Nov 2026 02:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B39606A329;
+	Sat, 14 Nov 2026 02:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b5HuSM05
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3251F000C4;
-	Sat, 14 Nov 2026 02:15:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hoM9Nd29
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAD41F000C4;
+	Sat, 14 Nov 2026 02:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794622544;
-	bh=q32++NpuSBVXrZq1yEkuGL5U2LuT40oHUIbLOJp8kTQ=;
+	s=k20260515; t=1794622540;
+	bh=EqQXRsyfObfIra+HPLhLXSrqab8hQOhQc1sQ/2Aja7A=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=b5HuSM05eHq/yPW/eax2d8ltu4SvwSaM24GXEzsPhAbjEzpCQ4nXLFXDdjUV2Jg5s
-	 /hcN1XZBrdyFJFQU2/u10oQfcj/wDDLH5mCmwJ5njt9QCx8vxjV1MUPNAQjESeOEm3
-	 FggVW66uIPtQpuuUbDZQ8UnD9V7jxxz2wI8KUqebXtFYTsQCT7uHw61voBKR9jSJPw
-	 yanMxbdBELg5QbWzoTCM1fxJgsuxq+kWFNmKQrtl1TdeAmEYLLYVMb9AsiHSP2Nyju
-	 qPNRafGl7GCyL1HE0hlcetFazz54mXEH0GowSqGox+OLMc1AF7n6a0eY9VhnwS5n//
-	 jbrCKXnm/uFtg==
-Subject: Re: [PATCH net 07/15] ipvs: ftp: add seqadj extension before linking
- the expectation
+	b=hoM9Nd292rttjdCd/xHHyKEFJ4D1q7Aspk84gdlLJNqDYZIWC3VtznlsQYuuT20eV
+	 tqBnE2I5STLI7CqF42kC8sYyLYWpTK79df/djMXtVa2U5amzL5wUqUIQw8nXd2SVy6
+	 5ek+7dJMMy8ALB3qWcRlitLaU1hg0iR0BK5KilicuvVzonNzDxWtVyww63m0FhYcJP
+	 wr15IarDsvLzp6eDmPOufhDn1hJDIE82htwnlk4xI6jyETZQtl3rNXNnR1Hu95iLA9
+	 g1Vc3myLz9a1pT397Mjxo65ybGCJefjH+ZierWyzKHWwsuMZqVRvk56ek0ujofrg9V
+	 M0HlIrMEpQArg==
+Subject:
+ Re: [PATCH net 01/15] ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6
 From: netdev-bot+sashiko@kernel.org
 To: pablo@netfilter.org
 Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
  netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
  edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Date: Sat, 14 Nov 2026 02:15:43 +0000
-Message-ID: <179462254370.2199510.3740508632458892922@kernel.org>
-In-Reply-To: <20261113011447.2357709-8-pablo@netfilter.org>
-References: <20261113011447.2357709-8-pablo@netfilter.org>
-X-sashiko-severity: High
+Date: Sat, 14 Nov 2026 02:15:39 +0000
+Message-ID: <179462253904.2199510.6723175642724870986@kernel.org>
+In-Reply-To: <20261113011447.2357709-2-pablo@netfilter.org>
+References: <20261113011447.2357709-2-pablo@netfilter.org>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: netdev@vger.kernel.org
@@ -64,131 +64,111 @@ List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix is incomplete.
+- [Low] Commit "ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6" has
+  only `Fixes: 63dca2c0b0e7`.
+- [Low] The commit message says "This fix does not depend on patch 2".
 
 --
 
-ipvs: ftp: add seqadj extension before linking the expectation
+ipvs: avoid out-of-bounds write in ip_vs_nat_icmp_v6
 
-This patch adds the seqadj extension to an unconfirmed conntrack in
-ip_vs_ftp_out() before the payload is mangled and before the expectation
-is linked. The goal is to keep ip_vs_update_conntrack() from reallocating
-ct->ext while the helper's expectation list still points into it.
+This patch changes both ICMPv6 handlers in IPVS. When ipv6_find_hdr()
+stops at a non-first fragment and leaves ciph.len == ciph.off, the
+embedded IPv6 header is now added to ciph.len. The skb_ensure_writable()
+range used by the NAT paths then covers the addresses that
+ip_vs_nat_icmp_v6() rewrites.
 
-> diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-> index 44de99f4d187f..81c3a2fd27b39 100644
-> --- a/net/netfilter/ipvs/ip_vs_ftp.c
-> +++ b/net/netfilter/ipvs/ip_vs_ftp.c
-
-[ ... ]
-
-> @@ -384,19 +385,25 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
+> This fix does not depend on patch 2. Stable kernels without commit
+> 342e24a339b9 ("ipvs: do not mangle ICMP replies for non-first fragments")
+> also need that commit to handle incoming ICMPv6 errors quoting
+> non-first ESP fragments.
 >
->  	ct = nf_ct_get(skb, &ctinfo);
->  	if (ct && !nf_ct_is_template(ct)) {
-> -		bool mangled;
-> +		bool mangled = false;
->
->  		/* If mangling fails this function will return 0
->  		 * which will cause the packet to be dropped.
->  		 * Mangling can only fail under memory pressure,
->  		 * hopefully it will succeed on the retransmitted
->  		 * packet.
-> +		 *
-> +		 * Add the seqadj extension before the expectation is
-> +		 * linked into the helper extension: adding it later
-> +		 * reallocates ct->ext under the expectation list.
->  		 */
-> -		mangled = nf_nat_mangle_tcp_packet(skb, ct, ctinfo,
-> -						   ipvsh->len,
-> -						   start - data,
-> -						   end - start,
-> -						   buf, buf_len);
-> +		if (nf_ct_is_confirmed(ct) || nfct_seqadj(ct) ||
-> +		    nfct_seqadj_ext_add(ct))
-> +			mangled = nf_nat_mangle_tcp_packet(skb, ct, ctinfo,
-> +							   ipvsh->len,
-> +							   start - data,
-> +							   end - start,
-> +							   buf, buf_len);
->  		if (mangled) {
->  			ip_vs_nfct_expect_related(skb, ct, n_cp,
->  						  ipvsh->protocol, 0, 0);
+> Fixes: 63dca2c0b0e7 ("ipvs: Fix faulty IPv6 extension header handling in IPVS")
 
-[Severity: High]
-Does this fully close the use-after-free? The expectation is still linked
-into nfct_help(ct)->expectations while ct is unconfirmed, and that list
-head lives inside ct->ext. Pre-adding seqadj only stops one later
-extension add from moving ct->ext.
+[Severity: Low]
+The incoming half of this bug only seems to have become reachable with
+342e24a339b9. That path is
+ip_vs_in_icmp_v6()->ip_vs_icmp_xmit_v6()->ip_vs_nat_icmp_v6().
 
-nf_ct_expect_insert() does:
+Before that commit, ip_vs_in_icmp_v6() had:
 
-    hlist_add_head_rcu(&exp->lnode, &master_help->expectations);
+	if (ciph.fragoffs)
+		return NF_ACCEPT;
 
-so exp->lnode.pprev now points into the current ct->ext block.
+342e24a339b9 changed it to:
 
-Later hooks on the same packet can still grow ct->ext. One example is a
-MASQUERADE rule in POSTROUTING, which runs for this IP_CT_NEW conntrack
-after the IPVS out hook:
+	if (ciph.fragoffs && !pp->dont_defrag)
+		return NF_ACCEPT;
 
-  nf_nat_inet_fn()
-    nf_nat_masquerade_ipv4()
-      nf_ct_nat_ext_add()
-        nf_ct_ext_add(ct, NF_CT_EXT_NAT, GFP_ATOMIC)
-          krealloc(ct->ext, alloc, gfp)
+ESP sets .dont_defrag = 1 in ip_vs_proto_ah_esp.c, so non-first ESP
+fragments now reach ip_vs_icmp_xmit_v6(). There, wlen = ciph->len sizes
+skb_ensure_writable(), and without this fix ciph->len equals ciph->off.
+ip_vs_nat_icmp_v6() then writes the embedded addresses past that range.
 
-Here is one layout where this moves the block. With
-CONFIG_NF_CONNTRACK_TIMESTAMP=y and an ecache extension present
-(nf_conntrack_events=1), the extensions are header 16, ecache 32, help
-56 and seqadj 24. That adds up to exactly 128 bytes, which is the
-NF_CT_EXT_PREALLOC object size. Adding NAT gives a newlen of 132-136.
-__do_krealloc() then goes to alloc_new and the old block is freed.
-nf_conntrack_acct=1 gives the same arithmetic.
+The paragraph above reads as if 342e24a339b9 is only a functional
+prerequisite. Should it say that 342e24a339b9 exposed the incoming-path
+write, and add a second Fixes: 342e24a339b9 tag? The existing
+Fixes: 63dca2c0b0e7 tag plus Cc: stable already covers backports, so
+this is mostly about traceability.
 
-After that, ext->help.expectations.first in the new block points to
-exp->lnode. But exp->lnode.pprev still points into the freed block. When
-the expectation or conntrack is removed, nf_ct_unlink_expect_report()
-calls:
+> diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+> index 8a3c880fdb266..76213159404f0 100644
+> --- a/net/netfilter/ipvs/ip_vs_core.c
+> +++ b/net/netfilter/ipvs/ip_vs_core.c
+> @@ -1206,6 +1206,13 @@ static int ip_vs_out_icmp_v6(struct netns_ipvs *ipvs, struct sk_buff *skb,
+>  				     true, &ciph))
+>  		return NF_ACCEPT; /* The packet looks wrong, ignore */
+>  
+> +	/* ipv6_find_hdr() does not include the embedded header for
+> +	 * non-first fragments, add it so that ESP can pass and the
+> +	 * NAT writable checks cover the rewritten addresses
+> +	 */
+> +	if (ciph.len == ciph.off)
+> +		ciph.len += sizeof(struct ipv6hdr);
 
-    hlist_del_rcu(&exp->lnode);
+[Severity: Low]
+This isn't a bug, but is "so that ESP can pass" accurate for the IPv6
+paths? A len vs off comparison only exists on the IPv4 side, for example
+in ip_vs_nat_icmp():
 
-This writes through the stale pprev, which looks like the same KASAN
-report quoted in the commit message. In this layout the seqadj add would
-not have moved the block even before the patch, so the patch does not
-help in this case.
+	if (cih->ihl * 4 != ciph->len - ciph->off)
+		return false;
 
-Other extension adds on an unconfirmed ct are also reachable later in
-the same traversal:
+None of these compare ciph.len with ciph.off:
 
-  nft_ct_set_eval() with NFT_CT_EVENTMASK -> nf_ct_ecache_ext_add()
-  nft_ct_timeout_obj_eval() -> nf_ct_timeout_ext_add()
+- ip_vs_out_icmp_v6()
+- ip_vs_in_icmp_v6()
+- handle_response_icmp()
+- ip_vs_icmp_xmit_v6()
+- ip_vs_nat_icmp_v6()
+- the AH/ESP conn_in_get/conn_out_get handlers
 
-The commit message says this is reachable with CAP_NET_ADMIN in a user
-namespace. That context can configure MASQUERADE, nft ct rules, the acct
-sysctl and ctnetlink listeners.
+So the only effect seems to be the larger skb_ensure_writable() range.
 
-Would it be better to not link the expectation while the conntrack's ext
-can still grow? Two options are deferring the link until confirmation,
-or making ct->ext stable first. Pre-adding one more extension does not
-seem to cover these other paths.
+Later in the series, "ipv6: update *offset for non-first fragments in
+ipv6_find_hdr()" makes ipv6_find_hdr() do this for non-first fragments:
 
-None of the later patches in the series appear to touch ip_vs_ftp.c,
-ip_vs_nfct.c, nf_conntrack_extend.c, nf_nat_core.c, nf_nat_masquerade.c
-or nf_conntrack_expect.c.
+	*offset = start + sizeof(struct frag_hdr);
 
->  			if (skb->ip_summed == CHECKSUM_COMPLETE)
->  				skb->ip_summed = CHECKSUM_UNNECESSARY;
+After that change, the first clause of this comment is no longer true.
+The ciph.len == ciph.off check also can't fire any more, here or in the
+copy added to ip_vs_in_icmp_v6().
+
+Separately, the commit message says "This fix does not depend on patch
+2." Once merged, "patch 2" won't point to anything in git history. Could
+it name "ipv6: update *offset for non-first fragments in ipv6_find_hdr()"
+instead?
+
+> +
+>  	pp = ip_vs_proto_get(ciph.protocol);
+>  	if (!pp)
+>  		return NF_ACCEPT;
 
 [ ... ]
 
