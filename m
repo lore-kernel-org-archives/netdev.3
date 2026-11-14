@@ -1,79 +1,89 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1794629683;
-	b=A3LMkjGlhx4hJ1x6bMf8I01i2lSiglBD/4Pt1lfnWLWq8IWjksS2oT9VeFTo0Egb/7jA
-	 zQje98OlAF9kYSzVgrRwU94L+xdMmShNVdBzzXdmxvlCohdpgLf1+M5PWbL9z6OwLGwu0
-	 SQKHDq7kmgEMGCfOI8tA9n/7xU4NCKd4TD5v3WnneROUP6agB/TWUM5Y3WHkItZz5RqSu
-	 7WoI2CBlwex3x2mPfa4tGV+AmUEmzZ8ePHIJjgJstucpB1fKjDeiz/nFty2472wXMEprD
-	 7XNrutxaBieGvArVKO9GBALBk4RGcHrKe2wlQyKSw3dyApf3hWFh8axOW8lDo7wyVbg==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794629683;
-	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=cO6oAOXIgzMpetBE3e7i5weblbBDQaW8Yu+sv7kIn3I=;
-	b=w/Ju8uhK9iEP2zZ0VYXHkX3JQY0Lwe3rZvmj/N84QhjWaG7061vi0UKbbYKMfkgt3dvI
-	 M9WcGy0Alx0uPn5UMLOVWwBWtRAtNKQGizu8HqkZPYA07RPczVqCCTFk+SPtMIBdBE0iZ
-	 9MoV0qBsoderiA7qhoXWsJ4OOTA33ai09kFSEMZCXK9k1+TkU38ffgcABb57L9Oc+4xda
-	 QL7MMDFycV0LsRwm4G4coEg24EnBENueMGtIeXKmu6bP57xvdHnXPOkUf7vTDqeuJjjsU
-	 b5yEBf5R/Mha0X07MH54rRtBSmjYkdbAGSbxOP+fmLAfJHkjpTj4ULj9QBHSrz6e1kw==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EPzxDc45;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AE5606A8A4;
-	Sat, 14 Nov 2026 04:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EPzxDc45
-Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794629683;
-	b=cLSPLILHkA40YqWTIAIZJ1cqCnCYdpqNQTHdKsD64nzb+D0nGBQy6QD6ypZmvuabkXt8
-	 5mWRpSwnPEgsTYE6/5rGGJXACERtyfEoC64KeZjkKIj8G+6zscaauLyCZ5W2g+LRyYbfH
-	 YH+dkarZyGoXzxrc7qfFgf4tRT+t7AWNN07vvDu8K0RLTy5D1RBy8dva9XiWJyWoo0gDg
-	 G2nTe+lWO11s6ddmXmBsyEJkIuZv5mFas87vMOXIq5j7Eadw7luZINfuicT6T8B8jhfVc
-	 Jpee3lo734jK+0ZuAuDWJ1MTBZ3WB1j74XtoRG+KVXQK8BXnGieUqG1D6O6zrGrt/eQ==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794629683;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=cO6oAOXIgzMpetBE3e7i5weblbBDQaW8Yu+sv7kIn3I=;
-	b=ZqMq1vP10hUW+Iotni6tjKGzTeQWPKKOccDTnAv92eUwSiUkPzzbEMnBTC3Xp1mg8UaM
-	 Vd9RD19Ipr7HC50lNUMCL0cbX9EpL0QN5QLLuHWuLIMA7G5RHAzBaMOEoVJPytYuu35xL
-	 80FXda+5bdZtpp1V+7+/3oZ6aNd81vdSPxpyuvH4ZVwSALy7/RTKf3234VFaZCw/2sh3V
-	 60gOypBmFRTN+pF4g1imekZZSNdoNdP6QKM2TJ9GlSA7qVtKl79HEyrdWgns94APLv67P
-	 yWSBOeae7OE7qgTi6Mqyc4s5z6lVE3cuCiC4AsUW63MsJtG2FCwpG3b53ZHaiZtl/cA==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.171
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1794629807;
+	b=nLqYGxvNWRYFpXNUczG2HObJQGEK8QRWvPtQ6TsRxjH1jwKKXyJkrKljUQi0r7ye7Cwf
+	 bLwqw698rWTVRQ7k98/Fz7lF28+kGz8gTXin0I3v497wDoteezxbpJGQUgnNXxWubWMfQ
+	 fZnQdDBJCJdeNq3ucmPXBnDgqkof1cM/R16Kg2QtLvaW3Q9LBAN5/VulklFyPIjstaebG
+	 dZDoerwZTZBQ3mtjxDQe2bnNbDZUtKAP/JNr0x6C0WsPD6GsCsAb1/5/dRPH3HaQ25cmp
+	 q/p4qiDBi3azVNotmwNNR26Qr85aexZaAbDzIG9Jh6/4US1suabb4vO0BdPJYja5OnQ==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794629807;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=bJZ49mA/2fv/eo9vW0sZHgqgFD/tfUpaTmYh5t4KpuM=;
+	b=pkh4LlwzlmHVtMwY467uwEqO+XKzCn/XwYr7RB0quFlh6qzbM9wGuxn0NtnhnTeja9te
+	 MScN+62WHrGjfswa+6jJwING2FcKwhUSGkMIUuyHB6CVMbXh+bbl2y5Z/ZXvPjrLV92Tt
+	 VmgL8hygaEPfG9Js8qBqm9QgzKjJS2EpSGjCSn/NX0192wD+0SkZhncdKlXxARRRtNQHv
+	 TLQeCOWKt4ysDcxtYDyRygMtSnF9syERuahNhwcnZrX23ddsil56tYLh7ln0ccU9eqKqy
+	 B6hyy/S5XVH4jDdMwGvnxmgW6rQg7r+SctH8cD7IyF2TER1JmVhzoaVeWjOXBM8hjoA==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rMvn67HJ;
+	arc=none smtp.remote-ip=74.125.82.171
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id C31001F000C7;
-	Sat, 14 Nov 2026 04:14:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794629683;
-	bh=cO6oAOXIgzMpetBE3e7i5weblbBDQaW8Yu+sv7kIn3I=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=EPzxDc45vExe9fyNulgEEgJaLgFjaUCVptyzJGfMWRXpitnmIZftrlWLH2o7gk1cn
-	 5To57l0cfihECi786oqxYgAS8BSx58Y2Lhq0lYQd4ELl1Zch9m2rxtLsxj8VQfVhR5
-	 PSH36J+wUzSpP5xHuH1oS44OsiB1a9JFjB9xtGpXmf5QGqwROf0QKcMohmlTD/w1qn
-	 sR2NMReqTWLH77SCv8buoYqpFnDQnnvN+W7C+MOIcNh98UofBKAAJrc7cEAaIvySNK
-	 YHTJ4d8UpEqpvm7xhwBdY+s8JRqMIvrEf81IlyAUWoDOCVfSF4jtH6gkDcIaBDYqX5
-	 rIAli3nMRuOdg==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 503BF49C81;
-	Sat, 14 Nov 2026 04:14:41 +0000 (UTC)
-From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Fri, 13 Nov 2026 23:14:42 -0500
-Subject: [PATCH net 3/4] net/smc: fix the failover catch-up across the
- cursor wrap rollover
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6327606A329
+	for <netdev@vger.kernel.org>; Sat, 14 Nov 2026 04:16:46 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B6327606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rMvn67HJ
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-36f8cdd30beso1194509eec.1
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:16:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794629806; x=1795234606; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bJZ49mA/2fv/eo9vW0sZHgqgFD/tfUpaTmYh5t4KpuM=;
+        b=rMvn67HJ/4qTLn1Cw9eXe5ua4+5psKuBSIMYHqjmgeBPkMW2rBX5FnPrG7wf+Z3km5
+         TVdD+/kUfJLEih8Bmit8nB26HVnW/TgGxs8yIqjVP4/uENO/LqSLpVmC23Avj38Yszww
+         sx5QHdfP6LemiNXwKLvWJqyoBLhtumwSlpD4sUN+O2tmVo2GM+G0euvRk0WgEjMwNGEN
+         wHo11NQlg0zFCIQFOIXMZe05XI+eRGgyEfrfUwJ3INR1qJcSBytrW3kQ2YBshaJIDzYu
+         ZUN+7A+AGOcdpg/3pgbm+CwG0o3bMdER5Ite6AVnRsfUzEf2k2iuoqO/fG4jkfF3vjlr
+         vWpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794629806; x=1795234606;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bJZ49mA/2fv/eo9vW0sZHgqgFD/tfUpaTmYh5t4KpuM=;
+        b=qmpAT9iL+7Hd7TfSPu5H+XqJJZ4y+Q2I45NWWbQaemKVRcX0wrMVbIIXLhDlPWys/Z
+         KJmsqfi8ViD1G/Go7bkh4mfryct0qIXNPa5ee0U1ZZANg61I6BuaXK7WahCbvuZiLFTf
+         qC1mN9iuO1d30uGgkK2I7d89lvTHsottFgwyLegdO8iua/GUnzTUHQV0mI4oV3C/4qGW
+         V0lqKcWT4ZIRXSlcK5O8IZ30OKgjlVm5Hq1DiU7MhS0PeanZe0OsVsMGHeY6+HpFAHk9
+         Xuz4zGvcqbXwCSgAgCtRdKTZfX1rmq2C4ZskdJtRcRb2q9MYu61EnTGf1eb1eNudC1Hz
+         YhAw==
+X-Forwarded-Encrypted: i=1; AL+hErFi/Rzs70pzXeb4eupo7Zg2QLT3TRSMcEbnp4OqwVqpfqn0Opg8h/bNhMd6wMxWSO38OQdcrRo=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+GgQYXpTY8ILsDYdjmGjqanss18z0YjwxWHEjd0fgWxYhU+Hv7
+	J2MDsrjIUeMmkdOvoxhcx2GKR1+hJdNuZUc+tJCVEpBYXvJueBQgsG94
+X-Gm-Gg: AYBFou0G8sFZvGOnU8GEps8bP9T9+c79ZeflHwqTVwmc1p40WB4ThPyOuIjaGq/FkiL
+	baAlQsO1PwPU6Jr27jo8/+yAMC4TuDQeqU/mVefvezV+3Kqc+7TS51RtQMZrSxj8YiwIrbkMWs4
+	PdZcbqnVtTOPsKVsLzgD/UexfI0Hk1TLAvpOCeXCFilLBfjKa2H8ASdez1gJ8kl3lASBdNnXeDf
+	KcCZhYaRxXT+/1Lhed/65ExsvuggLUUi8BuWBWBiLt9zVNzSuMoh4BbSAMQyqvk0I1nbikfWIwv
+	UjR7Kx8vVRPnCqEUif4SCo+/jZOaCJuNaHBP2sBO3wuGMGd3PF5ZGaOp708bscwjUbTSL7oglU3
+	+1N8EtScLOQIJ7rMCP08bNNbrAhHI+jWiKzuMyHSKtpskLb+njbf8Z+uDI0kP1eDet4Yld0csU+
+	3c8XQmd4fooTXyKDqLfflFctl+MumRsjbxdhrYcbK6EnVOljwis3++BmN8yIejUffBG54KqP2hv
+	YgTZPVPzmTbqSCq//S6S2vk0m2ZyesevaDfllBO5B6Gbo3R1ERBozsOL3MTCxMNVbKJI+cxEy5q
+	AVUL9Vvav6H26sx+KL0lO9mh65NrkJVIKb9l6VFOOQ15/zaO8Q/SgynniwAOSN+GpJZz0sVjLbK
+	x
+X-Received: by 2002:a05:693c:6293:b0:378:314:4033 with SMTP id 5a478bee46e88-379679e29f2mr4158766eec.32.1794629805701;
+        Fri, 13 Nov 2026 20:16:45 -0800 (PST)
+Received: from [192.168.10.3] (ip70-187-214-22.oc.oc.cox.net. [70.187.214.22])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37955f01d68sm11849406eec.17.2026.11.13.20.16.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Nov 2026 20:16:43 -0800 (PST)
+Message-ID: <34ffee4c-c5f6-4050-b76c-637fc48d1030@gmail.com>
+Date: Fri, 13 Nov 2026 20:16:41 -0800
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -83,137 +93,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261113-b4-disp-1a9ab9b0-v1-3-4a7c8d85d849@proton.me>
-References: <20261113-b4-disp-1a9ab9b0-v1-0-4a7c8d85d849@proton.me>
-In-Reply-To: <20261113-b4-disp-1a9ab9b0-v1-0-4a7c8d85d849@proton.me>
-To: Dust Li <dust.li@linux.alibaba.com>, 
- Mahanta Jambigi <mjambigi@linux.ibm.com>, 
- "D. Wythe" <alibuda@linux.alibaba.com>, Jakub Kicinski <kuba@kernel.org>, 
- Eric Dumazet <edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Paolo Abeni <pabeni@redhat.com>, Sidraya Jayagond <sidraya@linux.ibm.com>
-Cc: Guangguan Wang <guangguan.wang@linux.alibaba.com>, 
- Tony Lu <tonylu@linux.alibaba.com>, netdev@vger.kernel.org, 
- Wenjia Zhang <wenjia@linux.ibm.com>, Ursula Braun <ubraun@linux.ibm.com>, 
- Hidayath Khan <hidayath@linux.ibm.com>, linux-s390@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>, 
- Wen Gu <guwen@linux.alibaba.com>, Stefan Raspl <raspl@linux.ibm.com>, 
- linux-rdma@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794629679; l=4137;
- i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
- bh=MVHarJC77cCCLJEzqiGRuVpi6O8XQzj00ArzQHD908I=;
- b=F74AfkgSmjHIJIkI11G6+klEgg5afXLKUyZ+MgiafeDZN5uFBsKxa2QREh+gp2N2FTyRZcd3/
- sEaJOr5FktXDaaM12ytCJMfZ4oOK01LFbHkVs6yBy5KhEbQS6xLAT2A
-X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
- pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
-X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
- auth_id=893
-X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
-Reply-To: hexlabsecurity@proton.me
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: ARM BCM53573 SoC hangs/lockups caused by locks/clock/random
+ changes
+To: Florian Fainelli <florian.fainelli@broadcom.com>,
+ Linus Walleij <linus.walleij@linaro.org>, =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?=
+ <zajec5@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, openwrt-devel@lists.openwrt.org,
+ bcm-kernel-feedback-list@broadcom.com
+References: <a03a6e1d-e99c-40a3-bdac-0075b5339beb@gmail.com>
+ <CACRpkdahWm9aP+UasDx=s3th+vyjAfuWrKB5HS9BKEbz90ZmKw@mail.gmail.com>
+ <ec17c6c8-e697-4a5a-a705-bff24daae7b2@gmail.com>
+ <CACRpkdZp=4sP_1a=u6c7DGbPWA8WRee4J8Wpsw7Y57S2FT5GFw@mail.gmail.com>
+ <92190d04-9b43-47ad-9dd0-4b85bb60f8ef@broadcom.com>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <92190d04-9b43-47ad-9dd0-4b85bb60f8ef@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+Rafal!
 
-smc_switch_cursor() orders the peer's consumer cursor against
-local_tx_ctrl_fin with smc_curs_comp(), which misorders them across the
-65535 -> 0 rollover of the u16 wrap. A consumer cursor behind reads as
-ahead: the catch-up can credit sndbuf_space for bytes never sent and
-tell the peer they are in its RMB, so the next send() can copy past the
-end of the send buffer. One ahead reads as behind and the catch-up is
-skipped. With a send buffer larger than the peer's RMB, the catch-up can
-also be short once the peer is more than one RMB past local_tx_ctrl_fin,
-and the connection then stalls.
+On 11/29/2023 1:42 PM, Florian Fainelli wrote:
+> On 11/29/23 13:33, Linus Walleij wrote:
+>> On Wed, Nov 29, 2023 at 10:20 PM Rafał Miłecki <zajec5@gmail.com> wrote:
+>>
+>>> Here comes more interesting experiment though. Putting there:
+>>>
+>>> if (!(foo++ % 10000)) {
+>>>          pr_info("[%s] arm_pm_idle:%ps\n", __func__, arm_pm_idle);
+>>> }
+>>>
+>>> doesn't seem to help.
+>>>
+>>>
+>>> Putting following however seems to make kernel/device stable:
+>>>
+>>> if (!(foo++ % 100)) {
+>>>          pr_info("[%s] arm_pm_idle:%ps\n", __func__, arm_pm_idle);
+>>> }
+>>
+>> That's just too weird.
+> 
+> It does seem to indicate that idling for too long wrecks havoc, but it 
+> is indeed not making much sense. Not having proper documentation for 
+> this SoC, it is hard to figure out what impact does stopping the ARM CPU 
+> clock has on the rest of the memory subsystem, especially outside of the 
+> CPU. I do not believe that this SoC has any form of PLL clock gating or 
+> pulse skipping.
+> 
+>>
+>>> I think I'm just going to assume those chipsets are simply hw broken.
+>>
+>> If disabling CPU idle on these altogether stabilize them, then maybe that
+>> is what we need to do?
+> 
+> Yes, please try booting with "nohlt" set on the kernel command line and 
+> see how that fares.
+> 
+> Also useful would be to dump the L2 CTLR and L2 ECTLR, this is a 
+> complete shot in the dark, though was initially wondering if there could 
+> be some retention issues, and would have recommended disabling the L2 
+> retention policy completely just for testing.
+> 
+> MRC p15, 1, <Rt>, c9, c0, 2;
+> 
+> of particular interest here would be bit at position 0, try to see if 
+> changing it to 1 (3 cycles) or 0 (2 cycles) changes anything.
+> 
+> MRC p15, 1, <Rt>, c9, c0, 3;
+> 
+> the lower bits are reserved, so I would not necessarily expect them to 
+> be mapping to configurable latencies, but if you see non-zero values in 
+> bits [28:0], try changing them to 0 and see if that changes anything.
+> 
+> Thanks for your persistence!
 
-Use the signed cursor distance, advance the RMB cursors across any
-number of wraps, and bound the catch-up by the bytes sent, which a
-peer's consumer cursor cannot legitimately pass.
+Thankfully now we have MCPs and it did not take look to identify a lead 
+that was actually documented into an internal bug tracker! Would you be 
+able to test this branch:
 
-Fixes: c6f02ebeea3a ("net/smc: switch connections to alternate link")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261029-b4-disp-33001ace-v8-0-f9bb96e17827%40proton.me?part=4
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
----
- net/smc/smc_cdc.h  | 10 ++++++++++
- net/smc/smc_core.c | 22 ++++++++++++++--------
- 2 files changed, 24 insertions(+), 8 deletions(-)
-
-diff --git a/net/smc/smc_cdc.h b/net/smc/smc_cdc.h
-index 597acb2e123f..4b586a20dfc2 100644
---- a/net/smc/smc_cdc.h
-+++ b/net/smc/smc_cdc.h
-@@ -97,6 +97,16 @@ static inline void smc_curs_add(int size, union smc_host_cursor *curs,
- 	}
- }
- 
-+/* smc_curs_add() for a value that may span more than one ring */
-+static inline void smc_curs_advance(unsigned int size,
-+				    union smc_host_cursor *curs, u32 value)
-+{
-+	u32 count = curs->count + value;
-+
-+	curs->wrap += count / size;
-+	curs->count = count % size;
-+}
-+
- /* Copy cursor src into tgt */
- static inline void smc_curs_copy(union smc_host_cursor *tgt,
- 				 union smc_host_cursor *src,
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index fb9f6a4eb683..76a577a20e4a 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -1054,22 +1054,28 @@ static int smc_switch_cursor(struct smc_sock *smc, struct smc_cdc_tx_pend *pend,
- 			     struct smc_wr_buf *wr_buf)
- {
- 	struct smc_connection *conn = &smc->conn;
--	union smc_host_cursor cons, fin;
-+	union smc_host_cursor cons, fin, sent;
- 	int rc = 0;
--	int diff;
-+	s64 diff;
- 
- 	conn->tx_switch_gen++;	/* completions of earlier sends: no credit */
-+	smc_curs_copy(&sent, &conn->tx_curs_sent, conn);
- 	smc_curs_copy(&conn->tx_curs_sent, &conn->tx_curs_fin, conn);
- 	smc_curs_copy(&fin, &conn->local_tx_ctrl_fin, conn);
- 	/* set prod cursor to old state, enforce tx_rdma_writes() */
- 	smc_curs_copy(&conn->local_tx_ctrl.prod, &fin, conn);
- 	smc_curs_copy(&cons, &conn->local_rx_ctrl.cons, conn);
- 
--	if (smc_curs_comp(conn->peer_rmbe_size, &cons, &fin) < 0) {
-+	/* not past what was sent, whatever cons says; that also keeps
-+	 * diff within one send buffer for smc_curs_add()
-+	 */
-+	diff = min(smc_curs_sdiff(conn->peer_rmbe_size, &fin, &cons),
-+		   smc_curs_sdiff(conn->sndbuf_desc->len,
-+				  &conn->tx_curs_fin, &sent));
-+	if (diff > 0) {
- 		/* cons cursor advanced more than fin, and prod was set
- 		 * fin above, so now prod is smaller than cons. Fix that.
- 		 */
--		diff = smc_curs_diff(conn->peer_rmbe_size, &fin, &cons);
- 		smc_curs_add(conn->sndbuf_desc->len,
- 			     &conn->tx_curs_sent, diff);
- 		smc_curs_add(conn->sndbuf_desc->len,
-@@ -1079,10 +1085,10 @@ static int smc_switch_cursor(struct smc_sock *smc, struct smc_cdc_tx_pend *pend,
- 		atomic_add(diff, &conn->sndbuf_space);
- 		smp_mb__after_atomic();
- 
--		smc_curs_add(conn->peer_rmbe_size,
--			     &conn->local_tx_ctrl.prod, diff);
--		smc_curs_add(conn->peer_rmbe_size,
--			     &conn->local_tx_ctrl_fin, diff);
-+		smc_curs_advance(conn->peer_rmbe_size,
-+				 &conn->local_tx_ctrl.prod, diff);
-+		smc_curs_advance(conn->peer_rmbe_size,
-+				 &conn->local_tx_ctrl_fin, diff);
- 	}
- 	/* recalculate, value is used by tx_rdma_writes() */
- 	atomic_set(&smc->conn.peer_rmbe_space, smc_write_space(conn));
-
+https://github.com/ffainelli/linux/pull/new/rfc/bcm53573-counter-wa
 -- 
-2.56.0
-
+Florian
 
