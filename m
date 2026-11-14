@@ -1,56 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794622547;
-	b=XkPuQXvWMnuNo1bQMM3li/mhNPrL6SvTxOb3EHROrOGNCOxB31xpno2w6/XRS4a5Divc
-	 qATl3D2AlRKKViyQ4D82zFl7VtR6Uyf5eHij/yZwDKTvvsRbeUFM0TP/bemmYoGKVu414
-	 r6xfbgoLQqiPIEXZuLZdW3LfqRs591duWbOFmf5slFiolZsn8Ly1ayO7GQyzFKV6KRsda
-	 fjxd+dMBFRzLDpquWOd7MirVK2ad5qkywlmHO+1Ej8u9AY+MbHLbIHKO3mxgjvdZIz5P7
-	 0ZEOIVaH6EvNrEpGMTnAi0zjSMp0R1KaRMPcjbCkTxy/2Xb+y8O4TK/zoPP5lFqgg2g==
+	t=1794622550;
+	b=coofF7YrxDOv7Bns8z2q5Xzbi9adoajLtxuGq5TmcA6r/2cczn+D1z65e1gHGb/iumoW
+	 HN4A2flwa3i77NYi8eJdqTqPe2eOBJFEAvg3erVGMQI1e0rAcPv3Usm0gJjD95wYFM+9R
+	 cLvpFnVV94c0Cs4SY5xGLQuGXIrfuJrZqxVvlCi/53BQSIT+LdqD4Gb08klp6DnXrwWLT
+	 RnrvsAtIAhFv6moW/eJrEIXMWYTSsXbgtiIEaxxuiQpbo1sIdG+UCOAGLfi4odTITfc6s
+	 BOw0OX9m+kTytRWMMPDcH50eqQnl/+QbGlOT9YIqcChPHpRjhEq7ZwBdg1M2etuYhHw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794622547;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794622550;
 	h=Received:DKIM-Signature:Subject:From:To:Cc:Date:Message-ID:
 	 In-Reply-To:References:X-sashiko-severity:Content-Type:
 	 Content-Transfer-Encoding:MIME-Version;
-	bh=R3lG4u0ogjfoUA7tJOEU4hFiSgjPKq7/ykUDDTKGVFM=;
-	b=b9b14qglFpFJMYuBD5hHCeMXwFeQ5VyzDixV4vcAcYQzJG72KsJq3S+4hbUUdJQGmgDS
-	 4c0ieU94FM26+pPKGPlOerGG/ZPHPk/lTMAGL2GVtnAzw/DkYzgyVEQDvAYiwUGq72og9
-	 lLQCXB9EHEoZYoN1Sd2c1gKijE+tW1FLATgR+Sihu9FskpPdsi16HUPNTBQgBDq93lvTt
-	 EDpds0IXStsMfNLVf4UeU0MU+TnPaQRHvF7j7EMDilOzrRlBhtGYgErqD+4RcPgLczK/L
-	 B76eRTK9qh0EopZMelSBqNxZjYQ4OUuPVlK5BC8xNUe+uaZ7BSmM1C+N1j89DjdiB2w==
+	bh=UhKg19WmHWcCDhoq+fCZ7tMD7STH5vjOVAh4jEFeDvU=;
+	b=UZusJHEfjVwUi7wFmHGDfjlg4r7hUj4hgbp8ewJih+Abg+5I7MEHYZoOMsZfiP3mn4K9
+	 zpPvQ0kNuHp6KGN8NnmA6tIycIz6X7nUQdZ68slVP+U2oHnjxBjbUZHPr2oCPmb64oMVn
+	 HiKNvgwMeZdLguaRz7h1bYa4unw/0EIkKd29ESA+NXWhgH00nQsvb2YZNOfANvkDwOYHY
+	 A0xOyBQlGnrt+H9oEZwWLCD/aL1HUMsuCtyyDcGlnO5X6yMwnspGBEmLbhv7IYO8i0/Cl
+	 f1ILY8sc21Ug2WRWl18jGeTx4v08rQpvsBC5JNLFlQCMz0P2jh3sqPbxujF7HmoBBuA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OlUCd9Ed;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QNKpNm+m;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF00606A329;
-	Sat, 14 Nov 2026 02:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6220460A2609;
+	Sat, 14 Nov 2026 02:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OlUCd9Ed
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD1C1F000C6;
-	Sat, 14 Nov 2026 02:15:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QNKpNm+m
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40D11F000C6;
+	Sat, 14 Nov 2026 02:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794622546;
-	bh=R3lG4u0ogjfoUA7tJOEU4hFiSgjPKq7/ykUDDTKGVFM=;
+	s=k20260515; t=1794622550;
+	bh=UhKg19WmHWcCDhoq+fCZ7tMD7STH5vjOVAh4jEFeDvU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OlUCd9Ed6LLcuKQuAZJ1QHie5KfkLMXIb4tXdYIvM1ODR8CM+/12f0vBkai+HaN6M
-	 LFgE9oh4SaevwAm3acsrWeQhnn2sh+nuFsnaMdVLE4/C2XtehDwCykjha3LPNr9tr+
-	 JYyhXwzOcy0C1EZhYdUSsmeS8zsA/JllYjaAmFFgDO4/MYcJ3zbt0OCq2yaFD89l1V
-	 RDl7vYjziumU9iLSknD2FVgSXetRFurHwemX4itiWi6xJevOnHf0kUH4loYkRwb1IA
-	 uW5CFu/9oOIN2/RU4alc5CoPwMuUkEtTj05TkgpoSVHuT1FXFjv3rKUnMKiHkjoqSN
-	 2+2Dr0f20sw+Q==
-Subject: Re: [PATCH net 10/15] ipvs: honor the overload state and do not enter
- it forever
+	b=QNKpNm+m3TTK/R7vy68UN0TlnYlYIjfkJ7gAD5WE2MS7oighyPLX80tzC9Awrn2Cs
+	 VBZD0bTwH7VaRILLMlg37aIYj4Cy+C8uE0Vhi7PdZuQfmKwiTkk4idRIzM8hWCCd57
+	 3Q1g/QXOyFTTdBagdZSCDOUkkFr7zCI2XXsHgNBQCwnwG5jDh53n1BMyrpD8q7a1Uj
+	 +oQ3G0Qjen3/zaMsi7X4oKA1kFaT/FnVxQxJnULFhmsbeHmegsM0DgDNd15msYDmzD
+	 0eqsy+t408wzHWghsguRhyG9r2YKc6o7yOp9l+TlCC/UN7KyBitg4vihWlnpfMaalu
+	 ChyOG5/aEqD4A==
+Subject:
+ Re: [PATCH net 14/15] ipvs: wait grace period before reusing destinations
 From: netdev-bot+sashiko@kernel.org
 To: pablo@netfilter.org
 Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
  netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
  edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Date: Sat, 14 Nov 2026 02:15:45 +0000
-Message-ID: <179462254584.2199510.7662022580962263385@kernel.org>
-In-Reply-To: <20261113011447.2357709-11-pablo@netfilter.org>
-References: <20261113011447.2357709-11-pablo@netfilter.org>
+Date: Sat, 14 Nov 2026 02:15:49 +0000
+Message-ID: <179462254924.2199510.13893062636821703551@kernel.org>
+In-Reply-To: <20261113011447.2357709-15-pablo@netfilter.org>
+References: <20261113011447.2357709-15-pablo@netfilter.org>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -70,93 +70,56 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message's reason for moving ip_vs_dest_set_min() after
-  the set_max/erase cleanup in ip_vs_lblcr_schedule()…
+- [Low] The commit message for "ipvs: wait grace period before reusing
+  destinations" describes the change against an earlier revision of the…
 
 --
 
-ipvs: honor the overload state and do not enter it forever
+ipvs: wait grace period before reusing destinations
 
-This commit adds an smp_mb() and a re-read of totalconns in
-__ip_vs_dest_update_overload(), so a dest cannot stay in the overload
-state forever when it races with ip_vs_unbind_dest(). It also drops the
-overload parameter from ip_vs_dest_update_overload() and makes LBLC and
-LBLCR honor the overload state for cached dests. In LBLCR it moves the
-ip_vs_dest_set_min() call to after the set_max/erase cleanup.
+This patch adds a conditional RCU grace-period wait in ip_vs_add_dest()
+right after a destination is taken from dest_trash, before its estimator
+is restarted. Trash insertions are batched so that one rcu_state cookie
+covers each removal. A need_gp flag makes ip_vs_rs_hash() wait before it
+rehashes a destination that was unhashed during an edit.
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261019150249.1879516-2-pablo%40netfilter.org
-
-> diff --git a/net/netfilter/ipvs/ip_vs_lblcr.c b/net/netfilter/ipvs/ip_vs_lblcr.c
-> index dfb5bf83750db..4046608922e7c 100644
-> --- a/net/netfilter/ipvs/ip_vs_lblcr.c
-> +++ b/net/netfilter/ipvs/ip_vs_lblcr.c
+> When a destination is retrieved from dest_trash, ip_vs_add_dest() currently
+> restarts its estimator before waiting for the grace period.
 
 [ ... ]
 
-> @@ -658,9 +659,6 @@ ip_vs_lblcr_schedule(struct ip_vs_service *svc, const struct sk_buff *skb,
->  	if (en) {
->  		en->lastuse = jiffies;
->  
-> -		/* Get the least loaded destination */
-> -		dest = ip_vs_dest_set_min(&en->set);
-> -
->  		/* More than one destination + enough time passed by, cleanup */
->  		if (atomic_read(&en->set.size) > 1 &&
->  		    time_after(jiffies, en->set.lastmod +
-> @@ -676,6 +674,9 @@ ip_vs_lblcr_schedule(struct ip_vs_service *svc, const struct sk_buff *skb,
->  			spin_unlock_bh(&svc->sched_lock);
->  		}
->  
-> +		/* Get the least loaded destination */
-> +		dest = ip_vs_dest_set_min(&en->set);
-> +
->  		/* If the destination is not overloaded, use it */
->  		if (dest && !is_overloaded(dest, svc))
->  			goto out;
+> ip_vs_start_estimator() rewrites the node on its temporary list on success,
+> or initializes it on failure, before the current wait. A reader can then
+> follow the changed link or stop traversing the chain early.
 
 [Severity: Low]
-This isn't a bug, and the code change looks right. The commit message
-explains the move this way:
+Does this wording describe the change against an earlier revision of the
+patch rather than the tree it applies to?
 
-  "Also, move the ip_vs_dest_set_min() call in LBLCR after the
-  ip_vs_dest_set_erase() call that removes the most-loaded
-  server because due to races we may work with dest that is
-  in process of removing, i.e. ip_vs_dest_set_min() and
-  ip_vs_dest_set_max() may return same dest."
+In the parent tree, the trash-reuse path in ip_vs_add_dest() has no
+grace-period wait. ip_vs_trash_get_dest() is followed directly by
+ip_vs_start_estimator() and __ip_vs_update_dest(). There is also no
+rcu_state, need_gp or cond_synchronize_rcu() anywhere under
+net/netfilter/ipvs/ in the parent tree.
 
-Can the two helpers also return the same dest without any race?
+So "currently restarts its estimator before waiting" and "before the
+current wait" point to a wait that does not exist in the baseline. The
+patch adds the wait rather than moving it.
 
-ip_vs_dest_set_min() only replaces its candidate when another member is
-strictly less loaded:
+> The grace-period cookie is also saved when a live destination is unhashed
+> for an edit and consumed when it is rehashed. Describe rcu_state as the
+> cookie for an unlink, covering both trash and rehash cases.
 
-    if (((__s64)loh * atomic_read(&dest->weight) >
-         (__s64)doh * atomic_read(&least->weight)) &&
-        (dest->cflags & IP_VS_DEST_CF_AVAILABLE)) {
+The sentence "Describe rcu_state as the cookie for an unlink" reads like a
+note between patch versions about rewording the comment on the new
+struct ip_vs_dest::rcu_state field. It does not describe a change against
+the baseline.
 
-ip_vs_dest_set_max() only replaces its candidate when another member is
-strictly more loaded:
-
-    if (((__s64)moh * atomic_read(&dest->weight) <
-         (__s64)doh * atomic_read(&most->weight))
-        && (atomic_read(&dest->weight) > 0)) {
-
-Take two weight-1 members with the same ip_vs_dest_conn_overhead(), for
-example both idle. Both helpers then return the first list element.
-
-Before this patch, once the set had more than one member and was older
-than sysctl_lblcr_expiration, the sequence was:
-
-ip_vs_lblcr_schedule()
-    ip_vs_dest_set_min()     -> first member (tie)
-    ip_vs_dest_set_max()     -> same first member (tie)
-    ip_vs_dest_set_erase()   -> removes it from en->set
-    goto out                 -> returns the erased dest
-
-So on load ties the old code returned the dest it had just removed from
-the cache set, with no race involved.
-
-Could the commit message say that this also happens on ties, not only
-because of races?
+The patch is tagged for stable. Could the message say plainly that before
+this patch n_list, d_list and est->list were reused with no grace period?
+It could then say that the patch adds cond_synchronize_rcu() right after
+the dest is taken from the trash, and a need_gp wait in ip_vs_rs_hash()
+for the edit/rehash case.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261113011447.2357709-2-pablo%40netfilter.org
