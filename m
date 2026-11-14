@@ -1,74 +1,74 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.199
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794628870;
-	b=Kmc6Jno0IlvjRaa0pFm9D8rdjbkdx1ML2UNi4dqwe7/HX/S5qRfpZOB0GsDL/ZSy2YnI
-	 4hXC9/1g2fmYxeu7oN8NrPzYDMnK1phCvZ2l+4lzwgAT7a7xipGaPtMbnzveRTVO13Vij
-	 6xHV/ivxoaXserChTaklhKbYt0fbv4XUNL0gcRYx5tKDHHvPTPzXxZhZh8LAhD9AlypWO
-	 22czw9KLyVXGwmkvqEaUZkTUVVA4KuC8Oyej70jFUG/235EjGy0GYzXNTTxCYMsLuHC0F
-	 9am7KABEW+jVrwR50IY2bzQTlYkswhg/snp27S6uPJALh4SSEH6VGLN9KOlSZT1ZWKA==
+	t=1794628871;
+	b=hp7iD59DItXkc8TiaYXjGj2ZAwVMKLZkX9g1/t23EHeoimahWNCCHLQi1TevsOEowZmp
+	 ksat2jsuKarauw26eT/uHVmbT8weLVJRVQf5pYZjp/EFeNyRU4XW2IVnpyB9OTh1s/60q
+	 +nFqtN+wuPVNBh4+6g6mRP+MyQ5T3L45P2KSey5hLCWGW1nP82/9d7QORv+tYR/e9gxfX
+	 6gpVOOPUGAovBI+nfAiXRmRBo+CSGkaSAGmfZY6J+kbor9UgrZX8nwIttkwS4k0E/HLZ1
+	 tmjudLcQCx1GwLEW9H1BH5mz7Zb/WBmzKox05bzw1pnk0t4XU511UjD47OnX1HzcsgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794628870;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794628871;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Received:Date:In-Reply-To:
 	 Mime-Version:References:X-Mailer:Message-ID:Subject:From:To:Cc:
 	 Content-Type;
-	bh=ICaWdcmZM/SOor8gQAvznooFYxuJag18RMXRZ2jewMI=;
-	b=qInz4vaDHL3d8j5cQowkOxc7sCNK7wGfdQCFkuhDLL1qFNHpdz05pmiWxApi9AWVYbCt
-	 z61i5MzdGy2dyfHxb0sLRYd+THi0IY6SGYygwOtSRUrckRv9umvV06VfKTfCjHwMuXngj
-	 Z40nwRUyurXHUpR1HYRAVMo6ugUudFWCau5NNCpTh3F39jsEuoDeJDhq1YCSfMk8gde/z
-	 SIUiKod0phqs7cDhWKNWOdES+P8OmS6YkpFMTAODQC5AAZ4emDI0WmtElfawACSpL9wxm
-	 OfBekAJnAm+SAeAdoiaHpoYLWyco+8c2z4Zs5IF73FPDp7Sq8n9WcMOtDAXfh8RJThg==
+	bh=OEFLWV/jNzEhHP9ltrmzYG75eB3RgpJ5WuUSRLn3T7E=;
+	b=gFeMUMVkwiSwq4adVsD+1j69PyxPKuBPG2QPjUtfjZck2b+aK0xPaq3NiKcYHdIxeOQh
+	 sZjP5tVywnMhPA4Kmkh9nuZCchTpnU0VWGQW4MVfSNPg4SBpVXN9q8qxrs+1oYrf78PYt
+	 C6FRRRP7awXHIsvjjoASKCkH6sk6qWG+Vig2QBPaaqhIw6lJaz7fKg3kupfw9cf5443ES
+	 paCIy81p2jPd0J6Eqb/AgHZVSqm+RPBEw8VjEHBUry8RIujKzONLUxKb8O734J6VLaZJC
+	 6wMBAQk5dS4SFS+qAYcxCyhYO9qZJOUrMwFcot2lWfi2T1Aq+qiyoPfBKljzj2VUGYw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=google.com;
 	spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com;
-	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Y7mwpcEp;
-	arc=none smtp.remote-ip=209.85.216.69
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	dkim=pass header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=G8uL1wb4;
+	arc=none smtp.remote-ip=209.85.210.199
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA78D606A8A7
-	for <netdev@vger.kernel.org>; Sat, 14 Nov 2026 04:01:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA78D606A8A7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41D5606A8B4
+	for <netdev@vger.kernel.org>; Sat, 14 Nov 2026 04:01:10 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C41D5606A8B4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Y7mwpcEp
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3b07b06027eso2231943a91.0
-        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:01:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=G8uL1wb4
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8b647bbf8a9so1970302b3a.0
+        for <netdev@vger.kernel.org>; Fri, 13 Nov 2026 20:01:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794628869; x=1795233669; darn=vger.kernel.org;
+        d=google.com; s=20260707; t=1794628870; x=1795233670; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ICaWdcmZM/SOor8gQAvznooFYxuJag18RMXRZ2jewMI=;
-        b=Y7mwpcEp/iIEkrOnZSlhnXcpha9eJ5eB1vRyoSZAJzgZq5KhpPtWOg8k8/7MeWi8MH
-         jsyefSpkQePJtNhdMoAnE+SkIiyR12yBSJRwXIqfVo5x0NlH8KUuH8acewTArpHkCuhd
-         O0eJ3tb3GwpZuq0f3aItf0BuA/Av8f2Yu3RJqNKmeJH1DvLJY9OjXVG5g1ZjiwhzomKa
-         uizgs/nX2Zi9Ep8xXsyJo+T000cfjwjBaG12uhEDxnljNDt8RJbwnDneiSdTX3QkNnsu
-         EKl2y2waLcjuQ+UdOAlxAsQvu5ey0qh3GRWSAYpKosuia9I/IunmbkXjROQXbDminixz
-         +mug==
+        bh=OEFLWV/jNzEhHP9ltrmzYG75eB3RgpJ5WuUSRLn3T7E=;
+        b=G8uL1wb4Lz4MJvzrzwKe5jZ6/FKTKCEOy+sv/uNaoATOflWuR0FS4dsWxc8MMilJ+k
+         kmnzVKKQAZ8KGtCbjEi80TlKWvvndaiRGKXAuClpNggh8tCblUh7GDDsUiSGpwf5X2Hf
+         O8bUmgjO3s/m7Nm8EF/jpjOh1oF452UjDCWuEPa8AKIyr/iIo+KpfOFTKme+soVkOfa3
+         yy3BRUpPD6aAZs4HkxM+/Hm6rqWiqSzmYbWeA7L4MuZMaHlJQUytAgYIvyY/y18ll7Ui
+         ANeRh7FXqysVlRv5KKjWiPtfnWCMLhxe+QCESaHVH6Xnydwzc3jQF2d5Sde2Z69NMknr
+         E2kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794628869; x=1795233669;
+        d=1e100.net; s=20260707; t=1794628870; x=1795233670;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ICaWdcmZM/SOor8gQAvznooFYxuJag18RMXRZ2jewMI=;
-        b=frt1A+Mpuki3yA0cavB+WHwbJaSIjuu9NwuqtFlwVIVQp/RnZgh8H8ldrf/ByZuxRV
-         7yUGTrUR6S6is4LX4hFmX/F/BzZB1UEFLO5l4v28JX3NsL3FyQ0VzQuFrlhuLYJgHQnW
-         MMo1E9kovic5gr8H0MFAZSF1mhQigLQmbaela7j69EHXx1wj35G0YTJyA3SjVq6myTQK
-         +2f7ds+ZvGkRVpOrMyiT0tACyfEYC/UN8sskB6bNL1mrZCBU3DMBMHjGIFruL2gUbB+q
-         E1e15zpjXF7mwXkS5DofguI3fcXWAEaBzBqESzbjILehD15RJoXwV1Led357tdwpBIsK
-         JZag==
-X-Forwarded-Encrypted: i=1; AL+hErG7wot78YZX3WAAvt+LeKuBoYzpmmnsOCVt87hy5Mtw6uYYCQGhOUb0Rm6Jr/XNmrctdIi3ehk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8lAep6huKOHdAW6HurXMZhh1bBToXPxoINLkhN16OdyZlyB1DO
-	gA+ormo9T9rhjuUDGG+Art/SfQj3uuMew+IMwbQve6LgKpO78qzm8dh6OKLZEVbOxxroKyij6tK
-	WPY1xUg==
-X-Received: from pgcgn26-n2.prod.google.com ([2002:a05:6a02:6a1a:20b0:cd8:baff:81d8])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5548:b0:3a4:adea:50ad
- with SMTP id 98e67ed59e1d1-3b1b09fcbd0mr4327349a91.27.1794628868921; Fri, 13
- Nov 2026 20:01:08 -0800 (PST)
-Date: Sat, 14 Nov 2026 04:00:50 +0000
+        bh=OEFLWV/jNzEhHP9ltrmzYG75eB3RgpJ5WuUSRLn3T7E=;
+        b=EOwyYSlEy9mmHo2wDM7H9e/za3EProWfFvLPvPerYdU3ZBe6gnQcHR9crxpuivHQho
+         8DEbq0zk3S2dGymJqEoa1l9DlnGn+YHEkw+8pURCy7DKp7o3eBHsBlSESMV9lYzl81tJ
+         A39tN1T4BFxP3HQMLsc5e0PsJB4PmoBdZuM4e0abwtsbh+UgvXvCuiLQ5lBya45PtJ+W
+         8VUeax8OLQYErMFixMF4jdEGspDfRbK/YC1JVUoCQJIqQl0NkgJYhirFw9ne+Asggt1S
+         zuGCEV/N9pTelmR8K0kwY7C2Rfxum4Kf3NOSKkJ3lM0BeaL67Oio/a/dT8RdqwVagpg+
+         5Krw==
+X-Forwarded-Encrypted: i=1; AL+hErHm5DkOigBJdnsnZLW3mSKs9reVuqnWnl1Y/rSkw2hUindzMBq3YPtNRPqG3NNNPEDZsL/QZIc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/ERD+hBrUa3wxMUmAz5KWDYsc9kosDycXTXIMcDL+owNMmBDAK
+	E8/HoKgF1WF5apFl9V2kHskneRTrKhCiLMrx6mQ5xGmBpza0oUZciM3CoiSy+uYbjJhtishP7bS
+	ZZqh9Cg==
+X-Received: from pfdu2-n2.prod.google.com ([2002:a05:6a00:c002:20b0:88e:f55:207e])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a212:b0:89f:3053:9ac1
+ with SMTP id d2e1a72fcca58-8beb609d4c6mr4450606b3a.17.1794628869683; Fri, 13
+ Nov 2026 20:01:09 -0800 (PST)
+Date: Sat, 14 Nov 2026 04:00:51 +0000
 In-Reply-To: <20261114040101.1043546-1-kuniyu@google.com>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,8 +81,8 @@ Precedence: list
 Mime-Version: 1.0
 References: <20261114040101.1043546-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
-Message-ID: <20261114040101.1043546-8-kuniyu@google.com>
-Subject: [PATCH v1 net-next 7/8] tcp: Batch memory accounting in tcp_collapse().
+Message-ID: <20261114040101.1043546-9-kuniyu@google.com>
+Subject: [PATCH v1 net-next 8/8] selftest: packetdrill: Add test for tcp_collapse().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
 	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
@@ -90,108 +90,204 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Once tcp_collapse_one() calls sock_rfree(), skb->truesize is
-reclaimed to sk->sk_forward_alloc by sk_mem_uncharge().
+tcp_collapse() now does not collapse high-density skbs and a
+low-density skb sandwitched by hihg-density skbs.
 
-However, sk_mem_uncharge() rounds down sk->sk_forward_alloc
-immediately once it reaches 4K since commit 4890b686f408 ("net:
-keep sk->sk_forward_alloc as small as possible").
+tcp_collapse.pkt verifies the behaviour by
 
-This unnecessarily reclaims memory for newly allocated skbs,
-and the following skb_set_owner_r() for them underflows
-sk->sk_forward_alloc without sk_forced_mem_schedule().
+1. set a large SO_RCVBUF
+2. send one high-density skb with 100 bytes read()
+3. send one high-density skb
+4. send one low-density skb
+5. send one high-density skb
+6. send 30 low-density skbs
+7. set a small SO_RCVBUF
+8. send a small data to trigger tcp_collapse()
+9. check TcpExtTCPRcvCollapsed via nstat
 
-Let's cache the delta during tcp_collapse() and batch accounting
-at the end.
+Without the series, the first high-density skb is collapsed.
+In addition, the first low-density skb drags the following
+high-density skb into collapsing, consuming more memory.
 
-Then, we no longer need sk_forced_mem_schedule(), and instead
-DEBUG_NET_WARN_ON_ONCE() is added to catch a future issue.
+If we remove sk_forced_mem_schedule() without this series,
+sk->sk_forwad_alloc becomes negative at the end of tcp_collapse().
+
+Note that 30 segments are to make the memory savings large
+enough so that the margin can absorb minor size delta of
+struct sk_buff or L1_CACHE_BYTES across configs.
+
+skb truesize, TCP_COLLAPSE_MAX_SIZE, TCP_COLLAPSE_SCALING_RATIO
+depend on PAGE_SIZE being 4K, so the test is skipped if getconf
+returns non-4K PAGE_SIZE.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/ipv4/tcp_input.c | 34 +++++++++++++++++++++++++++++-----
- 1 file changed, 29 insertions(+), 5 deletions(-)
+ .../selftests/net/packetdrill/ksft_runner.sh  |   9 ++
+ .../net/packetdrill/tcp_collapse.pkt          | 135 ++++++++++++++++++
+ 2 files changed, 144 insertions(+)
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_collapse.pkt
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 9f32577b0b53..598463f33987 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5822,6 +5822,24 @@ static bool tcp_collapse_skb_bloated(const struct sk_buff *skb,
- 	return __tcp_win_from_space(scaling_ratio, skb->truesize) > unread;
- }
+diff --git a/tools/testing/selftests/net/packetdrill/ksft_runner.sh b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+index 0a97d5ae3469..250d143bb9f7 100755
+--- a/tools/testing/selftests/net/packetdrill/ksft_runner.sh
++++ b/tools/testing/selftests/net/packetdrill/ksft_runner.sh
+@@ -44,6 +44,15 @@ if [ -z "$(which packetdrill)" ]; then
+ 	exit "$KSFT_SKIP"
+ fi
  
-+static int tcp_collapse_uncharge(struct sk_buff *skb)
-+{
-+	DEBUG_NET_WARN_ON_ONCE(skb->destructor != sock_rfree);
++page_size=$(grep -E '^--define="?PAGE_SIZE=' $script | sed -E 's/.*PAGE_SIZE="?([0-9]+)"?.*/\1/')
++if [[ -n "$page_size" ]]; then
++	cur_page_size=$(getconf PAGESIZE 2>/dev/null)
++	if [[ "$cur_page_size" != "$page_size" ]]; then
++		ktap_skip_all "requires PAGE_SIZE=$page_size (current: ${cur_page_size:-unknown})"
++		exit "$KSFT_SKIP"
++	fi
++fi
 +
-+	skb->sk = NULL;
-+	skb->destructor = NULL;
-+
-+	return skb->truesize;
-+}
-+
-+static int tcp_collapse_charge(struct sk_buff *skb, struct sock *sk)
-+{
-+	skb->sk = sk;
-+	skb->destructor = sock_rfree;
-+
-+	return -skb->truesize;
-+}
-+
- static struct sk_buff *tcp_collapse_one(struct sock *sk, struct sk_buff *skb,
- 					struct sk_buff_head *list,
- 					struct rb_root *root)
-@@ -5857,6 +5875,7 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 	int remainder, nskbs;
- 	struct sk_buff *nskb;
- 	u8 scaling_ratio;
-+	int released = 0;
- 	u32 sub_end;
+ declare -a optargs
+ failfunc=ktap_test_fail
  
- 	scaling_ratio = min(tcp_sk(sk)->scaling_ratio,
-@@ -5874,6 +5893,7 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 
- 		/* No new bits? It is possible on ofo queue. */
- 		if (!before(start, TCP_SKB_CB(skb)->end_seq)) {
-+			released += tcp_collapse_uncharge(skb);
- 			skb = tcp_collapse_one(sk, skb, list, root);
- 			goto restart;
- 		}
-@@ -5959,11 +5979,8 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 			__skb_queue_before(list, skb, nskb);
- 		else
- 			__skb_queue_tail(&tmp, nskb); /* defer rbtree insertion */
--		/* nskb is charged before the skbs it replaces are freed.
--		 * Make sure sk->sk_forward_alloc can not become negative.
--		 */
--		sk_forced_mem_schedule(sk, nskb->truesize);
--		skb_set_owner_r(nskb, sk);
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_collapse.pkt b/tools/testing/selftests/net/packetdrill/tcp_collapse.pkt
+new file mode 100644
+index 000000000000..90e8be86968f
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_collapse.pkt
+@@ -0,0 +1,135 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Test that tcp_collapse() only collapses bloated skb runs, skips leading
++// and trailing high-density skbs, skips isolated bloated skbs when collapsing
++// them would not shrink truesize, and properly recovers receive buffer space.
 +
-+		released += tcp_collapse_charge(nskb, sk);
- 		mptcp_skb_ext_move(nskb, skb);
- 
- 		/* Copy data, releasing collapsed skbs. */
-@@ -5987,6 +6004,7 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 				start += size;
- 			}
- 			if (!before(start, TCP_SKB_CB(skb)->end_seq)) {
-+				released += tcp_collapse_uncharge(skb);
- 				skb = tcp_collapse_one(sk, skb, list, root);
- 			}
- 		}
-@@ -5998,6 +6016,12 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 		tcp_rbtree_insert(root, skb);
- 
- 	__skb_queue_purge_reason(&pool, SKB_CONSUMED);
++--mss=1000
++--define="PAGE_SIZE=4096"
 +
-+	if (released) {
-+		DEBUG_NET_WARN_ON_ONCE(released < 0);
-+		atomic_sub(released, &sk->sk_rmem_alloc);
-+		sk_mem_uncharge(sk, released);
-+	}
- }
- 
- /* Collapse ofo queue. Algorithm: select contiguous sequence of skbs
++`./defaults.sh`
++
++// Establish a connection with a large receive buffer.
++// __sock_set_rcvbuf() doubles, so 2000000
++   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 setsockopt(3, SOL_SOCKET, SO_RCVBUF, [1000000], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
++
++   +0 < S 0:0(0) win 32792 <mss 1000,nop,nop,sackOK,nop,wscale 7>
++   +0 > S. 0:0(0) ack 1 win 65535 <mss 1460,nop,nop,sackOK,nop,wscale 4>
++   +0 < . 1:1(0) ack 1 win 65535
++
++   +0 accept(3, ..., ...) = 4
++
++// 1. Queue two high-density 62,000 B segments (each adds 15 pages of frag
++// truesize with enough margin across NET_SKB_PAD, L1_CACHE_BYTES, and
++// MAX_SKB_FRAGS configs).
++// Read 100 bytes from the first one so before(skb->seq, tp->copied_seq) is true.
++   +0 < P. 1:62001(62000) ack 1 win 65535
++    * > .  1:1(0) ack 62001
++   +0 read(4, ..., 100) = 100
++
++   +0 < P. 62001:124001(62000) ack 1 win 65535
++    * > .  1:1(0) ack 124001
++
++// 2. Queue an isolated bloated 1,000 B segment.
++   +0 < P. 124001:125001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 125001
++
++// 3. Queue another high-density 62,000 B segment.
++   +0 < P. 125001:187001(62000) ack 1 win 65535
++    * > .  1:1(0) ack 187001
++
++// 4. Queue a run of 30 bloated 1,000 B segments.
++   +0 < P. 187001:188001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 188001
++   +0 < P. 188001:189001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 189001
++   +0 < P. 189001:190001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 190001
++   +0 < P. 190001:191001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 191001
++   +0 < P. 191001:192001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 192001
++   +0 < P. 192001:193001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 193001
++   +0 < P. 193001:194001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 194001
++   +0 < P. 194001:195001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 195001
++   +0 < P. 195001:196001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 196001
++   +0 < P. 196001:197001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 197001
++   +0 < P. 197001:198001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 198001
++   +0 < P. 198001:199001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 199001
++   +0 < P. 199001:200001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 200001
++   +0 < P. 200001:201001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 201001
++   +0 < P. 201001:202001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 202001
++   +0 < P. 202001:203001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 203001
++   +0 < P. 203001:204001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 204001
++   +0 < P. 204001:205001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 205001
++   +0 < P. 205001:206001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 206001
++   +0 < P. 206001:207001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 207001
++   +0 < P. 207001:208001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 208001
++   +0 < P. 208001:209001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 209001
++   +0 < P. 209001:210001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 210001
++   +0 < P. 210001:211001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 211001
++   +0 < P. 211001:212001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 212001
++   +0 < P. 212001:213001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 213001
++   +0 < P. 213001:214001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 214001
++   +0 < P. 214001:215001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 215001
++   +0 < P. 215001:216001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 216001
++   +0 < P. 216001:217001(1000) ack 1 win 65535
++    * > .  1:1(0) ack 217001
++
++// 5. Queue a trailing high-density 62,000 B segment.
++   +0 < P. 217001:279001(62000) ack 1 win 65535
++    * > .  1:1(0) ack 279001
++
++// Reset SNMP counters.
++   +0 `nstat -n`
++
++// Shrink SO_RCVBUF so sk_rcvbuf (320,000) is smaller than current
++// sk_rmem_alloc (334,592 on x86_64 default), but larger than sk_rmem_alloc
++// after collapsing the 30 bloated skbs (300,288 on x86_64 default).
++   +0 setsockopt(4, SOL_SOCKET, SO_RCVBUF, [160000], 4) = 0
++
++// Inject the next 1,000 B segment with a changed window to bypass
++// header prediction.  This triggers tcp_prune_queue() -> tcp_collapse().
++// Only the 30 bloated segments should be collapsed; the high-density
++// segments and the isolated bloated segment are skipped.  sk_rmem_alloc
++// shrinks below sk_rcvbuf, so tcp_can_ingest() succeeds and the packet
++// is accepted.
++   +0 < P. 279001:280001(1000) ack 1 win 65534
++    * > .  1:1(0) ack 280001
++
++// Verify exactly 30 skbs were collapsed.
++   +0 `nstat -s | grep TcpExtTCPRcvCollapsed | grep -q " 30 "`
++
++// Verify no packets were dropped.
++   +0 `test -z "$(nstat -s | grep TcpExtTCPRcvQDrop)"`
++
++// Read all remaining queued data to verify data integrity.
++   +0 read(4, ..., 300000) = 279900
 -- 
 2.56.0.611.g1030f0b940-goog
 
