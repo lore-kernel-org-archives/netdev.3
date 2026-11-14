@@ -1,67 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794616337;
-	b=IDGMX7L/FjK/rMzzyF/i3+9rpkK1VQAoozFMPlM2hlZfnzocO8tYBRsWrgx2r6+mcPOJ
-	 +GOhRnGxNMrccSHqCTKuF6UCy4xm7cIGfCs71/YVOaIdplROgj3cqeHMbT9lAdIQY2Lpf
-	 TCHRePz8VBR4tL1TW1l1soCAgKLK1IyRivyVNc30IBLGvzGvwgH+Uwm3dazJBKUc8Jhlw
-	 fjwuzGz1ptdBNTs+UKeuKAuzPn6EM8yAKHZ8SWD2OEn8Y+/TujhskQAtO3grYGahU+4UN
-	 C3fL6bmoT+Kjmz1qbiB71JroXrr+VFl42avtMnm2qjWEB2bWCybIF6b1QFtE9+/Cwhw==
+	t=1794616341;
+	b=jnTE2hxkBlA5ueqOVFE4dj+irjvM92cKKaBTrlXnOhuNDn5I1A6+XyJDudaVDOL+K7ON
+	 Ou0n4f/sC/dCKuhbKQOeRheXHDMIpX2rX8G1/GmT0rFWvZ8RCwIphBM/xKHr2Xjfm4u4e
+	 lkly66nv+EYS/I+2HXKVixbD+ILUf5qZFwFC1So9K65azRIKIt7EMh2oy5rLjxzmhsamJ
+	 koEx0tK2zh233IvlST8QsKzBgIyx0tgZ0bDFaUzPF7iuY8cE7RdL2nhNk6hrSZuj2faIh
+	 byCwPva7rZ3m5cfbj8sWBk5xCoAxVDWTg4ugFKOM7fD0IuFoc9nPWez6E3AaiAShXjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794616337;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 In-Reply-To:References:Auto-Submitted:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=Ld9+YyGfs/W/wYUchYl+G0tuTdeNOsMW/DqiAiz5bT8=;
-	b=x45jIPeDVqn329eF24EGdhM8Xthky7EzDPUsUiLnxWo4v3PXXuYExpljQtJKi8zqiwor
-	 8Rz+R3PzTwKNRRFzu+ruPjCVSKyWc598kZ1PoXKUTmFd/dIX1nB+dyRYrOMUNVGawfFYb
-	 JLLRvwSQdE2R3nKxmrhjehZ97B0eRUQKbr9nt0S9LBIb/wb96lkeBdqYWHZ5IFOh22Jfz
-	 hXkfkoxuLAhFrzc+XSCHXLj1eYYIJPbjDjUmulnHr5dLqAStXIJXMfp3i/eMq6gmoeMzH
-	 xVeonOJHAc+DFnSevbjYT+RnAxlg1X8IoBiI3crC4qUbbpPlH5y+kDyVBtV7xvixGLg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794616341;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 In-Reply-To:References:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=gkbU5EDdzYPCddiCey58CsoeSyTe1/vy92g3Bk6idAA=;
+	b=Ur8Z8EwDZJaoik4V897cmLdeK3G+q2GVcfzUKGTtx6DhCobHc6H9Dg2QqCYQlrz3FTsD
+	 Z9+PJ4fCtIiXgqrdaFeyGgUp8VlZq3m5UT2EsMwd/GM689I0mmpCcOpgc+CSdLonX0RyQ
+	 502dFflzLi+SgJtBVzluLZqHvX6n3mfDrRiLHyp+0bXC+zFPrIU/vvmf+WDOP29Ragj+f
+	 apeR1csWYk5pl3FjErHNRw5Lnl5pFGvy0ximG+WK1iySOzsuzRiY4I9lSaKD5qKpcHHEb
+	 +4BpAbdn+0CPkAHvD0A6Zlv+HjHXP3p1KcUFEkUwqvUuY5SRYFGdgus6vwT6HeOKUFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iA+2NgHs;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gq6mhsjJ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB04606A330;
-	Sat, 14 Nov 2026 00:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52387606A339;
+	Sat, 14 Nov 2026 00:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iA+2NgHs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E821F000C5;
-	Sat, 14 Nov 2026 00:32:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gq6mhsjJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8221C1F000C5;
+	Sat, 14 Nov 2026 00:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794616337;
-	bh=Ld9+YyGfs/W/wYUchYl+G0tuTdeNOsMW/DqiAiz5bT8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iA+2NgHsIM1XGhJsN3YhlgEAOkvSXDvn106dhXYWMkWhG8xdOu0HbJtl8lp+VQ/tL
-	 REacGdAPJXouCZUPgBiedOQ0xrnJUpEgyB36W6nzdYrLmAl74w16UYajZEnVGgqjJU
-	 xFITQ7vzF1w0LTGObI15Gyhwo/ejTYroExNxe6HdFjrXpHeuKpZjPuv4k2O/pOpesn
-	 VeeXCJ/SLasPfq+jaaGfxHk99SWjjYRdeP8foFGF4n1z+wc/jAsKcDnvnXg/rRgEcr
-	 HhJ7UEJVB2qqXE8GS+Dl5GYH8kRn0zCeqG+rsumm4rAIg2DNPCB4FEetoPn1OZ54dF
-	 U4yl6uqjYFa3g==
-From: netdev-bot+sinfo@kernel.org
-To: Sandeep Haemoon <sandeeph@loljews.com>
-Cc: netdev@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Russell King <linux@armlinux.org.uk>, Daniel Golle <daniel@makrotopia.org>,
- Mason Chang <mason-cw.chang@mediatek.com>,
- Frank Wunderlich <frank-w@public-files.de>,
- linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 1/3] net: ethernet: mtk_eth_soc: fix the RX
-Date: Sat, 14 Nov 2026 00:32:16 +0000
-Message-ID: <179461633631.2168702.17586474086593763386@kernel.org>
-In-Reply-To: <patch-4b4c5003bcf028fafd094e719c5e910b@loljews.com>
-References: <patch-9e765e74d06edbba3fd85a0cd49c4bb5@loljews.com>
- <patch-4b4c5003bcf028fafd094e719c5e910b@loljews.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1794616340;
+	bh=gkbU5EDdzYPCddiCey58CsoeSyTe1/vy92g3Bk6idAA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gq6mhsjJMcUOVK+DkCQqf41KJbVhP3uZcvZWnSyromuysQREI5cerdRsohIeoKMDr
+	 +46roK4SUABIWXZkBApNuPv7yps8t3/ruyCfc68/j3xnJqukgzYBA3kypmzxcc4UER
+	 dlVqqU6v5wWN/iBAc/zUGTNcpJhGvcb83/fJ0X2nKFXnKtysGHs0dHu+//o0aNNKZl
+	 W+NMcQUXyG4vB5bAPGQkI0P3g8KP0214C+/tg9e/U+hdNWpyP6INhLBpyOuFjqBEmc
+	 y0l/FNcZkrpq/PUyub5ZR14ZlApiKYRhW4W7Q6ymX4D0hA398WrTcPElS/asmoFVR5
+	 V08r9c+SDnG8A==
+Date: Fri, 13 Nov 2026 16:32:19 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wei Jie Law <law.wei.jie@gt.tech.gov.sg>
+Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
+ UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
+ . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Woojung Huh <woojung.huh@microchip.com>,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Wei Jie Law <98lawweijie@gmail.com>
+Subject: Re: [PATCH net-next v5 0/2] net: usb: lan78xx: do not use
+ uninitialized data after short reads
+Message-ID: <20261113163219.16603c83@kernel.org>
+In-Reply-To: <20261111013454.34542-1-law.wei.jie@gt.tech.gov.sg>
+References: <20261111013454.34542-1-law.wei.jie@gt.tech.gov.sg>
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -71,30 +63,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On Wed, 11 Nov 2026 09:34:52 +0800 Wei Jie Law wrote:
+> Testing: the series builds without warnings (W=1) on net-next and passes
+> checkpatch --strict. It applies unchanged to v6.12.105, where it was
+> tested with a LAN7800 emulated by raw-gadget + dummy_hcd, booted with
+> init_on_alloc=0:
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
-
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by LLM and not proven at runtime). If it was triggered
-   please include the symptoms, like the stack trace or kernel messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account.
-
-*IMPORTANT*: If you do repost (for other reasons) - please include
-the relevant info in the cover letter or commit messages.
--- 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Why are you testing this on 6.12 if you're just using a gadget and not
+a real device?
